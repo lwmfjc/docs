@@ -1,7 +1,7 @@
 ---
-weight: 99
+weight: 3
 bookFlatSection: true
-title: "生活"
+title: 生活
 ---
 
 生活相关的一些随感而发
