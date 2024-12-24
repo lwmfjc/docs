@@ -1,0 +1,216 @@
+---
+title: "算法红皮书 1.5.1-1.5.3"
+description: '案例研究：union-find 算法'
+categories:
+  - 学习
+tags:
+  - 算法红皮书(第四版)
+date: 2022-04-09 08:01:47 
+updated: 2022-04-10 08:01:47 
+
+---
+
+## 案例研究：union-find 算法
+
+- 设计和分析算法的基本方法
+  - 优秀的算法能解决实际问题
+  - 高效的算法也可以很简单
+  - 理解某个实现的性能特点是一项有趣的挑战
+  - 在解决同一个问题的多种算法间选择，科学方法是一种重要工具
+  - 迭代式改进能让算法效率越来越高
+
+### 动态连通性
+
+- 从输入中读取整数对p q，如果已知的所有整数对都不能说明p,q相连，就打印出pq
+- 网络：整个程序能够判定是否需要在pq之间架设一条新的连接才能进行通信
+- 变量名等价性（即指向同一个对象的多个引用）
+- 数学集合：在处理一个整数对pq时，我们是在判断它们是否属于相同的集合
+- 本节中，将对象称为**触点**，整数对称为**连接**，等价类称为**连通分量**或是**简称分量**
+- 连通性 问题只要求我们的程序能够判别给定的整数对pq是否相连，并没有要求给两者之间的通路上的所有连接
+- union-find算法的API  
+  ![ly-20241212142056628](img/ly-20241212142056628.png)
+- 数据结构和算法的设计影响到算法的效率
+
+### 实现
+
+```java
+public class UF
+{
+	private int[]	id;
+	/* 分量id（以触点作为索引） */
+	private int	count;
+	/* 分量数量 */
+	public UF( int N )
+		{
+		/* 初始化分量id数组 */
+		count	= N;
+		id	= new int[N];
+		for ( int i = 0; i < N; i++ )
+					id[i] = i;
+	}
+	public int count()
+		{
+		return(count);
+	}
+	public Boolean connected( int p, int q )
+		{
+		return(find( p ) == find( q ) );
+	}
+	public int find( int p )
+		public void union( int p, int q )
+	/* 请见1.5.2.1节用例（quick-find）、1.5.2.3节用例（quick-union）和算法1.5（加权quick-union） */
+	public static void main( String[] args )
+		{
+		/* 解决由StdIn得到的动态连通性问题 */
+		int	N	= StdIn.readint();
+		/* 读取触点数量 */
+		UF	uf	= new UF( N );
+		/* 初始化N个分量 */
+		while ( !StdIn.isEmpty() )
+				{
+			int	p	= StdIn.readint();
+			int	q	= StdIn.readint();
+			/* 读取整数对 */
+			if ( uf.connected( p, q ) )
+							continue;
+			/* 如果已经连通则忽略 */
+			uf.union( p, q );
+			/* 归并分量 */
+			StdOut.println( p + " " + q );
+			/* 打印连接 */
+		}
+		StdOut.println( uf.count() + "components" );
+	}
+}
+```
+
+union-find的成本模型：union-find API的各种算法，统计的是**数组的访问次数**，不论读写  
+
+- 以下有三种实现
+
+  - 且仅当id[p] 等于id[q] 时p 和q 是连通的
+
+    ```java
+    public int find(int p)
+    {
+    	return id[p];
+    }
+    public void union(int p, int q)
+    {
+    	// 将p和q归并到相同的分量中
+    	int pID = find(p);mi
+    	int qID = find(q);
+    	// 如果p和q已经在相同的分量之中则不需要采取任何行动
+    	if (pID == qID) return;
+    	// 将p的分量重命名为q的名称
+    	for (int i = 0; i < id.length; i++)
+    	if (id[i] == pID) id[i] = qID;
+    	count--;
+    }
+    ```
+
+    > 命题F：在quick-find 算法中，每次find() 调用只需要访问数组一次，而归并两个分量的union() 操作访问数组的次数在(N+3) 到(2N+1) 之间。  
+    > 证明：由代码马上可以知道，每次connected() 调用都会检查id[] 数组中的两个元素是否相等，即会调用两次find() 方法。归并两个分量的union() 操作会调用两次find()，检查id[] 数组中的全部N 个元素并改变它们中1 到N-1 个元素的值。
+    
+    > 假设我们使用quick-find 算法来解决动态连通性问题并且最后只得到了一个连通分量，那么这至少需要调用N-1 次union()，即至少(N+3)(N-1) ～ N2 次数组访问——我们马上可以猜想动态连通性的quick-find 算法是平方级别的
+    
+    
+    
+    
+    
+  - 以触点作为索引的id[]数组，每个触点所对应的id[]元素都是同一个分量中的另一个触点的名称
+    如下图：
+    ![ly-20241212142056859](img/ly-20241212142056859.png)
+    
+    ```java
+    private int find(int p)
+    {
+    	// 找出分量的名称
+    	while (p != id[p]) p = id[p];
+    	return p;
+    }
+    public void union(int p, int q)
+    {
+    	// 将p和q的根节点统一
+    	int pRoot = find(p);
+    	int qRoot = find(q);
+    	if (pRoot == qRoot) return;
+    	id[pRoot] = qRoot;
+    	count--;
+    }
+    ```
+    
+  - quick-union算法的最坏情况
+    ![ly-20241212142056966](img/ly-20241212142056966.png)
+    
+  - 加权quick-union算法（减少树的高度）
+    用一个数组来表示各个节点对应的分量的大小
+  
+    ```java
+    public class WeightedQuickUnionUF
+    {
+    	private int[] id;
+    	// 父链接数组（由触点索引）
+    	private int[] sz;
+    	// （由触点索引的）各个根节点所对应的分量的大小
+    	private int count;
+    	// 连通分量的数量
+    	public WeightedQuickUnionUF(int N)
+    	{
+    		count = N;
+    		id = new int[N];
+    		for (int i = 0; i < N; i++) id[i] = i;
+    		sz = new int[N];
+    		for (int i = 0; i < N; i++) sz[i] = 1;
+    	}
+    	public int count()
+    	{
+    		return count;
+    	}
+    	public Boolean connected(int p, int q)
+    	{
+    		return find(p) == find(q);
+    	}
+    	public int find(int p)
+    	{
+    		// 跟随链接找到根节点
+    		while (p != id[p]) p = id[p];
+    		return p;
+    	}
+    	public void union(int p, int q)
+    	{
+    		int i = find(p);
+    		int j = find(q);
+    		if (i == j) return;
+    		// 将小树的根节点连接到大树的根节点
+    		if (sz[i] < sz[j]) {
+    			id[i] = j;
+    			sz[j] += sz[i];
+    		} else {
+    			id[j] = i;
+    			sz[i] += sz[j];
+    		}
+    		count--;
+    	}
+    }
+    ```
+  
+  - quick-union 算法与加权quick-union 算法的对比（100 个触点，88 次union() 操作）
+    ![ly-20241212142057072](img/ly-20241212142057072.png)
+  
+- 所有操作的总成本
+  ![ly-20241212142057177](img/ly-20241212142057177.png)
+
+  
+
+### 展望
+
+研究问题的步骤
+
+- 完整而详细地定义问题，找出解决问题所必需的基本抽象操作并定义一份 API。
+- 简洁地实现一种初级算法，给出一个精心组织的开发用例并使用实际数据作为输入。
+- 当实现所能解决的问题的最大规模达不到期望时决定改进还是放弃。
+- 逐步改进实现，通过经验性分析或（和）数学分析验证改进后的效果。
+- 用更高层次的抽象表示数据结构或算法来设计更高级的改进版本。
+- 如果可能尽量为最坏情况下的性能提供保证，但在处理普通数据时也要有良好的性能。
+- 在适当的时候将更细致的深入研究留给有经验的研究者并继续解决下一个问题。

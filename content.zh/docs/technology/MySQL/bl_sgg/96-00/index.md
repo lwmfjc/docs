@@ -1,0 +1,266 @@
+---
+title: mysql高阶_sgg 96-00
+description: 'mysql高阶_sgg 96-00'
+categories:
+  - 学习
+tags:
+  - mysql高级篇-尚硅谷
+date: 2022-06-15 21:13:03
+updated: 2022-06-15 23:53:03
+---
+
+# 章节概述
+
+- 架构篇
+
+  - 1-3
+    ![ly-20241212142152374](img/ly-20241212142152374.png)
+  - 4
+    ![ly-20241212142152554](img/ly-20241212142152554.png)
+  - 5
+    ![ly-20241212142152607](img/ly-20241212142152607.png)
+  - 6
+    ![ly-20241212142152666](img/ly-20241212142152666.png)
+
+- 索引及调优篇
+
+  - 01
+    ![ly-20241212142152801](img/ly-20241212142152801.png)
+
+  - 02-03
+
+    ![ly-20241212142152853](img/ly-20241212142152853.png)
+
+  - 04-05
+
+    ![ly-20241212142152904](img/ly-20241212142152904.png)
+
+  - 06
+    ![ly-20241212142152953](img/ly-20241212142152953.png)
+
+- 事务篇
+
+  - 01-02
+    ![ly-20241212142153001](img/ly-20241212142153001.png)
+  - 03
+    ![ly-20241212142153044](img/ly-20241212142153044.png)
+  - 04
+    ![ly-20241212142153090](img/ly-20241212142153090.png)
+
+- 日志与备份篇
+
+  - 01
+    ![ly-20241212142153137](img/ly-20241212142153137.png)
+  - 02
+    ![ly-20241212142153183](img/ly-20241212142153183.png)
+  - 03
+    ![ly-20241212142153231](img/ly-20241212142153231.png)
+
+# CentOS环境准备
+
+- 这里主要是做了克隆，并没有讲到CentOS的安装，所以笔记不记录了
+
+# MySQL的卸载
+
+- 查找当前系统已经装了哪些
+  ```rpm -qa |grep mysql```
+
+- 查找mysql服务运行状态
+  ```systemctl status mysql```
+
+- 停止mysql服务
+  ```systemctl stop mysql```
+
+- 删除
+
+  ```shell
+  yum remove mysql-community-client-plugins-8.0.29-1.el7.x86_64
+  yum remove mysql-community-common-8.0.29-1.el7.x86_64
+  ```
+
+- 查找带mysql名字的文件夹
+  ```find / -name mysql```
+
+- 进行删除
+
+  ```shell
+  rm -rf /usr/lib64/mysql
+  rm -rf /usr/share/mysql
+  rm -rf /etc/selinux/targeted/active/modules/100/mysql
+  rm -rf /etc/my.cnf
+  ```
+
+# Linux下安装MySQL8.0与5.7版本
+
+- 版本介绍
+  ![ly-20241212142153277](img/ly-20241212142153277.png)
+
+- 下载地址 : https://www.mysql.com/downloads/
+  ![ly-20241212142153321](img/ly-20241212142153321.png)
+
+  - 进入
+    ![ly-20241212142153365](img/ly-20241212142153365.png)
+    即 https://dev.mysql.com/downloads/mysql/
+
+- 版本选择
+  ![ly-20241212142153414](img/ly-20241212142153414.png)
+
+  - 下载最大的那个，离线版
+    ![ly-20241212142153459](img/ly-20241212142153459.png)
+
+  - 下载后解压，并将下面六个放进linux中
+
+    ![ly-20241212142153502](img/ly-20241212142153502.png)
+
+- 如果是5.7，则需要进入 https://downloads.mysql.com/archives/community/
+
+  ![ly-20241212142153550](img/ly-20241212142153550.png)
+
+  - 下载后解压
+    ![ly-20241212142153595](img/ly-20241212142153595.png)
+  - 拷贝进linux
+
+- 安装前，给/tmp临时目录权限
+
+  - ```chmod -R 777 /tmp```
+
+  - 检查依赖
+
+    ```shell
+    rpm -qa |grep libaio
+    ##libaio-0.3.109-13.el7.x86_64
+    rpm -qa |grep net-tools
+    ##net-tools-2.0-0.24.20131004git.el7.x86_64
+    ```
+
+  - 确保目录下已经存在5（4）个文件并**严格**按顺序执行
+
+    ```shell
+    rpm -ivh mysql-community-common-8.0.29-1.el7.x86_64.rpm
+    rpm -ivh mysql-community-client-plugins-8.0.29-1.el7.x86_64.rpm
+    rpm -ivh mysql-community-libs-8.0.29-1.el7.x86_64.rpm
+    rpm -ivh mysql-community-client-8.0.29-1.el7.x86_64.rpm
+    rpm -ivh mysql-community-icu-data-files-8.0.29-1.el7.x86_64.rpm
+    rpm -ivh mysql-community-server-8.0.29-1.el7.x86_64.rpm
+    ```
+
+    - 安装libs的时候，会报错
+
+      ```shell
+      error: Failed dependencies:
+      	mariadb-libs is obsoleted by mysql-community-libs-8.0.29-1.el7.x86_64
+      ```
+
+      - 使用下面命令，视频的方法
+
+        ```shell
+        yum remove mysql-libs
+        ```
+
+      - 使用下面命令，卸载mariadb (这是我自己的方法)
+
+        ```shell
+      rpm -qa | grep mariadb
+        ## 查找到对应的版本 mariadb-libs-5.5.60-1.el7_5.x86_64
+        ## 下面卸载查找出来的版本
+        ## yum remove mariadb-libs-5.5.60-1.el7_5.x86_64
+        ```
+      
+    - 再次执行后安装成功
+
+- 服务初始化
+  ```mysqld --initialize --user=mysql```
+
+- 查看默认生成的密码
+  ```cat /var/log/mysqld.log```
+  ![ly-20241212142153643](img/ly-20241212142153643.png)
+
+- 判断mysql是否启动
+  ```systemctl status mysqld```
+
+- 启动服务```systemctl start mysqld```
+  再次判断，发现已经启动
+  ![ly-20241212142153687](img/ly-20241212142153687.png)
+
+- 设置为自动启动
+
+  - 查看当前是否开机自启动
+    ```systemctl list-unit-files|grep mysqld.service```
+    ![ly-20241212142153734](img/ly-20241212142153734.png)
+  - 如果是disable，则可以使用下面命令开机自启动
+    ```systemctl enable mysqld.service```
+
+- 进行登录
+
+  ```
+  mysql -u root -p
+  ```
+
+  用刚才的密码
+
+  - 使用查询，提示需要重置密码
+    ![ly-20241212142153781](img/ly-20241212142153781.png)
+
+  - 密码更新
+
+    ```mysql
+    alter user 'root'@'localhost' identified by '123456';
+    quit
+    # 退出重新登录
+    ```
+
+- 5.7的安装
+  赋予权限并检查包，这里发现缺少了libaio，所以```yum install libaio```
+
+# SQLyog实现MySQL8.0和5.7的远程连接
+
+- sqlyog下载 https://github.com/webyog/sqlyog-community/wiki/Downloads
+
+- 默认情况下会有连接出错
+  ![ly-20241212142153829](img/ly-20241212142153829.png)
+
+- 先测试ip及端口号
+  ![ly-20241212142153879](img/ly-20241212142153879.png)
+
+  - 此时linux端口号并没有开放
+    使用```systemctl status firewalld```发现防火墙开启 （active)
+    使用```systemctl stop firewalld```将防火墙关闭
+  - 开机时关闭防火墙```systemctl disable firewalld```
+  - 此时还是报错
+    ![ly-20241212142153923](img/ly-20241212142153923.png)
+
+- 这是由于root不允许被远程连接
+
+  - 查看user表，发现只允许本地登录
+    ![ly-20241212142153970](img/ly-20241212142153970.png)
+
+  - 修改并更新权限
+
+    ```mysql
+    update user set host = '192.168.1.%' where user= 'root';
+    #或者
+    update user set host = '%' where user= 'root';
+    #更新权限
+    flush privileges;
+    ```
+
+  - 之后如果出现下面的问题（视频中有，我没遇到）
+    ![ly-20241212142154014](img/ly-20241212142154014.png)
+
+    ```mysql
+    ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456';
+    ```
+
+    - 然后就可以连接了
+
+  - 命令行进行远程连接
+    ```mysql -u root -h 192.168.200.150 -P3306 -p```
+
+- 
+
+# 字符集的修改与底层原理说明
+
+# 比较规则_请求到响应过程中的编码与解码过程
+
+# SQL大小写规范与sql_model的设置
+

@@ -1,0 +1,23 @@
+{{ if .Site.Params.showPdf }}
+    {{ $content := .Inner }} 
+    {{/* 去除前后空白字符 */}}
+    {{ $content = strings.TrimSpace $content }}
+    {{/* 先把左括号及其左边去除了 */}}
+    {{ $content =  replaceRE `.*\!\[.*\]\(` "" $content }}
+    {{/* 先把右括号及其右边去除了 */}}
+    {{ $content =  replaceRE `(\).*)$` "" $content }}
+    {{/* 最短匹配到books，结果为 books/x/yy/xxx/fkjk.pdf */}} 
+    {{/* 这里books前不用斜杠 */}}
+    {{ $content =  replaceRE `^(.*?\/books)` "books" $content }} 
+    {{/* 获取文件名-去除前面至  */}}
+    {{ $fileName :=  replaceRE `^(.*\/)` "" $content }}
+    {{ $fileName :=  replaceRE `%20` " " $fileName }}
+    {{/* 获取文件名-去除.pdf，得到fkjk.pdf */}}
+    {{ $fileName :=  replaceRE `\.pdf` "" $fileName }}
+    {{/* 要包含一个目录的时候才要加斜杠(这里是要包含books) */}}
+    {{ $fileUrl := add .Site.Params.booksUrl "/" $content }}
+
+    <a href="{{ $fileUrl }}" target="_blank">{{ $fileName }}</a><br>
+    <iframe src="/pdfjs/web/viewer.html?file={{ $fileUrl }}"  marginwidth="0" frameborder="no" scrolling="no" 
+    style="padding: 0;width:100%;height: 80vh;"></iframe>
+{{ end }}

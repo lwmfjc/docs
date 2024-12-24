@@ -1,0 +1,607 @@
+---
+title: 03字符集和比较规则
+description: 03字符集和比较规则
+tags:
+  - MySQL是怎样运行的
+categories:
+  - 学习
+date: 2023-04-17 22:15:01
+updated: 2023-04-17 22:15:01
+---
+
+> 学习《MySQL是怎样运行的》，感谢作者！
+
+# 字符集
+
+把哪些字符映射成二进制数据：**字符范围**  
+怎么映射：字符->二进制数据，编码；二进制->字符，解码  
+字符集：**某个字符范围的编码规则**   
+同一种字符集可以有多种比较规则  
+
+## 重要的字符集   
+
+ASCAII字符集：128个，包括空格标点数字大小写及不可见字符，使用一个字节编码  
+ISO 8859-1字符集：256个，ASCAII基础扩充128个西欧常用字符（包括德法），使用1个字节，别名Latin1  
+GB2312字符集：收录部分汉字，兼容ASCAII字符集，如果字符在ASCAII字符集中则采用1字节，否则两字节。即**变长编码方式**
+
+> 区分某个字节，**代表一个单独字符**，还是**某个字符的一部分**。  
+> 比如0xB0AE75，由于是16进制，所有两个代表1个字节。所以这里有三个字节，其中最后那个字节为7*16+5=117 < 127 所以代表一个单独字符。而AE=10 * 16 +15=175 >127 ，所以是某个字符的一部分
+
+GBK字符集：对GB2312字符集扩充，编码方式兼容GB2312  
+UTF-8字符集：几乎收录所有字符，且不断扩充，兼容ASCAII字符集。变长：采用1~4字节  
+L->0x4C 1字节，啊->0xE5958A，两字节  
+UTF-8是Unicode字符集的一种编码方案，Unicode字符集有三种方案：UTF-8(1~4字节编码一个字符)，UTF-16(2或4字节编码一个字符)，UTF-32(4字节编码一个字符)  
+
+> 对于**“我”**，ASCLL中没有，UTF-8中采用3字节编码，GB22312采用2字节编码
+
+# MySQL中支持的字符集和比较规则 
+
+MySQL中，区分utf8mb3和utf8mb4，前者只是用1~3字节表示字符；后者使用1~4字节表示字符。MySQL中，utf8代表utf8mb3。  
+
+```shell
+#查看当前MySQL支持的字符集(注意，是字符集，名称都是小写)
+#Default collation 默认比较规则
+mysql> SHOW CHARSET;
++----------+---------------------------------+---------------------+--------+
+| Charset  | Description                     | Default collation   | Maxlen |
++----------+---------------------------------+---------------------+--------+
+| big5     | Big5 Traditional Chinese        | big5_chinese_ci     |      2 |
+| dec8     | DEC West European               | dec8_swedish_ci     |      1 |
+| cp850    | DOS West European               | cp850_general_ci    |      1 |
+| hp8      | HP West European                | hp8_english_ci      |      1 |
+| koi8r    | KOI8-R Relcom Russian           | koi8r_general_ci    |      1 |
+| latin1   | cp1252 West European            | latin1_swedish_ci   |      1 |  <---
+| latin2   | ISO 8859-2 Central European     | latin2_general_ci   |      1 |  <---
+| swe7     | 7bit Swedish                    | swe7_swedish_ci     |      1 |
+| ascii    | US ASCII                        | ascii_general_ci    |      1 |  <---
+| ujis     | EUC-JP Japanese                 | ujis_japanese_ci    |      3 |
+| sjis     | Shift-JIS Japanese              | sjis_japanese_ci    |      2 |
+| hebrew   | ISO 8859-8 Hebrew               | hebrew_general_ci   |      1 |
+| tis620   | TIS620 Thai                     | tis620_thai_ci      |      1 |
+| euckr    | EUC-KR Korean                   | euckr_korean_ci     |      2 |
+| koi8u    | KOI8-U Ukrainian                | koi8u_general_ci    |      1 |
+| gb2312   | GB2312 Simplified Chinese       | gb2312_chinese_ci   |      2 |  <---
+| greek    | ISO 8859-7 Greek                | greek_general_ci    |      1 |
+| cp1250   | Windows Central European        | cp1250_general_ci   |      1 |
+| gbk      | GBK Simplified Chinese          | gbk_chinese_ci      |      2 |  <---
+| latin5   | ISO 8859-9 Turkish              | latin5_turkish_ci   |      1 |
+| armscii8 | ARMSCII-8 Armenian              | armscii8_general_ci |      1 |
+| utf8     | UTF-8 Unicode                   | utf8_general_ci     |      3 |  <---
+| ucs2     | UCS-2 Unicode                   | ucs2_general_ci     |      2 |
+| cp866    | DOS Russian                     | cp866_general_ci    |      1 |
+| keybcs2  | DOS Kamenicky Czech-Slovak      | keybcs2_general_ci  |      1 |
+| macce    | Mac Central European            | macce_general_ci    |      1 |
+| macroman | Mac West European               | macroman_general_ci |      1 |
+| cp852    | DOS Central European            | cp852_general_ci    |      1 |
+| latin7   | ISO 8859-13 Baltic              | latin7_general_ci   |      1 |  
+| utf8mb4  | UTF-8 Unicode                   | utf8mb4_general_ci  |      4 |  <---
+| cp1251   | Windows Cyrillic                | cp1251_general_ci   |      1 |
+| utf16    | UTF-16 Unicode                  | utf16_general_ci    |      4 |  <---
+| utf16le  | UTF-16LE Unicode                | utf16le_general_ci  |      4 |
+| cp1256   | Windows Arabic                  | cp1256_general_ci   |      1 |
+| cp1257   | Windows Baltic                  | cp1257_general_ci   |      1 |
+| utf32    | UTF-32 Unicode                  | utf32_general_ci    |      4 |  <---
+| binary   | Binary pseudo charset           | binary              |      1 |
+| geostd8  | GEOSTD8 Georgian                | geostd8_general_ci  |      1 |
+| cp932    | SJIS for Windows Japanese       | cp932_japanese_ci   |      2 |
+| eucjpms  | UJIS for Windows Japanese       | eucjpms_japanese_ci |      3 |
+| gb18030  | China National Standard GB18030 | gb18030_chinese_ci  |      4 |
++----------+---------------------------------+---------------------+--------+
+41 rows in set (0.00 sec)
+```
+
+字符集的比较规则（这里先看utf8的）  
+
+```shell
+mysql> SHOW COLLATION LIKE 'utf8\_%';
++--------------------------+---------+-----+---------+----------+---------+
+| Collation                | Charset | Id  | Default | Compiled | Sortlen |
++--------------------------+---------+-----+---------+----------+---------+
+| utf8_general_ci          | utf8    |  33 | Yes     | Yes      |       1 |
+| utf8_bin                 | utf8    |  83 |         | Yes      |       1 |
+| utf8_unicode_ci          | utf8    | 192 |         | Yes      |       8 |
+| utf8_icelandic_ci        | utf8    | 193 |         | Yes      |       8 |
+| utf8_latvian_ci          | utf8    | 194 |         | Yes      |       8 |
+| utf8_romanian_ci         | utf8    | 195 |         | Yes      |       8 |
+| utf8_slovenian_ci        | utf8    | 196 |         | Yes      |       8 |
+| utf8_polish_ci           | utf8    | 197 |         | Yes      |       8 |
+| utf8_estonian_ci         | utf8    | 198 |         | Yes      |       8 |
+| utf8_spanish_ci          | utf8    | 199 |         | Yes      |       8 |
+| utf8_swedish_ci          | utf8    | 200 |         | Yes      |       8 |
+| utf8_turkish_ci          | utf8    | 201 |         | Yes      |       8 |
+| utf8_czech_ci            | utf8    | 202 |         | Yes      |       8 |
+| utf8_danish_ci           | utf8    | 203 |         | Yes      |       8 |
+| utf8_lithuanian_ci       | utf8    | 204 |         | Yes      |       8 |
+| utf8_slovak_ci           | utf8    | 205 |         | Yes      |       8 |
+| utf8_spanish2_ci         | utf8    | 206 |         | Yes      |       8 |
+| utf8_roman_ci            | utf8    | 207 |         | Yes      |       8 |
+| utf8_persian_ci          | utf8    | 208 |         | Yes      |       8 |
+| utf8_esperanto_ci        | utf8    | 209 |         | Yes      |       8 |
+| utf8_hungarian_ci        | utf8    | 210 |         | Yes      |       8 |
+| utf8_sinhala_ci          | utf8    | 211 |         | Yes      |       8 |
+| utf8_german2_ci          | utf8    | 212 |         | Yes      |       8 |
+| utf8_croatian_ci         | utf8    | 213 |         | Yes      |       8 |
+| utf8_unicode_520_ci      | utf8    | 214 |         | Yes      |       8 |
+| utf8_vietnamese_ci       | utf8    | 215 |         | Yes      |       8 |
+| utf8_general_mysql500_ci | utf8    | 223 |         | Yes      |       1 |
++--------------------------+---------+-----+---------+----------+---------+
+27 rows in set (0.00 sec)
+
+```
+
+utf8_polish_ci 波兰语比较规则； utf8_spanish_ci班牙语的比较规则；utf8_general_ci一种通用的比较规则 （utf8的默认比较规则）   
+一些后缀的解释：  
+![ly-20241212142154390](img/ly-20241212142154390.png)
+
+# 字符集和比较规则的应用
+
+MySQL有4个级别的字符集和比较规则：**服务器级别**、**数据库级别**、**表级别**、**列级别**  
+
+## 服务器级别
+
+```shell
+mysql> SHOW VARIABLES LIKE 'character_set_server';
++----------------------+--------+
+| Variable_name        | Value  |
++----------------------+--------+
+| character_set_server | latin1 |
++----------------------+--------+
+1 row in set (0.00 sec)
+
+mysql> SHOW VARIABLES LIKE 'collation_server';
++------------------+-------------------+
+| Variable_name    | Value             |
++------------------+-------------------+
+| collation_server | latin1_swedish_ci |
++------------------+-------------------
+1 row in set (0.00 sec)
+```
+
+```shell
+#centos7(英语语言)默认情况下如上
+#所以比较时，是不区分大小写的
+mysql> select * from test;
++-------+
+| name  |
++-------+
+| hello |
+| Hello |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from test where name = 'hello';
++-------+
+| name  |
++-------+
+| hello |
+| Hello |
++-------+
+```
+
+修改为utf8  
+
+```shell
+vim /etc/my.cnf
+#新增
+[server]
+character_set_server=utf8
+collation_server=utf8_general_ci
+#重启并查看
+systemctl restart mysqld;
+mysql> SHOW VARIABLES LIKE 'character_set_server';
++----------------------+-------+
+| Variable_name        | Value |
++----------------------+-------+
+| character_set_server | utf8  |
++----------------------+-------+
+1 row in set (0.00 sec)
+
+mysql> SHOW VARIABLES LIKE 'character_set_server';^C
+mysql> SHOW VARIABLES LIKE 'collation_server';
++------------------+-----------------+
+| Variable_name    | Value           |
++------------------+-----------------+
+| collation_server | utf8_general_ci |
++------------------+-----------------+
+1 row in set (0.00 sec)
+```
+
+## 数据库级别
+
+```shell
+#创建数据库并指定字符集及比较规则
+#如果不设置，则使用上级（服务器级别）的字符集和比较规则作为数据库的字符集和比较规则
+CREATE DATABASE db_test
+CHARACTER SET gb2312
+COLLATE gb2312_chinese_ci;
+#此时切换到db_test数据库
+#再查看，发现变了
+mysql> use db_test;
+Database changed
+mysql> SHOW VARIABLES LIKE 'character_set_database';
++------------------------+--------+
+| Variable_name          | Value  |
++------------------------+--------+
+| character_set_database | gb2312 |
++------------------------+--------+
+1 row in set (0.00 sec)
+
+mysql> SHOW VARIABLES LIKE 'collation_database';
++--------------------+-------------------+
+| Variable_name      | Value             |
++--------------------+-------------------+
+| collation_database | gb2312_chinese_ci |
++--------------------+-------------------+
+1 row in set (0.00 sec)
+```
+
+## 表级别
+
+```shell
+mysql> CREATE TABLE t(col VARCHAR(10)) CHARACTER SET utf8 COLLATE utf8_general_ci;
+Query OK, 0 rows affected (0.06 sec)
+mysql> SHOW CREATE TABLE t;
++-------+------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                             |
++-------+------------------------------------------------------------------------------------------+
+| t     | CREATE TABLE `t` (
+  `col` varchar(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
++-------+------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+```
+
+如果不指定，那么将继承所在数据库的字符集和比较规则  
+
+## 列级别
+
+```shell
+mysql> ALTER TABLE t MODIFY col VARCHAR(10) CHARACTER SET gbk COLLATE gbk_chinese_ci;
+## 修改为字符集gbk和对应的排序规则，如果不指定，则使用表的字符集及表的排序规则
+```
+
+## 其他
+
+如果仅修改字符集，不修改比较规则，则比较规则会设置为默认该字符集的比较规则；  
+如果仅修改比较规则，则字符集会设置为该比较规则对应的字符集
+
+```shell
+#查看当前服务器对应规则
+mysql> SHOW VARIABLES LIKE 'character_set_server';
++----------------------+-------+
+| Variable_name        | Value |
++----------------------+-------+
+| character_set_server | utf8  |
++----------------------+-------+
+1 row in set (0.00 sec)
+
+mysql> SHOW VARIABLES LIKE 'collation_server';
++------------------+-----------------+
+| Variable_name    | Value           |
++------------------+-----------------+
+| collation_server | utf8_general_ci |
++------------------+-----------------+
+1 row in set (0.00 sec)
+#只修改字符集
+mysql> SET character_set_server = gb2312;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW VARIABLES LIKE 'collation_server';
++------------------+-------------------+
+| Variable_name    | Value             |
++------------------+-------------------+
+| collation_server | gb2312_chinese_ci |
++------------------+-------------------+
+1 row in set (0.00 sec)
+#仅修改比较规则
+mysql> SET collation_server = utf8_general_ci;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW VARIABLES LIKE 'character_set_server';
++----------------------+-------+
+| Variable_name        | Value |
++----------------------+-------+
+| character_set_server | utf8  |
++----------------------+-------+
+1 row in set (0.00 sec)
+```
+
+根据各个列的字符集和比较规则是什么，从而根据这个列的类型来确认每个列**存储的实际数据所占用的存储空间大小**  
+
+```shell
+#例子  
+mysql> describe t;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| col   | varchar(10) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+1 row in set (0.01 sec)
+
+mysql> INSERT INTO t(col) VALUES('我我');
+Query OK, 1 row affected (0.01 sec)
+## 如果列col使用的字符集是gbk，则每个字符占用2字节，两个字符占用4字节；如果列col使用字符集为utf8，则两个字符实际占用的存储空间为6字节
+```
+
+# 客户端和服务端通信过程中使用的字符集
+
+## 编码和解码使用的字符集不一样
+
+![ly-20241212142154465](img/ly-20241212142154465.png)
+
+## 字符集转换的概念
+
+“我" utf8--> 编码成0xE68891  
+接收到0xE68891后，对它解码，然后又按照GBK字符集编码，编码后是0xCED2。过程称为**”字符集的转换“**
+
+## MySQL中字符集转换过程
+
+从用户角度，客户发送请求和服务器返回响应都是字符串；从机器角度，**客户端发送的请求和服务端返回的响应**本质上就是一个**字节序列**，这个过程经历了**多次的字符集转换**  
+
+### 客户端发送请求
+
+```shell
+#查看当前系统使用的字符集
+#linux
+#以第一个优先，没有依次往下取
+▶ echo $LC_ALL
+
+root@centos7101:~   
+▶ echo $LC_CTYPE
+
+root@centos7101:~   
+▶ echo $LANG    
+zh_CN.UTF-8
+#window
+C:\Users\ly>chcp
+活动代码页: 936 -> GBK
+```
+
+windows中，使用mysql客户端时，可以使用```mysql --default-character-set=utf8```，客户端将以UTF-8字符集**对请求的字符串**进行**编码**  
+
+### 服务端接收请求
+
+服务端接收到的应该是一个**字节序列**，是系统变量**character_set_client**代表的字符集**进行编码后**的**字节序列**  
+
+> 1. 每个客户端与服务端建立连接后，服务器会为该客户端维护一个独立的character_set_client变量，是SESSION级别的
+> 2. 客户端在编码请求字符串时实际使用的**字符集**，与服务器在收到一个字节序列后**认为该序列采用的编码字符集**，是两个独立的字符集。要尽量保证**这两个字符集是一致的**
+> 3. 例子：如果客户端用的UTF8编码"我"为0xE68891，并发给服务端，而服务端的character_set_client=latin1，则服务端会理解为  
+>    ![ly-20241212142154533](img/ly-20241212142154533.png)
+
+如果character_set_client对应的字符集不能解释请求的字节序列，那么服务器发生警告  
+
+```shell
+mysql> SET character_set_client =ascii;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select '我'; #utf8将它编码成了0xE68891发给服务端，而服务端以ASCII字符集解码
++-----+
+| ??? |
++-----+
+| ??? |
++-----+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> SHOW WARNINGS\G
+*************************** 1. row ***************************
+  Level: Warning
+   Code: 1300
+Message: Invalid ascii character string: '\xE6\x88\x91'
+1 row in set (0.00 sec)
+```
+
+### 服务器处理请求
+
+服务端会将请求的**字节序列当作采用character_set_client**对应的字符集进行编码，不过真正处理请求时会将其转换为**SESSION级别的系统变量character_set_connection对应的字符集进行编码**的字符序列
+
+> 假设character_set_client=utf8，character_set_connection=gbk，则对于"我"-->0xE68891-->0xCED2
+
+#### 情形1
+
+例子：  ```SELECT 'a' = 'A'```  
+
+```shell
+#默认情况
+mysql> SHOW VARIABLES LIKE 'character_connection';
+Empty set (0.00 sec)
+
+mysql> SHOW VARIABLES LIKE 'collation_connection';
++----------------------+-----------------+
+| Variable_name        | Value           |
++----------------------+-----------------+
+| collation_connection | utf8_general_ci |
++----------------------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT 'A'='a';
++---------+
+| 'A'='a' |
++---------+
+|       1 |
++---------+
+1 row in set (0.00 sec)
+```
+
+其他情况：  
+
+```shell
+mysql> SET character_set_connection = gbk;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET collation_connection=gbk_chinese_ci;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT 'a'='A';
++---------+
+| 'a'='A' |
++---------+
+|       1 |
++---------+
+1 row in set (0.00 sec)
+```
+
+另一种情况：  
+
+```shell
+mysql> SET character_set_connection = gbk;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET collation_connection=gbk_bin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT 'a'='A';
++---------+
+| 'a'='A' |
++---------+
+|       0 |
++---------+
+1 row in set (0.00 sec)
+```
+
+**gbk_bin 简体中文, 二进制**
+**gbk_chinese_ci 简体中文, 不区分大小写**
+
+#### 情形2
+
+```shell
+#创建一个表
+CREATE TABLE tt(c VARCHAR(100)) ENGINE=INNODB CHARSET=utf8;
+#先改回来
+mysql> SET character_set_connection = utf8;
+Query OK, 0 rows affected (0.00 sec) 
+
+mysql> SHOW VARIABLES LIKE 'collation_connection';
++----------------------+-----------------+
+| Variable_name        | Value           |
++----------------------+-----------------+
+| collation_connection | utf8_general_ci |
++----------------------+-----------------+
+1 row in set (0.00 sec)
+
+#插入一条记录
+INSERT INTO tt(c) VALUES('我');
+```
+
+当前数据库、表、列使用的是utf8，现在把collection改为gbk：  
+
+```shell
+mysql> SET character_set_connection = gbk;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SET collation_connection=gbk_chinese_ci;
+Query OK, 0 rows affected (0.00 sec)
+mysql> SELECT * FROM tt WHERE c='我';
++------+
+| c    |
++------+
+| 我   |
++------+
+1 row in set (0.00 sec)
+```
+
+此时```SELECT * FROM tt WHERE c='我';```中，'我'是使用gbk字符集进行编码的，比较规则是gbk_chinese_ci；而列c使用utf8字符集编码，比较规则为utf8_general_ci。这种情况下列的字符集和排序规则的优先级更高，会将gbk字符集转换成utf8字符集，然后使用列c的比较规则utf8_general_ci进行比较
+
+### 服务器生成响应
+
+继续以最近的上面例子为例```SELECT * FROM tt```,是否是直接将0xE68891读出来发送到客户端呢？不是的，取决于SESSION级别的系统变量character_set_result的值    
+
+```shell
+SET character_set_results=gbk;
+```
+
+>
+> 服务器会将字符串'我'从utf8字符集编码的0xE68891转换为character_set_results系统变量对应的字符集编码后的字节序列，再发给客户端
+
+此时传给客户端的响应中，字符串'我'对应的就是字节序列0xCED2('我'的gbk编码字节序列)  
+
+### 总结
+
+![ly-20241212142154584](img/ly-20241212142154584.png)
+
+每个客户端在服务器建立连接后，服务器都会**为这个连接维护这3个变量**  
+
+
+![ly-20241212142154631](img/ly-20241212142154631.png)
+
+1. 每个MySQL客户端都维护着一个**客户端默认字符集**，客户端在启动时会自动检测**所在系统(是客户端所在系统)当前使用的字符集**，并按照一定规则**映射成（最接近）MySQL支持的字符集**，然后将该字符集作为**客户端默认的字符集。**
+
+2. 如果启动MySQL客户端时设置了default-character-set 则忽略操作系统当前使用的字符集，直接将default-character-set启动选项中指定的值作为客户端默认字符集
+
+3. 连接服务器时，客户端将**默认的字符集信息**与用户密码等**发送给服务端**，服务端在收到后会将character_set_client、character_set_connection、character_set_results这3个系统变量的值初始化为客户端的默认字符集
+
+4. 客户端连接到服务器之后，可以使用SET分别**修改**character_set_client、character_set_connection、character_set_results这3个系统变量的值(或者使用```SET NAMES charset_name```一次性修改)
+
+   > 不会改变客户端在**编码请求字符串时使用的字符集**，也不会修改客户端的**默认字符集**
+
+### 客户端接收到请求
+
+客户端收到的响应其实也是一个**字节序列**  
+对于类UNIX系统，收到的字节序列相当于写到黑框框中，再由黑框框**将这个字节序列解释为人类能看懂的字符**（用操作系统当前使用的字符集来解释）；对于Windows，客户端使用客户端的默认字符集来解释
+
+也就是说，如果在linux下指定的default-character-set和系统不一致，就会导致乱码  
+![ly-20241212142154676](img/ly-20241212142154676.png)
+
+整个过程，五件事：  
+
+1. 客户端发送的请求字节序列是采用哪种字符集进行编码的 [**由客户端启动选项--default-character-set/其次是系统默认的(linux可能是utf-8/windows可能是gbk)**]
+2. 服务端接收到请求字节序列后会认为它是采用哪种字符集进行编码的[**由character_set_client决定，而character_set_client[还有character_set_connection、character_set_results这2个系统变量]的值初始化为客户端的默认字符集，也就是上面1中的**]
+3. 服务器在运行过程中会把请求的字符序列转换为以哪种字符集编码的字节序列[**character_set_connection**]
+4. 服务器在向客户端返回字节序列时，是采用哪种字符集进行编码的[**character_set_results**]
+5. 上面的**character_set_clien、character_set_connection、character_set_results这3个系统变量]的值**在客户端连接到服务端之后，都是可以修改的，且都是**SESSION级别**的
+6. 客户端在接收到响应字节序列后，是怎么把他们写到黑框框中的[**windows中由default-character-set/其次是系统默认**]
+
+# 比较规则的应用
+
+通常用来比较大小和排序
+
+例子：  
+
+```shell
+mysql> CREATE TABLE t(col VARCHAR(100)) ENGINE=INNODB CHARSET=gbk;
+Query OK, 0 rows affected (0.02 sec)
+mysql> INSERT INTO t(col) VALUES('a'),('b'),('A'),('B');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+mysql> SELECT * FROM t ORDER BY col;
++------+
+| col  |
++------+
+| a    |
+| A    |
+| b    |
+| B    |
+| 我   |
++------+
+5 rows in set (0.00 sec)
+# 如上，排序规则gbk_chinese_ci是不区分大小写的
+# 修改为gbk_bin;
+mysql> ALTER TABLE t MODIFY col VARCHAR(10) COLLATE gbk_bin;
+Query OK, 5 rows affected (0.06 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM t ORDER BY col;
++------+
+| col  |
++------+
+| A    |
+| B    |
+| a    |
+| b    |
+| 我   |
++------+
+5 rows in set (0.00 sec)
+
+```
+
+解释：  
+列col各个字符在使用gbk字符集编码后对应的数字如下：  
+'A' -> 65
+
+'B'->66
+
+'a'->97
+
+'b'->98
+
+'我'->52946

@@ -1,0 +1,21 @@
+{{ $myContent := .Inner }}
+  {{ $myContent = ( strings.ReplaceRE `.*\[.*\]\(.+\.md\).*` "" $myContent ) }}  
+  {{ if eq "" $myContent }}
+      {{/* 如果匹配到的是要注释的，那就置空 */}}
+      {{ "" }}
+  {{ else }}
+      {{ $opts2 := dict "throwOnError" false }}
+      {{/* throwOnError为false好像也没法抑制错误 */}}
+      {{/* 用with处理的话不管throwOnError是true还是false都是会捕捉错误且不抛出错误的 */}}
+      {{ with transform.ToMath .Inner $opts2 }}
+          {{ with .Err }}
+          {{/* 遇到错误则进行警告 */}}
+              {{  warnf "Failed to render KaTeX: %q. See %s" . $.Position  }}   
+              {{/* 下面的errorf主动抛出错误 */}}
+              {{/* errorf "Failed to render KaTeX: %q. See %s" . $.Position */}} 
+          {{ else }}
+            {{ . }}
+          {{ end }}
+      {{ end }}
+      {{- /* chomp trailing newline */ -}}         
+  {{ end }} 

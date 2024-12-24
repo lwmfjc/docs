@@ -1,0 +1,11 @@
+.obsidian/
+.trash/
+attachments/books/
+public/
+resources/
+.hugo_build.lock
+nohup.out
+static/pdfjs
+dufs.log
+hugo.log
+.idea/

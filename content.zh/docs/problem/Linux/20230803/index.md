@@ -1,0 +1,264 @@
+---
+title: 安卓手机及平板安装linuxDeploy的问题简记
+description: 安卓手机及平板安装linuxDeploy的问题简记
+tags:
+  - linux问题
+categories:
+  - 问题
+date: 2023-08-03 12:06:46
+updated: 2023-08-03 12:06:46
+
+---
+
+> 为什么是简记呢，因为这几天折腾这些太累了，等以后回过头来重新操作再详细记载
+
+# 前言
+
+## 初衷
+
+一开始的初衷是为了在平板上使用idea，之前看了一篇docker使用idea的文章，心血来潮。所以想直接在平板的termux安装docker然后使用，结果一堆问题。后面妥协了，在手机上装，然后开远程吧  
+
+> 这年头机在人在，所以装手机还是平板，还真没有很大的问题。后面使用情况证明：手机不需要开热点的情况（开热点是为了保证网络联通，在同一局域网），其实不怎么发热也不怎么耗电的。
+
+## 平板上
+
+本来想在tab s8平板上通过termux安装linux（无root权限），但是总会遇到一堆问题--连系统都装不上。因为root会有两个问题，所以一开始没有考虑使用linuxDeploy（需要root）
+
+- 保修失效
+- 无法通过系统直接更新（需要线刷）
+
+## 手机上（root）
+
+### 配置
+
+后面尝试在root过的手机上安装linuxDeploy，照样有一堆问题，这里配上能使用的配置（能进系统）：
+
+![ly-20241212141834176](img/ly-20241212141834176.png)  
+我用的时候ssh端口改了一下，不过不影响，第一次用的22端口也是能连上的。初始用户写的root，这里也是设置的root。  
+最好挂载一下  
+![ly-20241212141834486](img/ly-20241212141834486.png)
+
+### 问题
+
+1. 用其他桌面环境，可能会导致图标没有（应该是就没有那个应用，比如浏览器），不过我这个配置完也没有浏览器，不过好在图标也没，不用自己再去移除了。
+
+2. 装完之后vns有出错过一次，突然就蹦了，死活连不上。后面我直接重装系统了（linux deploy），没有再出现问题。装完之后需要在```etc/rc.local```添加:  
+
+   ```shell
+   #删除vns临时文件，保证每次启动都是使用端口:5901
+   #(linux上显示:1，连接使用时要+5900，即使用5901端口)
+   rm -rf /tmp/.X[1-9]-lock
+   rm -rf /tmp/.X11-unix/X[1-9]
+   #保证系统每次启动后都自动启动vncserver
+   vncserver
+   ```
+
+   电脑上随便找了个VNCServer 绿色免安装程序可以连上  
+   ![ly-20241212141834670](img/ly-20241212141834670.png)  
+   平板上使用AVNC，电脑不方便截图，就不截了.. 类似长这样  
+   ![ly-20241212141834882](img/ly-20241212141834882.png)  
+
+   ```shell
+   #常用命令(也不常，这两天用的最多的)
+   vncserver -kill :1 #强制关闭端口1
+   vncserver #启动
+   ```
+
+   
+
+3. 安装idea，也不用安装，就是去官网下载解压即可。问题：需要jdk11以上才能打开（疑惑，貌似之前在windows安装的时候没这要求，反正后面我妥协了，装了11，之后就是配置环境变量什么的）  
+   一开始linuxDeploy的Ubuntu，然后..发现openjdk11装完之后，```java -version```显示的10，一脸蒙圈，搞得后面又重装了Debian（中途还试了centos）
+
+4. 装完没有中文输入法，系统装完就是要用的，如果随便打打命令倒是不需要中文输入法，但是如果打点代码写点注解，那蹩脚英语就...总不能句句good good study,day day up..真是one day day de...
+
+# 问题处理
+
+其实解决方案前面好像都说了，输入法单独开一块吧，比较恶心，主要是让我意识到了自己水平有多菜...
+
+## 某些机器（平板）省电模式下，默认的那个用户会断网，原因不明
+
+所以那个用户就别用了，再创建一个新的
+
+```shell
+useradd -d /home/ly -s /bin/bash -m ly 
+```
+
+然后设置下密码
+
+```shell
+passwd ly
+```
+
+## 配置中文环境
+
+```shell
+sudo dpkg-reconfigure locales
+#前面选英文和中文，后面选英文
+#设置时区
+sudo timedatectl set-timezone Asia/Shanghai
+```
+
+## 中文字体安装
+
+```shell
+apt-get install ttf-wqy-zenhei
+apt-get install xfonts-intl-chinese wqy*
+```
+
+## 输入法相关安装
+
+```shell
+#fcitx安装
+apt install fcitx -y
+#输入法安装
+apt install fcitx-googlepinyin fcitx-sunpinyin fcitx-pinyin
+#中文字体包，简体繁体
+apt install fonts-arphic-bsmi00lp fonts-arphic-gbsn00lp fonts-arphic-gkai00mp
+apt  install fcitx-table*
+
+```
+
+![image-20231109203455234](img/ly-20241212141835065.png)
+
+## 输入法bug
+
+网上一堆教程，找了很多，最后的解决方案 fcitx+googlepinyin
+
+> 没用fcitx5和sougou输入法，因为尝试了很多次实在装不上，不知道是arm64的架构问题还是什么，装完老是输入法状态栏闪啊闪...bug？玄学？
+
+这个网上都有教程（抄袭），就不写（抄）了。写下重要的问题
+
+### 输入法在terminal终端、idea中不能切换出来、切换后打字不能上去
+
+>**tabs8没有这个bug，手机的miui系统有这个bug，不知道为啥**  
+
+这个问题其实在wiki里面有说到，不过我是google之后才定位到这里的   
+
+> https://wiki.archlinux.org/title/fcitx 
+
+需要修改 ```~/.xinitrc```文件  
+
+```shell
+fcitx & #add
+export GTK_IM_MODULE=fcitx  #add
+export QT_IM_MODULE=fcitx  #add
+export XMODIFIERS=@im=fcitx  #add
+XAUTHORITY=$HOME/.Xauthority
+export XAUTHORITY
+LANG_MESSAGE=zh_CN.UTF-8 #add
+LANG=en_US.UTF-8 #add
+export LANG #add
+export LANG_MESSAGE #add
+echo $$ > /tmp/xsession.pid
+. $HOME/.xsession
+```
+
+其他的不要改，安装系统原来怎么样就怎么样就行...  
+在这之前什么中文字体、还有区域设置都要先搞定，前面的设置选择en_US.UTF-8+zh_CN所有（有四五个），后面的设置选择系统默认语言（中英文都可，我选的英文，方便我这样的菜鸟报错时google查解决方案，只能选一个）  
+
+> 突然想起来souhupinyin闪啊闪可能跟这里设置了fcitx有关系？以后有空再研究
+
+还有这个地方要改  
+
+```shell
+vim /etc/locale.conf
+#LANG=zh_CN.UTF-8
+#LC_MESSAGES=en_US.UTF-8
+LANG=en_US.UTF-8
+LC_MESSAGES=zh_CN.UTF-8
+```
+
+之前我还改了idea.*vmoptions的配置，不过可能跟这个没有太大关系
+
+### idea中输入法位置会出现在左下角
+
+看了fcitx官方的issue，说是不关它的事....
+
+## 博客
+
+
+
+### Obsidian
+
+到官方github下载即可  
+
+> https://github.com/obsidianmd/obsidian-releases/releases
+>
+> 下载其中一个就行，不过都要以 --no-sandbox方式才能运行
+>
+> ![ly-20241212141835244](img/ly-20241212141835244.png)
+
+这期间会有很多问题，需要安装下列软件  
+
+```shell
+apt-get install zlib1g-dev
+apt-get install fuse libfuse2
+apt install libnss3
+./obsidian --no-sandbox #以这种方式运行
+```
+
+### Typora
+
+linux 的arm64只存在于1.0以上版本，众所周知...  
+以下链接，仅供学习  
+
+> https://www.cnblogs.com/youngyajun/p/16661980.html --1.0.3有效，不过图片上传有点问题，直接拖曳进去是能上传的，复制后粘贴不行（1.6可以，不过未授权，不太好弄）  
+
+python安装过程也挺曲折，不要装python2，直接装3。pip也是直接装版本3即可。记得使用清华源/或者阿里源，要不得下载半天
+
+### picgo
+
+这里配合的是picgo-core，用官方教程安装即可
+
+> 直接picgo不行，没有找到对应平台的安装包
+
+### PicHoro
+
+最后放弃在linux上写博客的想法了，勉强能用，不过实在是勉强。  
+后面采用直接在平板安装obsidian+pichoro的办法  
+
+> https://github.com/Kuingsmile/PicHoro 
+
+还行。不过2.1.2报毒，不知道为啥，下完被自动删除了。使用的是2.1.1
+
+## 浏览器
+
+### chromium
+
+直接apt安装就好了，装完之后ui那个图标是打不开的，同样的问题，在terminal终端那里，使用命令```chromium --no-sandbox```即可打开。有一些问题，比如没声音啦、一些pdf插件（博客的）显示不出来之类。目前没需求，暂不处理了
+
+> ps: 还有q的问题，目前也没需求。暂不处理
+
+# 参考链接
+
+> https://cloud.tencent.com/developer/article/1159972  
+> https://blog.csdn.net/qysh123/article/details/117288055  
+> https://blog.csdn.net/weixin_42122432/article/details/116703457  
+> https://www.cnblogs.com/jtianlin/p/4230527.html  
+> https://blog.csdn.net/sinat_42483341/article/details/104104441  
+> https://blog.csdn.net/ma726518972/article/details/121034994?ydreferer=aHR0cHM6Ly93d3cuZ29vZ2xlLmNvbS8%3D  
+> https://www.cnblogs.com/shanhubei/p/17517381.html  
+> https://blog.csdn.net/sandonz/article/details/106877555  
+> https://archlinuxarm.org/packages/aarch64/vim  
+> https://bbs.archlinuxcn.org/viewtopic.php?id=12685  
+> https://soft.zol.com.cn/126/1262460.html  
+> https://bbs.archlinuxcn.org/viewtopic.php?id=10498  
+> https://wiki.archlinux.org/title/fcitx  
+> https://www.reddit.com/r/archlinux/comments/rl1ncw/fcitx_input_in_terminal_window_doesnt_work/  
+> https://stackoverflow.com/questions/20705089/why-can-not-i-use-fcitx-input-method-in-gnome-terminal  
+> https://blog.csdn.net/u011166277/article/details/106287587/  
+> https://www.reddit.com/r/swaywm/comments/t09udp/anyone_using_the_input_method_fcitx5rime_cant_get/  
+> https://github.com/fcitx/fcitx5/issues/79  
+
+其实不止这些，不过有用的可能就这些
+
+# 成果
+
+![ly-20241212141835424](img/ly-20241212141835424.png)
+
+# 疑惑
+
+其实科学这种东西，在你不精通的情况下，也会出现玄而又玄的事。那传统意义上所谓的玄学，是否是因为自己不精通/失传导致的呢...人类是退化还是进化..不过有一点是肯定的，所有的事情都是人为的 -- 自作自受。
+
+> 用window系统打完了这篇博客真的爽，没有各种莫名其妙的问题。果然，跌到谷底的时候，怎么走都是向上。
+

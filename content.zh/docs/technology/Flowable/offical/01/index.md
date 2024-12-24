@@ -1,0 +1,512 @@
+---
+title: 'Flowable-01-GettingStarted'
+description: '入门'
+categories:
+  - 学习
+tags:
+  - "flowable官方"
+date: 2022-04-27 22:32:24
+updated: 2022-04-27 22:32:24
+---
+
+## 入门
+
+### 什么是流动性
+
+> Flowable 是一个用 Java 编写的轻量级业务流程引擎。Flowable 流程引擎允许您部署 BPMN 2.0 流程定义（用于定义流程的行业 XML 标准）、创建这些流程定义的流程实例、运行查询、访问活动或历史流程实例和相关数据等等。
+
+> 可以使用 Flowable REST API 通过 HTTP 进行通信。还有几个 Flowable 应用程序（Flowable Modeler、Flowable Admin、Flowable IDM 和 Flowable Task）提供开箱即用的示例 UI，用于处理流程和任务。
+
+### Flowable和Activiti
+
+Flowable是Activiti的一个分支
+
+### 构建命令行命令
+
+#### 创建流程引擎
+
+请假流程如下  
+
+- 员工要求休假数次
+- 经理批准或拒绝请求
+- 之后将模拟再某个外部系统中注册请求，并向员工发送一封包含结果的邮件
+
+创建一个空的Mave项目，并添加依赖
+
+```xml
+    <dependencies>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-engine</artifactId>
+            <version>6.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.3.176</version>
+        </dependency> 
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.29</version> <!--当版本号>=8.0.22时会报date转字符串的错误-->
+        </dependency>
+    </dependencies>
+```
+
+添加一个带有Main方法的类
+
+这里实例化一个**ProcessEngine**实例，一般只需要实例化一次，是通过**ProcessEngineConfiguration**创建的，用来配置和调整流程引擎的配置
+
+- *ProcessEngineConfiguration*也可以使用配置 XML 文件创建
+- *ProcessEngineConfiguration*需要的最低配置是与数据库的 JDBC 连接
+
+```java
+package org.flowable;
+
+import org.flowable.engine.ProcessEngine;
+import org.flowable.engine.ProcessEngineConfiguration;
+import org.flowable.engine.impl.cfg.StandaloneProcessEngineConfiguration;
+
+public class HolidayRequest {
+    public static void main(String[] args) {
+
+        //这里改用mysql，注意后面的nullCatalogMeansCurrent=true
+        //注意，pom需要添加mysql驱动依赖
+        ProcessEngineConfiguration cfg = new StandaloneProcessEngineConfiguration()
+                .setJdbcUrl("jdbc:mysql://localhost:3306/flowable_official?useUnicode=true" +
+                        "&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true"
+                        +"&nullCatalogMeansCurrent=true"
+                )
+                .setJdbcUsername("root")
+                .setJdbcPassword("123456")
+                .setJdbcDriver("com.mysql.cj.jdbc.Driver")
+                .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+        /* //这是官网，用的h2
+        ProcessEngineConfiguration cfg = new StandaloneProcessEngineConfiguration()
+                .setJdbcUrl("jdbc:h2:mem:flowable;DB_CLOSE_DELAY=-1")
+                .setJdbcUsername("sa")
+                .setJdbcPassword("")
+                .setJdbcDriver("org.h2.Driver")
+                .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);*/
+
+        ProcessEngine processEngine = cfg.buildProcessEngine();
+    }
+}
+
+```
+
+运行后会出现slf4j的警告，添加依赖并编写配置文件即可
+
+```xml
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+```
+
+配置文件
+
+```properties
+log4j.rootLogger=DEBUG, CA
+log4j.appender.CA=org.apache.log4j.ConsoleAppender
+log4j.appender.CA.layout=org.apache.log4j.PatternLayout
+log4j.appender.CA.layout.ConversionPattern=%d{hh:mm:ss,SSS} [%t] %-5p %c %x - %m%n
+```
+
+重运行程序无警告
+
+会自动往mysql添加一些表及数据
+
+#### 部署流程定义
+
+flowable 引擎希望以 BPMN 2.0 格式定义流程，这是一种在行业中被广泛接受的 XML 标准。Flowable术语称之为**流程定义** （可以理解成许多执行的蓝图），从流程定义中可以启动许多**流程实例** 
+
+流程定义了请假假期所涉及的不同步骤，而一个流程实例与一位特定员工的假期请相匹配。
+
+> BPMN 2.0 存储为 XML，但它也有一个可视化部分：它以标准方式定义每个不同的步骤类型（人工任务、自动服务调用等）如何表示，以及如何将这些不同的步骤连接到彼此。通过这种方式，BPMN 2.0 标准允许技术人员和业务人员以双方都理解的方式就业务流程进行交流。
+
+我们将使用的流程定义
+
+![](img/ly-20241212142115867.png)
+
+- 假设该过程是通过提供一些信息开始的
+- 左边的圆圈称为**开始事件**
+- 第一个矩形是**用户任务**（经理必须执行，批准或拒绝）
+- 根据经理决定，**专用网关** （带有十字菱形）会将流程实例路由到批准或拒绝路径
+- 如果获得批准，必须在某个外部系统中注册请求，然后再次为原始员工执行用户任务，通知他们该决定
+- 如果被拒绝，则会向员工发送一封电子邮件，通知他们这一点
+
+此类流程定义使用可视化建模工具建模，例如Flowable Designer（Eclipse）或FlowableModeler（Web应用程序）
+
+- BPMN 2.0 及其概念
+  下面的holiday-request.bmpn20.xm文件放在src/main/resouces中
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+               xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+               xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+               xmlns:flowable="http://flowable.org/bpmn"
+               typeLanguage="http://www.w3.org/2001/XMLSchema"
+               expressionLanguage="http://www.w3.org/1999/XPath"
+               targetNamespace="http://www.flowable.org/processdef">
+  
+      <process id="holidayRequest" name="Holiday Request" isExecutable="true">
+  
+          <startEvent id="startEvent"/>
+          <!--线条指向-->
+          <sequenceFlow sourceRef="startEvent" targetRef="approveTask"/>
+  
+          <userTask id="approveTask" name="Approve or reject request"/>
+          <!--线条指向-->
+          <sequenceFlow sourceRef="approveTask" targetRef="decision"/>
+  
+          <!--网关-->
+          <exclusiveGateway id="decision"/>
+          <!--线条指向，下面有两个分支-->
+          <!--线条指向approved-->
+          <sequenceFlow sourceRef="decision" targetRef="externalSystemCall">
+              <conditionExpression xsi:type="tFormalExpression">
+                  <![CDATA[
+            ${approved}
+          ]]>
+              </conditionExpression>
+          </sequenceFlow>
+          <!--线条指向!approved-->
+          <sequenceFlow sourceRef="decision" targetRef="sendRejectionMail">
+              <conditionExpression xsi:type="tFormalExpression">
+                  <![CDATA[
+            ${!approved}
+          ]]>
+              </conditionExpression>
+          </sequenceFlow>
+  
+          <!--分支1-->
+          <serviceTask id="externalSystemCall" name="Enter holidays in external system"
+                       flowable:class="org.flowable.CallExternalSystemDelegate"/>
+          <!--线条指向-->
+          <sequenceFlow sourceRef="externalSystemCall" targetRef="holidayApprovedTask"/>
+          <!--用户任务-->
+          <userTask id="holidayApprovedTask" name="Holiday approved"/>
+          <!--线条指向-->
+          <sequenceFlow sourceRef="holidayApprovedTask" targetRef="approveEnd"/>
+  
+          <!--服务任务-->
+          <serviceTask id="sendRejectionMail" name="Send out rejection email"
+                       flowable:class="org.flowable.SendRejectionMail"/>
+          <!--线条指向-->
+          <sequenceFlow sourceRef="sendRejectionMail" targetRef="rejectEnd"/>
+  
+          <!--分支2结束-->
+          <endEvent id="approveEnd"/>
+  
+          <!--分支2结束-->
+          <endEvent id="rejectEnd"/>
+  
+      </process>
+  
+  </definitions>
+  ```
+
+  - 解释
+  
+    - 该文件与BPMN2.0标准规范完全兼容
+    - 每个步骤（活动 activity），都有一个id属性，在XML中，该属性提供唯一标识符
+      name属性为可选的名称，增加了可视化图表的可读性
+    - 活动通过**顺序流(sequenceFlow)**连接，即可视图中的定向箭头。执行流程实例时，执行将从开始事件流向下一个活动，且遵循顺序流
+    - 离开*专有网关*的*序列流*（带有 X 的菱形）显然是特殊的：两者都有一个以*表达式*形式定义的*条件*（见第 25 和 32 行）。当流程实例执行到达此*gateway*时，将评估*条件*并采用第一个解析为*true*的条件。这就是这里*独有*的含义：只选择一个。如果需要不同的路由行为，当然也可以使用其他类型的网关
+      - 表达式以${approved}的形式，是${approved == true}的简写
+      - approved称为过程变量，他与流程实例一起存储（持久数据为，在流程实例的声明周期内使用），意味着必须在流程实例的某个时间点（提交经理用户任务时，即结点```<userTask id="approveTask" />```[Flowable术语，完成])设置此流程变量）
+  
+  - 部署流程
+    使用RepositoryService，它可以从ProcessEngine对象中检索，通过传递XML文件的位置并调用deploy()方法来执行它来创建一个新的Deployment
+  
+    ```java
+    RepositoryService repositoryService = processEngine.getRepositoryService();
+    //部署流程
+    Deployment deployment = repositoryService.createDeployment()
+      .addClasspathResource("holiday-request.bpmn20.xml")
+      .deploy();
+            //打印部署id
+    System.out.println("Found deployment id : " + deployment.getId());
+    ```
+  
+  
+  
+    每次部署的id存在act_re_deployment表中
+    ![](img/ly-20241212142115994.png)
+  
+  - 通过API查询来验证引擎是否知道流程定义
+  
+    ```java
+    ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+      .deploymentId(deployment.getId())
+      .singleResult();
+    System.out.println("Found process definition : " + processDefinition.getName());
+    ```
+  
+  - 
+  
+
+#### 启动流程实例
+
+现在已经将流程定义部署到流程引擎中了，所以可以将此**流程定义**作为“蓝图”来启动流程实例
+
+启动前提供一些*初始流程变量* ，通常，当流程自动触发时，将通过呈现给用户的表单或者通过REST API获得这些信息，本例为保持简单使用java.util.Scanner在命令中简单输入一些数据
+
+```java
+Scanner scanner= new Scanner(System.in);
+
+System.out.println("Who are you?");
+String employee = scanner.nextLine();
+
+System.out.println("How many holidays do you want to request?");
+Integer nrOfHolidays = Integer.valueOf(scanner.nextLine());
+
+System.out.println("Why do you need them?");
+String description = scanner.nextLine();
+```
+
+接下来，通过RuntimeService启动一个流程实例，流程实例使用key启动，此键与BPMN2.0 XML文件中设置的id属性匹配
+
+```java
+RuntimeService runtimeService = processEngine.getRuntimeService();
+
+Map<String, Object> variables = new HashMap<String, Object>();
+variables.put("employee", employee);
+variables.put("nrOfHolidays", nrOfHolidays);
+variables.put("description", description);
+ProcessInstance processInstance =
+  runtimeService.startProcessInstanceByKey("holidayRequest", variables);
+```
+
+- 流程实例启动时，会创建一个**执行(execution)**并将其放入**start event启动事件**中。之后，此**执行(execution)**遵守**user task 用户任务**的**序列流 sequence flow**以供经理批准并执行**用户任务user task**行为
+- 此行为将在数据库中创建一个任务，稍后可以使用查询找到该任务
+- 用户任务处于*等待状态*，引擎将停止进一步执行任何操作，返回 API 调用
+
+#### 支线：交易性 (Sidetrack: transactionality)
+
+- 当您进行 Flowable API 调用时，默认情况下，一切都是同步**synchronous**的，并且是同一事务的一部分。这意味着，当方法调用返回时，将启动并提交事务。
+- 当一个流程实例启动时，从流程实例启动到下一个*等待状态*会有**一个数据库事务**。在本例中，这是第一个用户任务。当引擎到达这个用户任务时，状态被持久化到数据库中并且事务被提交并且API调用返回
+- 在 Flowable 中，当继续一个流程实例时，总会有一个数据库事务从前一个*等待状态*转到下一个*等待状态*。
+- 
+
+#### 查询和完成任务
+
+- 为用户任务配置分配
+
+  - [第一个任务进入"经理"组]
+
+    ```xml
+    <userTask id="approveTask" name="Approve or reject request" flowable:candidateGroups="managers"/>
+    ```
+
+  - 第二个任务的*受让人assignee*属性
+    基于我们在流程实例启动时传递的流程变量的动态分配
+
+    ```xml
+    <userTask id="holidayApprovedTask" name="Holiday approved" flowable:assignee="${employee}"/>
+    ```
+
+  - 查询并返回"managers"组的任务
+
+    ```java
+    TaskService taskService = processEngine.getTaskService();
+    List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup("managers").list();
+    System.out.println("You have " + tasks.size() + " tasks:");
+    for (int i=0; i<tasks.size(); i++) {
+      System.out.println((i+1) + ") " + tasks.get(i).getName());//
+    }
+    ```
+
+
+    ![ly-20241212142116089](img/ly-20241212142116089.png)
+    
+    有三个是因为启动了三个实例
+
+  - 获取特定的流程实例变量，并在屏幕上显示实际请求
+
+    ```java
+    System.out.println("Which task would you like to complete?");
+    int taskIndex = Integer.valueOf(scanner.nextLine());
+    Task task = tasks.get(taskIndex - 1);
+    Map<String, Object> processVariables = taskService.getVariables(task.getId());
+    System.out.println(processVariables.get("employee") + " wants " +
+        processVariables.get("nrOfHolidays") + " of holidays. Do you approve this?");
+    ```
+
+  - 设置variables让经理批准
+
+    ```java
+    boolean approved = scanner.nextLine().toLowerCase().equals("y");
+    variables = new HashMap<String, Object>();
+    variables.put("approved", approved);
+    //经理完成任务
+    taskService.complete(task.getId(), variables);
+    ```
+
+    $\color{red}该任务现已完成，并且基于"approved"流程变量选择离开专用网关的两条路径之一$
+
+    ![](img/ly-20241212142116178.png)
+
+    
+
+#### 编写JavaDelegate
+
+- 实现在请求被批准时将执行的自动逻辑，在BPMN2.0 XML中，这是一个**服务任务**
+
+  ```xml
+  <serviceTask id="externalSystemCall" name="Enter holidays in external system"
+      flowable:class="org.flowable.CallExternalSystemDelegate"/>
+  ```
+
+  这里指定了具体实现类
+
+  ```java
+  package org.flowable;
+  
+  import org.flowable.engine.delegate.DelegateExecution;
+  import org.flowable.engine.delegate.JavaDelegate;
+  
+  public class CallExternalSystemDelegate implements JavaDelegate {
+  
+      public void execute(DelegateExecution execution) {
+          System.out.println("Calling the external system for employee "
+              + execution.getVariable("employee"));
+      }
+  
+  }
+  ```
+
+
+  当**执行execution**到达**service tast服务任务**时，BPMN 2.0 XML中引用的类被实例化并被调用
+
+- 运行，发现自定义逻辑确实已执行
+
+#### 处理历史数据
+
+Flowable引擎会自动存储所有流程实例的**审计数据audit data** 或**历史数据historical data**
+
+下面，显示一直在执行的流程实例的持续时间，从ProcessEngine获取HistoryService并创建历史活动查询。这里添加了过滤--1 仅针对一个特定流程实例的活动 --2 只有已经完成的活动
+
+```java
+HistoryService historyService = processEngine.getHistoryService();
+List<HistoricActivityInstance> activities =
+  historyService.createHistoricActivityInstanceQuery()
+   .processInstanceId(processInstance.getId())
+   .finished()
+   .orderByHistoricActivityInstanceEndTime().asc()
+   .list();
+
+for (HistoricActivityInstance activity : activities) {
+  System.out.println(activity.getActivityId() + " took "
+    + activity.getDurationInMillis() + " milliseconds");
+}
+```
+
+
+
+#### 结论
+
+本教程介绍了各种 Flowable 和 BPMN 2.0 概念和术语，同时还演示了如何以编程方式使用 Flowable API。
+
+### Flowable REST API入门
+
+#### 设置REST应用程序
+
+使用flowable-rest.war ,  java -jar flowable-rest.war
+
+测试是否运行成功
+
+```shell
+curl --user rest-admin:test http://localhost:8080/flowable-rest/service/management/engine
+```
+
+#### 部署流程定义
+
+- 先切到该文件夹下
+  ![](img/ly-20241212142116266.png)
+
+- 使用下面命令启动flowable-rest
+
+  ```shell
+  java -jar flowable-rest.war
+  ```
+
+- 部署流程定义
+
+  ```shell
+  curl --user rest-admin:test -F "file=@holiday-request.bpmn20.xml" http://localhost:8080/flowable-rest/service/repository/deployments
+  ```
+
+- 查看流程是否部署
+
+  ```shell
+  curl --user rest-admin:test http://localhost:8080/flowable-rest/service/repository/process-definitions
+  ```
+
+  - 将返回一个列表，列表每个元素是当前部署到引擎的所有流程定义
+
+#### 启动流程实例
+
+- 命令
+
+  ```shell
+  curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ "processDefinitionKey":"holidayRequest", "variables": [ { "name":"employee", "value": "John Doe" }, { "name":"nrOfHolidays", "value": 7 }]}' http://localhost:8080/flowable-rest/service/runtime/process-instances
+  ```
+
+  windows中会报错...估计是没转义啥的原因
+  将返回
+
+  ```json
+  {"id":"43","url":"http://localhost:8080/flowable-rest/service/runtime/process-instances/43","businessKey":null,"suspended":false,"ended":false,"processDefinitionId":"holidayRequest:1:42","processDefinitionUrl":"http://localhost:8080/flowable-rest/service/repository/process-definitions/holidayRequest:1:42","activityId":null,"variables":[],"tenantId":"","completed":false}
+  
+  ```
+
+  
+
+  
+
+#### 任务列表和完成任务
+
+- 获取manager经理组的所有任务
+
+  ```shell
+  curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ "candidateGroup" : "managers" }' http://localhost:8080/flowable-rest/service/query/tasks
+  
+  ```
+
+- 使用命令完成一个任务
+
+  ```shell
+  curl --user rest-admin:test -H "Content-Type: application/json" -X POST -d '{ "action" : "complete", "variables" : [ { "name" : "approved", "value" : true} ]  }' http://localhost:8080/flowable-rest/service/runtime/tasks/25
+  ```
+
+  - 这里会报下面的错
+
+    ```json
+    {"message":"Internal server error","exception":"couldn't instantiate class org.flowable.CallExternalSystemDelegate"}
+    ```
+
+    
+
+  - 解决办法
+
+    > 这意味着引擎找不到服务任务中引用的 CallExternalSystemDelegate 类。为了解决这个问题，需要将该类放在应用程序的类路径中（这将需要重新启动）。按照本节所述创建类，将其打包为JAR，并将其放在Tomcat的webapps文件夹下的flowable-rest文件夹的WEB-INF/lib文件夹中。
+
+
+
+
+
+
+

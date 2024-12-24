@@ -1,0 +1,15 @@
+/* You can add custom styles here. */
+
+@import "plugins/numbered";
+//@import "plugins/scrollbars";
+.book-toc { 
+  font-size: $font-size-14;  //增大侧目录字号 原来是12
+  }
+  
+//   body,.book-menu,nav,.book-menu-content,.container {
+//     /* 添加!important表示覆盖默认的设置 */
+//     // background-image: url("sys/bg.png") !important;
+//     background-color: #fdfdfd ;
+//     background-attachment: fixed;
+//     opacity: 1;
+// }

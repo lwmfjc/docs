@@ -1,0 +1,188 @@
+---
+title: 算法红皮书 2.5
+description: '应用'
+categories:
+  - 学习
+tags:
+  - 算法红皮书(第四版)
+date: 2022-05-29 22:20:39
+updated: 2022-05-31 22:20:39
+---
+
+- 排序如此有用的原因是，在有序的数组中查找一个元素，要比在一个无序的数组中查找简单得多
+- 通用排序算法是最重要的
+- 算法思想虽然简单，但是适用领域广泛
+
+## 将各种数据排序
+
+- Java的约定使得我们能够利用Java的回调机制将任意实现Comparable接口的数据类型排序
+
+  - 我们的代码直接能够将String、Integer、Double 和一些其他例如File 和URL 类型的数组排序，因为它们都实现了Comparable 接口
+
+- 交易事务
+  商业数据的处理，设想一家互联网商业公司为每笔交易记录都保存了所有的相关信息
+
+  ```java
+  public int compareTo(Transaction that)
+  {
+  	return this.when.compareTo(that.when);
+  }
+  ```
+
+- 指针排序
+  我们使用的方法在经典教材中被称为**指针排序**，因为我们只处理元素的引用而不移动数据本身
+
+- 不可变的键
+  用不可变的数据类型作为键，比如String、Integer、Double和File等
+
+- 廉价的交换
+
+  - 使用引用的另一个好处是不必移动整个元素对于几乎任意大小的元素，使用引用使得在一般情况下交换的成本和比较的成本几乎相同（代价是需要额外的空间存储这些引用）
+
+  - 研究将数字排序的算法性能的一种方法就是观察其所需的比较和交换总数，因为这里隐式地假设了比较和交换的成本是相同的
+
+- 多种排序方法
+
+  - 根据情况将一组对象按照不同的方式排序。Java 的Comparator 接口允许我们在一个类之中实现多种排序方法
+
+- 多键数组
+
+  - 一个元素的多种属性都可能被用作排序的键
+
+    - 我们可以定义多种比较器，要将Transaction 对象的数组按照时间排序可以调用：
+      Insertion.sort(a, new Transaction.WhenOrder())
+      或者这样来按照金额排序：
+      Insertion.sort(a, new Transaction.HowMuchOrder())
+
+  - 使用Comparator的插入排序
+
+    ```java
+    public static void sort(Object[] a, Comparator c)
+    {
+    	int N = a.length;
+    	for (int i = 1; i < N; i++)
+    	for (int j = i; j > 0 && less(Comparator, a[j], a[j-1]); j--)
+    	exch(a, j, j-1);
+    }
+    private static Boolean less(Comparator c, Object v, Object w)
+    {
+    	return c.compare(v, w) < 0;
+    }
+    private static void exch(Object[] a, int i, int j)
+    {
+    	Object t = a[i];
+    	a[i] = a[j];
+    	a[j] = t;
+    }
+    ```
+
+  - 使用比较器实现优先队列
+
+    - 扩展优先队列
+      - 导入 java.util.Comparator；
+      - 为 MaxPQ 添加一个实例变量 comparator 以及一个构造函数，该构造函数接受一个比较器
+        作为参数并用它将comparator 初始化；
+      -  在 less()中检查 comparator属性是否为 null（如果不是的话就用它进行比较）。
+
+    ```java
+    //使用了Comparator的插入排序
+    import java.util.Comparator;
+    public class Transaction
+    {
+    	...
+    	private final String who;
+    	private final Date when;
+    	private final double amount;
+    	...
+    	public static class WhoOrder implements Comparator<Transaction>
+    	{
+    		public int compare(Transaction v, Transaction w)
+    		{
+    			return v.who.compareTo(w.who);
+    		}
+    	}
+    	public static class WhenOrder implements Comparator<Transaction>
+    	{
+    		public int compare(Transaction v, Transaction w)
+    		{
+    			return v.when.compareTo(w.when);
+    		}
+    	}
+    	public static class HowMuchOrder implements Comparator<Transaction>
+    	{
+    		public int compare(Transaction v, Transaction w)
+    		{
+    			if (v.amount < w.amount) return -1;
+    			if (v.amount > w.amount) return +1;
+    			return 0;
+    		}
+    	}
+    }
+    
+    ```
+
+  - 稳定性
+
+    - 如果一个排序算法能够保留数组中重复元素的相对位置则可以被称为是稳定的
+    - 例如，考虑一个需要处理大量含有地理位置和时间戳的事件的互联网商业应用程
+      序。首先，我们在事件发生时将它们挨个存储在一个数组中，这样在数组中它们已经是按照时间顺序排好了的。现在假设在进一步处理前将按照地理位置切分。一种简单的方法是将数组按照位置排序。如果排序算法不是稳定的，排序后的每个城市的交易可能不会再是按照时间顺序排列的了
+    - 我们学习过的一部分算法是稳定的（插入排序和归并排序），但很多不是（选择排序、希尔排序、快速排序和堆排序）
+    - 有很多办法能够将任意排序算法变成稳定的（请见练习2.5.18），但一般只有在稳定性是必要的情况下稳定的排序算法才有优势
+    - 图示
+      ![ly-20241212142059587](img/ly-20241212142059587.png)
+
+## 我应该使用哪种排序算法
+
+- 各种排序算法的性能特点
+  ![ly-20241212142059813](img/ly-20241212142059813.png)
+  - 快速排序是最快的通用排序算法
+- 将原始类型数据排序
+  一些性能优先的应用的重点可能是将数字排序，因此更合理的做法是跳过引用直接将原始数据
+  类型的数据排序
+- Java系统库的排序算法 java.util.Arrays.sort()
+  ![ly-20241212142059917](img/ly-20241212142059917.png)
+- Java 的系统程序员选择对原始数据类型使用（三向切分的）快速排序，对引用类型使用归并排
+  序。这些选择实际上也暗示着用速度和空间（对于原始数据类型）来换取稳定性（对于引用类型），
+- 如果考虑稳定性，则选择Merge.sort() 归并排序
+
+## 问题的归约
+
+- 归约指的是为解决某个问题而发明的算法正好可以用来解决另一种问题
+
+- 使用解决问题B 的方法来解决问题A 时，你都是在将A 归约为B。
+
+- 如果先将数据排序，那么解决剩下的问题就剩下线性级别的时间，归约后的运行时间的增长数量级由平方级别降低到了线性级别
+
+  - 找出重复元素的个数（先排序，后遍历）
+
+    ```java
+    Quick.sort(a);
+    int count = 1; // 假设a.length > 0.
+    for (int i = 1; i < a.length; i++)
+      if (a[i].compareTo(a[i-1]) != 0)
+        count++;
+    ```
+
+  - Kendall tau距离
+
+  - 优先队列
+
+    > 在2.4 节中我们已经见过两个被归约为优先队列操作的问题的例子。一个是2.4.2.1 节中的TopM，它能够找到输入流中M 个最大的元素；另一个是2.4.4.7 节中的Multiway，它能够将M 个输入流归并为一个有序的输出流。这两个问题都可以轻易用长度为M 的优先队列解决
+
+  - 中位数与顺序统计 (与快速排序有关)
+
+  - 
+
+## 排序应用一览
+
+- 商业计算：按照名字或者数字排序的账号、按照日期或者金额排序的交易、按照
+  邮编或者地址排序的邮件、按照名称或者日期排序的文件等，
+  处理这些数据必然需要排序算
+- 信息搜索：有序的顺序可以使用经典的**二分查找法**
+- **运筹学**指的是研究数学模型并将其应用于问题解决和决策的领域
+- 事件驱动模拟、数值计算、组合搜索
+- 基于排序算法的算法
+  - Prim算法和Dijkstra算法
+  - Kruskal算法
+  - 霍夫曼压缩
+  - 字符串处理

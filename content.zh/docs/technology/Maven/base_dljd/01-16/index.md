@@ -1,0 +1,306 @@
+---
+title: 01-16 maven基础_动力节点
+description: 'maven基础_动力节点'
+categories:
+  - 学习
+tags:
+  - maven_基础动力节点
+date: 2022-07-02 18:58:00
+updated: 2022-07-02 18:58:00
+---
+
+## 课程介绍
+
+- maven 自动化构建-->开发--编译--运行-测试--打包--部署  （m ei ' ven）
+
+## maven的作用
+
+- 软件是一个**工程**
+- 软件中重复的操作（开发阶段）
+  - 需求分析
+  - 设计阶段
+  - 开发阶段（编码），编译，测试
+  - 测试阶段（专业测试），测试报告
+  - 项目打包，发布，给客户安装项目
+- maven
+  - 项目自动构建，清理、编译、测试、打包、安装、部署
+  - 管理依赖：项目中需要使用的其他资源
+
+## Maven中的概念
+
+- 没有使用maven，管理jar，手动处理jar，以及jar之间的依赖
+- maven是apache 【əˈpætʃi】基金会的开源项目，使用java语法开发
+- maven是项目的自动化构建工具，管理项目依赖
+- maven中的概念
+  - POM
+  - 约定的目录
+  - 坐标
+  - 依赖管理
+  - 仓库管理
+  - 生命周期
+  - 插件和目标
+  - 继承 （高级内容）
+  - 聚合  （高级内容）
+
+## Maven资源的获取与安装，测试
+
+- https://maven.apache.org/index.html
+
+  - 各种内容
+    ![ly-20241212142144318](img/ly-20241212142144318.png)
+
+  - 要求
+    ![ly-20241212142144503](img/ly-20241212142144503.png)
+
+  - 视频用的3.6.3 ，这里下载3.8.6 （最新的，不要和电脑原配置冲突，方便学习，后续改回3.8.4）
+
+    - 检查java home
+      ![ly-20241212142144566](img/ly-20241212142144566.png)
+
+      - 如果没有需要进行配置
+        ![ly-20241212142144629](img/ly-20241212142144629.png)
+      - ![ly-20241212142144689](img/ly-20241212142144689.png)
+
+    - 将maven的bin目录配置到path环境变量下（这里使用的是下一节的方法，视频中没有用MAVEN_HOME，而是直接将maven的bin目录路径加到path中）
+      ![ly-20241212142144751](img/ly-20241212142144751.png)
+
+      ![ly-20241212142144812](img/ly-20241212142144812.png)
+
+- maven解压后的目录结构 
+  ![ly-20241212142144869](img/ly-20241212142144869.png)
+
+## 另一种安装方式
+
+- 确定JAVA_HOME是否有效
+- 创建M2_HOME(MAVEN_HOME)，值为maven的安装目录
+- 在path环境中，加入%M2_HOME%\bin
+- 测试maven安装 mvn -v
+
+## 约定的目录结构
+
+- 大多数人遵守的目录结构
+
+  - 一个maven项目对应一个文件夹，比如Hello
+
+    ```java
+    Hello
+    	\src
+    		\main			叫做主程序目录（完成项目功能的代码和配置文件）
+    			\java		源代码（包和相关的类定义）
+    			\resources  配置文件
+    		\test			放置测试程序代码（开发人员自己写的测试代码）
+    			\java		测试代码（junit）
+    			\resources  测试程序的配置文件
+    	\pom.xml			maven的配置文件
+    ```
+
+## Hello的Maven项目
+
+- maven可以独立使用：创建项目、编译代码、测试程序、打包、部署等
+
+- 和idea一起使用，实现编码、测试、打包
+
+- pom.xml基本模板
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8" ?>
+  
+  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+      <modelVersion>4.0.0</modelVersion>
+      
+      <groupId>com.bjpowernode</groupId>
+      <artifactId>ch01-maven</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      
+      <properties>
+      		<java.version>1.8</java.version>
+      		<maven.compiler.source>1.8</maven.compiler.source>
+      		<maven.compiler.target>1.8</maven.compiler.target>
+      </properties>
+  
+  </project> 
+  ```
+
+- 目录创建
+  ![ly-20241212142144927](img/ly-20241212142144927.png)
+
+- 在main下创建一个com.bjpowernode的包，以及一个java文件
+
+  ```java
+  package com.bjpowernode;
+  
+  public class HelloMaven{
+   public int addNumber(int n1,int n2){
+   	System.out.println("hello maven -addNumber");
+   	return n1+n2;
+    }
+    public static void main(String args[]){
+    	HelloMaven hello=new HelloMaven();
+    	int res=hello.addNumber(10,20);
+    	System.out.println("在main方法中，执行hello的方法="+res);
+    }
+  }
+  ```
+
+- 在Hello目录下，进行编译
+  ![ly-20241212142145023](img/ly-20241212142145023.png)
+
+- 使用```mvn compile```进行编译
+  第一次会下载一些东西
+  ![ly-20241212142145084](img/ly-20241212142145084.png)
+
+- 查看target文件
+  ![ly-20241212142145143](img/ly-20241212142145143.png)
+
+- 进入classes执行java程序
+
+  ```java com.bjpowernode.HelloMaven```
+  ![ly-20241212142145203](img/ly-20241212142145203.png)
+
+  
+
+## pom-modelVersion
+
+- pom--Project Object Model 项目对象模型
+
+- Maven把一个项目的结构和内容抽象成一个模型，在xml文件中进行声明，以方便进行构建和描述
+
+- pom文件解释
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8" ?>
+  
+  <!--project是根标签，后面的是约束文件 (maven-v4_0_0.xsd)-->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+           
+      <!--pom模型版本,4.0.0-->
+      <modelVersion>4.0.0</modelVersion>
+      
+      <!--坐标-->
+      <groupId>com.bjpowernode</groupId>
+      <artifactId>ch01-maven</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      
+      <properties>
+      		<java.version>1.8</java.version>
+      		<maven.compiler.source>1.8</maven.compiler.source>
+      		<maven.compiler.target>1.8</maven.compiler.target>
+      </properties>
+  
+  </project> 
+  ```
+
+  
+
+## pom-groupId，artifactId，version
+
+- 坐标组成，groupid,artifactId,version
+  ![ly-20241212142145264](img/ly-20241212142145264.png)
+- 作用：资源的唯一标识，maven中每个资源都是坐标，简称gav
+- groupId：组织名称，代码。公司或单位标识，常使用公司域名的倒写
+  - 如果规模大，可以是 域名倒写+大项目名称
+    例如百度无人车项目 ： com.baidu.appollo
+- artifactId：项目名称，如果groupId中有项目，此时当前的值就是子项目名，项目名称是唯一的
+- versionId：项目版本号，使用数字，推荐三位 例如 主版本号.次版本号.小版本号
+  例如 5.2.5
+  - 带快照的版本，以-SNAPSHOT结尾，即非稳定版本
+
+## pom-gav作用
+
+- 每个maven项目都有自己的gav
+- 管理依赖，使用其他jar包，也用gav标识
+- 坐标
+  ![ly-20241212142145322](img/ly-20241212142145322.png)
+- 坐标值的获取
+  https://mvnrepository.com/ 
+  ![ly-20241212142145379](img/ly-20241212142145379.png)
+  - 例如mysql
+    ![ly-20241212142145435](img/ly-20241212142145435.png)
+  - ![ly-20241212142145519](img/ly-20241212142145519.png)
+
+## pom-依赖的使用
+
+- 依赖dependency 项目中使用的其他资源（jar）
+  需要使用maven来表示依赖、管理依赖，通过使用dependencies、dependency和gav完成依赖的使用
+
+  ```xml
+  <dependencies>
+   	<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+      <dependency>
+          <groupId>mysql</groupId>
+          <artifactId>mysql-connector-java</artifactId>
+          <version>8.0.29</version>
+      </dependency>
+  </dependencies>
+  <!--maven使用gav标识，从互联网下载依赖的jar，下载到本机中，由maven管理项目使用的这些jar-->
+  ```
+
+- 完整
+
+  ```xml
+  <?xml version="1.0" encoding="UTF-8" ?>
+  
+  <!--project是根标签，后面的是约束文件 (maven-v4_0_0.xsd)-->
+  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+           
+      <!--pom模型版本,4.0.0-->
+      <modelVersion>4.0.0</modelVersion>
+      
+      <!--坐标-->
+      <groupId>com.bjpowernode</groupId>
+      <artifactId>ch01-maven</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      
+      <properties>
+      		<java.version>1.8</java.version>
+      		<maven.compiler.source>1.8</maven.compiler.source>
+      		<maven.compiler.target>1.8</maven.compiler.target>
+      </properties>
+      <dependencies>
+          <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+          <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+              <version>8.0.29</version>
+          </dependency>
+      </dependencies>
+      <!--maven使用gav标识，从互联网下载依赖的jar，下载到本机中，由maven管理项目使用的这些jar-->
+      <!--packaging 项目打包类型--->
+  </project> 
+  ```
+
+  
+
+## pom-打包类型
+
+```<packaging> ```项目打包类型
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--project是根标签，后面的是约束文件 (maven-v4_0_0.xsd)-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         
+    <!--pom模型版本,4.0.0-->
+    <modelVersion>4.0.0</modelVersion>
+    
+    <!--坐标-->
+    <groupId>com.bjpowernode</groupId>
+    <artifactId>ch01-maven</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+</project> 
+```
+
+- 其他
+  ![ly-20241212142145600](img/ly-20241212142145600.png)
+
+## pom-继承和聚合
+
+- 继承  parent
+- 聚合  modules
+

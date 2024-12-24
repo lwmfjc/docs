@@ -1,0 +1,215 @@
+{
+  "main": {
+    "id": "3c180e98de7a8bd5",
+    "type": "split",
+    "children": [
+      {
+        "id": "ca3a5f7deab78864",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "4e9a8d2bd47bf651",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content.zh/docs/test/hello2/index.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "index"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "68ff6c5e6bb3d85b",
+    "type": "split",
+    "children": [
+      {
+        "id": "4a5851d2c85ca2ab",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7e052c6949893df9",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "byModifiedTime"
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          },
+          {
+            "id": "e4638ffa3969852a",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "20241212142127172",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "byModifiedTime"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "3bfce6d90c5e9dd7",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 303.5
+  },
+  "right": {
+    "id": "45804219d09d1da3",
+    "type": "split",
+    "children": [
+      {
+        "id": "e70157b080eade96",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ff710bfc0cfb68d5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "反向链接"
+            }
+          },
+          {
+            "id": "54f06c63f0cc434e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "出链"
+            }
+          },
+          {
+            "id": "68afb1b1c328b14c",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "e9bdfa2f0fd39f8d",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {},
+              "icon": "lucide-list",
+              "title": "大纲"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": true,
+      "graph:查看关系图谱": true,
+      "canvas:新建白板": true,
+      "daily-notes:打开/创建今天的日记": true,
+      "templates:插入模板": true,
+      "command-palette:打开命令面板": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": true,
+      "templater-obsidian:Templater": false,
+      "file-cleaner-redux:Clean files": false,
+      "obsidian-git:Open Git source control": false
+    }
+  },
+  "active": "4e9a8d2bd47bf651",
+  "lastOpenFiles": [
+    "docs.zip",
+    "_os_pc_backup/themes/Border/theme.css",
+    "_os_pc_backup/themes/Border/manifest.json",
+    "_os_pc_backup/themes/Border",
+    "_os_pc_backup/themes",
+    "_os_pc_backup/community-plugins.json",
+    "_os_pc_backup/types.json",
+    "_os_pc_backup/plugins/update-time-updater/manifest.json",
+    "_os_pc_backup/plugins/update-time-updater/main.js",
+    "_os_pc_backup/plugins/update-time-updater/data.json",
+    "_os_pc_backup/plugins/templater-obsidian/styles.css",
+    "content.zh/docs/test/yyy/img/ly-20241216202757446.png",
+    "content.zh/docs/test/yyy/index.md",
+    "content.zh/docs/test/pdf-test/index.md",
+    "content.zh/docs/test/_index.md",
+    "content.zh/docs/life/20241216/index.md",
+    "content.zh/docs/test/hello2/index.md",
+    "content.zh/docs/test/hello/index.md",
+    "content.zh/docs/test/sss/index.md",
+    "attachments/templates/property-normal.md",
+    "attachments/templates/property-life.md",
+    "content.zh/docs/test/hah/index.md",
+    "public/zh/docs/study/springCloud/bl_zhouyang/base/img/ly-20241212142201709.png",
+    "public/zh/docs/study/RocketMQ/heima/05advance/img/ly-20241212142201667.png",
+    "public/zh/docs/study/RocketMQ/heima/05advance/img/ly-20241212142201641.png",
+    "public/zh/docs/study/RocketMQ/heima/05advance/img/ly-20241212142201609.png",
+    "public/zh/docs/study/RocketMQ/heima/05advance/img/ly-20241212142201584.png",
+    "public/zh/docs/study/RocketMQ/heima/05advance/img/ly-20241212142201552.png",
+    "public/zh/docs/study/RocketMQ/heima/05advance/img/ly-20241212142201525.png",
+    "public/zh/docs/study/RocketMQ/heima/05advance/img/ly-20241212142201492.png",
+    "public/zh/docs/study/RocketMQ/heima/05advance/img/ly-20241212142201467.png",
+    "content.zh/docs/life/20240626/index.md",
+    "content.zh/docs/life/20231227/index.md",
+    "content.zh/docs/life/20231101/index.md",
+    "content.zh/docs/life/20231227/未命名 1.md",
+    "content.zh/docs/life/20231227/未命名.md",
+    "content.zh/docs/life/20241209.md",
+    "attachments/templates/property-normal - 副本.md",
+    "attachments/templates/content-pdf.md",
+    "content.zh/docs/life/2024-12-16.md",
+    "attachments/templates/property-pdf.md",
+    "attachments/templates/content-pdfWeb.md",
+    "attachments/templates/Untitled.md",
+    "content.zh/docs/test/hello2/img/ecd-20241214184748988.md",
+    "content.zh/docs/test/hello3/index.md",
+    "content.zh/docs/test/hello3/img/r-20241215093702411.md",
+    "未命名.canvas"
+  ]
+}

@@ -1,0 +1,265 @@
+---
+title: 服务限流详解
+description: 服务限流详解
+categories:
+  - 学习
+tags:
+  - 复习
+  - 复习-javaGuide
+  - 复习-javaGuide-distributed_system
+date: 2023-02-16 17:06:11
+updated: 2023-02-16 17:06:11
+---
+
+> 转载自https://github.com/Snailclimb/JavaGuide（添加小部分笔记）感谢作者!
+
+针对软件系统来说，限流就是**对请求的速率进行限制**，**避免瞬时的大量请求击垮软件系统**。毕竟，软件系统的处理能力是有限的。如果说超过了其处理能力的范围，软件系统可能直接就挂掉了。
+
+限流可能会**导致用户的请求无法被正确处理**，不过，这往往也是**权衡了软件系统的稳定性之后得到的最优解**。
+
+现实生活中，处处都有限流的实际应用，就比如**排队买票**是为了避免大量用户涌入购票而导致**售票员无法处理**。
+
+ ![排队示意图](img/ly-20241212142045484.jpg) 
+
+## 常见限流算法有哪些？
+
+简单介绍 4 种非常好理解并且容易实现的限流算法！
+
+> 图片来源于 InfoQ 的一篇文章[《分布式服务限流实战，已经为你排好坑了》](https://www.infoq.cn/article/Qg2tX8fyw5Vt-f3HH673)。
+
+### 固定窗口计数器算法
+
+固定窗口其实就是时间窗口。**固定窗口计数器算法** 规定了我们**单位时间处理的请求数量**。
+
+假如我们规定系统中某个接口 1 分钟只能访问 33 次的话，使用固定窗口计数器算法的实现思路如下：
+
+- 给定一个变量 `counter` 来**记录当前接口处理的请求数量**，初始值为 0（代表接口当前 1 分钟内还未处理请求）。
+- 1 分钟之内每处理一个请求之后就将 `counter+1` ，当 `counter=33` 之后（也就是说在这 1 分钟内接口已经被访问 33 次的话），后续的请求就会被全部拒绝。
+- 等到 1 分钟结束后，将 `counter` 重置 0，重新开始计数。
+
+**这种限流算法无法保证限流速率，因而无法保证突然激增的流量。**
+
+就比如说我们限制某个接口 1 分钟只能访问 1000 次，该接口的 QPS 为 500，前 55s 这个接口 1 个请求没有接收，后 1s 突然接收了 1000 个请求。然后，在当前场景下，这 1000 个请求在 1s 内是没办法被处理的，系统直接就被瞬时的大量请求给击垮了。
+
+ ![固定窗口计数器算法](img/ly-20241212142045643.jpg) 
+
+### 滑动窗口计数器算法
+
+**滑动窗口计数器算法** 算的上是固定窗口计数器算法的升级版。
+
+滑动窗口计数器算法相比于固定窗口计数器算法的优化在于：**它把时间以一定比例分片(即分片后应用"固定窗口计数器"算法)** 。
+
+例如我们的接口限流每分钟处理 60 个请求，我们可以把 1 分钟分为 **60 个窗口(每个窗口时1秒)**。每隔 1 秒移动一次，每个窗口一秒只能处理 不大于 `60(请求数)/60（窗口数）` 的请求， 如果当前窗口的请求计数总和超过了限制的数量的话就不再处理其他请求。  
+
+> 感觉上面的例子和图没匹配上，应该是  
+> 例如我们的接口限流每分钟处理 300 个请求，我们可以把 1 分钟分为 **60 个窗口(每个窗口时1秒)**。每隔 1 秒移动一次，每个窗口一秒只能处理 不大于 `300(请求数)/60（窗口数）` 的请求， 如果当前窗口的请求计数总和超过了限制的数量的话就不再处理其他请求。
+
+很显然， **当滑动窗口的格子划分的越多，滑动窗口的滚动就越平滑，限流的统计就会越精确。**
+
+![滑动窗口计数器算法](img/ly-20241212142045757.jpg)] 
+
+### 漏桶算法
+
+我们可以把发请求的动作比作成注水到桶中，我们处理请求的过程可以比喻为漏桶漏水。我们往桶中**以任意速率流入水**，以一定速率流出水。当**水超过桶流量则丢弃**，因为桶容量是不变的，保证了整体的速率。
+
+如果想要实现这个算法的话也很简单，**准备一个队列用来保存请求**，然后我们**定期从队列中拿请求来执行**就好了（和消息队列削峰/限流的思想是一样的）。
+
+ ![漏桶算法](img/ly-20241212142045872.jpg) 
+
+### 令牌桶算法
+
+令牌桶算法也比较简单。和漏桶算法算法一样，我们的主角还是桶（这限流算法和桶过不去啊）。不过现在**桶里装的是令牌**了，请求在**被处理之前需要拿到一个令牌**，请求**处理完毕之后将这个令牌丢弃（删除）**。我们**根据限流大小，按照一定的速率往桶里添加令牌**。如果**桶装满了，就不能继续往里面继续添加令牌**了。
+
+ ![ly-20241212142045986](img/ly-20241212142045986.png)
+
+## 单机限流怎么做？
+
+单机限流针对的是单体架构应用。
+
+单机限流可以直接使用 Google Guava 自带的限流工具类 `RateLimiter` 。 **`RateLimiter` 基于令牌桶算法**，可以应对突发流量。
+
+> Guava 地址：https://github.com/google/guava
+
+除了最基本的令牌桶算法(平滑突发限流)实现之外，Guava 的`RateLimiter`还提供了 **平滑预热限流** 的算法实现。
+
+平滑突发限流就是**按照指定的速率放令牌到桶里**，而平滑预热限流会有一段预热时间，预热时间之内，**速率会逐渐提升到配置的速率**。
+
+我们下面通过两个简单的小例子来详细了解吧！
+
+我们直接在项目中引入 Guava 相关的依赖即可使用。
+
+```xml
+<dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>31.0.1-jre</version>
+</dependency>
+```
+
+下面是一个简单的 Guava 平滑突发限流的 Demo。
+
+```java
+import com.google.common.util.concurrent.RateLimiter;
+
+/**
+ * 微信搜 JavaGuide 回复"面试突击"即可免费领取个人原创的 Java 面试手册
+ *
+ * @author Guide哥
+ * @date 2021/10/08 19:12
+ **/
+public class RateLimiterDemo {
+
+    public static void main(String[] args) {
+        // 1s 放 5 个令牌到桶里也就是 0.2s 放 1个令牌到桶里
+        //也就是1s放几个
+        //public static RateLimiter create(double permitsPerSecond) {}
+        RateLimiter rateLimiter = RateLimiter.create(5);
+        for (int i = 0; i < 10; i++) {
+            //阻塞直到得到一个令牌 ,会返回阻塞的时间
+            double sleepingTime = rateLimiter.acquire(1);
+            System.out.printf("get 1 tokens: %ss%n", sleepingTime);
+        }
+    }
+}
+//源码
+  /**
+   * Creates a {@code RateLimiter} with the specified stable throughput, given as "permits per
+   * second" (commonly referred to as <i>QPS</i>, queries per second).
+   *
+   * <p>The returned {@code RateLimiter} ensures that on average no more than {@code
+   * permitsPerSecond} are issued during any given second, with sustained requests being smoothly
+   * spread over each second. When the incoming request rate exceeds {@code permitsPerSecond} the
+   * rate limiter will release one permit every {@code (1.0 / permitsPerSecond)} seconds. When the
+   * rate limiter is unused, bursts of up to {@code permitsPerSecond} permits will be allowed, with
+   * subsequent requests being smoothly limited at the stable rate of {@code permitsPerSecond}.
+   *
+   * @param permitsPerSecond the rate of the returned {@code RateLimiter}, measured in how many
+   *     permits become available per second
+   * @throws IllegalArgumentException if {@code permitsPerSecond} is negative or zero
+   */
+  // TODO(user): "This is equivalent to
+  // {@code createWithCapacity(permitsPerSecond, 1, TimeUnit.SECONDS)}".
+//  public static RateLimiter create(double permitsPerSecond) {}
+
+
+//源码
+  /**
+   * Acquires the given number of permits from this {@code RateLimiter}, blocking until the request
+   * can be granted. Tells the amount of time slept, if any.
+   *
+   * @param permits the number of permits to acquire
+   * @return time spent sleeping to enforce rate, in seconds; 0.0 if not rate-limited
+   * @throws IllegalArgumentException if the requested number of permits is negative or zero
+   * @since 16.0 (present in 13.0 with {@code void} return type})
+   */
+/*
+  @CanIgnoreReturnValue
+  public double acquire(int permits) {
+    long microsToWait = reserve(permits);
+    stopwatch.sleepMicrosUninterruptibly(microsToWait);
+    return 1.0 * microsToWait / SECONDS.toMicros(1L);
+  }
+*/
+```
+
+输出：
+
+```
+get 1 tokens: 0.0s
+get 1 tokens: 0.188413s
+get 1 tokens: 0.197811s
+get 1 tokens: 0.198316s
+get 1 tokens: 0.19864s
+get 1 tokens: 0.199363s
+get 1 tokens: 0.193997s
+get 1 tokens: 0.199623s
+get 1 tokens: 0.199357s
+get 1 tokens: 0.195676s
+```
+
+下面是一个简单的 Guava 平滑预热限流的 Demo。
+
+```java
+import com.google.common.util.concurrent.RateLimiter;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * 微信搜 JavaGuide 回复"面试突击"即可免费领取个人原创的 Java 面试手册
+ *
+ * @author Guide哥
+ * @date 2021/10/08 19:12
+ **/
+public class RateLimiterDemo {
+
+    public static void main(String[] args) {
+        // 1s 放 5 个令牌到桶里也就是 0.2s 放 1个令牌到桶里
+        // 预热时间为3s,也就说刚开始的 3s 内发牌速率会逐渐提升到 0.2s 放 1 个令牌到桶里(所以前面的速率比较小，获取需要的时间比较长)
+        RateLimiter rateLimiter = RateLimiter.create(5, 3, TimeUnit.SECONDS);
+        for (int i = 0; i < 20; i++) {
+            double sleepingTime = rateLimiter.acquire(1);
+            System.out.printf("get 1 tokens: %sds%n", sleepingTime);
+        }
+    }
+}
+```
+
+输出：
+
+```
+get 1 tokens: 0.0s
+get 1 tokens: 0.561919s
+get 1 tokens: 0.516931s
+get 1 tokens: 0.463798s
+get 1 tokens: 0.41286s
+get 1 tokens: 0.356172s
+get 1 tokens: 0.300489s
+get 1 tokens: 0.252545s
+get 1 tokens: 0.203996s
+get 1 tokens: 0.198359s
+```
+
+另外，**Bucket4j** 是一个非常不错的基于令牌/漏桶算法的限流库。
+
+> Bucket4j 地址：https://github.com/vladimir-bukhtoyarov/bucket4j
+
+相对于，Guava 的限流工具类来说，Bucket4j 提供的限流功能更加全面。不仅支持单机限流和分布式限流，还可以集成监控，搭配 Prometheus 和 Grafana 使用。
+
+不过，毕竟 Guava 也只是一个功能全面的工具类库，其提供的开箱即用的限流功能在很多单机场景下还是比较实用的。
+
+Spring Cloud Gateway 中自带的单机限流的早期版本就是基于 Bucket4j 实现的。后来，替换成了 **Resilience4j**。
+
+Resilience4j 是一个轻量级的容错组件，其灵感来自于 Hystrix。自[Netflix 宣布不再积极开发 Hystrix](https://github.com/Netflix/Hystrix/commit/a7df971cbaddd8c5e976b3cc5f14013fe6ad00e6) 之后，Spring 官方和 Netflix 都更推荐使用 Resilience4j 来做限流熔断。
+
+> Resilience4j 地址: https://github.com/resilience4j/resilience4j
+
+一般情况下，为了保证系统的高可用，项目的限流和熔断都是要一起做的。
+
+Resilience4j 不仅提供限流，还提供了**熔断**、**负载保护**、**自动重试**等保障系统高可用开箱即用的功能。并且，Resilience4j 的生态也更好，很多网关都使用 Resilience4j 来做限流熔断的。
+
+因此，在绝大部分场景下 Resilience4j 或许会是更好的选择。如果是一些**比较简单的限流**场景的话，Guava 或者 Bucket4j 也是不错的选择。
+
+## 分布式限流怎么做？
+
+**分布式限流**针对的分布式/微服务应用架构应用，在这种架构下，单机限流就不适用了，因为会存在多种服务，并且一种服务也可能会被部署多份。
+
+分布式限流常见的方案：
+
+- **借助中间件架限流** ：可以借助 **Sentinel** 或者使用 **Redis** 来自己实现对应的限流逻辑。
+- **网关层限流** ：比较常用的一种方案，直接在网关层把限流给安排上了。不过，通常网关层限流通常也需要借助到中间件/框架。就比如 Spring Cloud Gateway 的分布式限流实现**`RedisRateLimiter`**就是基于 **Redis+Lua** 来实现的，再比如 Spring Cloud Gateway 还可以整合 **Sentinel** 来做限流。
+
+如果你要基于 Redis 来手动实现限流逻辑的话，建议配合 Lua 脚本来做。
+
+**为什么建议 Redis+Lua 的方式？** 主要有两点原因：
+
+- **减少了网络开销** ：我们可以利用 Lua 脚本来**批量执行多条** Redis 命令，这些 Redis 命令会被提交到 Redis 服务器**一次性执行**完成，大幅**减小了网络开销**。
+- **原子性** ：**一段 Lua 脚本可以视作一条命令**执行，一段 Lua 脚本执行过程中不会有其他脚本或 Redis 命令同时执行，保证了操作不会被其他指令插入或打扰。
+
+我这里就不放具体的限流脚本代码了，网上也有很多现成的优秀的限流脚本供你参考，就比如 Apache 网关项目 ShenYu 的 RateLimiter 限流插件就基于 Redis + Lua 实现了令牌桶算法/并发令牌桶算法、漏桶算法、滑动窗口算法。
+
+> ShenYu 地址: https://github.com/apache/incubator-shenyu
+
+ ![img](img/ly-20241212142046101.jpg)
+
+- 服务治理之轻量级熔断框架 Resilience4j ：https://xie.infoq.cn/article/14786e571c1a4143ad1ef8f19
+- 超详细的 Guava RateLimiter 限流原理解析：https://cloud.tencent.com/developer/article/1408819
+- 实战 Spring Cloud Gateway 之限流篇 👍：https://www.aneasystone.com/archives/2020/08/spring-cloud-gateway-current-limiting.html

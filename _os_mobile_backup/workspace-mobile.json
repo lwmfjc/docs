@@ -1,0 +1,165 @@
+{
+  "main": {
+    "id": "ebadf8db59358568",
+    "type": "split",
+    "children": [
+      {
+        "id": "1878e731063f3156",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ac7a5f2bbd67e73c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content.zh/docs/life/archive/20231021/index.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "index"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "fbbd7594eeef93d6",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "470319fc5af48493",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical"
+          },
+          "icon": "lucide-folder-closed",
+          "title": "文件列表"
+        }
+      },
+      {
+        "id": "ea681338f1841b0d",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          },
+          "icon": "lucide-search",
+          "title": "搜索"
+        }
+      },
+      {
+        "id": "7eddb0916296cca8",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true
+          },
+          "icon": "lucide-tags",
+          "title": "标签"
+        }
+      },
+      {
+        "id": "d0f65277fd2c5439",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {},
+          "icon": "lucide-bookmark",
+          "title": "书签"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "fec0b107396b38c8",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "f9632c54a3af7d9d",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-coming-in",
+          "title": "反向链接"
+        }
+      },
+      {
+        "id": "dfcd6aa260597b86",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-going-out",
+          "title": "出链"
+        }
+      },
+      {
+        "id": "9239389fc721e6ac",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {},
+          "icon": "lucide-list",
+          "title": "大纲"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": true,
+      "graph:查看关系图谱": true,
+      "canvas:新建白板": true,
+      "daily-notes:打开/创建今天的日记": true,
+      "templates:插入模板": true,
+      "command-palette:打开命令面板": false,
+      "templater-obsidian:Templater": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": true
+    }
+  },
+  "active": "ac7a5f2bbd67e73c",
+  "lastOpenFiles": [
+    "content.zh/docs/study/Flowable/boge_blbl/02-advance_1/img/ly-20241212142103886.png",
+    "content.zh/docs/study/Flowable/_index.md",
+    "content.zh/docs/life/20241218/index.md",
+    "public/book.min.139f5e11df71f5bba2b1247bd4b1313c3248d3a29ad3aabb5259e40af9e483a5.css",
+    "public/zh/docs/life/20241218/index.html",
+    "public/zh/docs/life/20241218",
+    "public/zh.search.min.534052c6ea496b820e8c72562f7f4b9c45d342d77452c1011a085cf0901f560b.js",
+    "public/zh.search-data.min.3436963fe0f066d8186f50451575d74a2b65283f8e02385265a8d514538d9caf.json",
+    "content.zh/docs/life/20241218",
+    "content.zh/docs/test/_index.md",
+    "content.zh/docs/test/img/ly-20241218171453976.png",
+    "content.zh/docs/test/img",
+    "content.zh/docs/study/Linux/base/base/index.md",
+    "content.zh/docs/study/Linux/_index.md"
+  ]
+}

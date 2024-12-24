@@ -1,0 +1,341 @@
+---
+title: '算法红皮书 3.1.1-3.1.7'
+description: '3.1.1-3.1.7'
+categories:
+  - 学习
+tags:
+  - 算法红皮书(第四版)
+date: 2022-05-31 23:52:57
+updated: 2022-06-12 21:52:57
+---
+
+# 查找
+
+- 经典查找算法
+- 用**符号表**这个词来描述抽象的表格，将信息（值）存储在其中，然后按照指定的**键**来获取这些信息
+- 符号表也被称为**字典**
+  - 在英语字典里，键就是单词，值就是单词对应的定义、发音和词源
+  - 符号表有时又叫索引
+  - 在一本书的索引中，键就是术语，而值就是书中该术语出现的所有页码
+
+- 下面学习三种经典的数据类型：二叉查找树、红黑树和散列表
+
+## 符号表
+
+- 符号表最主要的目的是将**键**和**值**联系起来
+
+- 用例能够将一个键值对插入符号表并希望在之后能够从符号表的所有键值对中按照键直接找到相对应的值
+
+- > 符号表是一种存储键值对的数据结构，支持两种操作：**插入**(put)，即将一组新的键值对存入表中；查找(get)，即根据给定的键得到相应的值
+
+- 典型的符号表应用
+  ![ly-20241212142100034](img/ly-20241212142100034.png)
+
+### API
+
+- 符号表是一种**典型的数据类型** ：代表着一组定义清晰的值及相应的操作。使用应用程序编程接口（API）来精确地定义这些操作
+  一种简单的泛型符号表API  ST(Symbol Table)
+  ![ly-20241212142100261](img/ly-20241212142100261.png)
+  
+- 泛型
+  对于符号表，我们通过明确地指定查找时键和值的类型来区分它们的不同角色【key和value】
+
+- 重复的键
+
+  - 这里假设每个键只对应着一个值（表中不允许重复值）
+  - 当用例代码向表中存入的键值对和表中已有的键（及关联的值）冲突时，新的值会替代旧的值
+  - 上述定义了关联数组的抽象形式，可以将符号表想象成数组，键即索引，值即数组中的值
+  - 在一个关联数组中，键可以是任意类型，但我们仍然可以用它来快速访问数组的值
+  - 非Java使用st[key]来替代st.get(key)，用st[key]=val来替代st.put(key,val)
+
+- 键不能为空
+
+- 值不能为空（因为规定当键不存在时get()返回空）
+  当值为空表示删除
+
+- 删除操作
+
+  - 延时删除，先将键对应的值置空，之后在某个时刻删除所有值为空的键
+
+  - 即时删除，立即从表中删除指定的键
+    put实现的开头：
+
+    ```java
+    if(val == null){
+     delete(key);
+     return;
+    }
+    ```
+
+  - 便捷方法
+    ![ly-20241212142100362](img/ly-20241212142100362.png)
+
+  - 迭代
+    在API第一行加上```implements Iterable<Key>``` ，所有实现都包含iterator()方法来实现hasNext()和next()方法的迭代器；这里采用另一种方式：定义keys返回一个```Iterable<Key>```对象以方便便利所有的键，且允许遍历一部分
+
+  - 键的等价性
+    自定义的键需要重写equals()方法；且最好使用不可变数据类型作为键
+
+### 有序符号表
+
+- 一种有序的泛型符号表的API
+  ![ly-20241212142100464](img/ly-20241212142100464.png)
+- 最大值和最小值、向下取整和向上取整、排名和选择
+- 对于0到size()-1的所有i都有i==rank(select(i))，且所有的键都满足key == select(rank(key))
+- 范围查找
+- 例外情况
+  当一个方法需要返回一个键但表中没有合适的键可以返回时，我们约定抛出一个异常
+- 有序符号表中冗余有序性方法的默认实现
+  ![ly-20241212142100610](img/ly-20241212142100610.png)
+- 所有Comparable类型中compareTo()方法和equals()方法的一致性
+- ★★成本模型
+  在学习符号表的实现时，我们会统计**比较的次数**（等价性测试或是键的相互比较），在内循环**不进行比较（极少）**的情况下，我们会统计数组的访问次数
+
+### 用例举例
+
+如何使用
+
+- 行为测试用例
+  简单的符号表测试用例
+  ![ly-20241212142100719](img/ly-20241212142100719.png)
+
+  - 测试用例的键、值和输出
+    ![ly-20241212142100826](img/ly-20241212142100826.png)
+
+- 性能测试用例
+  查找频率最高的单词
+
+  ```java
+  public class FrequencyCounter
+  {
+  	public static void main(String[] args)
+  	{
+  		int minlen = Integer.parseint(args[0]);
+  		// 最小键长
+  		ST<String, Integer> st = new ST<String, Integer>();
+  		while (!StdIn.isEmpty())
+  		{
+  			// 构造符号表并统计频率
+  			String word = StdIn.readString();
+  			if (word.length() < minlen) continue;
+  			// 忽略较短的单词
+  			if (!st.contains(word)) st.put(word, 1); else st.put(word, st.get(word) + 1);
+  		}
+  		// 找出出现频率最高的单词
+  		String max = " ";
+  		st.put(max, 0);
+  		for (String word : st.keys())
+  		if (st.get(word) > st.get(max))
+  		max = word;
+  		StdOut.println(max + " " + st.get(max));
+  	}
+  }
+  ```
+
+  每个单词都会被作为键进行搜索，因此处理性能和输入文本的单词总量必然有关；其次，输入的每个单词都会被存入符号表（输入中不重复单词的总数也就是所有键都被插入以后符号表的大小），因此输入流中不同的单词的总数也是相关的
+
+### 无序链表中的顺序查找
+
+- 顺序查找的定义：使用链表，每个结点存储一个键值对，get()实现即为遍历链表，用equals()方法比较需被查找的键和每个节点中的键。如果匹配成功我们就返回相应的值，否则返回null。put()实现也是遍历链表，用equals()方法比较需被查找的键和每个节点中的键。如果匹配成功我们就用第二个参数指定更新和该键相关联的值，否则我们就用给定的键值对创建一个新的结点并将其插入到链表的开头。这种方法称为**顺序查找**
+
+- **命中**表示一次成功的查找，**未命中**表示一次失败的查找
+
+- 使用基于链表的符号表的索引用例的轨迹
+  ![ly-20241212142100931](img/ly-20241212142100931.png)
+
+- 顺序查找（基于无序链表）
+
+  ```java
+  public class SequentialSearchST<Key,Value>
+    {
+  	private Node first;
+  	//链表首结点
+  	private class Node{
+  		//链表结点的定义
+  		Key key;
+  		Value val;
+  		Node next;
+  		public Node(Key key, Value val, Node next)
+  		{
+  			this.key = key;
+  			this.val = val;
+  			this.next = next;
+  		}
+  	}
+  	public Value get(Key key)
+  	{
+  		// 查找给定的键，返回相关联的值
+  		for (Node x = first; x != null; x = x.next)
+  		if (key.equals(x.key))
+  		return x.val;
+  		// 命中
+  		return null;
+  		// 未名中
+  	}
+  	public void put(Key key, Value val)
+  	{
+  		// 查找给定的键，找到则更新其值，否则在表中新建结点
+  		for (Node x = first; x != null; x = x.next)
+  		if (key.equals(x.key))
+  		{
+  			x.val = val;
+  			return;
+  		}
+  		// 命中，更新
+  		first = new Node(key, val, first);
+  		// 未命中，新建结点
+  	}
+  }
+  ```
+
+  - >在含有N 对键值的基于（无序）链表的符号表中，未命中的查找和插入操作都需要N
+    >次比较。命中的查找在最坏情况下需要N 次比较。特别地，向一个空表中插入N 个不同的键需要∼ N2/2 次比较
+
+- > 查找一个已经存在的键并不需要线性级别的时间。一种度量方法是查找表中的每个键，并将总
+  > 时间除以N
+
+### 有序数组中的二分查找
+
+有序符号表API：它使用的数据结构是一对平行的数组，一个存储键一个存储值
+
+//rank()：小于k的键的数量
+
+```java
+public class BinarySearchST<Key extends Comparable<Key>, Value>
+{
+	private Key[] keys;
+	private Value[] vals;
+	private int N;
+	public BinarySearchST(int capacity)
+	{
+		// 调整数组大小的标准代码请见算法1.1
+		keys = (Key[]) new Comparable[capacity];
+		vals = (Value[]) new Object[capacity];
+	}
+	public int size()
+	{
+		return N;
+	}
+	public Value get(Key key)
+	{
+		if (isEmpty()) return null;
+		int i = rank(key);
+        //注意，这里i不一定就是刚好是key所在的索引，他表示比key的值小的个数
+		if (i < N && keys[i].compareTo(key) == 0) return vals[i]; else return null;
+	}
+	public int rank(Key key)
+	// 请见算法3.2（续1）
+	public void put(Key key, Value val)
+	{
+		// 查找键，找到则更新值，否则创建新的元素
+		int i = rank(key);
+		if (i < N && keys[i].compareTo(key) == 0)
+		{
+			vals[i] = val;
+			return;
+		}
+        //根据成本模型，这里不统计
+		for (int j = N; j > i; j--)
+		{
+			keys[j] = keys[j-1];
+			vals[j] = vals[j-1];
+		}
+		keys[i] = key;
+		vals[i] = val;
+		N++;
+	}
+	public void delete(Key key)
+	// 该方法的实现请见练习3.1.16
+}
+```
+
+- 二分查找
+  我们使用有序数组存储键的原因是，经典二分查找法能够根据数组的索引大大减少每次查找所需的比较次数
+
+- 递归的二分查找
+
+  ```java
+  public int rank(Key key, int lo, int hi)
+  {
+  	if (hi < lo) return lo;
+  	int mid = lo + (hi - lo) / 2;
+  	int cmp = key.compareTo(keys[mid]);
+  	if (cmp < 0)
+  	return rank(key, lo, mid-1); else if (cmp > 0)
+  	return rank(key, mid+1, hi); else return mid; //如果存在，返回key所在位置的索引（也就是key之前的元素的个数 ）
+  }
+  ```
+
+  - rank()的性质：如果表中存在该键，rank()应该返回该键的位置，也就是表中小于它的键的数量；如果表中不存在该键，ran()还是应该返回表中小于它的键的数量
+  
+  - 好好想想算法3.2（续1）中非递归的rank() 为什么能够做到这些（你可以证明两个版本的等价性，或者直接证明非递归版本中的循环在结束时lo 的值正好等于表中小于被查找的键的键的数量），所有程序员都能从这些思考中有所收获。（提示：**lo 的初始值为0，且永远不会变小**）
+    假设有下面这么一组数(key value)
+  
+    |  0   |  1   |  2   |  3   |  4   |
+    | :--: | :--: | :--: | :--: | :--: |
+    |  1   |  2   |  3   |  5   |  9   |
+  
+    我要查找6，那么轨迹为：
+    low=0，high=4，mid=2
+    low=2+1=3，high=4，mid=3
+    low=3+1=4，high=4，mid=4
+    low=4，high=4-1，此时high<low，返回low【也就是说找到了最接近于要查找的数的下标】
+  
+    - 带图轨迹
+      ![ly-20241212142101033](img/ly-20241212142101033.png)
+  
+  - 基于二分查找的有序符号表的其他操作
+  
+    ```JAVA
+    public Key min()
+    {
+    	return keys[0];
+    }
+    public Key max()
+    {
+    	return keys[N-1];
+    }
+    public Key select(int k)
+    {
+    	return keys[k];
+    }
+    //大于等于key的最小整数
+    public Key ceiling(Key key)
+    {
+    	int i = rank(key);
+    	return keys[i];
+    }
+    //小于等于key的最大整数
+    public Key floor(Key key)
+    // 请见练习3.1.17
+    public Key delete(Key key)
+    // 请见练习3.1.16
+    public Iterable<Key> keys(Key lo, Key hi)
+    {
+    	Queue<Key> q = new Queue<Key>();
+    	for (int i = rank(lo); i < rank(hi); i++)
+    	q.enqueue(keys[i]);
+    	if (contains(hi))
+    	q.enqueue(keys[rank(hi)]);
+    	return q;
+    }
+    ```
+  
+    
+
+### 对二分查找的分析
+
+> 在N 个键的有序数组中进行二分查找最多需要（lgN+1）次比较（无论是否成功）
+
+> 向大小为N 的有序数组中插入一个新的元素在最坏情况下需要访问∼ 2N 次数组，因此向一个空符号表中插入N 个元素在最坏情况下需要访问∼ N2 次数组
+
+### 预览
+
+- 简单的符号表实现的成本总结
+
+![ly-20241212142101133](img/ly-20241212142101133.png)
+
+- 符号表的各种实现的优缺点
+  ![ly-20241212142101235](img/ly-20241212142101235.png)
+- 我们有若干种高效的符号表实现，它们能够并且已经被应用于无数程序之中了
+

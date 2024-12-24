@@ -1,0 +1,69 @@
+---
+title: 03垃圾收集器与内存分配策略
+description: 03垃圾收集器与内存分配策略
+tags:
+  - 深入理解Java虚拟机
+categories:
+  - 学习
+date: 2023-05-25 20:04:33
+updated: 2023-05-25 20:04:33
+---
+
+> 学习《深入理解Java虚拟机》，感谢作者！
+ 
+### 代码清单3-9 -XX:MaxTenuringThreshod=1说明
+
+|                     | Eden[8M]                             | Survivor1[1M]       | Survivor2[1M] | Old {10M}                             |
+| ------------------- | ------------------------------------ | ------------------- | ------------- | ------------------------------------- |
+| 初始                | allocation1[0.25M]，allocation2[4MB] |                     |               |                                       |
+| 3执行时gc导致的变化 |                                      | +allocation1[0.25M] |               | +allocation2[4MB]                     |
+| 3执行后             | +allocation3[4MB]                    | +allocation1[0.25M] |               | +allocation2[4MB]                     |
+| 5执行时gc导致的变化 |                                      |                     |               | allocation2[4MB]，+allocation1[0.25M] |
+| 5执行后             | +allocation3[4MB]                    |                     |               | allocation2[4MB]，+allocation1[0.25M] |
+
+### 代码清单3-9 -XX:MaxTenuringThreshod=15说明
+
+|                     | Eden[8M]                             | Survivor1[1M]       | Survivor2[1M] | Old {10M}                             |
+| ------------------- | ------------------------------------ | ------------------- | ------------- | ------------------------------------- |
+| 初始                | allocation1[0.25M]，allocation2[4MB] |                     |               |                                       |
+| 3执行时gc导致的变化 |                                      | +allocation1[0.25M] |               | +allocation2[4MB]                     |
+| 3执行后             | +allocation3[4MB]                    | +allocation1[0.25M] |               | +allocation2[4MB]                     |
+| 5执行时gc导致的变化 |                                      | +allocation1[0.25M] |               | allocation2[4MB]                      |
+| 5执行后             | +allocation3[4MB]                    | +allocation1[0.25M] |               | allocation2[4MB]，+allocation1[0.25M] |
+
+### 代码清单3-10 说明
+
+|                     | Eden[8M]                                                     | Survivor1[1M]                                     | Survivor2[1M] | Old {10M}                                                    |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------- | ------------- | ------------------------------------------------------------ |
+| 初始                | allocation1[0.25M]，{{< html >}}<br >{{< /html >}}allocation2[[0.25M]，allocation3[4M] |                                                   |               |                                                              |
+| 4执行时gc导致的变化 |                                                              | +allocation1[0.25M]，{{< html >}}<br >{{< /html >}}+allocation2[[0.25M]， |               | +allocation3[4MB]                                            |
+| 4执行后             | +allocation4[4MB]                                            | +allocation1[0.25M]，{{< html >}}<br >{{< /html >}}+allocation2[[0.25M]， |               | +allocation3[4MB]                                            |
+| 6执行时gc导致的变化 |                                                              |                                                   |               | allocation3[4MB]，{{< html >}}<br >{{< /html >}}+allocation1[0.25M]，{{< html >}}<br >{{< /html >}}+allocation2[[0.25M]， |
+| 6执行后             | +allocation4[4MB]                                            |                                                   |               | allocation3[4MB]，{{< html >}}<br >{{< /html >}}+allocation1[0.25M]，{{< html >}}<br >{{< /html >}}+allocation2[[0.25M]， |
+
+### 代码清单3-11 说明
+
+#### -XX:-HandlePromotionFailure 关
+
+|                      | Eden[8M]                                                     | Survivor1[1M] | Survivor2[1M] | Old {10M}                                                    |
+| -------------------- | ------------------------------------------------------------ | ------------- | ------------- | ------------------------------------------------------------ |
+| 初始                 | allocation1[2M]，{{< html >}}<br >{{< /html >}}allocation2[2M]，{{< html >}}<br >{{< /html >}}allocation3[2M]{{< html >}}<br >{{< /html >}}allocation1[null]，allocation4[2M] |               |               |                                                              |
+| 5执行时gc导致的变化  |                                                              |               |               | +allocation2[2M]，+allocation3[2M] //总共4M                  |
+| 5执行后              | +allocation4[2M]                                             |               |               | +allocation2[2M]，+allocation3[2M] //总共4M                  |
+| 6->11                | allocation4[2M]{{< html >}}<br >{{< /html >}}+allocation5[2M]，{{< html >}}<br >{{< /html >}}+allocation6[2M] |               |               | allocation2[2M]，{{< html >}}<br >{{< /html >}}allocation3[2M] //总共4M，{{< html >}}<br >{{< /html >}}此时老年代连续可用空间在6M（或者说小于6M） |
+| 11执行时gc导致的变化 |                                                              |               |               | allocation3[4MB]，{{< html >}}<br >{{< /html >}}+allocation1[0.25M]，{{< html >}}<br >{{< /html >}}+allocation2[[0.25M]， |
+| 11执行后             | +allocation7[2MB]                                            |               |               | allocation3[4MB]，{{< html >}}<br >{{< /html >}}+allocation1[0.25M]，{{< html >}}<br >{{< /html >}}+allocation2[[0.25M]， |
+
+
+
+# 说明
+
+> 1. 书籍版权归著者和出版社所有
+> 2. 本PDF来自于各个广泛的信息平台，经过整理而成
+>
+> 3. 本PDF仅限用于非商业用途或者个人交流研究学习使用
+> 4. 本PDF获得者不得在互联网上以任何目的进行传播，违规者造成的法律责任和后果，违规者自负
+> 5. 如果觉得书籍内容很赞，请一定购买正版实体书，多多支持编写高质量的图书的作者和相应的出版社!当然，如果图书内容不堪入目，质量低下，你也可以选择狠狠滴撕裂本PDF
+> 6. 技术类书籍是拿来获取知识的，不是拿来收藏的，你得到了书籍不意味着你得到了知识，所以请不要得到书籍后就觉得沾沾自喜，要经常翻阅!!经常翻阅
+> 7. 请于下载PDF后24小时内研究使用并删掉本PDF
+

@@ -1,0 +1,1 @@
+tar -xzvf attachments/pdfjs/pdfjs.tar.gz -C static/

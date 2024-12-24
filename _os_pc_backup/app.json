@@ -1,0 +1,13 @@
+{
+  "showLineNumber": true,
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "current",
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "showUnsupportedFiles": true,
+  "attachmentFolderPath": "./img",
+  "newFileFolderPath": "./img",
+  "autoConvertHtml": false,
+  "showInlineTitle": true,
+  "showRibbon": true
+}
