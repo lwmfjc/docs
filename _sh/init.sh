@@ -4,7 +4,7 @@
 #source "/mnt/hgfs/gitrepo/docs/_sh/vmMin/init.sh"
 #用source来包含这个文件，不要直接bash执行
 #myhostname=$(hostname)
-clear
+clear;
 docsDir="";
 hugostart_cmd="";
 dufsstart_cmd="";
