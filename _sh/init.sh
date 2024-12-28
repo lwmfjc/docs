@@ -47,7 +47,7 @@ if [[ $(uname -a | awk '{print $1}') == 'Linux' ]]; then
       if [[ $myip != "" ]]; then
         hugoParams=${hugoParams/'localhost'/$myip}
       fi
-      hugostart_cmd="(cd $docsDir;"' if [[ $(pgrep hugo | wc -l) == 0  ]] ; then '" $hugoParams "' hugo server --minify --environment vmMin --bind 0.0.0.0 --noBuildLock ; else echo "hugo 已经在运行" ; fi)' 
+      hugostart_cmd="(cd $docsDir;"' if [[ $(pgrep hugo | wc -l) == 0  ]] ; then '" $hugoParams "' hugo server --minify --environment aarch --bind 0.0.0.0 --noBuildLock ; else echo "hugo 已经在运行" ; fi)' 
    fi  
 
 
