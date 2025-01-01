@@ -4,8 +4,10 @@
     {{ $content = strings.TrimSpace $content }}
     {{/* 先把左括号及其左边去除了 */}}
     {{ $content =  replaceRE `.*\!\[.*\]\(` "" $content }}
-    {{/* 先把右括号及其右边去除了 */}}
-    {{ $content =  replaceRE `(\).*)$` "" $content }}
+    {{/* 先把右括号及其右边去除了 匹配内容一直到最后一个右括号 */}}
+    {{ $content =  index (findRE `.*\)` $content 1 ) 0}}
+    {{/* 去掉最后一个右括号 */}}
+    {{ $content =  replaceRE `\)$` "" $content }}
     {{/* 最短匹配到books，结果为 books/x/yy/xxx/fkjk.pdf */}} 
     {{/* 这里books前不用斜杠 */}}
     {{ $content =  replaceRE `^(.*?\/books)` "books" $content }} 

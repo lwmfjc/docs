@@ -17,7 +17,7 @@ hugoParams="env HUGO_PARAMS_showPdf=true HUGO_PARAMS_booksUrl=http://localhost:5
 
 # (?<=\() 也就是以括号开头, 但不包含括号.
 
-# (?=\)) 就是以括号结尾
+# (?=\)) 就是以括号结尾，但不包括括号
 
 #有ip的时候用ip，没有则用默认127.0.0.1
 # pc获取ip
@@ -25,7 +25,7 @@ hugoParams="env HUGO_PARAMS_showPdf=true HUGO_PARAMS_booksUrl=http://localhost:5
 # 手机获取ip
 # ifconfig | grep -P "192(\.\d+){3}" | awk '{print $2}'
 
-#如果是在windows环境下运行
+#如果是在Linux环境下运行
 if [[ $(uname -a | awk '{print $1}') == 'Linux' ]]; then
 
    #如果是在linux环境下运行
@@ -72,11 +72,11 @@ if [[ $(uname -a | awk '{print $1}') == 'Linux' ]]; then
 else #windows平台下
  
    docsDir="/d/Users/ly/Documents/git/docs";
-   # myip=$( ifconfig | grep -P "192(\.\d+){3}" | awk '{print $2}')
-   # #clear #这里清除了ifconfig的没权限提示
-   # if [[ $myip != "" ]]; then
-   #   hugoParams=${hugoParams/'localhost'/$myip}
-   # fi
+   myip=$( ipconfig | grep -aEo "192\.[0-9]+\.[0-9]\.[^1][0-9]+" )
+   #clear #这里清除了ifconfig的没权限提示
+   if [[ $myip != "" ]]; then
+     hugoParams=${hugoParams/'localhost'/$myip}
+   fi
    hugostart_cmd="(cd $docsDir;"' if [[ $(tasklist | grep hugo | wc -l) == 0  ]] ; then '" $hugoParams "' hugo server --minify --environment vmMin --bind 0.0.0.0 --noBuildLock ; else echo "hugo 已经在运行" ; fi)' 
  
 
