@@ -11,7 +11,7 @@ x=$1
 if [ $x == "pl" ] ; then 
     echo "plgithub--start"
     #git pull ||
-    proxychains git pull || proxychains4 git pull
+    proxychains git pull || proxychains4 git pull || git pull
     echo "plgithub--end"
     #blog推送到github
     echo "plk40--start"
@@ -25,7 +25,7 @@ elif [ $x == "ps" ] ; then
     git add .
     git commit -m "commit_auto massage"
     #git push || 
-    proxychains git push || proxychains4 git pull
+    proxychains git push || proxychains4 git push || git push
     echo "psgithub--end"
     #推送到k40
     echo "psk40--start"
