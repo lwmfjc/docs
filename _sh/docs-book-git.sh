@@ -17,7 +17,7 @@ if [ $x == "pl" ] ; then
     echo "plk40--start"
     #从k40拉取
     cd  attachments/books
-    git pull # || proxychains git pull
+    proxychains git pull || proxychains4 git pull || git pull
     echo "plk40--end"
 elif [ $x == "ps" ] ; then 
     #blog推送到github
@@ -32,7 +32,7 @@ elif [ $x == "ps" ] ; then
     cd  attachments/books
     git add .
     git commit -m "commit_auto massage"
-    git push  #||proxychains git push
+    proxychains git push || proxychains4 git push || git push
     echo "psk40--end" 
 fi
 exit 1
