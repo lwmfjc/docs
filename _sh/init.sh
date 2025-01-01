@@ -3,6 +3,7 @@
 #对于手机，得先使用`sudo hostname k40s`或`sudo hostname tabs8`
 #source "/mnt/hgfs/gitrepo/docs/_sh/vmMin/init.sh"
 #用source来包含这个文件，不要直接bash执行
+#git clone ssh://git@192.168.1.101:8022/storage/emulated/0/000ly/git/server/books.git
 #myhostname=$(hostname)
 clear;
 docsDir="";
