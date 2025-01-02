@@ -40,13 +40,10 @@ em > strong {
 	font-style: none; 
 	font-size: 1em;
 } 
-
-del {
-/*	color: blue ;*/
-	text-decoration: underline wavy  ;
-/*	text-decoration: none;*/
+/*暂时用不到*/
+del { 
+	text-decoration: underline wavy  ; 
 }
 h1,h2,h3,h4,h5,h6{
-	text-indent: 0em; 
-	font-weight: 900 !important;
+	text-indent: 0em;  
 }
