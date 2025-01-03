@@ -14,4 +14,4 @@ em:not(:has(strong)) {
 :not(em) > strong {   
 /*	font-size: 1.2em; */
 	color: rgba(65,105,225,1); 
-} 
+}
