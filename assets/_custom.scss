@@ -4,7 +4,7 @@
 //@import "plugins/scrollbars";
 .book-toc { 
   font-size: $font-size-16;  //增大侧目录字号 原来是12
-  }
+}
   
 //   body,.book-menu,nav,.book-menu-content,.container {
 //     /* 添加!important表示覆盖默认的设置 */
@@ -16,3 +16,18 @@
 h1,h2,h3,h4,h5,h6 { 
   font-weight: 900 !important;
 }
+
+ html,body,.book-menu,nav,.book-menu-content,.container {
+  /* 添加!important表示覆盖默认的设置 */
+  // background-image: url("sys/bg.png") !important;
+  //background-image: linear-gradient(to top, #c1dfc4 0%, #c1dfc4 100%) !important;
+  //background-attachment: fixed;
+   //添加浅绿色背景
+   background-color: #c1dfc4 !important;
+  opacity: 1  ;
+  scrollbar-color: rgba(222,236,221,1) rgba(193,223,196,1) ;
+  //scrollbar-width: thin;
+} 
+//aside.book-menu {
+//  font-size: 1.5em;
+//}
