@@ -8,7 +8,8 @@ tags:
   - 文化
 date: 2024-12-24T21:48:46+08:00
 lastmod: 2024-12-24T21:48:46+08:00
-isBook: true
+cssAttach:
+  - book-zztj
 ---
 > 資治通鑑卷第一
 > 

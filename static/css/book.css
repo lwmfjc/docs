@@ -1,78 +1,17 @@
-/*@font-face {
-	font-family: "SYST";
-	src : url("/fonts/LXGWWenKaiMono-Regular.ttf");
-}*/
-article{
-/*	font-family: "SYST";*/
-	font-size: 1.4em;
-	display: block;
-	line-height: 1.5;
-	list-style-type: circle;
-	margin-bottom: 0.5em;
-	margin-right: 0;
-	margin-top: 0.5em;
-	text-align: justify;
-	text-indent: 2em;
-	color: rgb(105,105,105);
-/*	color: rgb(105,105,105);*/
-
-} 
- 
-/*<em>xxx</em> 下划线*/
-/*<em><strong>xxx</strong></em> 波浪线*/
-/*<strong>xxx</strong> 加粗*/
-
-/*没有strong子元素的em元素--<em>xxx</em> 下划线*/
-em:not(:has(strong)) {
-/*	color: green ; */
-	text-decoration: underline  ; 
+@import url("/css/book-base.css");
+article{ 
+	font-size: 1.7em;
+	color: rgba(0, 0, 0); 
+}
+em:not(:has(strong)) { 
+	/*text-decoration: underline  ; */
+	text-decoration: unset  ; 
 	font-style: normal; 
+	font-size: 0.7em;
+	color: rgba(0, 0, 0, 0.5);
 }
 
-/*------------------------波浪线的处理start-----------------*/
-/*em下的strong子元素-<em><strong>xxx</strong></em> 波浪线*/
-em > strong { 
-	/* 	color: red ;*/
-/*	font-weight: normal !important; */
-	text-decoration: underline wavy  ; 
-	font-style: none; 
-	font-size: 1em;
+:not(em) > strong {   
+/*	font-size: 1.2em; */
+	color: rgba(65,105,225,1); 
 } 
- 
-/*有strong子元素的em元素-- 去除默认的斜体*/
-em:has(strong) {
-	font-style: normal; 
-}
-
-/*(不是strong下的)em下的strong子元素 -- 去除默认的加粗*/
-/*加粗时用上面这个样式,不加粗时用下面的样式*/
-/*:not(strong) > em > strong {  
-	font-weight: normal !important;  
-}*/
-em > strong {  
-	font-weight: normal !important;  
-}
-/*------------------------波浪线的处理end-----------------*/
-
-
-
-/*不是在em下的strong-- <strong>xxx</strong> 加粗*/
-/*加粗时用上面这个样式,不加粗时用下面的样式*/
-/*:not(em) > strong {
-	font-size: 1.2em;
-	font-weight: border !important; 
-	color: green;
-}*/
-:not(em) > strong {
-	font-size: 1.3em;
-	font-weight: normal !important; 
-	color: rgb(0,0,0);
-}
-/*暂时用不到*/
-del { 
-	text-decoration: underline wavy  ; 
-}
-h1,h2,h3,h4,h5,h6{
-	text-indent: 0em;  
-	color: black;
-}
