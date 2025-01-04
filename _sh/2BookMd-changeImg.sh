@@ -89,11 +89,15 @@ handleDir(){
 			#sed -Ei "s/\\\\\[([0-9]+)\\\\\]/[\1]/g"  index.txt 
 
 			#替换图片地址
-			perl -pi -e 's/(\!\[.*?\])\(images/\1\(img/g' "$dirBook/index.txt"
+			# perl命令行加上"-e"选项，就能在perl命令行中直接写perl表达式
+			# -i：对输入的每一行执行一次代码，并进行原地编辑（覆盖原文件）
+			# -p：对输入的每一行执行一次Perl代码，并打印输出结果。 
+			# g是全局,p：保存匹配的字符串到${^PREMATCH} ${^MATCH} ${^POSTMATCH}中，它们在结果上对应$` $& $'
+			perl -ei 's/(\!\[.*?\])\(images/$1\(img/gp' "$dirBook/index.txt"
 			# sed -Ei "s/(\!\[\.*?\])\(images/\1\(img/g"  "$dirBook/index.txt"
 			#替换\(\) \[\]之类的默认转义（不需要）
-			perl -pi -e 's/\\\[(.*?)\\\]/\[$1\]/gp' "$dirBook/index.txt"
-			perl -pi -e 's/\\\((.*?)\\\)/\($1\)/gp' "$dirBook/index.txt"
+			perl -ei 's/\\\[(.*?)\\\]/\[$1\]/gp' "$dirBook/index.txt"
+			perl -ei 's/\\\((.*?)\\\)/\($1\)/gp' "$dirBook/index.txt"
 			# sed -Ei "s/\\\\\[/[/g"  "$dirBook/index.txt"
 			# sed -Ei "s/\\\\\]/]/g"  "$dirBook/index.txt"
 			# sed -Ei "s/\\\\\(/(/g"  "$dirBook/index.txt"
