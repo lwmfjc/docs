@@ -66,7 +66,7 @@ handleDir(){
 		if [[ $(expr "$file" : ".\+\.txtz$") > 0 ]]; then
 			local fullPathFile="$dirBook/$file";
 			cp -r "$fullPathFile" "$fullPathFile.zip"
-			#echo "$fullPathFile"
+		    echo "$fullPathFile"
 			unzip -qo  "$fullPathFile" -d $dirBook
 			rm "$fullPathFile.zip"
 
@@ -77,7 +77,7 @@ handleDir(){
 			#sed -Ei "s/\\\\\[([0-9]+)\\\\\]/[\1]/g"  index.txt 
 
 			#替换图片地址
-			sed -Ei "s/(\!\[.*?\])\(images/\1\(img/g"  "$dirBook/index.txt"
+			sed -Ei "s/(\!\[\.*?\])\(images/\1\img/g"  "$dirBook/index.txt"
 			mkdir -p "$dirMd/img" 
 			cp -r "$dirBook"/images/* "$dirMd/img"
 			rm -rf "$dirBook"/images
