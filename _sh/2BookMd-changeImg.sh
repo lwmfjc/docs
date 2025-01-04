@@ -8,9 +8,20 @@ fi
 bookDir=$1;
 dirMd=$2; 
 
-createAndInitMd(){
+initDirMd(){
+fileName="$1/_index.md" 
+cat >> $fileName <<-_EOF_
+---
+bookCollapseSection: true
+weight: 20
+title:
+---
+_EOF_
+# echo "创建$fileName成功"
+}
+initContentMd(){
 fileName="$1/index.md"
-time=`date '+%Y-%m-%d %H:%M:%S'` 
+time=`date '+%Y-%m-%dT%H:%M:%S%:z'`
 cat >> $fileName <<-_EOF_
 ---
 title: 
@@ -38,13 +49,14 @@ iterateBooks(){
 	#临时修改SHELL中的分隔符
 	oldIFS=$IFS
 	IFS=$'\n'
+	initDirMd "$dirMd"
 	for file in $files; do
 		local fullPathFile="$dirBook/$file";
 		if [[ -d $fullPathFile ]]; then
 			# echo $file 
 			#如果是目录则在目录创建对应的目录
 			mkdir -p "$dirMd/$file" 
-			createAndInitMd "$dirMd/$file" 
+			initContentMd "$dirMd/$file" 
 			#处理目录下文件
 			handleDir "$fullPathFile" "$dirMd/$file"
 		fi
@@ -77,7 +89,14 @@ handleDir(){
 			#sed -Ei "s/\\\\\[([0-9]+)\\\\\]/[\1]/g"  index.txt 
 
 			#替换图片地址
-			sed -Ei "s/(\!\[\.*?\])\(images/\1\img/g"  "$dirBook/index.txt"
+			sed -Ei "s/(\!\[\.*?\])\(images/\1\(img/g"  "$dirBook/index.txt"
+			#替换\(\) \[\]之类的默认转义（不需要）
+			sed -Ei "s/\\\\\[/[/g"  "$dirBook/index.txt"
+			sed -Ei "s/\\\\\]/]/g"  "$dirBook/index.txt"
+			sed -Ei "s/\\\\\(/(/g"  "$dirBook/index.txt"
+			sed -Ei "s/\\\\\)/)/g"  "$dirBook/index.txt"
+			# sed -Ei "s/\\\\\[(.*?)\\\\\]/[\1]/g"  "$dirBook/index.txt"
+			# sed -Ei "s/\\\\\((.*?)\\\\\)/(\1)/g"  "$dirBook/index.txt"
 			mkdir -p "$dirMd/img" 
 			cp -r "$dirBook"/images/* "$dirMd/img"
 			rm -rf "$dirBook"/images

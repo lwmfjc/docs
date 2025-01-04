@@ -1,5 +1,5 @@
-time=`date '+%Y-%m-%d %H:%M:%S'` 
-today=$(echo $time | sed -e 's/\s\+.\+//g' -e 's/-//g' )
+time=`date '+%Y-%m-%dT%H:%M:%S%:z'`
+today=$(echo $time | sed -e 's/T.\+//g' -e 's/-//g' )
 
 dir="content.zh/docs/life/$today" 
 if [[ !( -d $dir ) ]] ;then
