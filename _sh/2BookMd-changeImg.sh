@@ -95,19 +95,26 @@ handleDir(){
 			# -p：对输入的每一行执行一次Perl代码，并打印输出结果。 
 			# g是全局,p：保存匹配的字符串到${^PREMATCH} ${^MATCH} ${^POSTMATCH}中，它们在结果上对应$` $& $'
 			perl -i -pe 's/(\!\[.*?\])\(images/$1\(img/gp' "$dirBook/index.txt"
-			# sed -Ei "s/(\!\[\.*?\])\(images/\1\(img/g"  "$dirBook/index.txt"
 			#替换\(\) \[\]之类的默认转义（不需要）
 			perl -i -pe 's/\\\[(.*?)\\\]/\[$1\]/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\\\((.*?)\\\)/\($1\)/gp' "$dirBook/index.txt"
+			#去除#后面连续的4个星号
+			perl -i -pe 's/^(#.*?\s)\*{4}/$1/gp' "$dirBook/index.txt" 
+			#标题降1级
+			#perl -i -pe 's/^#(.*?\s)/$1/gp' "$dirBook/index.txt"
+			
+			#处理img图片
+			# sed -Ei "s/(\!\[\.*?\])\(images/\1\(img/g"  "$dirBook/index.txt"
+			#替换\(\) \[\]之类的默认转义（不需要）
 			# sed -Ei "s/\\\\\[/[/g"  "$dirBook/index.txt"
 			# sed -Ei "s/\\\\\]/]/g"  "$dirBook/index.txt"
 			# sed -Ei "s/\\\\\(/(/g"  "$dirBook/index.txt"
-			# sed -Ei "s/\\\\\)/)/g"  "$dirBook/index.txt"
-			#去除连续的4个星号
+			# sed -Ei "s/\\\\\)/)/g"  "$dirBook/index.txt"			
+			#去除#后面连续的4个星号
 			# sed -Ei "s/\*{4}//g"  "$dirBook/index.txt"
 			# sed -Ei "s/\\\\\[(.*?)\\\\\]/[\1]/g"  "$dirBook/index.txt"
-			# sed -Ei "s/\\\\\((.*?)\\\\\)/(\1)/g"  "$dirBook/index.txt"
-			#标题降级
+			# sed -Ei "s/\\\\\((.*?)\\\\\)/(\1)/g"  "$dirBook/index.txt"			
+			#标题降1级
 			# sed -Ei  "s/^#(.*?\s)/\1/g"  "$dirBook/index.txt"
 			mkdir -p "$dirMd/img" 
 			cp -r "$dirBook"/images/* "$dirMd/img"
