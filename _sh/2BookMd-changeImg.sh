@@ -89,18 +89,21 @@ handleDir(){
 			#sed -Ei "s/\\\\\[([0-9]+)\\\\\]/[\1]/g"  index.txt 
 
 			#替换图片地址
-			sed -Ei "s/(\!\[\.*?\])\(images/\1\(img/g"  "$dirBook/index.txt"
+			perl -pi -e 's/(\!\[.*?\])\(images/\1\(img/g' "$dirBook/index.txt"
+			# sed -Ei "s/(\!\[\.*?\])\(images/\1\(img/g"  "$dirBook/index.txt"
 			#替换\(\) \[\]之类的默认转义（不需要）
-			sed -Ei "s/\\\\\[/[/g"  "$dirBook/index.txt"
-			sed -Ei "s/\\\\\]/]/g"  "$dirBook/index.txt"
-			sed -Ei "s/\\\\\(/(/g"  "$dirBook/index.txt"
-			sed -Ei "s/\\\\\)/)/g"  "$dirBook/index.txt"
+			perl -pi -e 's/\\\[(.*?)\\\]/\[$1\]/gp' "$dirBook/index.txt"
+			perl -pi -e 's/\\\((.*?)\\\)/\($1\)/gp' "$dirBook/index.txt"
+			# sed -Ei "s/\\\\\[/[/g"  "$dirBook/index.txt"
+			# sed -Ei "s/\\\\\]/]/g"  "$dirBook/index.txt"
+			# sed -Ei "s/\\\\\(/(/g"  "$dirBook/index.txt"
+			# sed -Ei "s/\\\\\)/)/g"  "$dirBook/index.txt"
 			#去除连续的4个星号
-			sed -Ei "s/\*{4}//g"  "$dirBook/index.txt"
+			# sed -Ei "s/\*{4}//g"  "$dirBook/index.txt"
 			# sed -Ei "s/\\\\\[(.*?)\\\\\]/[\1]/g"  "$dirBook/index.txt"
 			# sed -Ei "s/\\\\\((.*?)\\\\\)/(\1)/g"  "$dirBook/index.txt"
 			#标题降级
-			sed -Ei  "s/^#(.*?\s)/\1/g"  "$dirBook/index.txt"
+			# sed -Ei  "s/^#(.*?\s)/\1/g"  "$dirBook/index.txt"
 			mkdir -p "$dirMd/img" 
 			cp -r "$dirBook"/images/* "$dirMd/img"
 			rm -rf "$dirBook"/images
