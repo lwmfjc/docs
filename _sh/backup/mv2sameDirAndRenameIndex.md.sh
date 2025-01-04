@@ -21,7 +21,7 @@ readDir(){
 		# 如果是一个目录
 		if [[ -d $fullPathFile ]]; then  
 			#如果是文件夹，则递归该文件夹
-			readDir $fullPathFile 
+			readDir "$fullPathFile" 
 		#如果是以.md结尾的markdown文件
 		elif [[ $(expr "$fullPathFile" : ".\+\.md") > 0 ]]; then
 			#打印文件名(不包括文件夹)
