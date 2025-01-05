@@ -1,20 +1,29 @@
 @import url("/css/book-base.css");
 article{ 
-	font-size: 1.3em;
+	font-size: 1.4em;
 	color: rgba(0, 0, 0); 
 }
-em:not(:has(strong)) { 
+em > strong  { 
 	/*text-decoration: underline  ; */
 	text-decoration: unset  ; 
 	font-style: normal; 
-	font-size: 0.85em; 
-	border: 1px black; 
-	border-bottom-style: solid; 
-	/*	background-color: rgba(65,105,225,0.5);*/ 
-	color: rgba(65,105,225,1);
+	font-size: 0.8em; 
+	border: 2px black; 
+	border-bottom-style: dashed; 
+/*	background-color: rgba(0,0,0,0.05);  */
+	color: rgba(0, 0, 0,0.6); 
 }
 
 :not(em) > strong {   
+
+/*	border: 4px black; */
+  	text-decoration: underline wavy ;  
+  	text-underline-offset: 0.2em;
+
+/*	border-bottom-style: solid; */
+
+
 /*	font-size: 1.2em; */
-	color: rgba(65,105,225,1); 
+/*	color: rgba(65,105,225,1); */
+/*-webkit-text-stroke: 2px rgba(0, 0, 0,1);*/
 }

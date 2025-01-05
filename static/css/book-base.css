@@ -27,9 +27,10 @@ em:not(:has(strong)) {
 /*------------------------波浪线的处理start-----------------*/
 /*em下的strong子元素-<em><strong>xxx</strong></em> 波浪线*/
 em > strong {  
-	border: 2px black; 
-	border-bottom-style: dashed; 
-/* 	text-decoration: underline wavy  ;  */
+/*	border: 2px black; 
+	border-bottom-style: dashed; */
+  	text-underline-offset: 0.2em;
+ 	text-decoration: underline wavy  ;  
 	font-style: unset;  
 } 
  
