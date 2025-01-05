@@ -1,0 +1,6486 @@
+---
+title: 附录
+description: 附录
+categories:
+  - 学习
+tags:
+  - MySQL
+  - 高性能MySQL
+cssAttach:
+  - book
+date: 2025-01-05T08:42:20+08:00
+lastmod: 2025-01-05T08:42:20+08:00
+---
+
+
+ 附录A　MySQL分支与变种
+
+在第1章中，我们已经讨论过MySQL的历史：先被Sun公司收购，然后再被Oracle公司收购，以及它怎样成功度过了这些管理职务上的变动。这个故事有太多事情可讲。MySQL不再只可从Oracle获取。在两次转让的过程中，出现了好几个MySQL变种。尽管大部分人都只愿意要Oracle“官方”版本的MySQL，但这些变种非常重要，并且对所有MySQL用户产生了一个很大的改变——甚至是那些从来没有打算使用它们的用户。
+
+在过去几年里，出现了几个MySQL变种，但到目前为止主要有三个久经考验的主流变种：Percona Server，MariaDB和Drizzle。它们都有活跃的用户社区和某种程度上的商业支持，均由独立的服务供应商支持。
+
+作为Percona Server的创建者，我们有一定的倾向性，但我们认为这个附录相当客观，因为我们对所有的MySQL变种都提供服务、支持、咨询、培训和工程部署。我们还邀请了Drizzle的创建者Brian Aker和MariaDB的创建者Monty Widenius来参与到这个附录的编写，因此这并非我们一家之言。
+
+# Percona Server
+
+Percona Server （*http://www.percona.com/software/*）因我们致力于解决客户问题而衍生。在本书的第二版中，我们提到了我们为改进MySQL服务器的日志方法所做的补丁。那正是Percona Server的起源。当遇到用其他方法都不能解决的问题时，我们就去修改服务器源码。
+
+Percona Server有三个主要的目标。
+
+透明
+
+增加允许用户更紧密地查看服务器内部信息和行为的方法。包含的特性有类似SHOW STATUS中的计数器，INFORMATION\_SCHEMA中的表，以及慢查询日志中特别增加的详细信息。
+
+性能
+
+Percona Server包含许多性能和可扩展性方面的改进。原始性能非常重要，但Percona Server还加强了性能的可预测性和稳定性。其中主要集中于InnoDB。
+
+操作灵活性
+
+Percona Server包含许多移除限制的特性。尽管某些限制看起来不起眼，但这些限制可能会使操作人员和系统管理员在让MySQL作为架构的一部分而可靠并稳定运行时，感到非常困难。
+
+Percona Server是个与MySQL向后兼容的替代品，它尽可能不改变SQL语法、客户端/服务器协议和磁盘上的文件格式。(1)任何运行在MySQL上的都可以运行在Percona Server上而不需要修改。切换到Percona Server只需要关闭MySQL和启动Percona Server，不需要导出和重新导入数据。切换回去也不麻烦，而这一点实际上非常重要：许多问题是通过临时切换解决的，使用增强的方法来诊断，然后切回到标准MySQL。
+
+我们只对标准MySQL中需要并且可以产生显著好处的地方做改进。我们相信大部分用户坚持使用由Oracle发行的MySQL官方版本可能是最好的选择，并且努力与原版保持尽可能地相同。
+
+Percona Server包括Percona XtraDB存储引擎，即改进版本的InnoDB。这同样是个向后兼容的替代品。例如，如果创建一个使用InnoDB存储引擎的表，Percona Server能自动识别并用Percona XtraDB替代之。Percona XtraDB同样包括在MariaDB内。
+
+Percona Server的一些改进已经包括在MySQL的Oracle版本中，许多其他改进也只是稍作修改而重新实现。结果，Percona Server变成了许多特性的“抢鲜”版，这些特性随后将在标准MySQL中出现。Percona Server在5.1和5.5版本中的许多改进可能要在MySQL 5.6中重新实现。
+
+# MariaDB
+
+在Sun收购MySQL后，Monty Widenius，这位MySQL的创建者，因不认同MySQL开发流程而离开Sun。他成立了Monty程序公司，创立了MariaDB，以培养一个“开放的开发环境以鼓励外部的参与”。MariaDB的目标是社区开发，Bug修复和许多的新特性——特别是与社区开发的特性相集成。再引用Monty的一句话，(2)“MariaDB的远景是面向用户和客户驱动，以及更多社区的补丁和插件。”
+
+MariaDB有什么不同呢？与Percona Server相比，它包括了更多对服务器的扩展。（Percona Server的大部分改变是在于Percona XtraDB存储引擎，而不是服务器层。）例如，有许多是对查询优化和复制的改变。它使用Aria存储引擎取代了MyISAM来存储内部临时表（被用于复杂的查询，例如DISTINCT或子查询）。Aria最初叫Maria，在不确定的Sun时代是打算替代InnoDB的。它是MyISAM的崩溃安全的版本。
+
+除Percona XtraDB和Aria外，MariaDB还包括许多社区的存储引擎，例如SphinxSE和PBXT。
+
+MariaDB是原版MySQL的超集，因此已有的系统不需要任何修改就可以运行，就像Percona Server一样。然而，MariaDB对有些场景可以更好地胜任，例如复杂的子查询或多表关联。它同样有MyISAM分段的键缓存，这样特性使得MyISAM在现代的硬件上可以更好地扩展。
+
+也许MariaDB的最佳版本是5.3，在写作此书时它还是候选发布状态。这个版本包含许多查询优化方面的工作——可能是最近十年对MySQL最大的优化。它增加了查询执行计划，例如哈希联合，并且修复了我们之前在本书中指出的MySQL的一些缺陷，例如动态列、基于角色的访问控制和微秒级时间戳的支持。
+
+关于MariaDB更多的改进可参考*http://www.askmonty.org*上的文档或*http://askmonty. org/blog/the-2-year-old-mariadb*/和*http://kb.askmonty.org/en/what-is-mariadb-53*中的变更总结。
+
+# Drizzle
+
+Drizzle是真正的MySQL分支，而非只是个变种或增强版本。它并不与MySQL兼容，尽管区分上还并不是大相径庭。在许多场合并不能简单地将MySQL后端替换为Drizzle，因为它对SQL语法修改太大了。
+
+Drizzle创建于2008年，致力于更好地服务MySQL用户。其创建目标是更好地满足网页应用的核心功能。它是个很了不起的改进，与MySQL相比更简单，选择更少；例如，它只使用utf8作为存储字符集，并且只有一种类型的BLOB。它主要针对64位硬件编译，且支持IPv6网络。
+
+Drizzle数据库服务器的一个关键目标是消除MySQL上异常和遗留的行为，例如声明了NOT NULL列但发现数据库中莫名其妙地存储了NULL。你可以在MySQL上找到的差劲的实现或难使用的特性已经被删除，例如触发器、查询缓存和INSERT ON DUPLICATE KEY UPDATE。
+
+在代码层，Drizzle构建于一个精简内核和插件的微核心架构之上。服务器的核心比起MySQL已经精简许多。几乎任何东西都是插件——甚至类似SLEEP()的函数。这使得Drizzle在源码级非常简单并非常高效。
+
+Drizzle使用了诸如Boost的标准开源库，并遵从代码、构建架构和API方面的标准。它对类似复制等特意使用了Google协议缓冲公开消息格式，并且使用修改版的InnoDB作为标准存储引擎。
+
+Drizzle团队很早就开始着手做服务器的基准测试，用基于业界标准的1024个线程基准来评估高并发的性能。并发越大性能增加越高，对性能改进非常大。
+
+Drizzle是一个社区开发的项目，在开源社区比MySQL更吸引人。该服务器的许可证是纯GPL的，没有双重的许可证。然而，MySQL客户端—服务器协议依靠一个基于BSD许可证的新客户端库完成，而这对于开发商业系统是最重要的一个方面。这意味着你可以通过用Drizzle的客户端库来连到MySQL的方式构建一个专属应用，并且不需要为MySQL客户端库购买商业许可证或将软件基于GPL发布。MySQL的*libmysql*客户端库是众多公司为MySQL购买商业许可证的最主要的原因之一，没有这个链接到*libmysql*的商业许可证，这些公司就要被迫在GPL下发行软件。而这不再必要，因为现在公司可以使用Drizzle的库来替代。
+
+但据我们了解，Drizzle虽已在某些产品环境下部署但还没有广泛应用。Drizzle项目的理念是抛弃向后兼容的束缚，而这意味着相对于迁移一个已有的应用而言，它更适合新的应用。
+
+# 其他MySQL变种
+
+现在，或曾经，有许多MySQL服务器的变种。许多大型公司，例如Google、Facebook和eBay，都维护着这一服务器的修改版，以完全匹配其需求和部署场景。许多源码已可公开获取；也许最著名的例子就是Facebook和Google做的MySQL补丁。
+
+另外还有几个分支或再发行，例如OurDelta、DorsalSource，还有只存在了很短一段时间的Henrik Ingo的一个发行。
+
+最后，许多人没有意识到当他们从GNU/Linux发行包软件库中安装MySQL时，其实获取的是一个修改后的服务器版本——在某些场合下，有大量的修改。Red Hat和Debian （相应的Fedora和Ubuntu）都发行了非标准版本的MySQL，Gentoo以及实际上任何其他GNU/Linux发行也都如此。与其他我们提及的变种相比，这些发行并没有指出对服务器源码做了哪些修改，因为它们保留了MySQL的名字。
+
+过去我们遇到过许多关于MySQL修改版的问题。这是我们倾向于倡导使用Oracle版本的MySQL的一个原因，除非有很强有力的理由来使用其他版本。
+
+# 总结
+
+MySQL分支和变种很少有大量的代码被采用到MySQL代码的主干树上，但却很大程度上影响了MySQL开发的方向和节奏。在某些情况下，它们提供了一个出众的替代选择。
+
+应该使用分支代替Oracle官方的MySQL？我们并不认为这通常有必要。如何选择一般基于理解（从来没有完全的精确）或商业原因，例如与Oracle有一个企业范围的关系。通常有两类人倾向不使用官方版本的服务器。
+
++ 遇到只有改源码才能解决的特别问题的人。 
++ 不信任Oracle对MySQL的管理并且视分支为真正的开源进而快乐的人。 
+
+为什么选择某个分支？我们总结如下。如果你想与官方MySQL版本尽量保持紧密，并且想获取更好的性能、指导和有用的特性，那就选择Percona Server。如果你觉得MariaDB对服务器的大量修改更优，或想要一个在社区内更广泛发行的存储引擎，就选择MariaDB。如果你想要一个轻量精简版的数据库服务器并且并不介意是否与MySQL兼容，或想让自己对数据库的改进更容易，那就追随Drizzle。
+
+讲到Percona，一般认为所有的提供商都有许多关于官方版本MySQL的经验，然而很自然地Percona对于Percona Server最有经验，而Monty公司最熟悉MariaDB。当寻求官方发行的MySQL的Bug修复时这会有影响。只有Oracle能保证一个Bug在官方的MySQL发行中被修复；其他供应商可以提供修复但没有把它们加入到官方发行中的权力。这回答了为什么选择某个分支：有些人选择分支就是因为其服务供应商提供的MySQL版本完全可控，并且可以方便地修复和改进。
+
+
+
+————————————————————
+
+(1) 曾有一些对文件格式的改变，但已经默认被禁掉，如果想要，还可以使其生效。
+
+(2) 这句话见于*http://askmonty.org/blog/the-2-year-old-mariadb*和*http://kb.askmonty.org/en/what-is-mariadb-53*。
+
+
+
+
+
+ 附录B　MySQL服务器状态
+
+你可以通过查看MySQL的状态来回答许多关于MySQL的问题。MySQL以多种方式来暴露服务器内部信息。最新的是MySQL 5.5中的PERFORMANCE\_SCHEMA库，而标准的INFORMATION\_SCHEMA库从MySQL 5.0就已开始存在，此外实际上一直存在一系列的SHOW命令。有些通过SHOW命令获取的信息并不在INFORMATION\_SCHEMA中存在。
+
+对你的挑战是，问题到底是什么，如何获取需要的信息，如何解释它。尽管MySQL允许你查看许多服务器内部发生的信息，但使用这些信息并不总是简单的。理解它需要耐心、经验，并要准备好参阅MySQL用户手册。同样，好的工具也非常有用。
+
+这个附录大部分是参考材料，但也有许多关于服务器内部功能的信息，特别是在关于InnoDB的小节中。
+
+# 系统变量
+
+MySQL通过SHOW VARIABLES SQL命令显露了许多系统变量，你可以在表达式中使用这些变量，或在命令行中通过*mysqladmin variables*试验。自MySQL 5.1起，可以通过访问INFORMATION\_SCHEMA库中的表来获取这些信息。
+
+这些变量反映了一系列配置信息，例如服务器的默认存储引擎（storage\_engine）、可用的时区、连接的排序规则（collation）和启动参数。我们在第8章中已经讨论过如何设置和使用它们。
+
+# SHOW STATUS
+
+SHOW STATUS命令会显示每个服务器变量的名字和值。和上面讲的服务器参数不一样，状态变量是只读的。可以在MySQL客户端里运行SHOW STATUS或在命令行里运行*mysqladmin extended-status*来查看这些变量。如果使用SQL命令，可以使用LIKE或WHERE来限制结果。可以用LIKE对变量名做标准模式匹配。命令将返回一个结果表，但不能对它排序，与另外一个表做联合操作，或像对MySQL表一样做一些事情。在MySQL 5.1或更新版本中，可以直接从INFORMATION\_SCHEMA.GLOBAL\_STATUS和INFORMATION\_SCHEMA.SESSION\_STATUS表中查询值。
+
+![](img/000000.jpeg)我们使用“状态变量”这个术语来指从SHOW STATUS中得到的值，术语“系统变量”则指服务器配置变量。
+
+SHOW STATUS的行为自MySQL 5.0后有了非常大的改变，但是如果你没有足够细致地观察，可能不会注意到。5.0之前的版本只有全局变量，5.1及以后的版本中，有的变量是全局的，有的变量是连接级别的。因此，SHOW STATUS混杂了全局和会话变量。其中许多变量有双重域：既是全局变量，也是会话变量，它们拥有相同的名字。现在SHOW STATUS默认也显示会话变量，因此，如果你习惯于使用SHOW STATUS来查看全局变量，则需要改为运行SHOW GLOBAL STATUS查看。(1)
+
+有上百个状态变量。大部分要么是计数器，要么包含某些状态指标的当前值。每次MySQL做一些事情都会导致计数器的增长，比如开始初始化一个全表扫描（Select\_scan）。度量值，例如打开的到服务器连接数量（Threads\_connected），可能增长和减少。有时候几个变量貌似指向相同的事情，例如Connections（尝试连接到服务器的连接数量）和Threads\_connected；在本例下，变量是关联的，但类似的名字并不总是隐含某种关系。
+
+变量采用无符号整型存储。它们在32位编译系统上用4个字节（byte），而在64位环境上用8个字节，并且当达到最大值后会重新从0开始。如果你增量地监测这些变量，可能需要观察并修正这个绕回处理；你也要意识到如果服务器已经运行很长一段时间，可能会有比预期更小的值，这是因为这些变量值已经被重置为零。（在64位编译系统上基本不会出现。）
+
+如果想对服务器的工作负载有一个大体上的了解，可以将相关的一组变量放在一起查看和对比——例如，一起查看所有的Select\_\*变量，或所有的Handler\_\*变量。如果使用*innotop*，在Command Summary模式下查看更简单，但也可以通过类似*mysqladmin*不会使用SHOW GLOBAL STATUS，因此仍将不能显示“正确的”信息。
+
+*extended -r -i60 | grep Handler*\_的命令手动完成。以下是在一个我们检测的服务器上*innotop*对Select\_\*变量的显示。
+
+
+        _____________________Command Summary _____________________
+        Name                   Value     Pct    Last Incr     Pct
+        Select_scan            756582    59.89%        2      100.00%
+        Select_range           497675    39.40%        0        0.00%
+        Select_full_join         7847     0.62%        0        0.00%
+        Select_full_range_join   1159     0.09%        0        0.00%
+        Select_range_check          1     0.00%        0        0.00%
+
+查看一组变量的当前值、上一次查询的值，以及它们之间的差值，可以使用Percona Toolkit中的*pt-mext*工具，或Shlomi Noach写的简洁的查询。(2)
+
+
+        **    SELECT STRAIGHT_JOIN**    
+            **    LOWER(gs0.VARIABLE_NAME) AS variable_name,**    
+            **    gs0.VARIABLE_VALUE AS value_0,**    
+            **    gs1.VARIABLE_VALUE AS value_1,**    
+            **    (gs1.VARIABLE_VALUE - gs0.VARIABLE_VALUE) AS diff,**    
+            **    (gs1.VARIABLE_VALUE - gs0.VARIABLE_VALUE) / 10 AS per_sec,**    
+            **    (gs1.VARIABLE_VALUE - gs0.VARIABLE_VALUE) * 60 / 10 AS per_min**    
+        **    FROM (**    
+            **    SELECT VARIABLE_NAME, VARIABLE_VALUE**    
+            **    FROM INFORMATION_SCHEMA.GLOBAL_STATUS**    
+            **    UNION ALL**    
+            **    SELECT '', SLEEP(10) FROM DUAL**    
+            **    ) AS gs0**    
+            **    JOIN INFORMATION_SCHEMA.GLOBAL_STATUS gs1 USING (VARIABLE_NAME)**    
+        **    WHERE gs1.VARIABLE_VALUE <> gs0.VARIABLE_VALUE;**    
+
+![](img/000001.jpeg) 
+
+最有帮助的是查看整个过程最后几分钟所有这些变量值和度量值，查看自服务器启动后的总值也同样有用。
+
+接下来是对SHOW STATUS中所看到的各种变量的概述，但不是一个详尽的列表。对于给定变量的详情，最好查询MySQL用户手册，详见 *http://dev.mysql.com/doc/en/mysqld-option-tables.html*。当我们讨论一组以相同前缀开头的相关变量时，我们指的是“<前缀>\_\*”这样的变量。
+
+## 线程和连接统计
+
+这些变量用来跟踪尝试的连接、退出的连接、网络流量和线程统计。
+
++ Connections, Max\_used\_connections, Threads\_connected 
++ Aborted\_clients, Aborted\_connects 
++ Bytes\_received, Bytes\_sent 
++ Slow\_launch\_threads, Threads\_cached, Threads\_created, Threads\_running 
+
+如果Aborted\_connects不为0，可能意味着网络有问题或某人尝试连接但失败（可能用户指定了错误的密码或无效的数据库，或某个监控系统正在打开TCP的3306端口来检测服务器是否活着）。如果这个值太高，可能有严重的副作用：导致MySQL阻塞一个主机。
+
+Aborted\_clients有类似的名字但意思完全不同。如果这个值增长，一般意味着曾经有一个应用错误，例如程序在结束之前忘记正确地关闭MySQL连接。这一般并不表明有大问题。
+
+## 二进制日志状态
+
+Binlog\_cache\_use和Binlog\_cache\_disk\_use状态变量显示了在二进制日志缓存中有多少事务被存储过，以及多少事务因超过二进制日志缓存而必须存储到一个临时文件中。MySQL 5.5还包含Binlog\_stmt\_cache\_use和Binlog\_stmt\_cache\_disk\_use，显示了非事务语句相应的度量值。所谓的“二进制日志缓存命中率”往往对配置二进制日志缓存的大小并没有参考意义。详细参考第8章中相关的话题。
+
+## 命令计数器
+
+Com\_\*变量统计了每种类型的SQL或C API命令发起过的次数。例如，Com\_select统计了SELECT语句的数量，Com\_change\_db统计一个连接的默认数据库被通过USE语句或C API调用更改的次数。Questions(3)变量统计总查询量和服务器收到的命令数。然而，它并不完全等于所有Com\_\*变量的总和，这与查询缓存命中、关闭和退出的连接，以及其他可能的因素有关。
+
+Com\_admin\_commands状态变量可能非常大。它不仅计数管理命令，并且还包括对MySQL实例的Ping请求。这些请求通过C API发起，并且一般来自客户端代码，例如下面的Perl代码。
+
+
+        my $dbh = DBI->connect(...);
+        while ( $dbh && $dbh->ping ) {
+          # Do something
+        }
+
+这些Ping请求是“垃圾”查询。它们往往不会对服务器产生许多负载，但仍然是个浪费，因为网络回路时间会增加应用的响应时间。我们曾经看到ORM系统（Ruby on Rails立即跃入脑海）在每次查询之前Ping服务器，而这是无意义的；Ping服务器然后再查询是一个“跳跃之前看一下”设计模式的典型例子，它会产生竞争条件。我们同样看到过在每次查询之前更改默认库的数据库抽象函数库，这也会产生大量的Com\_change\_db命令。最好消除这两种做法。
+
+## 临时文件和表
+
+可以通过下列命令查看MySQL创建临时表和文件的计数。
+
+
+        mysql> **    SHOW GLOBAL STATUS LIKE 'Created_tmp%';**    
+
+这显示了关于隐式临时表和文件的统计——执行查询时内部创建。在Percona Server中，同样有展示显式临时表（即由用户通过CREATE TEMPORARY TABLE所创建）的命令。
+
+
+        mysql> **    SHOW GLOBAL TEMPORARY TABLES**    ;
+
+## 句柄操作
+
+句柄API是MySQL和存储引擎之间的接口。Handler\_\*变量用于统计句柄操作，例如MySQL请求一个存储引擎来从一个索引中读取下一行的次数。可以通过下列命令查看这些变量。
+
+
+        mysql> **    SHOW GLOBAL STATUS LIKE 'Handler_%';**    
+
+## MyISAM键缓冲
+
+Key\_\*变量包含度量值和关于MyISAM键缓冲的计数。可以通过下列命令查看这些变量。
+
+
+        mysql> **    SHOW GLOBAL STATUS LIKE 'Key_%';**    
+
+## 文件描述符
+
+如果你主要使用MyISAM存储引擎，那么Open\_\*变量揭示了MySQL每隔多久会打开每个表的.*frm、.MYI*和.*MYD*文件。InnoDB保持所有的数据在表空间文件中，因此如果你主要使用InnoDB，那么这些变量并不精确。可以通过下列命令查看Open\_\*变量。
+
+
+        mysql> **    SHOW GLOBAL STATUS LIKE 'Open_%';**    
+
+## 查询缓存
+
+通过查询 Qcache\_\*状态变量可以检查查询缓存。
+
+
+        mysql> **    SHOW GLOBAL STATUS LIKE 'Qcache_%';**    
+
+## SELECT类型
+
+Select\_\*变量是特定类型的SELECT查询的计数器。它们能帮助你了解使用各种查询计划的SELECT查询比率。不幸的是，并没有关于其他查询类型的状态变量，例如UPDATE和REPLACE；然而，可以看一下Handler\_\*状态变量（前面讨论过）大致了解非SELECT查询的相对数量。要查看所有Select\_\*变量，使用下列命令。
+
+
+        mysql> **    SHOW GLOBAL STATUS LIKE 'Select_%';**    
+
+以我们的判断，Select\_\*状态变量可以按花费递增的顺序如下排列。
+
+Select\_range
+
+在第一个表上扫描一个索引区间的联接数目。
+
+Select\_scan
+
+扫描整个第一张表的联接数目。如果第一个表中每行都参与联接，这样计数并没有问题；如果你并不想要所有行但又没有索引以查找到所需要的行，那就糟糕了。
+
+Select\_full\_range\_join
+
+使用在表n中的一个值来从表*n*\+1中通过参考索引的区间内获取行所做的联接数。这个值或多或少比 Select\_scan开销多些， 具体多少取决于查询。
+
+Select\_range\_check
+
+在表*n*\+1中重新评估表*n*中的每一行的索引是否开销最小所做的联接数。这一般意味着在表*n*\+1中对该联接而言并没有有用的索引。这个查询有非常高的额外开销。
+
+Select\_full\_join
+
+交叉联接或并没有条件匹配表中行的联接的数目。检测的行数是每个表中行数的乘积。这通常是个坏事情。
+
+最后两个变量一般并不快速地增长，如果快速增长，则可能表明一个“糟糕”的查询引入到了系统中。具体可参考第3章中关于如何找到此类查询的讨论。
+
+## 排序
+
+在前面几章中我们已经讲了许多MySQL的排序优化，因此你应该知道排序是如何工作的。当MySQL不能使用一个索引来获取预先排序的行时，　必须使用文件排序，这会增加Sort\_\*状态变量。除Sort\_merge\_passes外，你可以只是增加MySQL会用来排序的索引以改变这些值。Sort\_merge\_passes依赖sort\_buffer\_size服务器变量（不要与myisam\_sort\_buffer\_size服务器变量相混淆）。MySQL使用排序缓冲来容纳排序的行块。当完成排序后，它将这些排序后的行合并到结果集中，增加Sort\_merge\_passes，并且用下一个待排序的行块填充缓存。然而，使用这个变量来指导排序缓存的大小并不是个好方法，详情见第3章。
+
+可以通过以下命令查看所有的Sort\_\*变量。
+
+
+        mysql> **    SHOW GLOBAL STATUS LIKE 'Sort_%';**    
+
+当MySQL从文件排序结果中读取已经排好序的行并返回给客户端时，Sort\_scan和Sort\_range变量会增长。不同点仅在于：前者是当查询计划导致Select\_scan增加（参考前面的章节）时增加，而后者是当Select\_range增加时增加。二者的实现和开销完全一样；仅仅指示了导致排序的查询计划类型。
+
+## 表锁
+
+Table\_locks\_immediate和Table\_locks\_waited变量可告诉你有多少锁被立即授权，有多少锁需要等待。但请注意，它们只是展示了服务器级别锁的统计，并不是存储引擎级的锁统计。
+
+## InnoDB相关
+
+Innodb\_\*变量展示了SHOW ENGINE INNODB STATUS中包含的一些数据，本附录稍后会讨论。这些变量会按名字分组：Innodb\_buffer\_pool\_\*，Innodb\_log\_\*，等等。稍后我们在检查完SHOW ENGINE INNODB STATUS后会更多地讨论InnoDB内幕。
+
+这些变量存在于MySQL 5.0或更新版本中，它们有重要的副作用：它们会创建一个全局锁，然后在释放该锁之前遍历整个InnoDB缓冲池。同时，另外一些线程也会遇到该锁而阻塞，直到它被释放。这歪曲了一些状态值，比如Threads\_running，因此，它们看起来比平常更高（可能高许多，取决于系统此时有多忙）。当运行SHOW ENGINE INNODB STATUS或通过INFORMATION\_SCHEMA表（在MySQL 5.0或更新版本中，SHOW STATUS和SHOW VARIABLES与对INFORMATION\_SCHEMA表的查询在幕后映射了起来）访问这些统计时，有相同的副作用。
+
+因此，这些操作在这些版本的MySQL中会更加昂贵——检查服务器状态太频繁（例如，每秒一次）可能会显著增加负载。使用 SHOW STATUS LIKE也无济于事，因为它要获取所有的状态然后再进行过滤。
+
+MySQL 5.5中相比5.1有更多的变量，在Percona Server中更多。
+
+## 插件相关
+
+MySQL 5.1和更新的版本中支持可插拔的存储引擎，并在服务器内对存储引擎提供了注册它们自己的状态和配置变量的机制。如果你在使用一个可插拔的存储引擎，也许会看到许多插件特有的变量。类似的变量总是以插件名开头。
+
+# SHOW ENGINE INNODB STATUS
+
+InnoDB存储引擎在SHOW ENGINE INNODB STATUS输出中，老版本中对应的是SHOW INNODB STATUS，显示出了大量的内部信息。
+
+不像其他大部分SHOW命令，它的输出就是单独的一个字符串，没有行和列。它分为很多小段，每一段对应了InnoDB存储引擎不同部分的信息，其中有一些信息对于InnoDB 开发者来说是非常有用的，但是，许多信息，如果你试着去理解，并且应用到高性能InnoDB 调优的时候，你会发现它们非常有趣——甚至是非常必要的。
+
+![](img/000000.jpeg)老版本的InnoDB经常把64 位数字分成两部分来输出：高32 位和低32 位。有一个例子是事务ID，比如TRANSACTION 0 3793469，你可以这么来计算64 位数字的值：把第一部分往左移动32 位，然后加到第二部分上。我们在后面会展示几个例子。
+
+输出内容包含了一些平均值的统计信息，例如fsync()每秒调用次数。这些平均值是自上次输出结果生成以来的统计数，因此，如果你正在检查这些值，那就要确保已经等待了30s左右的时间，使两次采样之间积累起足够长的统计时间并多次采样，检查计数器变化从而弄清其行为。并不是所有的输出都会在一个时间点上生成，因而也不是所有显示出来的平均值会在同一时间间隔里重新计算一遍。而且，InnoDB有一个内部复位间隔，而它是不可预知的，各个版本也不一样。你应该检查一下输出，看看有哪些平均值在这个时间段里生成，因为每次采样的时间间隔不总是相同的。
+
+这里面有足够的信息可供手工计算出大多数你想要的统计信息。但是，如果这时有一款监控工具，例如*innotop*——它能为你计算出增量差值和平均值，那将是非常有用的。
+
+## 头部信息
+
+第一段是头部信息，它仅仅声明了输出开始，其内容包括当前的日期和时间，以及自上次输出以来经过的时长。下列第2行是当前日期和时间。第4行显示的是计算出这一平均值的时间间隔，即自上次输出以来的时间，或者是距离上次内部复位的时长。
+
+
+        1 =====================================
+        2 070913 10:31:48 INNODB MONITOR OUTPUT
+        3 =====================================
+        4 Per second averages calculated from the last 49 seconds
+
+## SEMAPHORES
+
+如果有高并发的工作负载，你就要关注下接下来的段：SEMAPHORES（信号量）。它包含了两种数据：事件计数器，以及可选的当前等待线程的列表。如果有性能上的瓶颈，可以使用这些信息来找出瓶颈。不幸的是，想知道怎么使用这些信息还是有一点复杂，不过我们会在本附录的后面部分里给你一些建议。下面是一些输出样例。
+
+
+        1 ----------
+        2 SEMAPHORES
+        3 ----------
+        4 OS WAIT ARRAY INFO: reservation count 13569, signal count 11421
+        5 --Thread 1152170336 has waited at ./../include/buf0buf.ic line 630 for 0.00 seconds
+          the semaphore:
+        6 Mutex at 0x2a957858b8 created file buf0buf.c line 517, lock var 0
+        7 waiters flag 0
+        8 wait is ending
+        9 --Thread 1147709792 has waited at ./../include/buf0buf.ic line 630 for 0.00 seconds
+          the semaphore:
+        10 Mutex at 0x2a957858b8 created file buf0buf.c line 517, lock var 0
+        11 waiters flag 0
+        12 wait is ending
+        13 Mutex spin waits 5672442, rounds 3899888, OS waits 4719
+        14 RW-shared spins 5920, OS waits 2918; RW-excl spins 3463, OS waits 3163
+
+第4行给出了关于操作系统等待数组的信息，它是一个“插槽”数组。InnoDB在数组里为信号量保留了一些插槽，操作系统用这些信号量给线程发送信号，使线程可以继续运行，以完成它们等着做的事情。这一行还显示出InnoDB使用了多少次操作系统的等待。保留计数（reservation count）显示了InnoDB分配插槽的频度，而信号计数（signal count）衡量的是线程通过数组得到信号的频度。操作系统的等待相对于空转等待（spin wait）要更昂贵一些，我们即将看到这一点。
+
+第5～12行显示的是当前正在等待互斥量的InnoDB线程。在这个例子里显示出有两个线程正在等待，每一个都是以“-- Thread <数字> has waited...”开始的。这一段应该是空的，除非服务器运行着高并发的工作负载，促使InnoDB采取让操作系统等待的措施。除非你对InnoDB源代码很熟悉，否则这里看到的最有用的信息是发生线程等待的代码文件名。这就给了你一个提示：在InnoDB内部哪里才是热点。举例来说，如果看到许多线程都在一个名为*buf0buf.ic*的文件上等待着，那就意味着你的系统里存在着缓冲池竞争。这个输出信息还显示了这些线程等待了多长的时间，其中“waiters flag”显示了有多少个等待者正在等待同一个互斥量。
+
+文本“wait is ending”意味着这个互斥量实际上已经被释放了，但操作系统还没把线程调度过来运行。
+
+你可能想知道InnoDB真正等待的是什么。InnoDB使用了互斥量和信号量来保护代码的临界区，例如，限定每次只能有一个线程进入临界区，或者是当有活动的读时，就限制写入等。在InnoDB代码里有很多临界区，在合适的条件下，它们都可能出现在那里。常常能见到的一种情形就是获取缓冲池分页的访问权。
+
+在等待线程的列表之后，第13和14行显示了更多的事件计数器。第13行显示的是跟互斥量相关的几个计数器，第14行用于显示读/写共享和排他锁的计数器。在每一个情形中，都能看到InnoDB依靠操作系统等待的频度。
+
+InnoDB有着一个多阶段等待策略。首先，它会试着对锁进行空等待。如果经过了一个预设的空转等待周期（设置innodb\_sync\_spin\_loops配置变量指令）之后还没有成功，那就会退到更昂贵更复杂的等待数组中。(4)
+
+空转等待的成本相对比较低，但是它们要不停地检查一个资源是否能被锁定，这种方式会消耗CPU周期。但是，这没有听起来那么糟糕，因为当处理器在等待I/O时，一般都有一些空闲的CPU周期可用，即使是没有空闲的CPU周期，空等也要比其他方式更加廉价一些。然而，当另外一条线程能做一些事情时，空转等待也还会独占处理器。
+
+空转等待的替换方案就是让操作系统做上下文切换，这样，当这个线程在等待时，另外一个线程就可以被运行，然后，通过等待数组里的信号量发出信号，唤醒那个沉睡的线程。通过信号量来发送信号是比较有效率的，但是上下文切换就很昂贵，这很快就会积少成多：每秒钟几千次的切换会引发大量的系统开销。
+
+你可以通过改变系统变量innodb\_sync\_spin\_loops的值，试着在空转等待与操作系统等待之间达成平衡。不要担心空转等待，除非你在每一秒里会看到许多空转等待（大概是几十万这个水平）。这经常需要理解源代码或咨询专家才能解决。同样也可以考虑使用Performance Schema，或看一下SHOW ENGINE INNODB MUTEX。
+
+## LATEST FOREIGN KEY ERROR
+
+下一段，即LATEST FOREIGN KEY ERROR，一般不会出现，除非你的服务器上有外键错误。在源代码里有许多地方会生成这样的输出，具体取决于错误的类型。有时问题在于事务在插入、更新或删除一条记录时要寻找到父行或子行。还有些时候是当InnoDB尝试增加或删除一个外键，或修改一个已经存在的外键时，发现表之间类型不匹配。
+
+这部分输出对于调试与InnoDB往往不明确的外键错误相对应的准确原因非常有帮助。让我们看几个例子。首先，创建有外键关系的两个表，然后插入少量数据。
+
+
+        CREATE TABLE parent (
+          parent_id int NOT NULL,
+          PRIMARY KEY(parent_id)
+        ) ENGINE=InnoDB;
+        CREATE TABLE child (
+          parent_id int NOT NULL,
+          KEY parent_id (parent_id),
+          CONSTRAINT child_ibfk_1 FOREIGN KEY (parent_id) REFERENCES parent (parent_id)
+        ) ENGINE=InnoDB;
+        INSERT INTO parent(parent_id) VALUES(1);
+        INSERT INTO child(parent_id) VALUES(1);
+
+有两种基本的外键错误。以某种可能违反外键约束关系的方法增加、更新或删除数据，将导致第一类错误。例如，以下是当我们从父表中删除行时发生的事情。
+
+
+        DELETE FROM parent;
+        ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint
+        fails (`test/child`, CONSTRAINT `child_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES
+        `parent` (`parent_id`))
+
+错误信息相当直接明了，对所有由增加、更新或删除不匹配的行导致的错误都会看到相似的信息。下面是SHOW ENGINE INNODB STATUS的输出。
+
+
+        1 ------------------------
+        2 LATEST FOREIGN KEY ERROR
+        3 ------------------------
+        4 070913 10:57:34 Transaction:
+        5 TRANSACTION 0 3793469, ACTIVE 0 sec, process no 5488, OS thread id 1141152064
+          updating or deleting, thread declared inside InnoDB 499
+        6 mysql tables in use 1, locked 1
+        7 4 lock struct(s), heap size 1216, undo log entries 1
+        8 MySQL thread id 9, query id 305 localhost baron updating
+        9 DELETE FROM parent
+        10 Foreign key constraint fails for table `test/child`:
+        11 '
+        12 CONSTRAINT `child_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `parent` (`parent_
+          id`)
+        13 Trying to delete or update in parent table, in index `PRIMARY` tuple:
+        14 DATA TUPLE: 3 fields;
+        15   0: len 4; hex 80000001; asc   ;; 1: len 6; hex 00000039e23d; asc   9 =;; 2: len
+             7; hex 000000002d0e24; asc   - $;;
+        16
+        17   But in child table `test/child`, in index `parent_id`, there is a record:
+        18   PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+        19   0: len 4; hex 80000001; asc    ;; 1: len 6; hex 000000000500; asc    ;;
+
+第4行显示了最近一次外键错误的日期和时间。第5～9行显示了关于破坏外键约束的事务详情。后面会再解释这些行。第10～19行显示了发现错误时InnoDB正尝试修改的准确数据。输出中有许多是转换成可打印格式的行数据。关于这点我们同样会在后面再加以说明。
+
+到目前为止还没有什么问题，但有另外一类的外键错误，可能会让调试更难。以下是当我们尝试修改父表时所发生的。
+
+
+        ALTER TABLE parent MODIFY parent_id INT UNSIGNED NOT NULL;
+        ERROR 1025 (HY000): Error on rename of './test/#sql-1570_9' to './test/parent'
+        (errno: 150)
+
+这就没有那么清楚了，但 SHOW ENGINE INNODB STATUS 的文本给了些指引信息。
+
+
+         1  ------------------------
+         2  LATEST FOREIGN KEY ERROR
+         3  ------------------------
+         4  070913 11:06:03 Error in foreign key constraint of table test/child:
+         5  there is no index in referenced table which would contain
+         6  the columns as the first columns, or the data types in the
+         7  referenced table do not match to the ones in table. Constraint:
+         8  ,
+         9  CONSTRAINT child_ibfk_1 FOREIGN KEY (parent_id) REFERENCES parent (parent_id)
+        10 The index in the foreign key in table is parent_id
+        11 See http://dev.mysql.com/doc/refman/5.0/en/innodb-foreign-key-constraints.html
+        12 for correct foreign key definition.
+
+本例中的错误是数据类型不同。外键列必须有完全相同的数据类型，包括任何修饰符（例如本例中的UNSIGNED，这也是问题所在）。当看到1025错误并不理解为什么时，最好查看 SHOW ENGINE INNODB STATUS。
+
+在每次有新错误时，外键错误信息都会被重写。Percona Toolkit中的*pt-fk-error-logger*工具可以保存这些信息以供后续分析。
+
+## LATEST DETECTED DEADLOCK
+
+跟上面的外键部分一样，LATEST DETECTED DEADLOCK部分也只有当服务器内有死锁时才会出现。死锁错误信息同样在每次有新错误时都会重写，Percona Toolkit中的*pt-deadlock-logger*工具可以保存这些信息以供后续分析。
+
+死锁在等待关系图里是一个循环，就是一个锁定了行的数据结构又在等待别的锁。这个循环可以任意地大。InnoDB会立即检测到死锁，因为每当有事务等待行锁的时候，它都会去检查等待关系图里是否有循环。死锁的情况可能会比较复杂，但是，这一部分只显示了最近两个死锁的情况，它们在各自的事务里执行的最后一条语句，以及它们在图里形成循环锁的信息。在这个循环里你看不到其他事务，也看不到在事务里早先可能真正获得了锁的语句。尽管如此，通常还是可以通过查看这些输出结果来确定到底是什么引起了死锁。
+
+在InnoDB里实际上有两种死锁。第一种就是人们常常碰到的那种，它在等待关系图里是一个真正的循环。另外一种就是在一个等待关系图里，因代价昂贵而无法检查它是不是包含了循环。如果InnoDB要在关系图里检查超过100万个锁，或者在检查过程中， InnoDB要重做200个以上的事务，那它就会放弃，并宣布这里有一个死锁。这些数值都是硬编码在InnoDB代码里的常量，无法配置（如果你愿意，可以在代码里更改这些数值，然后重新编译）。当InnoDB 的检查工作超过这个极限后，它就会引发一个死锁，这时你就可以在输出里看到一条信息“TOO DEEP OR LONG SEARCH IN THE LOCK TABLE WAITS-FOR GRAPH”。
+
+InnoDB不仅会打印出事务和事务持有及等待的锁，而且还有记录本身。这些信息主要对于InnoDB开发者有用，但目前也没有办法禁止显示。不幸的是，它会变得很大，以致超过为输出结果预留的长度，使你无法看到下面几段输出信息。对此唯一的补救办法是，制造一个小的死锁来替换那个大的死锁，或者使用Percona Server，该服务器软件增加了配置变量来抑制过于详尽的文本。
+
+下面是一个死锁信息的样例。
+
+
+        1 ------------------------
+        2 LATEST DETECTED DEADLOCK
+        3 ------------------------
+        4 070913 11:14:21
+        5 *** (1) TRANSACTION:
+        6 TRANSACTION 0 3793488, ACTIVE 2 sec, process no 5488, OS thread id 1141287232
+          starting index read
+        7 mysql tables in use 1, locked 1
+        8 LOCK WAIT 4 lock struct(s), heap size 1216
+        9 MySQL thread id 11, query id 350 localhost baron Updating
+        10 UPDATE test.tiny_dl SET a = 0 WHERE a <> 0
+        11 *** (1) WAITING FOR THIS LOCK TO BE GRANTED:
+        12 RECORD LOCKS space id 0 page no 3662 n bits 72 index `GEN_CLUST_INDEX` of table
+          `test/tiny_dl` trx id 0 3793488 lock_mode X waiting
+        13 Record lock, heap no 2 PHYSICAL RECORD: n_fields 4; compact format; info bits 0
+        14 0: len 6; hex 000000000501 ...[ omitted ] ...
+        15
+        16 *** (2) TRANSACTION:
+        17 TRANSACTION 0 3793489, ACTIVE 2 sec, process no 5488, OS thread id 1141422400
+           starting index read, thread declared inside InnoDB 500
+        18 mysql tables in use 1, locked 1
+        19 4 lock struct(s), heap size 1216
+        20 MySQL thread id 12, query id 351 localhost baron Updating
+        21 UPDATE test.tiny_dl SET a = 1 WHERE a <> 1
+        22 *** (2) HOLDS THE LOCK(S):
+        23 RECORD LOCKS space id 0 page no 3662 n bits 72 index `GEN_CLUST_INDEX` of table
+           `test/tiny_dl` trx id 0 3793489 lock mode S
+        24 Record lock, heap no 1 PHYSICAL RECORD: n_fields 1; compact format; info bits 0
+        25 0: ... [ omitted ] ...
+        26
+        27 *** (2) WAITING FOR THIS LOCK TO BE GRANTED:
+        28 RECORD LOCKS space id 0 page no 3662 n bits 72 index `GEN_CLUST_INDEX` of table
+          `test/tiny_dl` trx id 0 3793489 lock_mode X waiting
+        29 Record lock, heap no 2 PHYSICAL RECORD: n_fields 4; compact format; info bits 0
+        30 0: len 6; hex 000000000501 ...[ omitted ] ...
+        31
+        32 *** WE ROLL BACK TRANSACTION (2)
+
+第4行显示的是死锁发生的时间，第5～10行显示的是死锁里的第一个事务的信息。在下一节里，我们会详尽地解释这些输出的含义。
+
+第11～15行显示的是当死锁发生时，事务1正在等待的锁。我们忽略了其中第14 行的信息，那是因为这只对调试才有用。这里要特别注意的内容是第12行，它告诉你这个事务正在等待对test.tiny\_dl表中的GEN\_CLUST\_INDEX(5)索引上排他锁（X锁）。
+
+第16～21行显示的是第二个事务的状态，第22～26行显示的是该事务持有的锁。为了简洁起见，在第25行有几条记录已经被我们删去了。这些记录里有一条就是第一个事务正在等待的那一条。最后，第27～31行显示了它正在等待的是哪一个锁。
+
+当一个事务持有了其他事务需要的锁，同时又想获取其他事务持有的锁时，等待关系图上就会产生循环了。InnoDB不会显示所有持有和等待的锁，但是，它显示了足够的信息来帮你确定：查询操作正在使用哪些索引。这对于你确定是否能避免死锁有着极大的价值。
+
+如果能使两个查询对同一个索引朝同一个方向进行扫描，就能降低死锁的数目，因为，查询在同一顺序上请求锁的时候不会创建循环。有时候，这是很容易做到的，举例来说，如果要在一个事务里更新许多条记录，就可以在应用程序的内存里把它们按主键进行排序，然后，再用同样的顺序更新到数据库，这样就不会有死锁的发生。但是在另一些时候，这个方法也是行不通的（例如有两个进程使用了不同的索引区间操作同一张表的时候）。
+
+第32行显示的是哪个事务被选中成为死锁的牺牲品。InnoDB会把看上去最容易回滚（就是更新的记录数最少的）的事务选为牺牲品。
+
+检测这些常规日志，从中找出线程所涉及的查询，然后看一下到底是什么导致死锁，这非常有用。下节将介绍在哪里可以查找到死锁输出中的线程ID。
+
+## TRANSACTIONS
+
+本节包含了一些关于InnoDB事务的总结信息，紧随其后是当前活跃事务列表。以下是前几行信息（头部）。
+
+
+        1 ------------
+        2 TRANSACTIONS
+        3 ------------
+        4 Trx id counter 0 80157601
+        5 Purge done for trx's n:o <0 80154573 undo n:o <0 0
+        6 History list length 6
+        7 Total number of lock structs in row lock hash table 0
+
+输出会因MySQL版本不同而变化，但至少包括如下几点。
+
++ 第4行：当前事务的ID，这是一个系统变量，每创建一个新事务都会增加。 
++ 第5行：这是InnoDB清除旧MVCC行时所用的事务ID。将这个值和当前事务ID进行比较，可以知道有多少老版本的数据未被清除。这个数字多大才可以安全的取值没有硬性和速成的规定。如果数据没做过任何更新，那么一个巨大的数字也不意味着有未清除的数据，因为实际上所有事务在数据库里查看的都是同一个版本的数据。从另一方面来讲，如果有很多行被更新，那每一行就会有一个或多个版本留在内存里。减少此类开销的最好办法是确保事务一完成就立即将它提交，不要让它长时间地处于打开的状态。因为一个打开的事务即使不做任何操作，也会影响到InnoDB 清理旧版本的行数据。 
++ 同样是在第5 行里，还有一项InnoDB 清理进程正在使用的撤销日志编号，如果有的话。如果它是“0 0”，如在本例中一样，说明清理进程处于空闲状态。 
++ 第6行：历史记录的长度，即位于InnoDB 数据文件的撤销空间里的页面的数目。如果事务执行了更新并提交，这个数字就会增加；而当清理进程移除旧版本数据时，它就会递减。清理进程也会更新第5行中的数值。 
++ 第7行：锁结构的数目。每一个锁结构经常持有许多个行锁，所以，它跟被锁定行的数目不一样。 
+
+头部信息之后就是一个事务列表。当前版本的MySQL还不支持嵌套事务，因此，在某个时间点上，每个客户端连接能拥有的事务数目是有一个上限的，而且每一个事务只能属于单一连接。在输出信息里，每一个事务至少占有两行内容。下面这个例子就是关于一个事务所能看到的最少的信息。
+
+
+        1 ---TRANSACTION 0 3793494, not started, process no 5488, OS thread id 1141152064
+        2 MySQL thread id 15, query id 479 localhost baron
+
+第1行以该事务的ID和状态开始。这个事务是“not started”，意思是已经提交并且没有再发起影响事务的语句；可能刚好空闲。然后是一些进程和线程信息。第2行显示了MySQL进程ID，也和SHOW FULL PROCESSLIST中的Id列相同。紧随其后的是一个内部查询号和一些连接信息（同样与SHOW FULL PROCESSLIST中的相同）。
+
+然而，每个事务会打印比这多得多的信息。下面是一个稍复杂一些的例子。
+
+
+        1 ---TRANSACTION 0 80157600, ACTIVE 4 sec, process no 3396, OS thread id 1148250464,
+          thread declared inside InnoDB 442
+        2 mysql tables in use 1, locked 0
+        3 MySQL thread id 8079, query id 728899 localhost baron Sending data
+        4 select sql_calc_found_rows * from b limit 5
+        5 Trx read view will not see trx with id>= 0 80157601, sees <0 80157597
+
+本例中的第1行显示此事务已经处于活跃状态4s。可能的状态有“not started”、“active”、“prepared”和“committed in memory”（一旦被提交到磁盘上，状态就会变为“not started”）。尽管在这个示例里没有显示，但是在其他条件下，你也许能看到关于事务当前正在做什么的信息。在源代码中有超过30个字符串常量可以显示在这里，例如“fetching rows”、“adding foreign keys”，等等。
+
+第1行里的文本“thread declared inside InnoDB 442”的意思是该线程正在InnoDB内核里做一些操作，并且，还有442张“票”可以使用。换句话说，就是同样的SQL 查询可以重新进入InnoDB内核442次。这个“票”是系统用来限制内核中线程并发操作的手段，以防止其在某些平台上运行失常。即使线程的状态是“inside InnoDB”，它也不是在InnoDB里面完成所有的工作。查询可能是在服务器一级做一些操作，而只是通过某个途径跟InnoDB 内核互动一下。你也可能看到事务的状态是“sleeping before joining InnoDB queue” 或者“waiting in InnoDB queue”。
+
+接下来一行显示了当前语句里有多少表被使用和锁定。InnoDB一般不会锁定表，但对有些语句会锁定。如果MySQL服务器在高于InnoDB层次之上将表锁定，这里也是能够显示出来的。如果事务已经锁定了几行数据，这里将会有一行信息显示出锁定结构的数目（再声明一次，这跟行锁是两回事）和堆的大小。具体例子可以查看之前的死锁输出信息。在MySQL 5.1及更新的版本里，这一行还显示了当前事务持有的行锁的实际数目。
+
+堆的大小指的是为了持有这些行锁而占用的内存大小。InnoDB是用一种特殊的位图表来实现行锁的，从理论上讲，它可将每一个锁定的行表示为一个比特。我们的测试显示，每一个锁通常不超过4比特。
+
+本例中的第3行包含的信息略微多于上例中的第2行：在该行的末尾是线程状态“Sending data”，这跟SHOW FULL PROCESSLIST中所看到的Command列相同。
+
+如果事务正在运行一个查询，那么接下来就会显示出查询的文本（或者，在某些版本的MySQL 里，显示其中的一小段），在本例中是第4行。
+
+第5行显示了事务的读视图，它表明了因为版本关系而产生的对于事务可见和不可见两种类型的事务ID的范围。在本例中，在两个数字之间有一个四个事务的间隙，这四个事务可能是不可见的。InnoDB在执行查询时，对于那些事务ID正好在这个间隙的行，还会检查其可见性。
+
+如果事务正在等待一个锁，那么在查询内容之后将可以看到这个锁的信息。在上文的死锁例子里，这样的信息已经看到过多次了。不幸的是，输出信息并没有说出这个锁正被其他哪个事务持有。如果使用了InnoDB插件，就可以在MySQL 5.1及更高版本中的INFORMATION-SCHEMA表中查明这一点。
+
+如果输出信息里有很多个事务，InnoDB可能会限制要打印出来的事务数目，以免输出信息增长得太大。这时就会看到“...truncated...”。
+
+## FILE I/O
+
+FILE I/O部分显示的是I/O辅助线程的状态，还有性能计数器的状态。
+
+
+         1 --------
+         2 FILE I/O
+         3 --------
+         4 I/O thread 0 state: waiting for i/o request (insert buffer thread)
+         5 I/O thread 1 state: waiting for i/o request (log thread)
+         6 I/O thread 2 state: waiting for i/o request (read thread)
+         7 I/O thread 3 state: waiting for i/o request (write thread)
+         8 Pending normal aio reads: 0, aio writes: 0,
+         9   ibuf aio reads: 0, log i/o's: 0, sync i/o's: 0
+        10 Pending flushes (fsync) log: 0; buffer pool: 0
+        11 17909940 OS file reads, 22088963 OS file writes, 1743764 OS fsyncs
+        12 0.20 reads/s, 16384 avg bytes/read, 5.00 writes/s, 0.80 fsyncs/s
+
+第4～7行显示了I/O辅助线程的状态。第8～10行显示的是每个辅助线程的挂起操作的数目，以及日志和缓冲池线程挂起的fsync()操作数目。简写“aio”的意思是“异步 I/O”。第11行显示了读、写和fsync()调用执行的数目。在你的负载下这些绝对值会有所不同，因此更重要的是监控它们过去一段时间内是如何改变的。第12行显示了在头部显示的时间段内的每秒平均值。
+
+在第8～9行显示的挂起值是检测I/O受限的应用的一个好方法。如果这些I/O大部分有挂起的操作，那么负载可能I/O受限。
+
+在Windows下，可以通过innodb\_file\_io\_threads配置变量来调整I/O辅助线程数，因此可能会看到不止一个读线程和写线程。在使用了InnoDB插件的MySQL 5.1和更新版本中，或Percona Server中，可以使用innodb\_read\_io\_threads和innodb\_write\_io\_threads来为读/写配置多个线程。然而，在所有平台下至少总会看到4个线程。
+
+*Insert buffer thread*
+
+负责插入缓冲合并（例如，记录被从插入缓冲合并到表空间中）。
+
+*Log thread*
+
+负责异步刷日志。
+
+*Read thread*
+
+执行预读操作以尝试预先读取InnoDB预感需要的数据。
+
+*Write thread*
+
+刷脏缓冲。
+
+## INSERT BUFFER AND ADAPTIVE HASH INDEX
+
+这部分显示了InnoDB内这两个结构的状态。
+
+
+        1 -------------------------------------
+        2 INSERT BUFFER AND ADAPTIVE HASH INDEX
+        3 -------------------------------------
+        4 Ibuf for space 0: size 1, free list len 887, seg size 889, is not empty
+        5 Ibuf for space 0: size 1, free list len 887, seg size 889,
+        6 2431891 inserts, 2672643 merged recs, 1059730 merges
+        7 Hash table size 8850487, used cells 2381348, node heap has 4091 buffer(s)
+        8 2208.17 hash searches/s, 175.05 non-hash searches/s
+
+第4行显示了关于插入缓存大小、“free list”的长度和段大小的信息。文本“for space 0”像是指明了多个插入缓冲的可能性——每个表空间一个，但从未实现，并且这个文本在最近的MySQL版本中被移除掉了。只有一个插入缓冲，因此第5行真的是多余的。第6行显示了有多少缓冲操作已经完成。合并与插入的比例很好地说明了缓冲使用效率如何。
+
+第7行显示了自适应哈希索引的状态。第8行显示了在头部提及的时间内InnoDB完成了多少哈希索引操作。哈希索引查找与非哈希索引查找的比例仅供参考。自适应索引无法配置。
+
+## LOG
+
+这部分显示了关于InnoDB事务日志（重做日志）子系统的统计。
+
+
+        1 ---
+        2 LOG
+        3 ---
+        4 Log sequence number 84 3000620880
+        5 Log flushed up to 84 3000611265
+        6 Last checkpoint at 84 2939889199
+        7 0 pending log writes, 0 pending chkp writes
+        8 14073669 log i/o's done, 10.90 log i/o's/second
+
+第4行显示了当前日志序号，第5行显示了日志已经刷到哪个位置。日志序号就是写到日志文件中的字节数，因此可用来计算日志缓冲中还有多少没有写入到日志文件中。在这个例子中，它有9615字节（13 000 620 880－13 000 611 265）。第6行显示了上一检测点（一个检测点表示一个数据和日志文件都处于已知状态的时刻，并且能用于恢复）。如果上一检查点落后日志序号太多，并且差异接近于该日志文件的大小，InnoDB会触发“疯狂刷”，这对性能而言非常糟糕。第7～8行显示了挂起的日志操作和统计，你可以将其与FILE I/O部分的值相比较，以了解你的I/O有多少是由日志子系统引起，有多少是其他原因。
+
+## BUFFER POOL AND MEMORY
+
+这部分显示了关于InnoDB缓冲池及其如何使用内存的统计。
+
+
+        1 ----------------------
+        2 BUFFER POOL AND MEMORY
+        3 ----------------------
+        4 Total memory allocated 4648979546; in additional pool allocated 16773888
+        5 Buffer pool size 262144
+        6 Free buffers 0
+        7 Database pages 258053
+        8 Modified db pages 37491
+        9 Pending reads 0
+        10 Pending writes: LRU 0, flush list 0, single page 0
+        11 Pages read 57973114, created 251137, written 10761167
+        12 9.79 reads/s, 0.31 creates/s, 6.00 writes/s
+        13 Buffer pool hit rate 999 / 1000
+
+第4行显示了由InnoDB分配的总内存，以及其中多少是额外内存池分配。额外内存池仅分配了其中（一般很小）一部分的内存，由内部内存分配器分配。现代的InnoDB版本一般使用操作系统的内存分配器，但老版本使用自己的，这是由于在那个时代有些操作系统并未提供一个非常好的实现。
+
+第5～8行显示了缓冲池度量值，以页为单位。度量值有总的缓冲池大小、空闲页数、分配用来存储数据库页的页数，以及“脏”数据库页数。InnoDB使用缓冲池中的部分页来对锁、自适应哈希，以及其他系统结构做索引，因此池中的数据库页数永远不等于总的池大小。
+
+第9～10行显示了挂起的读和写的数量（例如InnoDB需要为缓冲池而做的总的逻辑读和写）。这些值并不与FILE I/O部分的值相匹配，因为InnoDB可能合并许多的逻辑操作到一个物理I/O操作中。LRU代表“最近使用到的”；它是通过冲刷缓冲中不经常使用的页来释放空间以供给经常使用的页的一种方法。冲刷列表存放有检测点处理需要冲刷的旧页，并且单页的写是独立的页面写，不会被合并。
+
+输出中的第8行显示缓冲池包含37 491个脏页，这是在某些时刻（它们已经在内存中被修改但尚未写到磁盘上）需要被刷到磁盘上的。然而，第10行显示当前没有安排冲刷。这不是一个问题；InnoDB会在需要时刷。如果在InnoDB的状态输出中到处可见大量挂起的I/O操作，这往往表明服务器有严重问题。
+
+第11行显示了InnoDB被读取、创建和写入了多少页。读/写页的值指的是从磁盘读到缓冲池中的数据，或反过来说。创建页的值指的是InnoDB在缓冲池中分配但没有从数据文件中读取内容的页，因为它并不关心内容是什么（例如，它们可能属于一个已经被删除的表）。
+
+第13行报告了缓冲池的命中率，它用来衡量InnoDB在缓冲池中查找到所需页的比例。它度量自上次InnoDB状态输出后的命中率，因此，如果服务器自那以后一直很安静，你将会看到“No buffer pool page gets since the last printout.”。它对于度量缓存池的大小并没有用处。
+
+在MySQL 5.5中，可能有多个缓冲池，每一个都会在输出中打印一部分信息。Percona XtraDB还会在输出中打印更多详情——例如，准确显示内存在哪里分配。
+
+## ROW OPERATIONS
+
+这部分显示了其他各项InnoDB统计。
+
+
+        1 --------------
+        2 ROW OPERATIONS
+        3 --------------
+        4 0 queries inside InnoDB, 0 queries in queue
+        5 1 read views open inside InnoDB
+        6 Main thread process no. 10099, id 88021936, state: waiting for server activity
+        7 Number of rows inserted 143, updated 3000041, deleted 0, read 24865563
+        8 0.00 inserts/s, 0.00 updates/s, 0.00 deletes/s, 0.00 reads/s
+        9 ----------------------------
+        10 END OF INNODB MONITOR OUTPUT
+        11 ============================
+
+第4行显示了InnoDB内核内有多少线程（我们在讨论TRANSACTIONS部分的小节中提及过）。队列中的查询是InnoDB为限制并发执行的线程量而不允许进入内核的线程。查询同样在进入队列之前会休眠等待，这之前已经讨论过。
+
+第5行显示了有多少打开的InnoDB读视图。读视图是包含事务开始点的数据库内容的MVCC“快照”。你可以看看某特定事务是否在TRANSACTIONS部分有读视图。
+
+第6行显示了内核的主线程状态。可能的状态值如下。
+
++ doing background drop tables 
++ doing insert buffer merge 
++ flushing buffer pool pages 
++ flushing log 
++ making checkpoint 
++ purging 
++ reserving kernel mutex 
++ sleeping 
++ suspending 
++ waiting for buffer pool flush to end 
++ waiting for server activity 
+
+在大部分服务器上应该会经常看到“sleeping”，如果生成多个快照而一再查看到不同的状态，例如“flushing buffer pool pages”，则应该怀疑相关的活动有问题——例如，“疯狂刷”问题，可能由某个冲刷算法差劲的InnoDB版本引起，或由糟糕的配置导致，例如太小的事务日志文件。
+
+第7～8行显示了多少行被插入、更新、删除和读取，以及它们的每秒均值。如果想查看InnoDB有多少工作在进行，那么它们是很好的参考值。
+
+SHOW ENGINE INNODB STATUS输出在第9～13行结束。如果看不到这个文本，那可能是有一个大的死锁截断了输出。
+
+# SHOW PROCESSLIST
+
+进程列表是当前连接到MySQL的连接或线程的清单。SHOW PROCESSLIST列出了这些线程，以及每个线程的状态信息。例如：
+
+
+        mysql> **    SHOW FULL PROCESSLIST\G**    
+        *************************** 1. row ***************************
+             Id: 61539
+           User: sphinx
+           Host: se02:58392
+             db: art136
+        Command: Query
+           Time: 0
+          State: Sending data
+           Info: SELECT a.id id, a.site_id site_id, unix_timestamp(inserted) AS
+        inserted,forum_id, unix_timestamp(p
+        *************************** 2. row ***************************
+             Id: 65094
+           User: mailboxer
+           Host: db01:59659
+             db: link84
+        Command: Killed
+           Time: 12931
+          State: end
+           Info: update link84.link_in84 set url_to =
+        replace(replace(url_to,'&','&'),'%20','+'), url_prefix=repl
+
+有几个工具（例如*innotop*）可以以定期刷新的方式显示进程列表。
+
+也可以从INFORMATION\_SCHEMA中的表来获取这个信息。Percona Server和MariaDB向这个表中增加了更多有用的信息，如高精度的时间字段和显示查询完成百分比的字段，这一信息可用作进度指示。
+
+Command和State列真正表明了线程的状态。上面的例子中，第一个进程正在运行查询并发送数据，而第二个进程已被杀死，这可能是由于这需要非常长的一段时间来完成，于是某人深思熟虑后通过KILL命令终结了它。线程有可能在KILL状态停留一段时间，因为KILL命令有可能不能立刻执行完成，比如它可能需要一些时间来回滚事务。
+
+SHOW FULL PROCESSLIST（增加了FULL关键字）将显示每个查询的全文，否则最多显示100个字符。
+
+# SHOW ENGINE INNODB MUTEX
+
+SHOW ENGINE INNODB MUTEX返回InnoDB互斥体的详细信息，主要对洞悉可扩展性和并发性问题有帮助。每个互斥体都保护着代码中一个临界区，这在之前已经讨论过。
+
+输出会因MySQL版本和编译选项而有所不同。下面是MySQL 5.5服务器的示例。
+
+![](img/000002.jpeg) 
+
+基于等待的数量，可以使用这个输出来帮助确定InnoDB的哪一块是瓶颈。只要有互斥体，就会有潜在的争用。该命令的输出可能会非常多，需要写一些脚本进行聚合分析。
+
+有三种主要的策略可以消除互斥相关的瓶颈：尽量避开InnoDB的弱点，限制并发，或者在CPU密集型的空转等待和资源密集型的操作系统等待之间取得平衡。这些在本附录前面和第8章讨论过。
+
+## 复制状态
+
+MySQL有几个命令用以监测复制。在主库上执行SHOW MASTER STATUS可显示主库的复制状态和配置。
+
+
+        mysql> **    SHOW MASTER STATUS\G**    
+        *************************** 1. row ***************************
+                    File: mysql-bin.000079
+                Position: 13847
+            Binlog_Do_DB:
+        Binlog_Ignore_DB:
+
+输出包含了主库当前的二进制日志位置。通过SHOW BINARY LOGS可以获取到二进制日志的列表。
+
+![](img/000003.jpeg) 
+
+要查看这些二进制日志中的事件，可以用SHOW BINLOG EVENTS。在MySQL 5.5中，也可以使用SHOW RELAYLOG EVENTS。
+
+在备库上执行SHOW SLAVE STATUS查看复制的状态和配置。在此，我们不予列举，因为输出有点冗长，但我们会说明关于它的几个事情。首先，你可以同时看到复制I/O和复制SQL线程的状态，包括任何错误。也可以看到复制落后多远。输出中还有三套二级制日志的坐标，这几个坐标对于备份和搭备库非常有用。
+
+
+        **    Master_Log_File/Read_Master_Log_Pos**    
+
+I/O线程读主库二进制日志的位置。
+
+
+        **    Relay_Log_File/Relay_Log_Pos**    
+
+SQL线程执行中继日志的位置。
+
+
+        **    Relay_Master_Log_File/Exec_Master_Log_Pos**    
+
+SQL线程执行的映射到主库二进制日志的位置。这与Relay\_Log\_File/Relay\_Log\_Pos有着相同的逻辑位置，但是主库的二进制日志而非复制的中继日志。换句话说，如果你看一下日志中的这两个位置，你会发现有相同的日志事件。
+
+# INFORMATION\_SCHEMA
+
+INFORMATION\_SCHEMA库是一个SQL标准中定义的系统视图的集合。MySQL实现了许多标准中的视图，并且增加了一些其他的视图。在MySQL 5.1中，其中许多的视图与MySQL的SHOW命令对应，例如SHOW FULL PROCESSLIST和SHOW STATUS。然而，也有一些视图并没有相对应的SHOW命令。
+
+INFORMATION\_SCHEMA视图的美在于能够以标准的SQL来进行查询。这比SHOW命令更灵活，因为SHOW命令产生的结果不能聚合、联接或进行其他标准SQL操作。在系统视图层拥有所有可获得的数据使得写感兴趣和有用的查询变得可行。
+
+例如，在Sakila样本库中哪一个表引用了actor表？一致的命名约定使之很容易确定。
+
+![](img/000004.jpeg) 
+
+我们需要为本书找几个表中含有多列索引的样例。下面是一个满足需要的查询。
+
+![](img/000005.jpeg) 
+
+你也可以写更复杂的查询，就像对待其他常规表一样。MySQL Forge（*http://forge.mysql.com*）是一个寻找和分享针对这些视图的查询的好地方。有查找重复和冗余索引，查找非常低基数的索引，以及更多其他的例子。在Shlomi Noach的*common\_schema*项目中（*http://code.openark.org/forge/common\_schema*）中同样有一组基于INFORMATION\_SCHEMA视图所写的有用视图。
+
+最大的缺点是视图与相应的SHOW命令相比，有时非常慢。它们一般会取所有的数据，存在临时表中，然后使查询可以获取临时表。当服务器上数据量大或表非常多时，查询INFORMATION\_SCHEMA表会导致非常高的负载，并且会导致服务器对其他用户而言停转或不可响应，因此在一个高负载且数据量大的生产服务器上使用时要小心。查询时会有危险的表主要是那些包含下列表元数据的表：TABLES，COLUMNS，REFERENTIAL\_CONSTRAINTS，KEY\_COLUMN\_USAGE，等等。对这些表的查询会导致MySQL向存储引擎请求获取类似服务器上表的索引统计等数据，而这在 InnoDB里是非常繁重的。
+
+这些视图不可更新。尽管你可以从中检索到服务器设置，但不能更新以影响服务器的配置，因此，仍然需要对配置使用SHOW和SET命令，尽管INFORMATION\_SCHEMA视图对其他任务非常有用。
+
+## InnoDB表
+
+在MySQL 5.1和更新版本中，InnoDB插件创建了许多的INFORMATION\_SCHEMA表。这些表非常有用。在MySQL 5.5中有更多这样的表，而还未发行的MySQL 5.6中则还要多。
+
+在MySQL 5.1中，存在如下一些表。
+
+INNODB\_CMP和INNODB\_CMP\_RESET
+
+这些表显示了InnoDB中以新文件格式Barracuda压缩的数据的相关信息。第二个表显示的信息与第一个表相同，但具有重置所包含数据的副作用，好像使用FLUSH命令那样。
+
+INNODB\_CMPMEM和INNODB\_CMPMEM\_RESET
+
+这些表显示了用于InnoDB压缩数据的缓冲池中页的信息。第二个表又是一个重置表。
+
+INNODB\_TRX和INNODB\_LOCKS
+
+这些表显示了事务，拥有和等待锁的事务。它们对于诊断锁等待问题和长时间运行的事务非常重要。MySQL用户手册上包含了查询样例，你可以直接复制、粘贴来显示哪一些事务在阻塞其他事务，它们正在运行的查询，等等。
+
+除了这些表，MySQl 5.5还增加了INNODB\_LOCK\_WAITS，它可以帮助更容易地诊断更多类型的锁等待问题。MySQL 5.6中将会增加显示关于InnoDB内部更多信息（包括缓冲池和数据字典）的表，以及称为INNODB\_METRICS的新表，它将是使用Performance Schema的替代方案。
+
+## Percona Server中的表
+
+Percona Server向INFORMATION\_SCHEMA库中增加了大量的表。原生的MySQL 5.5服务器有39个表，而Percona Server 5.5有61个表。以下是关于新增表的概述。
+
+“用户统计信息”表
+
+这些表源于Google的MySQL补丁。它们显示了客户端、索引、表、线程和用户的活动统计。我们在本书中提到了它们的使用，例如确定复制何时开始接近追赶上主库的能力极限。
+
+InnoDB数据字典
+
+一系列的表以只读表的方式暴露了InnoDB内部数据词典：列、外键、索引、统计，等等。它们对从InnoDB角度检测和理解数据库非常有帮助，它可能与MySQL不同，因为MySQL依赖于.*frm*文件来存储数据字典。类似的表在MySQL 5.6发行时会加进来。
+
+InnoDB缓冲池
+
+这些表使你可以像表一样查询缓冲池，表中每个页是一行，因此，你可以看到什么页驻存于缓冲池中，有哪种类型的页，等等。这些表已被证实对于诊断类似膨胀的插入缓冲非常有用。
+
+临时表
+
+这些表显示了与INFORMATION\_SCHEMA.TABLES表中可获取的类型相同的信息，只是用临时表取代了。有一个用于你自身会话的临时表，还有一个用于整个服务器中的所有临时表。它们对某个会话获取可视性到存在的临时表中，以及它们使用了多少空间。
+
+杂项表
+
+有少数其他表为查询执行时间、文件、表空间和更多InnoDB内部信息增加了可视性。
+
+关于Percona Server的新增表的文档可以在*http://www.percona.com/doc*/获取。
+
+# Performance Schema
+
+自MySQL 5.5起，Performance Schema（寄存于PERFORMANCE\_SCHEMA库中）是MySQL增强仪表的新的汇总处。我们在第3章中已讨论过一点。
+
+默认情况下，Performance Schema是禁掉的，你必须打开并且使其在一个想要收集的特定的仪表点（“消费者”）启用。我们对服务器以几个不同的配置做了基准测试，发现即使Performance Schema没有数据可采集也会导致8％～11％的开销，并且所有消费都生效的话会有19％～25％的开销，具体取决于是一个只读还是读/写的负载。这算少还是多由你来决定。
+
+这在MySQL 5.6中将改善，特别是当特性本身生效但所有仪表点都禁用时。这对某些用户而言更加实用，他们会让Performance Schema生效，但直到收集信息时才将其激活。
+
+在MySQL 5.5中，Performance Schema包含了指示条件变量、互斥体、读/写锁和文件I/O实例的表。还有指示实例上的等待信息的表，而这些经常是你在查询时首先感兴趣的，以及与其实例表的联接。这些事件等待表有几种变体，拥有关于服务器性能和行为的当前和历史信息。最后，还有一组“设置表”，你可以用这些表来使预想的消费者生效或失效。
+
+在MySQL 5.6.3开发里程碑的第6个发行中，Performance Schema中的表数从17增长到了49。这意味着MySQL 5.6中有许多的仪表！增加的仪表涵盖SQL语句、语句过程（基本上与你在SHOW PROCESSLIST中看到的线程状态相同）、表、索引、主机、线程、用户、账号，以及各种总述及历史表等。
+
+你如何使用这些表？有49个表，得让某些人为此写些工具来帮助大家了。然而，对于与 Performance Schema表相对应的早期流行的非常不错的SQL例子，可以阅读Oracle工程师Mark Leith的博客上的一些文章，例如*http://www.markleith.co.uk/?p=471*。
+
+# 总结
+
+MySQL暴露服务器内部信息的首要方式是SHOW命令，但这在改变。在MySQL 5.1中引入的可插拔的INFORMATION\_SCHEMA表允许InnoDB插件增加一些非常有意义的仪表，而Percona Server增加的要多得多。然而，读取SHOW ENGINE INNODB STATUS输出并解释的能力对管理InnoDB仍然是至关重要的。在MySQL 5.5和更新的服务器版本中，可以使用Performance Schema，它将来可能变成深入服务器内部最强大和完备的方式。Performance Schema最棒的一点在于它是基于时间的，这意味着MySQL最终可以获取已经逝去时间里的仪表盘，而不仅仅是已操作的次数。
+
+
+
+————————————————————
+
+(1) 有个问题需要说明：如果在一个新版服务器上使用老版的*mysqladmin*，它前两列是自服务器启动后的值，最后两列是自上次刷新后的值（在本例中是10s之前）。百分比是与打印输出中显示的总值相比较，而不是与所有查询的总值相比。
+
+(2) 最早在 *http://code.openark.org/blog/mysql/mysql-global-status-difference-using-single-query*上发表。
+
+(3) 在MySQL 5.1中，这个变量被分解成 Questions 和 Queries，两者有轻微区别。
+
+(4) 在MySQL 5.1中增强了等待数组，使其更为高效。
+
+(5) 这是在不指定主键时InnoDB内部创建的索引。
+
+
+
+
+
+ 附录C　大文件传输
+
+在管理MySQL、初始化服务器、克隆复制和进行备份/还原操作时，复制、压缩和解压缩大文件（常常是跨网络的）是很常见的任务。能够最快最好完成这些任务的方法并不总是显而易见的，并且方法好坏的差异可能非常显著。这个附录将通过几个例子演示使用常见的UNIX实用工具，将一个大尺寸的备份镜像从一台服务器复制到其他服务器。
+
+通常从未压缩的文件开始，例如一台服务器上的InnoDB 表空间和日志文件。当然，在把文件复制到目的地之后要再将它解压缩。另外一个常见的场景是以压缩文件开始，例如备份镜像文件，以解压文件结束。
+
+如果网络传输能力有限，那么用压缩格式在网络间发送文件是个好方法。你可能还需要一个安全的传输途径，使数据不会被损坏；这对于备份镜像文件来说，是一个很常见的需求。
+
+# 复制文件
+
+这个任务实际上就是完成以下事情。
+
+1. （可选）压缩数据。 
+2. 发送到另外一台机器上。 
+3. 把数据解压缩到最终目的地。 
+4. 在复制完成后，校验文件以确认其没有被损坏。 
+
+我们对能达成这些目标的一系列方法进行了基准测试。本附录的余下部分将展示我们是怎么做的，以及我们找到的最快速的方法是什么。
+
+对于在本书里讨论过的很多目的，例如备份，你可能要考虑在哪一台机器上做压缩会更好一点。如果有足够的网络带宽，还是复制未压缩形式的备份镜像文件为好，这样可以在MySQL服务器上节省出CPU资源供查询使用。
+
+## 一个简单的示例
+
+我们以一个简单的示例开始，安全地将一个未压缩的文件从一台机器发送到另外一台上，途中将它进行压缩，然后再解压。在称为server1的源服务器上，执行如下命令。
+
+
+        server1$ **    gzip -c /backup/mydb/mytable.MYD > mytable.MYD.gz**    
+            server1$**     scp mytable.MYD.gz root@server2:/var/lib/myql/mydb/**    
+
+然后，在server2上执行如下命令。
+
+
+        server2$ **    gunzip /var/lib/mysql/mydb/mytable.MYD.gz**    
+
+这大概是最简单的实现方法了，但效率并不高，因为涉及压缩、复制和解压缩等串行化的步骤。每一个步骤都需要读/写磁盘，速度比较慢。上述命令的真正操作依次是这样的：在server1上*gzip*既要读又要写，*scp*在server1上读而在server2上写；*gunzip*在server2上既要读又要写。
+
+## 一步到位的方法
+
+下面这个方法更有效率一些，它将压缩、复制文件和在传输的另一端解压缩文件全部放在一个步骤里完成。这一次我们使用SSH，SCP就是基于这个安全协议的。下面是在server1上执行的命令。
+
+
+        server1$ **    gzip -c /backup/mydb/mytable.MYD | ssh root@server2"gunzip -c - > /var/lib**    
+          **    >/mysql/mydb/mytable.MYD**    
+
+这个方法通常比第一个方法好，因为它极大地降低了磁盘I/O：磁盘活动被减少到只要在server1上读，在server2上写。这也使得磁盘操作更加有序。
+
+也可以使用SSH内建的压缩来完成，但是我们展示的是用管道来做压缩和解压缩，这是因为这样能给予你更大的灵活性。例如，假如你不想在另一端解压缩文件，就无法使用SSH的压缩。
+
+可以通过调整一些选项来提高这个方法的效率，例如给gzip增加选项-1，使其压缩得更快。这个选项通常不会降低太多压缩率，但是能明显提高压缩速度，这才是重点。你也可以使用不同的压缩算法。例如，如果想获得很高的压缩率，又不在乎会花费多少时间，那么，就可以使用*bzip2*来代替*gzip*。如果想要非常快的压缩速度，可以使用基于LZO的压缩程序。这样压缩后的数据会比其他方法的结果大20％左右，但是压缩的速度约快5倍。
+
+## 避免加密的系统开销
+
+SSH不是跨网传输数据的最快方法，因为它增加了加解密的系统开销。如果不需要加密，那就使用*netcat*把“裸”数据进行跨网复制。可以通过*nc*以非交互式操作方式调用这个工具，这正是我们想要的。
+
+这里有一个例子。首先，在server2上监听12345端口（任何闲置的端口都可以）上的文件，把任何发送到该端口的东西都解压缩到期望的数据文件里。
+
+
+        server2$ **    nc -l -p 12345 | gunzip -c – > /var/lib/mysql/mydb/mytable.MYD**    
+
+然后在server1上，开启另一个*netcat*实例，发送数据到目的服务器监听的端口上。-*q*选项告诉*netcat*当到达输入文件的末尾后就关闭连接。这会触发监听实例关闭接收的文件并退出。
+
+
+        server1$ **    gzip -c - /var/lib/mysql/mydb/mytable.MYD | nc -q 1 server2 12345**    
+
+更容易的技术是使用*tar*，这样文件名称也会通过网络发送出去，从而消除了另一个错误的来源，并会自动将文件写到正确的位置。*z*选项告诉*tar*使用*gzip*做压缩和解压缩。下面是在server2上执行的命令。
+
+
+        server2$ nc -l -p **    12345 | tar xvzf -**    
+
+以下是在server1上执行的命令。
+
+
+        server1$ **    tar cvzf - /var/lib/mysql/mydb/mytable.MYD | nc -q 1 server2 12345**    
+
+你可以把这些命令集成到一个单独的脚本里，这样压缩和复制大量的文件到网络连接时效率会比较高，然后在另一端解压缩。
+
+## 其他选项
+
+另外一个选择是*rsync。rsync*非常简便，因为它易于在源和目标之间做镜像，并且还可以断点续传。但是，当它的二进制差异算法无法被很好地发挥时，它不太会得到很好应用。在知道文件中的大部分内容都不需要传输的场景下，例如，如果要续传一个中途退出的*nc*复制的任务，就可以考虑用它。
+
+在还没有处于危急关头时就应该针对文件传输做一些实验，因为发现哪一种方法最快可能要做许多试验和遇到许多错误。哪一种方法最快取决于你的系统。其中最大的影响因素是服务器上的磁盘驱动器、网卡和CPU的数量，以及它们之间相对的速度有多快。有个不错的方法是监控*vmstat -n 5*，看磁盘或CPU是否就是速度的瓶颈。
+
+如果有闲置的CPU，就可能通过运行并行复制操作来加快整个过程。相反，如果CPU已经是瓶颈，而磁盘和网络的承载能力还比较充裕，那就可以不压缩。在导出和还原时，出于速度的考虑，并行执行这些操作往往是个不错的主意。此外，监控服务器性能，看看是否还有闲置的承载能力。过度的并行反而会降低处理速度。
+
+# 文件复制的基准测试
+
+为了便于比较，表C-1显示的是在局域网里通过一块标准的百兆以太网链路复制一个样本文件能达到的最快速度。这个文件未压缩时的大小是738MB，使用*gzip*默认选项压缩后是100MB。源和目的机器都有充足的可用内存、CPU资源和磁盘空间；网络是瓶颈所在。
+
+**表C-1：跨网复制文件的基准测试**
+**方法** **时间（s）**  *rsync*，不使用压缩 71  *scp*，不使用压缩 68  *nc*，不使用压缩 67  *rsync*，使用压缩(-*z*) 63  *gzip*, *scp*和*gunzip* 60(44\+10\+6)  *ssh*，使用压缩 44  *nc*，使用压缩 42  
+注意通过网络发送文件时压缩有多大的帮助——最慢的三个方法并没有压缩文件。尽管这样，好处也不一。如果CPU和磁盘慢但有一个千兆以太网连接，那么读取和压缩文件可能是瓶颈，不压缩反而更快。
+
+顺便提一下，使用类似*gzip --fast*的快速压缩比默认压缩级别要快许多，因为后者要使用许多的CPU时间来对文件多做一点压缩。我们的测试基于默认压缩级别。
+
+传输文件的最后一步是验证复制过程没有损坏文件。可以使用许多方法，例如*md5sum*，但再次对文件做完整扫描也相当昂贵。这也是压缩很有用的另外一个原因：压缩本身往往包括至少一个循环冗余检测（CRC），而它应该能发现任何错误，因此不需要做错误检测。
+
+
+
+
+
+ 附录D　EXPLAIN
+
+这个附录显示了如何调用“EXPLAIN”来获取关于查询执行计划的信息，以及如何解释输出。EXPLAIN命令是查看查询优化器如何决定执行查询的主要方法。这个功能有局限性，并不总会说出真相，但它的输出是可以获取的最好信息，值得花时间了解，因为可以学习到查询是如何执行的。学会解释EXPLAIN将帮助你了解MySQL优化器是如何工作的。
+
+# 调用EXPLAIN
+
+要使用EXPLAIN，只需在查询中的SELECT关键字之前增加EXPLAIN这个词。MySQL会在查询上设置一个标记。当执行查询时，这个标记会使其返回关于在执行计划中每一步的信息，而不是执行它。它会返回一行或多行信息，显示出执行计划中的每一部分和执行的次序。
+
+下面是一个可能的最简单的EXPLAIN结果。
+
+
+        mysql> **    EXPLAIN SELECT 1\G**    
+        *************************** 1. row ***************************
+                  id: 1
+         select_type: SIMPLE
+               table: NULL
+                 type: NULL
+        possible_keys: NULL
+                  key: NULL
+              key_len: NULL
+                  ref: NULL
+                 rows: NULL
+                Extra: No tables used
+
+在查询中每个表在输出中只有一行。如果查询是两个表的联接，那么输出中将有两行。别名表单算为一个表，因此，如果把一个表与自己联接，输出中也会有两行。“表”的意义在这里相当广：可以是一个子查询，一个UNION结果，等等。稍后会看到为什么是这样。EXPLAIN有两个主要的变种。
+
++ EXPLAIN EXTENDED看起来和正常的EXPLAIN的行为一样，但它会告诉服务器“逆向编译”执行计划为一个SELECT语句。可以通过紧接其后运行SHOW WARNINGS看到这个生成的语句。这个语句直接来自执行计划，而不是原SQL语句，到这点上已经变成一个数据结构。在大部分场景下它都与原语句不相同。你可以检测查询优化器到底是如何转化语句的。EXPLAIN EXTENDED在MySQL 5.0和更新版本中可用，在MySQL 5.1（稍后会做更多讨论）额外增加了一个filtered列。 
++ EXPLAIN PARTITIONS会显示查询将访问的分区，如果查询是基于分区表的话。它只在MySQL 5.1和更新版本中存在。 
+
+认为增加EXPLAIN时MySQL不会执行查询，这是一个常见的错误。事实上，如果查询在FROM子句中包括子查询，那么MySQL实际上会执行子查询，将其结果放在一个临时表中，然后完成外层查询优化。它必须在可以完成外层查询优化之前处理所有类似的子查询，这对于EXPLAIN来说是必须要做的(1)。这意味着如果语句包含开销较大的子查询或使用临时表算法的视图，实际上会给服务器带来大量工作。
+
+要意识到EXPLAIN只是个近似结果，别无其他。有时候它是一个很好的近似，但在其他时候，可能与真相相差甚远。以下是一些相关的限制。
+
++ EXPLAIN根本不会告诉你触发器、存储过程或UDF会如何影响查询。 
++ 它并不支持存储过程，尽管可以手动抽取查询并单独地对其进行EXPLAIN操作。 
++ 它并不会告诉你MySQL在查询执行中所做的特定优化。 
++ 它并不会显示关于查询的执行计划的所有信息（MySQL开发者会尽可能增加更多信息）。 
++ 它并不区分具有相同名字的事物。例如，它对内存排序和临时文件都使用“filesort”，并且对于磁盘上和内存中的临时表都显示“Using temporary”。 
++ 可能会误导。例如，它会对一个有着很小LIMIT的查询显示全索引扫描。（MySQL 5.1的EXPLAIN关于检查的行数会显示更精确的信息，但早期版本并不考虑LIMIT。） 
+
+## 重写非SELECT查询
+
+MySQL EXPLAIN只能解释SELECT查询，并不会对存储程序调用和INSERT、UPDATE、DELETE或其他语句做解释。然而，你可以重写某些非SELECT查询以利用EXPLAIN。为了达到这个目的，只需要将该语句转化成一个等价的访问所有相同列的SELECT。任何提及的列都必须在SELECT列表，关联子句，或者WHERE子句中。
+
+例如，假如你想重写下面的UPDATE语句以使其可以利用EXPLAIN。
+
+
+        UPDATE sakila.actor
+           INNER JOIN sakila.film_actor USING (actor_id)
+        SET actor.last_update=film_actor.last_update;
+
+下面的EXPLAIN语句并不等价于上面的UPDATE，因为它并不要求服务器从任何一个表上获取last\_update列。
+
+
+        mysql> **    EXPLAIN SELECT film_actor.actor_id**    
+            -> **    FROM sakila.actor**    
+            -> **    INNER JOIN sakila.film_actor USING (actor_id)\G**    
+        *************************** 1. row ***************************
+                   id: 1
+          select_type: SIMPLE
+                table: actor
+                 type: index
+        possible_keys: PRIMARY
+                  key: PRIMARY
+              key_len: 2
+                  ref: NULL
+                 rows: 200
+                Extra: Using index
+        *************************** 2. row ***************************
+                   id: 1
+          select_type: SIMPLE
+                table: film_actor
+                 type: ref
+        possible_keys: PRIMARY
+                  key: PRIMARY
+              key_len: 2
+                  ref: sakila.actor.actor_id
+                 rows: 13
+                Extra: Using index
+
+这个差别非常重要。例如，输出结果显示MySQL将使用覆盖索引，但是，当检索并更新last\_updated列时，就无法使用覆盖索引了。下面这种改写法就更接近原来的语句：
+
+
+        mysql> **    EXPLAIN SELECT film_actor.last_update, actor.last_update**    
+            -> **    FROM sakila.actor**    
+            ->   **    INNER JOIN sakila.film_actor USING (actor_id)\G**    
+        *************************** 1. row ***************************
+                   id: 1
+          select_type: SIMPLE
+                table: actor
+                 type: ALL
+        possible_keys: PRIMARY
+                  key: NULL
+              key_len: NULL
+                  ref: NULL
+                 rows: 200
+                Extra:
+        *************************** 2. row ***************************
+          select_type: SIMPLE
+                table: film_actor
+                 type: ref
+        possible_keys: PRIMARY
+                  key: PRIMARY
+              key_len: 2
+                  ref: sakila.actor.actor_id
+                 rows: 13
+                Extra:
+
+像这样重写查询并不非常科学，但对帮助理解查询是怎么做的经常已足够好了。(2)
+
+显示计划时，对于写查询并没有“等价”的读查询，理解这一点非常重要。一个SELECT查询只需要找到数据的一份副本并返回。而任何修改数据的查询必须在所有索引上查找并修改其所有副本。这常常比看起来等价的SELECT查询的消耗要高得多。
+
+# EXPLAIN中的列
+
+EXPLAIN的输出总是有相同的列（只有EXPLAIN EXTENDED在MySQL 5.1中增加了一个filtered列，EXPLAIN PARTITIONS增加了一个Partitions列）。可变的是行数及内容。然而，为了保持我们的例子简洁明了，我们在本附录中不总是显示所有的列。
+
+在接下来的小节中，我们将展示在EXPLAIN结果中每一列的意义。记住，输出中的行以MySQL实际执行的查询部分的顺序出现，而这个顺序不总是与其在原始SQL中的相一致。
+
+## id列
+
+这一列总是包含一个编号，标识SELECT所属的行。如果在语句当中没有子查询或联合，那么只会有唯一的SELECT，于是每一行在这个列中都将显示一个1。否则，内层的SELECT语句一般会顺序编号，对应于其在原始语句中的位置。
+
+MySQL将SELECT查询分为简单和复杂类型，复杂类型可分成三大类：简单子查询、所谓的派生表（在FROM子句中的子查询）(3)，以及UNION查询。下面是一个简单的子查询。
+
+![](img/000006.jpeg) 
+
+FROM子句中的子查询和联合给id列增加了更多复杂性。下面是一个FROM子句中的基本子查询。
+
+![](img/000007.jpeg) 
+
+如你所知，这个查询执行时有一个匿名临时表。MySQL内部通过别名（der）在外层查询中引用这个临时表，在更复杂的查询中可以看到ref列。
+
+最后，下面是一个UNION查询。
+
+![](img/000008.jpeg) 
+
+注意UNION结果输出中的额外行。UNION结果总是放在一个匿名临时表中，之后MySQL将结果读取到临时表外。临时表并不在原SQL中出现，因此它的id列是NULL。与之前的例子相比（演示子查询的那个FROM子句中），从这个查询产生的临时表在结果中出现在最后一行，而不是第一行。
+
+到目前为止这些都非常直截了当，但这三类语句的混合则会使输出变得非常复杂，我们稍后就会看到。
+
+## select\_type列
+
+这一列显示了对应行是简单还是复杂SELECT（如果是后者，那么是三种复杂类型中的哪一种）。SIMPLE值意味着查询不包括子查询和UNION。如果查询有任何复杂的子部分，则最外层部分标记为PRIMARY，其他部分标记如下。
+
+SUBQUERY
+
+包含在SELECT列表中的子查询中的SELECT（换句话说，不在FROM子句中）标记为SUBQUERY。
+
+DERIVED
+
+DERIVED值用来表示包含在FROM子句的子查询中的SELECT，MySQL会递归执行并将结果放到一个临时表中。服务器内部称其“派生表”，因为该临时表是从子查询中派生来的。
+
+UNION
+
+在UNION中的第二个和随后的SELECT被标记为UNION。第一个SELECT被标记就好像它以部分外查询来执行。这就是之前的例子中在UNION中的第一个SELECT显示为PRIMARY的原因。如果UNION被FROM子句中的子查询包含，那么它的第一个SELECT会被标记为DERIVED。
+
+UNION RESULT
+
+用来从UNION的匿名临时表检索结果的SELECT被标记为UNION RESULT。
+
+除了这些值，SUBQUERY和UNION还可以被标记为DEPENDENT和UNCACHEABLE。DEPENDENT意味着SELECT依赖于外层查询中发现的数据；UNCACHEABLE意味着SELECT中的某些特性阻止结果被缓存于一个Item\_cache中。（Item\_cache未被文档记载；它与查询缓存不是一回事，尽管它可以被一些相同类型的构件否定，例如RAND()函数。）
+
+## table列
+
+这一列显示了对应行正在访问哪个表。在通常情况下，它相当明了：它就是那个表，或是该表的别名（如果SQL中定义了别名）。
+
+可以在这一列中从上往下观察MySQL的关联优化器为查询选择的关联顺序。例如，可以看到在下面的查询中MySQL选择的关联顺序不同于语句中所指定的顺序。
+
+![](img/000009.jpeg) 
+
+想起我们在第6章中展示的左侧深度优先（left-deep）树了吗？MySQL的查询执行计划总是左侧深度优先树。如果把这个计划放倒，就能按顺序读出叶子节点，它们直接对应于EXPLAIN中的行。之前的查询计划看起来如图D-1所示。
+
+![](img/000010.jpeg) 
+**图D-1：查询执行计划与EXPLAIN中的行相对应的方式**
+
+
+### 派生表和联合
+
+当FROM子句中有子查询或有UNION时，table列会变得复杂得多。在这些场景下，确实没有一个“表”可以参考到，因为MySQL创建的匿名临时表仅在查询执行过程中存在。
+
+当在FROM子句中有子查询时，table列是<derived*N*>的形式，其中*N*是子查询的id。这总是“向前引用”——换言之，*N*指向EXPLAIN输出中后面的一行。
+
+当有UNION时，UNION RESULT的table列包含一个参与UNION的id列表。这总是“向后引用”，因为UNION RESULT出现在UNION中所有参与行之后。如果在列表中有超过20个id，table列可能被截断以防止太长，此时不可能看到所有的值。幸运的是，仍然可以推测包括哪些行，因为你可以看到第一行的id。在这一行和UNION RESULT之间出现的一切都会以某种方式被包含。
+
+### 一个复杂SELECT类型的例子
+
+下面是一个无意义的查询，我们这里把它用作某种复杂SELECT类型的紧凑示例。
+
+
+        1  EXPLAIN
+        2  SELECT actor_id,
+        3  (SELECT 1 FROM sakila.film_actor WHERE film_actor.actor_id =
+        4  der_1.actor_id LIMIT 1)
+        5  FROM (
+        6  SELECT actor_id
+        7  FROM sakila.actor LIMIT 5
+        8  ) AS der_1
+        9  UNION ALL
+        10 SELECT film_id,
+        11 (SELECT @var1 FROM sakila.rental LIMIT 1)
+        12 FROM (
+        13 SELECT film_id,
+        14 (SELECT 1 FROM sakila.store LIMIT 1)
+        15 FROM sakila.film LIMIT 5
+        16 ) AS der_2;
+
+LIMIT子句只是为了方便起见，以防你打算不以EXPLAIN方式执行来看结果。下面是EXPLAIN的结果。
+
+![](img/000011.jpeg) 
+
+我们特意让每个查询部分访问不同的表，以便可以弄清问题所在，但仍然难以解决！从最上面开始看。
+
++ 第1行向前引用了der\_1，这个查询被标记为<derived3>。在原SQL中是第2行。想了解输出中哪些行引用了<derived3>中的SELECT语句，往下看…… 
++ ……第2行，它的id是3。因为它是查询中第3个SELECT的一部分，归为DERIVED类型是因为它嵌套在FROM子句中的子查询内部。在原SQL中为第6～7行。 
++ 第3行的id为2。在原SQL中为第3行。注意，它在具有更高id的行后面，暗示后面再执行，这是合理的。它被归为DEPENDENT SUBQUERY，意味着其结果依赖于外层查询（亦即某个相关子查询）。本例中的外查询是从第2行开始，从der\_1中检索数据的SELECT。 
++ 第4行被归为UNION，意味着它是UNION中的第2个或之后的SELECT。它的表为<derived6>，意味着是从子句FROM的子查询中检索数据并附加到UNION的临时表。像之前一样，要找到显示这个子查询的查询计划的EXPLAIN行，必须往下看。 
++ 第5行是在原SQL中第13、14和15行定义的der\_2子查询，EXPLAIN称其为 <derived6>。 
++ 第6行是<derived6>的SELECT列表中的一个普通子查询，它的id为7，这非常重要…… 
++ ……因为它比5大，而5是第7行的id。为什么重要？因为它显示了<derived6>子查询的边界。当EXPLAIN输出SELECT类型为DERIVED的一行时，表示一个“嵌套范围”开始。如果后续行的id更小（本例中，5小于6），意味着嵌套范围已经被关闭。这就让我们知道第7行是从<derived6>中检索数据的SELECT列表中的部分——例如，第4行的SELECT列表的一部分（原SQL中第11行）。这个例子相当容易理解，不需要知道嵌套范围的意义和规则，当然有时候并不是这么容易。关于输出中的这一行另外一个要注意的是，因为有用户变量，它被列为UNCACHEABLE SUBQUERY。 
++ 最后一行是UNION RESULT。它代表从UNION的临时表中读取行的阶段。你可以从这行开始反过来向后，如果你愿意的话。它会返回id是1和4的行结果，它们分别引用了<derived3>和<derived6>。 
+
+如你所见，这些复杂的SELECT类型的组合会使EXPLAIN的输出相当难懂。理解规则会使其简单些，但仍然需要多实践。
+
+阅读EXPLAIN的输出经常需要在列表中跳来跳去。例如，再查看第一行输出。仅仅盯着看，是无法知道它是UNION的一部分的。只有看到最后一行你才会明白过来。
+
+## type列
+
+MySQL用户手册上说这一列显示了“关联类型”，但我们认为更准确的说法是访问类型——换言之就是MySQL决定如何查找表中的行。下面是最重要的访问方法，依次从最差到最优。
+
+ALL
+
+人们所称的全表扫描，通常意味着MySQL必须扫描整张表，从头到尾，去找到需要的行。（这里也有个例外，例如在查询里使用了LIMIT，或者在Extra列中显示“Using distinct/not exists”。）
+
+index
+
+这个跟全表扫描一样，只是MySQL扫描表时按索引次序进行而不是行。它的主要优点是避免了排序；最大的缺点是要承担按索引次序读取整个表的开销。这通常意味着若是按随机次序访问行，开销将会非常大。
+
+如果在Extra列中看到“Using index”，说明MySQL正在使用覆盖索引，它只扫描索引的数据，而不是按索引次序的每一行。它比按索引次序全表扫描的开销要少很多。
+
+range
+
+范围扫描就是一个有限制的索引扫描，它开始于索引里的某一点，返回匹配这个值域的行。这比全索引扫描好一些，因为它用不着遍历全部索引。显而易见的范围扫描是带有BETWEEN或在WHERE子句里带有>的查询。
+
+当MySQL使用索引去查找一系列值时，例如IN()和OR列表，也会显示为范围扫描。然而，这两者其实是相当不同的访问类型，在性能上有重要的差异。更多信息可以查看第5章的文章“什么是范围条件”。
+
+此类扫描的开销跟索引类型相当。
+
+ref
+
+这是一种索引访问（有时也叫做索引查找），它返回所有匹配某个单个值的行。然而，它可能会找到多个符合条件的行，因此，它是查找和扫描的混合体。此类索引访问只有当使用非唯一性索引或者唯一性索引的非唯一性前缀时才会发生。把它叫做ref是因为索引要跟某个参考值相比较。这个参考值或者是一个常数，或者是来自多表查询前一个表里的结果值。
+
+ref\_or\_null是ref之上的一个变体，它意味着MySQL必须在初次查找的结果里进行第二次查找以找出NULL条目。
+
+eq\_ref
+
+使用这种索引查找，MySQL知道最多只返回一条符合条件的记录。这种访问方法可以在MySQL使用主键或者唯一性索引查找时看到，它会将它们与某个参考值做比较。MySQL对于这类访问类型的优化做得非常好，因为它知道无须估计匹配行的范围或在找到匹配行后再继续查找。
+
+const, system
+
+当MySQL能对查询的某部分进行优化并将其转换成一个常量时，它就会使用这些访问类型。举例来说，如果你通过将某一行的主键放入WHERE子句里的方式来选取此行的主键，MySQL 就能把这个查询转换为一个常量。然后就可以高效地将表从联接执行中移除。
+
+NULL
+
+这种访问方式意味着MySQL能在优化阶段分解查询语句，在执行阶段甚至用不着再访问表或者索引。例如，从一个索引列里选取最小值可以通过单独查找索引来完成，不需要在执行时访问表。
+
+## possibIe\_keys列
+
+这一列显示了查询可以使用哪些索引，这是基于查询访问的列和使用的比较操作符来判断的。这个列表是在优化过程的早期创建的，因此有些罗列出来的索引可能对于后续优化过程是没用的。
+
+## key列
+
+这一列显示了MySQL 决定采用哪个索引来优化对该表的访问。如果该索引没有出现在possible\_keys列中，那么MySQL选用它是出于另外的原因——例如，它可能选择了一个覆盖索引，哪怕没有WHERE子句。
+
+换句话说，possible\_keys揭示了哪一个索引能有助于高效地行查找，而key显示的是优化采用哪一个索引可以最小化查询成本（更多详情请参阅第6章中关于优化的成本度量值）。下面就是一个例子。
+
+
+                   id: 1
+          select_type: SIMPLE
+                table: film_actor
+                 type: index
+        possible_keys: NULL
+                  key: idx_fk_film_id
+              key_len: 2
+                  ref: NULL
+                 rows: 5143
+                Extra: Using index
+
+## key\_len列
+
+该列显示了MySQL在索引里使用的字节数。如果MySQL正在使用的只是索引里的某些列，那么就可以用这个值来算出具体是哪些列。要记住，MySQL 5.5及之前版本只能使用索引的最左前缀。举例来说，sakila.film\_actor的主键是两个SMALLINT列，并且每个SMALLINT列是两字节，那么索引中的每项是4字节。以下就是一个查询的示例：
+
+![](img/000012.jpeg) 
+
+基于结果中的key\_len列，可以推断出查询使用唯一的首列——actor\_id列，来执行索引查找。当我们计算列的使用情况时，务必把字符列中的字符集也考虑进去。
+
+![](img/000013.jpeg) 
+
+这个查询中平均长度为13字节，即为a列和b列的总长度。a列是3个字符，utf8下每一个最多为3字节，而b列是一个4字节整型。
+
+MySQL并不总显示一个索引真正使用了多少。例如，如果对一个前缀模式匹配执行LIKE查询，它会显示列的完全宽度正在被使用。
+
+key\_len列显示了在索引字段中可能的最大长度，而不是表中数据使用的实际字节数。在前面例子中MySQL总是显示13字节，即使a列恰巧只包含一个字符长度。换言之， key\_len通过查找表的定义而被计算出，而不是表中的数据。
+
+## ref列
+
+这一列显示了之前的表在key列记录的索引中查找值所用的列或常量。下面是一个展示关联条件和别名组合的例子。注意，ref列反映了在查询文本中film表是如何以f为别名的。
+
+![](img/000014.jpeg) 
+
+## rows列
+
+这一列是MySQL估计为了找到所需的行而要读取的行数。这个数字是内嵌循环关联计划里的循环数目。也就是说它不是MySQL认为它最终要从表里读取出来的行数，而是MySQL为了找到符合查询的每一点上标准的那些行而必须读取的行的平均数。（这个标准包括SQL里给定的条件，以及来自联接次序上前一个表的当前列。）
+
+根据表的统计信息和索引的选用情况，这个估算可能很不精确。在MySQL 5.0及更早的版本里，它也反映不出LIMIT子句。举例来说，下面这个查询不会真的检查1 022行。
+
+
+        mysql> **    EXPLAIN SELECT * FROM sakila.film LIMIT 1\G**    
+        **     ...**    
+        rows: 1022
+
+通过把所有rows列的值相乘，可以粗略地估算出整个查询会检查的行数。例如，以下这个查询大约会检查2 600行。
+
+![](img/000015.jpeg) 
+
+要记住这个数字是MySQL认为它要检查的行数，而不是结果集里的行数。同时也要认识到有很多优化手段，例如关联缓冲区和缓存，无法影响到行数的显示。MySQL可能不必真的读所有它估计到的行，它也不知道任何关于操作系统或硬件缓存的信息。
+
+## fiItered列
+
+这一列是在MySQL 5.1里新加进去的，在使用EXPLAIN EXTENDED时出现。它显示的是针对表里符合某个条件（WHERE子句或联接条件）的记录数的百分比所做的一个悲观估算。如果你把rows列和这个百分比相乘，就能看到MySQL估算它将和查询计划里前一个表关联的行数。在写作本书的时候，优化器只有在使用ALL、index、range和index\_merge访问方法时才会用这一估算。
+
+为了说明这一列的输出形式，我们创建了下面这样一张表。
+
+
+        CREATE TABLE t1 (
+          id INT NOT NULL AUTO_INCREMENT,
+          filler char(200),
+          PRIMARY KEY(id)
+        );
+
+然后，我们往表里插入1000行记录，并在filler列里随机填充一些文字。它的用途是防止MySQL在我们将要运行的查询里使用覆盖索引。
+
+
+        mysql> **    EXPLAIN EXTENDED SELECT * FROM t1 WHERE id < 500\G**    
+        *************************** 1. row ***************************
+                   id: 1
+          select_type: SIMPLE
+                table: t1
+                 type: ALL
+        possible_keys: PRIMARY
+                  key: NULL
+              key_len: NULL
+                  ref: NULL
+                 rows: 1000
+             filtered: 49.40
+                Extra: Using where
+
+MySQL可以使用范围访问从表里获取到所有ID不超过500的行，但是，它没这么做，这是因为那样只能去除大约一半的记录，它认为全表扫描也不是太昂贵。因此，它使用了全表扫描和WHERE子句来过滤输出行。它知道使用WHERE子句可以从结果里过滤掉多少条记录，因为范围访问的成本是可以估算出来的。这也就是49.40％出现在filtered列上的原因。
+
+## Extra列
+
+这一列包含的是不适合在其他列显示的额外信息。MySQL用户手册里记录了大多数可以在这里出现的值。其中许多在本书中已经提到过。
+
+常见的最重要的值如下。
+
+*“Using index”*
+
+此值表示MySQL将使用覆盖索引，以避免访问表。不要把覆盖索引和index访问类型弄混了。
+
+*“Using where”*
+
+这意味着MySQL服务器将在存储引擎检索行后再进行过滤。许多WHERE条件里涉及索引中的列，当（并且如果）它读取索引时，就能被存储引擎检验，因此不是所有带WHERE子句的查询都会显示“Using where”。有时“Using where”的出现就是一个暗示：查询可受益于不同的索引。
+
+*“Using temporary”*
+
+这意味着MySQL在对查询结果排序时会使用一个临时表。
+
+“Using filesort”
+
+这意味着MySQL会对结果使用一个外部索引排序，而不是按索引次序从表里读取行。MySQL有两种文件排序算法，你可以在第6章读到相关内容。两种方式都可以在内存或磁盘上完成。EXPLAIN不会告诉你MySQL将使用哪一种文件排序，也不会告诉你排序会在内存里还是磁盘上完成。
+
+*“Range checked for each record (index map: N)*”
+
+这个值意味着没有好用的索引，新的索引将在联接的每一行上重新估算。*N*是显示在possible\_keys列中素引的位图，并且是冗余的。
+
+# 树形格式的输出
+
+MySQL用户往往更希望把EXPLAIN的输出格式化成一棵树，更加精确地展示执行计划。实际上，EXPLAIN查看查询计划的方式确实有点笨拙，树状结构也不适合表格化的输出。
+
+当Extra列里有大量的值时，缺点更明显，使用UNION也是这样。UNION跟MySQL能做的其他类型的联接不太一样，它不太适合EXPLAIN。
+
+如果对EXPLAIN的规则和特性有充分的了解，使用树形结构的执行计划也是可行的。但是这有点枯燥，最好还是留给自动化的工具处理。Percona Toolkit包含了*pt-visual-explain*，它就是这样一个工具。
+
+# MySQL 5.6中的改进
+
+MySQL 5.6中将包括一个对EXPLAIN的重要改进：能对类似UPDATE、INSERT等的查询进行解释。尽管可以将DML语句转化为准等价的“SELECT”查询并EXPLAIN，但结果并不会完全反映语句是如何执行的，因而这仍然非常有帮助。在开发使用类似Percona Toolkit中的*pt-upgrade*时曾尝试使用过那个技术，我们不止一次发现，在将查询转化为SELECT时，优化器并不能按我们预期的代码路径执行。因而，EXPLAIN一个查询而不需要转化为SELECT，对我们理解执行过程中到底发生什么，是非常有帮助的。
+
+MySQL 5.6还将包括对查询优化和执行引擎的一系列改进，允许匿名的临时表尽可能晚地被具体化，而不总是在优化和执行使用到此临时表的部分查询时创建并填充它们。这将允许MySQL可以直接解释带子查询的查询语句，而不需要先实际地执行子查询。
+
+最后，MySQL 5.6将通过在服务器中增加优化跟踪功能的方式改进优化器的相关部分。这将允许用户查看优化器做出的抉择，以及输入（例如，索引的基数）和抉择的原因。这非常有帮助，不仅仅对理解服务器选择的执行计划如此，对为什么选择这个计划也如此。
+
+
+
+————————————————————
+
+(1) 这个限制在MySQL 5.6中将被取消。
+
+(2) MySQL 5.6将允许解释非SELECT查询。万岁！
+
+(3) FROM子句中的子查询是派生表”这一表述是对的，但“派生表是FROM子句中的子查询”则不对，术语“派生表”在SQL中含义很宽泛。
+
+
+
+
+
+ 附录E　锁的调试
+
+任何使用锁来控制资源共享的系统，锁的竞争问题都不好调试。当我们给某个表增加一列新字段，或者只是进行查询，就有可能发现其他请求锁住了操作的表或者行。此时，通常你所想做的事就是找出查询阻塞的原因，从而知道该杀死哪个进程。这个附录显示了如何达到这两个目标。
+
+MySQL服务器本身使用了几种类型的锁。如果查询正在等待一个服务器级别的锁，那么可以在SHOW PROCESSLIST的输出中看到蛛丝马迹。除了服务器级别的锁，任何支持行级别锁的存储引擎，例如InnoDB，都实现了自己的锁。在MySQL 5.0和更早版本中，服务器层无法主动识别这些锁，它们往往对用户和数据库管理员不可见。在MySQL 5.1和后续版本中可见性有了提高。
+
+# 服务器级别的锁等待
+
+锁等待可能发生在服务器级别或存储引擎级别。(1)（应用程序级别的锁可能也是一个问题，但我们在此只关注MySQL。）下面是MySQL服务器使用的几种类型的锁。
+
+表锁
+
+表可以被显式的读锁和写锁进行锁定。这些锁有许多的变种，例如本地读锁。你可以在MySQL手册LOCK TABLES部分了解到这些变种。除了这些显式的锁外，查询过程中还有隐式的锁。
+
+全局锁
+
+可以通过FLUSH TABLES WITH READ LOCK或设置read\_only=1来获取单个全局读锁。它与任何表锁都冲突。
+
+命名锁
+
+命名锁是表锁的一种，服务器在重命名或删除一个表时创建。
+
+字符锁
+
+你可以用GET\_LOCK()及其相关函数在服务器级别内锁住和释放任意一个字符串。
+
+在接下来的章节中我们将更详细地查看每种类型的锁。
+
+## 表锁
+
+表锁既可以是显式的也可以是隐式的。显式的锁用LOCK TABLES创建。例如，如果在*mysql*会话中执行下列命令，将在sakila.film上获得一个显式的锁。
+
+
+        mysql> **    LOCK TABLES sakila.film READ;**    
+
+如果再在另外一个会话中执行如下的命令，查询会挂起并且不会完成。
+
+
+        mysql> **    LOCK TABLES sakila.film WRITE;**    
+
+你可以在第一个连接中看到等待线程。
+
+
+        mysql> **    SHOW PROCESSLIST\G**    
+        *************************** 1. row ***************************
+             Id: 7
+           User: baron
+           Host: localhost
+             db: NULL
+        Command: Query
+           Time: 0
+          State: NULL
+           Info: SHOW PROCESSLIST
+        *************************** 2. row ***************************
+             Id: 11
+            User: baron
+            Host: localhost
+             db: NULL
+        Command: Query
+           Time: 4
+          State: Locked
+           Info: LOCK TABLES sakila.film WRITE
+         2 rows in set (0.01 sec)
+
+可以注意到线程11的状态是Locked。在MySQL服务器代码中只有一个线程会进入此状态：当一个线程持有该锁后，其他线程只能不断尝试获取。因而，如果看到这样的信息，你就知道线程在等待一个MySQL服务器中的锁，而不是存储引擎的。
+
+然而，显式锁并不是阻塞这样一个操作的唯一类型的锁。我们前面也提到，服务器在查询过程中会隐式地锁住表。用一个长时间运行的查询可以很容易地展示这一点，长时间查询可以通过SLEEP()函数轻松创建。
+
+
+        mysql> **    SELECT SLEEP(30) FROM sakila.film LIMIT 1;**    
+
+当这个查询运行时，如果你再次尝试锁sakila.film，操作会因隐式锁而挂起，就如同有显式锁一样。你会在进程列表中看到和之前一样的效果：
+
+
+        mysql> **    SHOW PROCESSLIST\G**    
+        *************************** 1. row ***************************
+             Id: 7
+           User: baron
+           Host: localhost
+             db: NULL
+        Command: Query
+           Time: 12
+          State: Sending data
+           Info: SELECT SLEEP(30) FROM sakila.film LIMIT 1
+        *************************** 2. row ***************************
+             Id: 11
+            User: baron
+            Host: localhost
+             db: NULL
+        Command: Query
+           Time: 9
+          State: Locked
+           Info: LOCK TABLES sakila.film WRITE
+
+在本例中，SELECT查询的隐式读锁阻塞了LOCK TABLES中所请求的显式写锁。另外，隐式锁也会相互阻塞。
+
+你可能想知道关于隐式锁和显式锁的差异。从内部来说，它们有相同的结构，由相同的MySQL服务器代码来控制。从外部来说，你可以通过LOCK TABLES和UNLOCK TABLES来控制显式锁。
+
+然而，当涉及非MyISAM存储引擎时，它们之间有一个非常重要的区别。当创建显式锁时，它会按你的指令来做，但隐式锁就比较隐蔽并“有魔幻性”。服务器会在需要时自动地创建和释放隐式锁，并将它们传递给存储引擎。存储引擎感知到后，可能会“转换”这些锁。例如，InnoDB有这样的相关规则：对一个给定的服务器级别的表锁，InnoDB应该为其创建特定类型的InnoDB表锁。这也使得操作人很难理解InnoDB幕后到底做了什么。
+
+### 找出谁持有锁
+
+如果你看到许多的进程处于Locked状态，问题可能出在对MyISAM或者其他类似存储引擎的高并发访问。这会阻止你执行人工操作，例如给表增加索引等。如果一个UPDATE查询进入队列并等待MyISAM的表锁，此时就连SELECT也不会被允许运行。（关于MySQL锁队列和优先级，可以在MySQL用户手册中查到更多。）
+
+在某些场景下，可以清楚地看到几个连接长时间持有某个锁，此时需要将它们杀死（或需要劝告用户不要阻挡这些连接的工作！）。但是如何找出那个连接呢？
+
+目前没有SQL命令可以显示哪个线程持有阻塞你的查询的表锁。如果运行SHOW PROCESSLIST，你会看到等待锁的进程，而不是哪个进程持有这些锁。幸运的是，有一个*debug*命令可以打印关于锁的信息到服务器的错误日志中，你可以使用*mysqladmin*工具来运行这个命令：
+
+
+        **    $ mysqladmin debug**    
+
+在错误日志的输出中包括了许多的调试信息，在接近尾部可以看到像下面的一些信息。我们是这样创建这些输出的：在一个连接中锁住表，然后在另外一个连接中尝试再次对它加锁。
+
+
+       Thread database.table_name Locked/Waiting   Lock_type
+       7 sakila.film              Locked - read    Read lock without concurrent inserts
+       8 sakila.film              Waiting - write  Highest priority write lock
+
+可以看到线程8正在等待线程7持有的锁。
+
+## 全局读锁
+
+MySQL服务器还实现了一个全局读锁，可以如下获取该锁。
+
+
+        mysql> **    FLUSH TABLES WITH READ LOCK;**    
+
+如果此时在另外一个会话中尝试再锁这个表，结果会像之前一样挂起。
+
+
+        mysql> **    LOCK TABLES sakila.film WRITE**    
+
+如何判断这个查询正在等待全局读锁而不是一个表级别的锁？请看SHOW PROCESSLIST的输出。
+
+
+        mysql> **    SHOW PROCESSLIST\G**    
+        ...
+        *************************** 2. row ***************************
+             Id: 22
+           User: baron
+           Host: localhost
+             db: NULL
+        Command: Query
+           Time: 9
+          State: Waiting for release of readlock
+           Info: LOCK TABLES sakila.film WRITE
+
+注意，查询的状态是Waiting for release of readlock。这就是说查询正在等待一个全局读锁而不是表级别锁。
+
+MySQL没有提供查出谁持有全局读锁的方法。
+
+### 命名锁
+
+命名锁是一种表锁：服务器在重命名或删除一个表时创建。命名锁与普通的表锁相冲突，无论是隐式的还是显式的。例如，如果和之前一样使用LOCK TABLES，然后在另外一个会话中尝试对此表重命名，查询会挂起，但这次不是处于Locked状态。
+
+
+        mysql> **    RENAME TABLE sakila.film2 TO sakila.film;**    
+
+和前面一样，从进程列表找到获得锁的进程，其状态是Waiting for table。
+
+
+        mysql> **    SHOW PROCESSLIST\G**    
+        ...
+        *************************** 2. row ***************************
+             Id: 27
+            User: baron
+            Host: localhost
+             db: NULL
+        Command: Query
+           Time: 3
+          State: Waiting for table
+           Info: rename table sakila.film to sakila.film 2
+
+也可以在SHOW OPEN TABLES输出中看到命名锁的影响。
+
+![](img/000016.jpeg) 
+
+注意，两个名字（原名和新名）都被锁住了。sakila.film\_text因sakila.film上有个指向它的触发器而被锁，这也解释了另外一种锁方式，它们可以暗地里将自己放置到预期之外的地方。查询sakila.film，触发器会使你悄悄地接触sakila.film\_text，因而隐式地锁住它。触发器实际不需要因重命名触发，确实如此，因此从技术上讲并不需要锁，但事实是：MySQL的锁有时可能并不具有你所期望的细粒度。
+
+MySQL并没有提供任何一种方法来查明谁拥有命名锁，但这通常并不是问题，因为它们一般持有非常短的一段时间。当有冲突时，一般是由于命名锁在等待一个普通的表锁，而这通过先前展示的*mysqladmin debug*可以看到。
+
+## 用户锁
+
+在服务器中实现的最后一种锁是用户锁，它基本是一个命名互斥量。你需要指定锁的名称字符串，以及等待超时秒数。
+
+![](img/000017.jpeg) 
+
+指令成功返回，这个线程就在命名互斥量上持有了一把锁。如果另外一个线程此时尝试锁相同的字符串，它将会挂起直到超时。这次进程列表显示了一个不同的进程状态。
+
+
+        mysql> **    SHOW PROCESSLIST\G**    
+        *************************** 1. row ***************************
+             Id: 22
+            User: baron
+            Host: localhost
+             db: NULL
+        Command: Query
+           Time: 9
+          State: User lock
+           Info: SELECT GET_LOCK('my lock', 100)
+
+User lock状态是这种类型的锁独有的。MySQL没有提供查明谁拥有用户锁的方法。
+
+# InnoDB中的锁等待
+
+服务器级的锁要比存储引擎中的锁容易调试得多。各个存储引擎的锁互不相同，并且存储引擎可能不提供任何方法来查看内部的锁。本附录主要关注InnoDB。
+
+InnoDB在SHOW INNODB STATUS的输出中显露了一些锁信息。如果事务正在等待某个锁，这个锁会显示在SHOW INNODB STATUS输出的TRANSACTIONS部分中。例如，如果在一个会话中执行下面的命令，将需要表中第一行的写锁。
+
+
+        **    mysql> SET AUTOCOMMIT=0;**    
+        **    mysql> BEGIN;**    
+        **    mysql> SELECT film_id FROM sakila.film LIMIT 1 FOR UPDATE;**    
+
+如果在另外一个会话中运行相同的命令，查询将会因第一个会话中在那一行获取的锁而阻塞。可以在SHOW INNODB STATUS中看到影响（为了简洁起见我们对结果有所删减）。
+
+
+        1 LOCK WAIT 2 lock struct(s), heap size 1216
+        2 MySQL thread id 8, query id 89 localhost baron Sending data
+        3 SELECT film_id FROM sakila.film LIMIT 1 FOR UPDATE
+        4 ------- TRX HAS BEEN WAITING 9 SEC FOR THIS LOCK TO BE GRANTED:
+        5 RECORD LOCKS space id 0 page no 194 n bits 1072 index `idx_fk_language_id` of table
+        `sakila/film` trx id 0 61714 lock_mode X waiting
+
+最后一行显示查询在等待该表的idx\_fk\_language\_id索引的194页上一个排他锁（lock\_mode X）。最终，锁等待超时，查询返回一个错误。
+
+
+        ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+
+不幸的是，由于看不到谁拥有锁，因此很难确定哪个事务导致这个问题。不过往往可以通过查看哪个事务打开了非常长的一段时间来有根据地猜测；还有另外一种方法，可以激活InnoDB锁监控器，它最多可以显示每个事务中拥有的10把锁。为了激活该监控器，需要在InnoDB存储引擎中创建一个特殊名字的表。(2)
+
+
+        mysql> **    CREATE TABLE innodb_lock_monitor(a int) ENGINE=INNODB;**    
+
+发起这个查询后，InnoDB开始定时地（这个间隔时间可以变化，但通常是每分钟几次）打印SHOW INNODB STATUS的一个略微加强的版本的输出到标准输出中。在大多数系统中，这个输出被重定向到服务器的错误日志中；你可以检查它以查看哪个事务应该拥有那把锁。若想停掉锁监控器，删除这个表即可。
+
+下面是锁监控器输出的相关例子。
+
+
+        1 ---TRANSACTION 0 61717, ACTIVE 3 sec, process no 5102, OS thread id 1141152080
+        2 3 lock struct(s), heap size 1216
+        3 MySQL thread id 11, query id 108 localhost baron
+        4 show innodb status
+        5 TABLE LOCK table `sakila/film` trx id 0 61717 lock mode IX
+        6 RECORD LOCKS space id 0 page no 194 n bits 1072 index `idx_fk_language_id` of table
+          `sakila/film` trx id 0 61717 lock_mode X
+        7 Record lock, heap no 2 PHYSICAL RECORD: n_fields 2; compact format; info bits 0
+        8 ... omitted ...
+        9
+        10 RECORD LOCKS space id 0 page no 231 n bits 168 index `PRIMARY` of table `sakila/film`
+          trx id 0 61717 lock_mode X locks rec but not gap
+        11 Record lock, heap no 2 PHYSICAL RECORD: n_fields 15; compact format; info bits 0
+        12 ... omitted ...
+
+请注意，第3行显示的MySQL线程ID，跟进程列表里ID列的值是一样的。第5行显示了该事务在表里有一个显式的独占表锁（IX）。第6～8行显示了索引里的锁。我们删除了第8行的信息，是因为它导出了这个锁定的记录，显得非常累赘。第9～11行显示了主键上相应的锁（FOR UPDATE锁必须锁住整行，而不仅仅是索引）。
+
+当锁监控器被激活的时候，SHOW INNODB STATUS里也会有额外的信息，因此，实际上无须检查服务器的错误日志，就可以查看锁信息。
+
+出于种种原因，锁监控器并不是最理想的。它的主要问题是锁信息非常冗长，因为导出了被锁定记录的十六进制格式和ASCII格式。它会填满错误日志，并且还会很轻易地溢出固定长度的SHOW INNODB STATUS输出结果。这意味着你可能无法查看到在那一段之后的其他输出信息。InnoDB对每个事务打印锁的数量有硬编码限制，即每个事务只能打印出10个持有的锁，超过10个就无法输出，这意味着你可能看不到需要的锁信息。这还不算完，即使要找的东西确实在里面，也难以把它从所有锁的输出信息里定位出来。（只需在一个繁忙的系统上试一下，你就会体会到这一点。）
+
+有两样东西能够使锁的输出信息更加有用。第一样是本书作者之一为InnoDB和MySQL服务器编写的一个补丁，包含在Percona Server和MariaDB中。这个补丁会移除输出结果里那些冗长的记录导出信息，默认会把锁信息包含到SHOW INNODB STATUS的输出中（因而锁监控器就无须激活了），还会增加动态可设置服务器变量来控制冗长的输出信息，以及每个事务能打印出的锁信息的个数。
+
+第二个可选用的方法是使用*innotop*来解析和格式化输出结果。它的Lock模式能够显示锁信息，并通过连接和表优美地聚合在一起，因而能很快地看出哪一个事务持有指定表的锁。但是，这也并非是万无一失的方法，因为它是通过检查所有被锁定记录的导出信息来精确地找出那个被锁定记录。无论怎样，这还是要比常用的方法好很多，对于大多数用途都足够好了。
+
+## 使用INFORMATION\_SCHEMA表
+
+使用SHOW INNODB STATUS来查看锁绝对是老派做法，现在InnoDB有INFORMATION\_SCHEMA来显露它的事务和锁。
+
+如果你看不到这个表，说明你使用的InnoDB版本还不够新。至少需要MySQL 5.1和InnoDB插件。如果你正在使用MySQL 5.1，但没有看到INNODB\_LOCKS表，请用SHOW VARIABLES检查innodb\_version变量。如果没有看到这个变量，说明你还没有使用InnoDB插件，你需要它！如果看到了这个变量但没有那些表，那么你需要确保服务器配置文件的plugin\_load设置中明确包括了那些表。详情请查阅MySQL用户手册。
+
+幸运的是，MySQL 5.5中不需要担心这些，InnoDB的高级版本已经将它编译到服务器中。
+
+对这些表可使用的查询，MySQL和InnoDB手册都有样例，在此不再重复，但我们要增加两个自己的例子。例如，下面是一个显示谁阻塞和谁在等待，以及等待多久的查询。
+
+
+        **    SELECT r.trx_id AS waiting_trx_id, r.trx_mysql_thread_id AS waiting_thread,**    
+           **    TIMESTAMPDIFF(SECOND, r.trx_wait_started, CURRENT_TIMESTAMP) AS wait_time,**    
+           **    r.trx_query AS waiting_query,**    
+           **    l.lock_table AS waiting_table_lock,**    
+           **    b.trx_id AS blocking_trx_id, b.trx_mysql_thread_id AS blocking_thread,**    
+           **    SUBSTRING(p.host, 1, INSTR(p.host, ':') - 1) AS blocking_host,**    
+           **    SUBSTRING(p.host, INSTR(p.host, ':') +1) AS blocking_port,**    
+           **    IF(p.command = "Sleep", p.time, 0) AS idle_in_trx,**    
+           **    b.trx_query AS blocking_query**    
+        **    FROM INFORMATION_SCHEMA.INNODB_LOCK_WAITS AS w**    
+        **    INNER JOIN INFORMATION_SCHEMA.INNODB_TRX AS b ON     b.trx_id = w.blocking_trx_id**    
+        **    INNER JOIN INFORMATION_SCHEMA.INNODB_TRX AS r ON     r.trx_id = w.requesting_trx_id**    
+        **    INNER JOIN INFORMATION_SCHEMA.INNODB_LOCKS AS l ON   w.requested_lock_id = l.lock_id**    
+        **    LEFT JOIN INFORMATION_SCHEMA.PROCESSLIST AS p ON     p.id     = b.trx_mysql_thread_id**    
+        **    ORDER BY wait_time DESC\G**    
+        *************************** 1. row ***************************
+            waiting_trx_id: 5D03
+            waiting_thread: 3
+                 wait_time: 6
+             waiting_query: select * from store limit 1 for update
+        waiting_table_lock: `sakila`.`store`
+           blocking_trx_id: 5D02
+           blocking_thread: 2
+             blocking_host: localhost
+             blocking_port: 40298
+               idle_in_trx: 8
+            blocking_query: NULL
+
+结果显示线程3已经等待store表中的锁达6s。它在线程2上被阻塞，而该线程已经空闲了8s。
+
+如果你因为线程在一个事务中空闲而正在遭受大量的锁操作，下面的这个变种查询可以告诉你有多少查询被哪些线程阻塞，而没有多余的无用信息。
+
+
+        **    SELECT CONCAT('thread ', b.trx_mysql_thread_id, ' from ', p.host) AS who_blocks,**    
+          **    IF(p.command = "Sleep", p.time, 0) AS idle_in_trx,**    
+          **    MAX(TIMESTAMPDIFF(SECOND, r.trx_wait_started, NOW())) AS max_wait_time,**    
+          **    COUNT(*) AS num_waiters**    
+        **    FROM INFORMATION_SCHEMA.INNODB_LOCK_WAITS AS w**    
+        **    INNER JOIN INFORMATION_SCHEMA.INNODB_TRX AS b ON b.trx_id = w.blocking_trx_id**    
+        **    INNER JOIN INFORMATION_SCHEMA.INNODB_TRX AS r ON r.trx_id = w.requesting_trx_id**    
+        **    LEFT JOIN INFORMATION_SCHEMA.PROCESSLIST AS p ON p.id = b.trx_mysql_thread_id**    
+        **    GROUP BY who_blocks ORDER BY num_waiters DESC\G**    
+        *************************** 1. row ***************************
+            who_blocks: thread 2 from localhost:40298
+          idle_in_trx: 1016
+        max_wait_time: 37
+          num_waiters: 8
+
+结果显示线程2已经空闲了更长的一段时间，并且至少有一个线程已经等待它释放它的锁长达37s。有8个线程在等待线程2完成它的工作并提交。
+
+我们发现idle-in-transaction锁操作是常见锁故障的一种起因，并且有时候很难诊断。Percona Toolkit中的*pt-kill*可以配置用来杀死长时间运行的空闲事务以阻止这个场景。Percona Server本身也支持一个空闲事务超时参数来完成相同的事情。
+
+
+
+————————————————————
+
+(1) 如果需要回忆关于服务器和存储引擎之间的隔离，请参考第1章中的图1-1。
+
+(2) InnoDB把几个“神奇的”表名作为操作指令来用。当前采用的是动态可设置的服务器变量，但是， InnoDB的方法已经使用了很长一段时间，所以仍然留有原先的行为方式。
+
+
+
+
+
+ 附录F　在MySQL上使用Sphinx
+
+Sphinx（*http://www.sphinxsearch.com*）是一个免费、开源的全文搜索引擎，设计着眼于与数据库完美结合。它有类似DBMS的特性，查询速度非常快，支持分布式检索，并且可扩展性好。它可以高效利用内存和磁盘I/O，缓解大型操作在这部分的瓶颈，这非常重要。
+
+Sphinx在MySQL上工作得很好。它可以被用来加速各种各样的查询，包括全文搜索。也可以用来在其他应用中执行快速的分组和排序操作。它遵从MySQL的通信协议，以及主要的MySQL的SQL语法，使用户就像操纵MySQL一样进行查询。Sphinx对某些特定的查询非常有用：MySQL的通用架构对真实世界中的大型数据库优化得并不好。简而言之，Sphinx可以加强MySQL的功能和性能。
+
+Sphinx 索引的源数据通常就是MySQL SELECT 查询的结果，但是，也可以用不同类型的无限的数据来源来建立索引，每一个Sphinx示例都能搜索到无限的索引。举例来说，你可以从位于一台远程服务器上的MySQL 实例拉几份文档放入索引里，从位于另一台远程服务器上的PostgreSQL实例拉几份文档过来，再加上几份本地的脚本通过XML 管道机制输出的文档。
+
+在本附录里，我们将列举一些能让Sphinx体现出性能增强的使用案例，然后讲述一下安装和配置Sphinx所需的主要步骤，接着详细说明它的功能特点，最后讨论几个现实中应用的例子。
+
+# 一个典型的Sphinx搜索
+
+我们用一个简单但是完整的Sphinx 应用例子作为进一步讨论的起点。虽然Sphinx的API可用于多种编程语言，但是，在这里我们使用的是PHP，因为它比较普及。
+
+假设我们要实现的是一个用于比较购物引擎里的全文搜索，其具体需求如下。
+
++ 对MySQL中的一个产品表维护一个可搜索的全文索引。 
++ 允许对产品的名称和描述进行全文搜索。 
++ 如有需要，能够用指定的分类缩小搜索范围。 
++ 不仅可以按关联度对搜索结果进行排序，也可以用物品的价格或提交日期来排序。 
+
+我们先在Sphinx配置文件里设置好数据源和索引。
+
+
+        source products
+        {
+            type       = mysql
+            sql_host   = localhost
+            sql_user   = shopping
+            sql_pass   = mysecretpassword
+            sql_db     = shopping
+            sql_query  = SELECT id, title, description, \
+                    cat_id, price, UNIX_TIMESTAMP(added_date) AS added_ts \
+                    FROM products
+            sql_attr_uint      = cat_id
+            sql_attr_float     = price
+            sql_attr_timestamp = added_ts
+        }
+        index products
+        {
+            source  = products
+            path    = /usr/local/sphinx/var/data/products
+            docinfo = extern
+        }
+
+这个例子假设MySQL的shopping数据库中包含了products表，而此表中有供我们执行SELECT查询生成我们的Sphinx索引的列。该Sphinx索引也命名为products。在创建新数据源和索引后，我们运行indexer程序来创建最初的全文索引数据文件，然后启动（或重启）*searchd*后台进程以同步这些变更。
+
+
+        **    $ cd /usr/local/sphinx/bin**    
+        **    $ ./indexer products**    
+        **    $ ./searchd --stop**    
+        **    $ ./searchd**    
+
+索引现在已经就绪可以用于查询了。我们用Sphinx捆绑的*test.php*样例脚本来测试它。
+
+
+        $ php -q test.php -i products ipod
+
+        Query 'ipod ' retrieved 3 of 3 matches in 0.010 sec.
+        Query stats:
+             'ipod' found 3 times in 3 documents
+        Matches:
+        1. doc_id=123, weight=100, cat_id=100, price=159.99, added_ts=2008-01-03 22:38:26
+        2. doc_id=124, weight=100, cat_id=100, price=199.99, added_ts=2008-01-03 22:38:26
+        3. doc_id=125, weight=100, cat_id=100, price=249.99, added_ts=2008-01-03 22:38:26
+
+最后一步是将搜索功能加到我们的网络应用中。我们需要基于用户输入设置排序和过滤选项，并让输出格式漂亮些。同时，因为Sphinx返回给客户端的只有文档的ID和配置属性——它没有存储任何原始文本数据——所以，我们还要从MySQL里读取对应的行数据。
+
+
+        1 <?php
+        2 include ( "sphinxapi.php" );
+        3 // ... other includes, MySQL connection code,
+        4 // displaying page header and search form, etc. all go here
+        5
+        6 // set query options based on end-user input
+        7 $cl = new SphinxClient ();
+        8 $sortby = $_REQUEST["sortby"];
+        9 if ( !in_array ( $sortby, array ( "price", "added_ts" ) ) )
+        10   $sortby = "price";
+        11 if ( $_REQUEST["sortorder"]=="asc" )
+        12   $cl->SetSortMode ( SPH_SORT_ATTR_ASC, $sortby );
+        13 else
+        14   $cl->SetSortMode ( SPH_SORT_ATTR_DESC, $sortby );
+        15 $offset = ($_REQUEST["page"]-1)*$rows_per_page;
+        16 $cl->SetLimits ( $offset, $rows_per_page );
+        17
+        18 // issue the query, get the results
+        19 $res = $cl->Query ( $_REQUEST["query"], "products" );
+        20
+        21 // handle search errors
+        22 if ( !$res )
+        23 {
+        24    print "<b>Search error:</b>" . $cl->GetLastError ();
+        25    die;
+        26 }
+        27
+        28 // fetch additional columns from MySQL
+        29 $ids = join ( ",", array_keys ( $res["matches"] );
+        30 $r = mysql_query ( "SELECT id, title FROM products WHERE id IN ($ids)" )
+        31 or die ( "MySQL error: " . mysql_error() );
+        32 while ( $row = mysql_fetch_assoc($r) )
+        33 {
+        34    $id = $row["id"];
+        35    $res["matches"][$id]["sql"] = $row;
+        36 }
+        37
+        38 // display the results in the order returned from Sphinx
+        39 $n = 1 + $offset;
+        40 foreach ( $res["matches"] as $id=>$match )
+        41 {
+        42    printf ( "%d. <a href=details.php?id=%d>%s</a>, USD %.2f<br>\n",
+        43        $n++, $id, $match["sql"]["title"], $match["attrs"]["price"] );
+        44 }
+        45
+        46 ?>
+
+尽管上面显示的这段代码看上去相当简单，但还是有些东西值得强调一下。
+
++ SetLimits()调用会告诉Sphinx只获取客户端要在页面上显示的行数。做这样的限定在Sphinx中很方便（不同于MySQL内建的搜索功能），不加限定的结果数目也可以通过$result['total\_found']来获得，而不需要任何额外开销。 
++ 因为Sphinx只索引title列，并没有存储它，因而必须从MySQL里读取数据。 
++ 我们使用一条单独的合成查询获取数据，把所有文档都放在WHERE id IN (...)子句中，而不是每个文档运行一次查询（这会非常低效）。 
++ 我们将从MySQL里获取到的行注入到全文搜索的结果集里，以保持原始的排列顺序。在下文里我们会对此做一些解释。 
++ 我们使用来自Sphinx和MySQL的数据来显示每一行。 
+
+那些由PHP写的行注入代码需要再做一些解释。我们不能简单地对MySQL查询的结果集做遍历，因为行的次序跟WHERE id IN (...)子句里指定的（多数情况下）不一样。但是，PHP会对结果进行哈希（使用关联数组），保持匹配结果插入时的排列顺序，这样Sphinx就可以通过$result["matches"]返回排序正确的行了。因此，为了从Sphinx返回的匹配结果能保持正确的次序（而不是MySQL生成的那种半随机的次序），我们需要把MySQL的查询结果一个接一个地注入到PHP用来存储Sphinx匹配结果集的哈希中。
+
+对于计数匹配和应用LIMIT子句，MySQL和Sphinx在实现方式及性能上存在着比较大的区别。首先，LIMIT在Sphinx里开销是比较低的。设想有一个LIMIT 500,10的子句， MySQL会半随机地读出510行数据（这是比较慢的），然后丢弃掉其中的500行，而Sphinx会返回一组ID，你可以用这些ID从MySQL上读取到实际所需的数据行。其次， Sphinx总是返回指定的行数或者它在结果集里找到的实际匹配数目，而与LIMIT子句是怎么样的无关。 MySQL无法做到这么高效，尽管在MySQL 5.6中对这个限制有部分的优化。
+
+# 为什么要使用Sphinx
+
+Sphinx可以在多个方面完善基于MySQL的应用程序，能补充MySQL的性能不足，还提供了MySQL所没有的功能。典型的使用场景如下。
+
++ 快速、高效、可扩展和核心的全文搜索。 
++ 能在使用低选择性索引或无索引的列时优化WHERE条件。 
++ 优化ORDER BY ... LIMIT*N*查询以及GROUP BY查询。 
++ 并行地产生结果集。 
++ 向上扩展和向外扩展。 
++ 聚合分片数据。 
+
+我们在下面这些小节里对这些场景逐一进行探讨。然而，这个列表也不是完整的， Sphinx的用户时不时还会发现新的应用方法。例如，Sphinx最重要用途之一——快速扫描和过滤记录——就是由一位用户创造出来的，并不是Sphinx最初的设计目标之一。
+
+## 高效、可扩展的全文搜索
+
+MyISAM的全文搜索能力对小数据集非常快，但随着数据量增长，性能会非常低。对百万级别的记录量和上GB的索引文本，查询时间会在1秒到超过10分钟之间变化，而这对于高性能的网站应用来说是不可接受的。尽管通过将数据分布到多个地方可能会扩展MyISAM的全文搜索，但这需要并行地运行查询并在应用程序中将结果合并，大大增加了中间层的复杂度。
+
+Sphinx运作速度要明显快于MyISAM内建的全文索引。比如说，它查询超过1GB的文本数据需要10~100ms——最多可以扩展到每个CPU处理10~100GB的数据。Sphinx还有如下优点。
+
++ 它能对InnoDB及其他存储引擎里存储的数据进行索引，而不仅仅是MyISAM。 
++ 它能对多个源表的混合数据创建索引，不限于单个表上的字段。 
++ 它能将来自多个索引的搜索结果进行动态整合。 
++ 除了能对文本列索引外，它的索引还可以包含无限数量的数字属性——跟“额外字段”一样。Sphinx的属性可以是整型、浮点型和UNIX时间戳。 
++ 它能根据属性上的附加条件对全文搜索进行优化。 
++ 它的基于短语的排列算法能帮助它返回更多相关的结果。例如，如果你在一个歌词表中搜索“我爱你，亲爱的”，那么恰好包含该短语的歌曲将在最上面返回，之后才是那些只包含多次“爱”或“亲爱的”的歌曲。 
++ 它使得向外扩展更容易。 
+
+## 高效使用WHERE子句
+
+有时你需要对很大的表（有几百万条记录）做SELECT查询，同时，几个WHERE条件里有索引选择性非常差（例如指定WHERE条件返回太多行）或者根本没有索引支持的字段。
+
+常见的例子有：在一个社交网站上搜索用户，以及在一个拍卖网站上搜索物品。典型的搜索接口是让用户能在WHERE条件加10个或更多的列，而返回结果又是按其他列来排序。第5章中索引案例研究的例子，就是这样的一个应用，并且需要索引策略。
+
+当有合适的数据结构和查询优化时，只要WHERE子句不包含太多的列，尚可以接受用MySQL来应付这些查询。但是，随着列的数目增加，支持所有可能搜索所需的索引数会呈指数级增长。单是要覆盖到四列的所有可能的组合情况，MySQL就要达到极限了。它会变得非常慢，并且要花费很多系统开销去维护索引。这意味着对于许多WHERE条件，实际上不可能拥有它所需要的所有索引，你不得不在没有索引的条件下运行查询。
+
+更重要的是，即使可以增加索引，也无法受益很多，除非它们具有良好的可选择性。有一个典型的例子是gender列，它几乎帮不上忙，因为会命中大约所有行中的一半。当索引因缺少可选择性而帮不上忙时，MySQL一般会回到全表扫描。
+
+Sphinx运行这类查询的速度比MySQL快很多。你可以只将数据中所需要的列做成Sphinx索引。然后Sphinx会允许用两种方式来访问这些数据：用关键字索引搜索或全表扫描。在这两种方式里，Sphinx都用到了过滤器，它相当于一个WHERE子句。但是，和MySQL不一样，MySQL是在内部决定使用索引还是全扫描，而Sphinx是让你自己选择要使用哪一种访问方法。
+
+要使用带筛选的全扫描，你可以指定一个空字符串用作搜索查询条件；要使用索引搜索，你可以在构建索引时加一些伪关键字进去，然后再搜索那些关键字。例如，如果你想搜索分类123里的物品，你可以在建索引时把“分类123”关键字添加到文档里，然后针对“分类123”做全文搜索。你可以使用CONCAT()函数把关键字加到已有的一个字段里，或者为了更好的灵活性，为这些伪关键字创建一个特别的全文搜索字段。通常而言，对于覆盖率超过30％无选择性值的行就应该选择筛选；而对于具有选择性的值覆盖面不超过10％的，应该使用伪关键字；如果目标值是处于10％~30％的灰色区域，就难说了。你应该做几次基准测试以找出最佳解决方案。
+
+Sphinx无论是执行索引搜索还是全扫描都快过MySQL。有时，Sphinx的全扫描实际上比MySQL的索引读取还要快。
+
+## 找出结果集里的前几行
+
+Web应用常常需要用到结果集里按顺序排列的前*N*行。如同我们之前讨论过的，在MySQL 5.5和之前版本中很难优化。
+
+最糟糕的情况就是根据WHERE条件找到了许多行（假设有100万行），而ORDER BY里的列却没有被索引过。MySQL使用索引识别出所有匹配的行，然后使用半随机磁盘读，把记录一行接一行地读到排序缓冲区里，接着用一种文件排序将这些结果进行排序，最后丢弃其中的绝大多数。它会临时存储和处理整个结果集，忽略LIMIT子句，搅乱RAM。如果排序缓冲区放不下整个结果集，还需要用到临时表，引发更多的磁盘I/O。
+
+这里还有一个极端的例子，你可能会认为这在真实世界里几乎不会发生，但事实上，它常常会发生。MySQL在用于排序的索引方面是有限制的——只使用索引的最左边部分，不支持松散索引扫描（loose index scan \)，并且只允许一个单独的范围条件——这意味着真实世界里的查询不能从这些索引中受益。即使能够受益，使用半随机磁盘I/O来获取行也是一个性能杀手。
+
+要对结果集进行分页，常常需要做形如SELECT ... LIMIT*N,M*的查询，这是MySQL的另一个性能问题。它们会从磁盘里读取*N \+ M*行，由此引发大量的随机I/O，浪费内存资源。Sphinx 通过消除以下两个主要问题可以显著加速这类查询。
+
+内存使用
+
+Sphinx对RAM的使用有严格限制，这个限制也是可以配置的。Sphinx也支持与MySQL LIMIT*N*,*M*语法类似的结果集偏移量和大小，但是它还有一个max\_matches选项。它以每个服务器和每个查询为基础，可控制类似“排序缓冲区”的大小。
+
+I/O
+
+如果属性是存储在RAM里的，Sphinx就不会做任何I/O操作。即使属性是存储在磁盘上，Sphinx也是通过顺序I/O来读取它们，这比MySQL 使用半随机方式从磁盘获取行要快很多。
+
+通过综合关联度（权重）、属性值和聚合函数值（当使用GROUP BY时），可以对搜索结果进行排序。排序子句的语法跟SQL ORDER BY子句类似。
+
+
+        <?php
+        $cl = new SphinxClient ();
+        $cl->SetSortMode ( SPH_SORT_EXTENDED, 'price DESC, @weight ASC' );
+        // more code and Query() call here...
+        ?>
+
+在本例中，price是存储在索引中的用户指定的属性，@weight是一个特殊的属性，在运行时创建，它包含的是每一个搜索结果估算出来的关联度。你也可以使用算术表达式对结果再进行排序，算术表达式里可以包含属性值、常用数学运算符和函数。
+
+
+        <?php
+        $cl = new SphinxClient ();
+        $cl->SetSortMode ( SPH_SORT_EXPR, '@weight + log(pageviews)*1.5' );
+        // more code and Query() call here...
+        ?>
+
+## 优化GROUP BY查询
+
+没有GROUP BY功能的话，对于日常的类SQL子句的支持也将不完整，因此，Sphinx也支持GPOUP BY。但与MySQL的通用实现不同，Sphinx擅长高效筛选出GROUP BY任务所需要的实际子集。这个子集可以从如下场景拥有的大数据集（1亿行）中生成报表：
+
++ 结果是分组行中的少部分（这里的“少”是指10万～100万量级）。 
++ 当从分布在集群中的多台机器上获取很多分组数据时，需要非常快的执行速度，同时近似的COUNT(\*)结果可以接受。 
+
+这没有听起来那样严格。第一个场景实际上覆盖了所有可以想象的基于时间的报告。举个例子，每小时一次且持续时间为10年的一个详细报告，将会返回少于90 000行记录。第二个场景可以像这样通俗地表述：“尽可能迅速和精确地从1亿行的分片表中找出最重要的20条记录。”
+
+这两种类型的查询会加速通用查询，但也可以在全文搜索应用中使用。许多应用不仅需要显示全文匹配结果，还要显示一些聚集结果。例如，许多搜索结果页显示了每个产品目录中有多少匹配的产品被找到，或一张按时间顺序的数量变化图。Sphinx的group-by支持可以结合分组和全文搜索，消除在应用程序或MySQL中做分组的开销。
+
+在Sphinx中的排序和分组都使用固定的内存，它的效率比类似数据集全部可以放在RAM中的MySQL查询要稍微（10％～50％）高些。在本例中，大部分Sphinx的能力来源于它可以分散负载和大大减少延时。对于永不会全部放入RAM中的大数据集来说，可以使用内联属性（后面会定义）创建特别的基于磁盘的索引来生成报告。对这些索引执行查询大约和读数据一样快——在现代硬件中大概是30～100MB/s。在这个情况下，性能会比MySQL好许多倍，尽管结果是近似的。
+
+与MySQL的GROUP BY最大的不同点是，在某些特定场景下Sphinx可能只生成近似结果。对于这点有两个原因。
+
++ 使用固定量的内存来做分组。如果有太多的分组而不能放在RAM中，并且以某种“不幸的”顺序匹配，每组数量可能比实际值要小。 
++ 分布式搜索只发送联合结果，而不是一个节点一个节点进行匹配。如果在不同的节点上有重复记录，每组去重的数据可能会比实际值要大，因为可以去重的信息并没有在节点之间传送。 
+
+实践中，快速的近似group-by数量经常是可以接受的。如果这不可接受，往往也可能通过仔细地配置后台进程和客户端应用来取得精确结果。
+
+你也可以产生与COUNT(DISTINCT *<attribute>*)等价的结果。例如，在一个拍卖网站上，你可以使用它来计算每个分类里卖家的精确数目。
+
+最后，Sphinx可以让你选取一个标准，然后用这个标准在每个分组里找到唯一的“最合适”的文档。例如，在以域分组且按每个域里的匹配数量排序结果集时，可以从每个域里选择相关度最高的文档。这在MySQL里不用复杂的查询是做不到的。
+
+## 并行地取结果集
+
+Sphinx可以让你从相同数据中同时产生几份结果，同样是使用固定量的内存。作为对比，传统的SQL方法要么运行两个查询（并且希望两次运行中某些数据维持在缓存中），要么对每个搜索结果集创建一个临时表，Sphinx的方法会产生显著的改进。
+
+举例来说，假设你需要针对每天、每星期、每月定期生成该段时间周期里的报表，要用MySQL生成将不得不使用不同的GROUP BY子句运行三次查询，对源数据处理三次。然而， Sphinx对于这些数据只要处理一次就行了，然后就可以并行地生成全部三份报表。
+
+Sphinx用一个*multi-query*机制来完成这项任务。不是一个接一个地发起查询，而是把几个查询做成一个批处理，然后在一个请求里提交。
+
+
+        <?php
+        $cl = new SphinxClient ();
+        $cl->SetSortMode ( SPH_SORT_EXTENDED, "price desc" );
+        $cl->AddQuery ( "ipod" );
+        $cl->SetGroupBy ( "category_id", SPH_GROUPBY_ATTR, "@count desc" );
+        $cl->AddQuery ( "ipod" );
+        $cl->RunQueries ();
+        ?>
+
+Sphinx会分析这个查询，识别出可以合并的各查询部分，然后并行地执行这些查询。
+
+例如，Sphinx可能注意到，排序和分组的模式有些不同，而查询是相同的。这就是上面显示的示例代码里的情形——用price排序但用category\_id分组。Sphinx会创建几个排序队列来处理这些查询。当运行这些查询时，它会一次性地获取到行，然后把它们提交到所有的队列里。与一个接一个运行查询相比较，这个方法消除了几个冗余的全文检索或全扫描操作。
+
+注意并行结果集的生成，虽然这是常见又重要的优化，但是，这只是更一般化的multi-query机制的一个特例。它不是唯一可能的优化。其中的指导法则是尽可能地把多个查询放在一个请求中，这通常有助于Sphinx开展内部优化操作。即使Sphinx无法并行处理这些查询，也可以节省网络往返。而且，如果将来Sphinx 加入更多的优化功能，你的查询就能自动地使用到它们而无须做任何修改。
+
+## 扩展
+
+Sphinx的可扩展性无论在水平方向（向外扩展）还是垂直方向（向上扩展）上都非常好。
+
+Sphinx 完全可以在各机器之间分布。我们提到过的用户案例都能受益于跨CPU的分布工作。Sphinx的搜索后台进程（*searchd*）支持特别的分布式索引，它知道哪些本地和远程的索引需要查询和聚合。这意味着向外扩展就是一次轻微的配置更改。你只需在各个节点间将数据分区，然后配置主节点使其能向其他节点并行地发起查询。这就是所有要做的事情。
+
+你也能向上扩展，在单独的机器上增加更多CPU或内核，从而提高响应速度。为了达到这个目的，你可以在单台机器上运行好几个*searchd*实例，然后通过分布式索引，从另外的机器过来查询它们。另外一种可选择的方法是，你可以把一个单独的实例配置为能与它自己通信，这样并行的“远程”查询其实就发生在同一台机器上，但是使用的是不同的CPU或内核。
+
+换句话说，使用Sphinx的单个查询也能使用到不止一个CPU（多个并发查询会自动使用多个CPU）。这跟MySQL有显著的区别，MySQL的一个查询只能使用到一个CPU，无论有多少个CPU可供使用。另外，Sphinx在并发执行查询时不需要任何同步，这就避免了使用互斥体（一种同步机制）。而互斥体正是MySQL在多CPU环境下才会出现的声名狼藉的性能瓶颈之一。
+
+向上扩展的另一个重要方面是扩展磁盘I/O。不同的索引（包括部分更大型的分布式索引）能够轻松地放在不同的物理磁盘或RAID分卷上，以提高响应速度和吞吐量。这个方法的一部分好处跟MySQL 5.1的分片表一样，后者能将数据分片存储到不同的位置上。不过，分布式索引也有一些比分片表更好的优点。Sphinx使用分布式索引不仅可以分散负载，还能并行地处理一个查询的各个部分。相比之下，MySQL的分片表能通过对分片的剪枝来优化一些查询（并不是所有的），但查询的处理是不能并行的。即使Sphinx 和MySQL的分片都能提高查询的吞吐量，但如果查询是I/O密集的，则可以使用Sphinx让所有查询的响应速度得到线性的提高，而MySQL 分片只能对那些可采用剪去整个分区的查询才能改善延时。
+
+分布式搜索的工作流程非常直观。
+
+1. 向所有远程服务器发出远程查询。 
+2. 执行连续的本地索引搜索。 
+3. 从每个远程服务器上读取部分搜索结果。 
+4. 将所有局部搜索结果合并成最终结果集，并将它返回给客户端。 
+
+如果硬件资源允许，也可以在同一台机器上并行地使用几个索引进行搜索。如果有多个物理磁盘驱动器和多个CPU内核，那么并发查询就能互不妨碍地执行。你可以假装有一些索引是远程的，然后配置*searchd*联系自身，从而在同一台机器上发起并行查询。
+
+
+        index distributed_sample
+        {
+            type = distributed
+            local = chunk1 # resides on HDD1
+            agent = localhost:3312:chunk2 # resides on HDD2, searchd contacts itself
+        }
+
+从客户端的视角来看，分布式索引跟本地索引完全没什么两样。这就允许你通过使用节点来代理其他的节点集的方式，来创建出一棵分布式索引的“树”。例如，第一级节点可以代理一定量的第二级节点的查询请求，结果就是，可以以任意的路径，本地搜索它们本身，或传递查询到其他节点。
+
+## 聚合分片数据
+
+构建一个可扩展的系统常常要涉及数据在不同物理MySQL服务器间的分片（分区）。这在第11章里已经深入讨论过了。
+
+当数据以合适的粒度分片后，即使只是使用选择性的WHERE（这应该非常快）获取几行数据的查询也意味着要关联到许多服务器，检查错误，以及在应用里将搜索结果合并在一起。Sphinx减轻了这个问题的痛苦，因为所有必要的功能都在后台搜索进程里实现了。
+
+考虑这样一个例子：有一个1TB大小的表，其中有10亿篇博客文章，通过用户ID分片到10个物理MySQL服务器上，这样给定用户的文章总是在同一台服务器上。只要查询是限制在单个用户上，一切都很好：我们根据用户ID 先选定服务器，然后照常运作。
+
+现在假定我们要实现一个归档分页功能来显示该用户的所有朋友发表的文章。我们怎么按发布日期排序显示“其他sysbench特性”的第981～1000个条目呢？大量朋友的数据很可能是在不同的服务器上。如果仅有10个朋友，那就有约90％的可能会用到8台以上服务器，如果是20个朋友，这个可能性就提高到了99％。因此，对于大多数查询而言，我们需要关联到所有服务器。更糟糕的是，我们还要从每台服务器上拉1000篇文章，然后在应用程序里进行排序。按照本书前面所提供的建议，我们将数据裁减到只需要文章ID和时间戳。但是，仍然有10 000条记录要在应用程序里排序。许多现代脚本语言单在排序这一步骤上就会消耗掉大量的CPU时间。除此以外，我们或者要按顺序从每个服务器上获取结果记录（这会很慢），或者要编写一些代码构造并行查询线程（这很难实现和维护）。
+
+在这样的情形下，采用Sphinx将比重新发明轮子显得更有意义。在本例中所要做的事情就是建立几个Sphinx实例，从每个表里映射出经常访问的文章属性——在这里就是文章ID、用户ID和时间戳，然后在主Sphinx实例上查询第981～1000条记录，并按照发布日期排序，全部算起来大概是3行代码。这是更明智的扩展方法。
+
+# 架构概要
+
+Sphinx是一个独立的程序集。两个主要程序如下。
+
+*indexer*
+
+这个程序用来从各种特定的资源上（例如MySQL的查询结果）获取文档，并据此创建全文索引。这是一个后台批处理任务，网站一般会定时运行它。
+
+*searchd*
+
+这是一个后台进程，用于查询*indexer*构建的索引。它为应用程序提供运行时支持。
+
+Sphinx的发布包里还包含有多种编程语言的*searchd*原生客户端API（在本书写作时，这些语言包括PHP、Python、Perl、Ruby和Java），以及在MySQL 5.0及以上版本中作为插件式存储引擎实现的客户端SphinxSE。这些API和SphinxSE都可供客户端应用连接到*searchd*，然后把查询语句传递过去，最终取回搜索结果。
+
+每一个Sphinx全文索引都可以比作数据库里的一个表，与表里放置的一行行数据不同的是，Sphinx索引包含的是文档。（Sphinx也有一个单独的数据结构——多值属性，下文会讲到。）每一个文档都有一个唯一的32位或64位整数标识符，取自数据表里的索引字段（例如，从主键列中取）。另外，每一个文档拥有一个或多个全文字段（每一个都对应于数据库里的一个文本字段）和数值属性。就像一个数据表一样，Sphinx索引在所有文档里都有着一样的字段和属性。表F-1显示了数据表和Sphinx 索引的相似之处。
+
+**表F-1：数据库结构和相应的Sphinx结构**
+
+
+        数据库结构 Sphinx结构
+
+
+        CREATE TABLE documents (        index documents
+            id int(11) NOT NULL auto_increment,    document ID
+            title varchar(255),                    title field, full-text indexed
+            content text,                          content field, full-text indexed
+            group_id int(11),                      group_id attribute, sql_attr_uint
+            added datetime,                        added attribute, sql_attr_timestamp
+            PRIMARY KEY (id)
+        );
+
+Sphinx不存储数据库中的文本字体，只使用它们的内容来创建一个搜索索引。
+
+## 安装综述
+
+Sphinx安装非常直观，一般包括如下步骤。
+
+1. 从源码编译程序。 
+
+
+        $ **    configure && make && make install**    
+
+1. 创建一个配置文件：定义数据源和全文索引。 
+2. 初始索引化。 
+3. 启动*searchd*。 
+
+在这之后，客户程序即拥有查询功能。
+
+
+        <?php
+        include ( 'sphinxapi.php' );
+        $cl = new SphinxClient ();
+        $res = $cl->Query ( 'test query', 'myindex' );
+        // use $res search result here
+        ?>
+
+唯一还没做的事情就是定时运行*indexer*来更新全文索引数据。在重建索引的时候， *searchd*当前正在使用的索引还是全部可以使用的：*indexer*会检测到索引正在使用，然后创建一个“影子”索引来代替。在索引创建完之后，它会通知*searchd*使用这个完成的副本。
+
+全文索引存储在文件系统中（保存路径在配置文件里指定），存储为一种特定的“整体”形式，这种形式不适合做增量更新。通常的更新索引的方法就是全部重建。这个问题没有看起来那么大，原因有以下几点。
+
++ 创建索引的速度很快。在现在的硬件设备上，Sphinx索引普通文本（不带HTML标记）的速度是4～8MB/s。 
++ 可以把数据分割到几个索引里，下一小节里会讲到。每次运行*indexer*时只对需要更新的那部分数据进行索引重建。 
++ 无须对索引做“碎片整理”——它们本来就是为优化I/O而构建的，这能提高搜索速度。 
++ 数值属性可以直接更新，无须重建全部索引。 
+
+在未来的版本里，还会提供一个额外的索引后端，它将支持实时的索引更新。
+
+## 典型的分区使用
+
+下面详细讨论分区。最简单的分区模式是*main\+delta*方法，对一个文档集创建两个索引。*main*索引全部文档集，而*delta*只索引自上次*main*索引创建之后发生变更的文档。
+
+这个模式与许多数据变更模式完全吻合。论坛、博客、电子邮件和新闻归档，以及垂直索引引擎都是很好的例子。那些存储库的大部分冷数据自创建后从不更新，只有很小一部分的热数据经常改变或增加。这意味着delta索引很小并且可以在需要时重建（例如，每隔1～15分钟一次）。这相当于只对新插入的行做索引。
+
+你不需要重建索引来改变与文档关联的属性——可以通过*searchd*在线做。可以通过简单地在main索引上设置“deleted”特性来标记行已删除。因此，可以在main索引中对文档标记这个属性来处理更新，然后重建delta索引。对所有未标记为“deleted”的文档搜索会返回正确的结果集。
+
+注意，索引文件可能来自任何SELECT语句的结果；不必来自单个SQL表。对SELECT语句没有限制。这意味着可以在数据库中建索引之前预处理结果。普通预处理例子包括：与其他表的联接，在线创建额外的字段，在索引时排除某些字段，以及生成一些值。
+
+# 特别的功能特性
+
+除“仅仅”索引和搜索数据库内容外，Sphinx还提供几个其他的功能。下面是其中最重要的部分。
+
++ 搜索和排位算法记录词的位置，并且查询阶段接近的文档内容，也会被计算在内。 
++ 可以把数值属性绑定到文档中，包括多值属性。 
++ 可以按属性值排序、过滤和分组。 
++ 可以创建与搜索查询关键字高亮的文档片段。 
++ 可以跨多台机器做分布式搜索。 
++ 可以优化查询，从相同的数据中产生几个结果集。 
++ 可以从MySQL中使用SphinxSE来访问搜索结果。 
++ 可以很好地调节Sphinx对服务器负载的影响。 
+
+我们在前面已经涉及了其中部分特性。本节将介绍剩下的几个特性。
+
+## 近义词排位
+
+Sphinx能记住每一个文档内词语的位置，就像其他开源全文检索系统那样。但与它们不同的是，它使用位置对匹配度进行排序，返回更相关的结果。
+
+有许多因素会影响到文档的最终排位。为了计算排位，其他许多系统只使用了关键字的频度：每一个关键字的出现次数。几乎被所有全文检索系统使用的经典的BM25权重函数(1)就是把更多的权重分给这样一些词语，它们或者在特定的被检索文档里常常出现，或者很少在整个文档集里出现。BM25返回的结果通常就是最终的排位值。
+
+与之不同，Sphinx也计算查询短语的近似度，就是文档内包含的查询子短语的最大长度，以词语为计数单位。举例来说，用短语“John Doe Jr”在带有文本“John Black, John White Jr, and Jane Dunne”的文档里搜索时，会产生一个1的短语近似度，因为按查询序列，没有两个词语一同出现在文档里。如果文档的文本是“Mr. John Doe Jr and friends”，那就是3的近似度，因为这三个查询词语依次出现在文档里。而文本“John Gray, Jane Doe Jr”会生成2的近似度，这归功于“Doe Jr”查询子短语。
+
+在默认情况下，Sphinx首先是用短语近似度排序的，其次才是经典的BM25。这意味着逐字的查询引用可以保证非常靠前，而由一个单独的词语引用刚好在它们下面，等等。
+
+短语近似度是何时以及如何影响结果的呢？设想要在1 000 000页的文本里搜索短语“To be or not to be”。Sphinx会将逐字引用的页面放在搜索结果的最前面，而其他基于BM25的系统会首先返回那些包含了最多的“to”、“be”、“or”和“not”的页面——那些包含了一个确切引用的页面会只因里面的“to”不够多，就被埋没在搜索结果的深处了。
+
+当今许多主流的Web搜索引擎用关键字位置对结果进行排位也是一样的原理。在Google上搜索一个短语，它就会把最完美或接近完美包含匹配短语的文档放在结果的最上面，后面是“词袋”文档。
+
+然而，分析关键词的位置会需要额外的CPU时间，有时可能会出于性能考虑而跳过这一步。在有些情况下，短语排位也会产生不受欢迎的、出乎意料的结果。例如，在云里搜索标签时没有关键字位置会更好一些：要查询的tag在文档里是否相邻也没什么区别。
+
+为了顾及灵活性，Sphinx提供了排位模式的选择。除了默认的近似度加BM25之外，还能选用多种其他类型的方法，包括只有BM25权值的、完全禁用权值的（如果不是使用排位做排序，它能提供很好的优化），等等。
+
+## 支持属性
+
+每一个文档都可以包含无限数目的数值属性。属性是用户指定的，能够根据特定任务的需要包含任何额外的信息。相应的例子包括：一篇博客文章的作者ID、明细表里一个项目的价格、一个分类ID，等等。
+
+属性依靠额外的过滤、排序和对搜索结果进行分组，以提高全文搜索的效率。在理论上，它们可以被存储在MySQL里，而在执行搜索时再取出来。但在实际应用中，如果全文检索要从MySQL里定位几百或几千行数据（这也不算多），检索它们将慢得不可接受。
+
+Sphinx支持两种存储属性的方式：内联到文档列表或者放在外部单独的文件里。内联要求所有属性值要在各索引里存储多次，每当有文档ID存入就会有一次。这会增加索引的大小，还会提升I/O数量，但也会减少RAM的使用。在外部对属性进行排序，需要在*searchd*启动时把它们预加载到RAM里。
+
+属性通常都能被放入RAM中，因此，常见的做法就是把它们存储在外部。这可以使过滤、排序和分组更加快速，因为访问这些数据就相当于是一次快速的内存内查找。并且，只有存放于外部的属性才能在运行时被更新。内联存储应该只在没有足够的空闲RAM来存储属性数据时使用。
+
+Sphinx也支持多值属性（MVA）。MVA的内容由一个任意长的整数值列表组成，每个整数值对应一个文档。那些很好地利用了MVA的例子有标签ID列表、产品的分类和访问控制列表。
+
+## 过滤
+
+在全文搜索引擎里拥有对属性值的访问权可以让Sphinx在搜索时尽可能早地过滤和剔除候选匹配项。从技术上说，过滤检查发生在校验完文档是否包含了所有需要的关键字之后，但又在某个计算量很大的计算过程（例如排名）之前。因为有了这些优化，使用Sphinx把过滤和排序整合到全文搜索里要比在Sphinx中搜索而在MySQL中过滤结果快10～100倍。
+
+Sphinx 支持两种类型的过滤，这与SQL里简单的WHERE条件很相似。
+
++ 一个属性值匹配一个特定范围内的值（跟BETWEEN子句或数值比较相似）。 
++ 一个属性值匹配一个特定的值集合（跟IN()列表相似）。 
+
+如果过滤器有固定数量的值（用“集合”过滤器代替“范围”过滤器），并且这些值是可选择的，那么，用“伪关键字”替换掉整型值，并用全文内容而非属性的方式索引，这样是很有意义的。这同样适用于普通的数值属性和多值属性。在下文里我们会看到一些关于如何去做的例子。
+
+Sphinx能够使用过滤器来优化全扫描。它能记住在一小段连续的行块（默认是128行）中的最小和最大属性值，根据过滤条件很快地丢弃掉整个块。行是按照文档ID升序存储，因此，这个优化工作最适合那些跟ID关联紧密的列。例如，如果有一个行插入时间戳，它会随着ID一起增长，那么，在这个时间戳上做带有过滤的全扫描会非常快。
+
+## SphinxSE可插拔存储引擎
+
+接收到来自Sphinx的全文搜索结果之后，几乎总会有一些涉及MySQL的额外工作要做——从最低限度来讲，Sphinx索引里没有存储的文本列的值必须从MySQL里取得。因此，经常需要把Sphinx的搜索结果和其他MySQL表联接。
+
+尽管可以把搜索结果里的文档ID写在一条查询语句中发送给MySQL，但是，这种方法会导致既不太简洁也不太高效的代码。对于量非常大的场景，应该考虑使用SphinxSE，这是一个可编译到MySQL 5.0或更新的版本里的可插拔存储引擎，也可作为一个插件加载到MySQL 5.1或更新的版本里。
+
+SphinxSE可以让程序员从MySQL里面查询searchd和访问搜索结果。用法非常简单，只要在创建表时加上ENGINE=SPHINX子句（还有一个可选的CONNECTION子句，用于Sphinx服务器不在默认路径时重新定位服务器），然后就可以在表上运行查询了。
+
+
+        mysql> CREATE TABLE search_table (
+          ->   id       INTEGER NOT NULL,
+          ->   weight   INTEGER NOT NULL,
+          ->   query    VARCHAR(3072) NOT NULL,
+          ->   group_id INTEGER,
+          ->   INDEX(query)
+          -> ) ENGINE=SPHINX CONNECTION="sphinx://localhost:3312/test";
+        Query OK, 0 rows affected (0.12 sec)
+
+        mysql> SELECT * FROM search_table WHERE query='test;mode=all' \G
+        *************************** 1. row ***************************
+              id: 123
+          weight: 1
+           query: test;mode=all
+        group_id: 45
+        1 row in set (0.00 sec)
+
+每个SELECT以WHERE子句中的query列的方式传递给Sphinx查询。Sphinx *searchd*服务器返回查询结果，然后SphinxSE 存储引擎会把它们翻译成MySQL的结果返回给该SELECT语句。
+
+其中的查询可能会包含JOIN，把别的存储引擎上的其他表联接进来。
+
+SphinxSE支持大部分原本在API里才可用的搜索选项。你可以通过插入额外子句到查询字符串的方式设定类似过滤和范围限制选项。
+
+
+        mysql> **    SELECT * FROM search_table WHERE query='test;mode=all;**    
+            -> **    filter=group_id,5,7,11;maxmatches=3000';**    
+
+通过API返回的关于每一个查询和每一个词语的统计信息也可以用SHOW STATUS访问。
+
+
+        mysql> SHOW ENGINE SPHINX STATUS \G
+        *************************** 1. row ***************************
+          Type: SPH INX
+          Name: stats
+        Status: total: 3, total found: 3, time: 8, words: 1
+        *************************** 2. row ***************************
+          Type: SPHINX
+          Name: words
+        Status: test:3:5
+        2 rows in set (0.00 sec)
+
+甚至在使用SphinxSE的时候，经验法则仍然允许*searchd*执行排序、过滤和分组——也就是说，把所有需要的子句加到查询字符串里，而不是使用WHERE、ORDER BY和GROUP BY。这对于WHERE条件来说尤为重要，其原因是SphinxSE仅仅是*searchd*的一个客户端，而不是一个全能的内嵌搜索库。因此，你还是要把所有东西都传递给Sphinx引擎以获得最好的性能表现。
+
+## 高级性能控制
+
+索引和搜索操作都会显著地加重搜索服务器或数据库服务器的负担。幸运的是，有很多设置可用以限制来自Sphinx的负载。
+
+*indexer*的查询会引发不期望的数据库端负载，它们或者是因为使用到的锁彻底地减慢了MySQL的运转速度，或者只是因为出现得太快而与其他并发查询竞争资源。
+
+第一个例子就是MyISAM的一个声名狼藉的问题，当长时间的读锁定表时，会影响到其他后续的读和写——你不能简单地在生产服务器上执行SELECT \* FROM big\_table，因为会有干扰其他所有操作的风险。为了绕开这个问题，Sphinx提供了区间查询。与配置单个巨大查询不同，你可以指定一个可以快速计算可索引的行区间的查询，以及另外一个以很小的块逐批往外拉数据的查询。
+
+
+        **    sql_query_range = SELECT MIN(id),MAX(id) FROM documents**    
+        **    sql_range_step  = 1000**    
+        **    sql_query       = SELECT id, title, body FROM documents \**    
+                          **    WHERE id>=$start AND id<=$end**    
+
+这个特性在对MyISAM表索引的时候非常有用，但也应该考虑到使用InnoDB表的情况。虽然InnoDB在运行一个大数据量SELECT的时候不会锁定表，也不会延误其他查询的执行，但是，由于它的MVCC架构，它还是会使用到很多的机器资源。1 000个多版本的事务，每个事务会涉及1 000行数据，总开销也小于单独一个要长时间运行的涉及100万行数据的事务。
+
+第二种加重负载的可能发生在*indexer*能够比MySQL更快地处理数据时。在这样的情形下，也应该使用范围查询。sql\_ranged\_throttle选项会强制*indexer*在后续的查询步骤之间休眠给定的一段时间（以毫秒计算），这虽然会增加索引建立的时间，但也会减轻MySQL 的负担。
+
+如果有足够兴趣，你还可以看一个特别的案例，配置Sphinx以达到相反效果：为了缩短索引建立时间，就将更多的负载加到MySQL上面。当*indexer*和数据库之间的连接是100MB，行都被很好地压缩时（典型的文本数据），MySQL的压缩协议能缩短整体的索引时间。随之而来的是另外一个开销增加了：为了压缩和解压缩网络上传输的行数据， MySQL端和*indexer*端各自都会使用到更多的CPU时间。但是，整个索引时间因为减少了网络数据流量而能够缩短20％～30％。
+
+集群上的搜索偶尔也会遇到过载问题，因此，Sphinx提供了一些方法以避免*searchd*跑飞。
+
+首先，max\_children选项可以简单地限制一下能够并发运行的查询数量，当达到极限时告诉客户端重试。
+
+其次，还有查询级别的限制。可以设定查询运行的时候，或者是在找到预定个数的匹配项时就停止，或者是用完指定长度时间之后就停止。这两个条件分别通过调用SetLimits()和SetMaxQueryTime() API来实现。这是针对每一个查询设置的，所以，可以确保更重要的查询总是能够彻底完成。
+
+最后，定时运行*indexer*会引起额外I/O的突增，随之会影响到searchd间歇性地速度减慢。为了防止这种情况发生，Sphinx里有相应的选项来限制indexer的磁盘I/O。max\_iops强加了两次I/O操作之间的最小延迟时间，以确保每一秒里不会有超过max\_iops的磁盘操作会被执行。但是，有时一个单独的操作也会很占时间，比如有一个100MB数据量的read()调用。max\_iosize选项会处理这种情况，它可以保证每一次磁盘读或者写的长度都被限制在指定的范围之内。更大的操作会被自动地分解成小型操作，然后，这些小型的操作由max\_iops设置控制。
+
+# 实际应用案例
+
+每个描述的特性都可以在产品部署中成功找到。下面的小节回顾了几个现实的Sphinx部署，简要描述了网站的情况和一些实现细节。
+
+## Mininova.org上的全文搜索
+
+Mininova（*http://www.mininova.org*）是一个流行的BT种子搜索引擎，它清楚地展示了如何“仅仅”优化全文检索。Sphinx替代了几个基于MySQL主从复制的备库内建的全文索引的MySQL，因为它们不能很好地处理负载。替换之后，搜索服务器负载很轻；当前平均负载在0.3~04。
+
+数据库规模和负载量如下。
+
++ 网站的数据库很小，大概30万~50万条记录，300MB~500MB索引量。 
++ 网站的负载非常高：在写作本书的时候每天大约800万~1000万次查询。 
+
+数据绝大部分是由用户提供的文件名，常常没有合适的标记符号。因为这个原因，采用了前缀索引而不是整词索引。结果索引比不这样做要大好几倍，但仍然足够小，可以快速地构建，并且数据可以高效地缓存。
+
+对1 000个最频繁的查询的搜索结果在应用端缓存起来。总查询中有大概20％~30％由缓存提供服务。由于“长尾”查询分布，缓存再大一些并不会起太多作用。
+
+为了高可用，网站使用两个服务器和一个完整的全文索引复制服务器。索引每隔几分钟从头重建。建索引耗时小于一分钟，因此构建更复杂的模式没有意义。
+
+下面是从这个案例中学到的：
+
++ 在应用中缓存结果非常有帮助。 
++ 巨大的缓存可能没有必要，甚至对繁忙的应用也是如此。只需要1000~10000个条目就足够了。 
++ 对于近1GB大小的数据库，简单周期性地重建索引而不是创建更复杂的模式是没有问题的，即使对于繁忙的网站也是如此。 
+
+## BoardReader.com上的全文搜索
+
+Mininova是个负载格外高的项目案例——数据量不是太多，但有许多对数据的查询。BoardReader（*http://www.boardreader.com*）恰好相反：一个论坛搜索引擎，在非常大的数据集中执行非常少量的查询。Sphinx替代了商业的全文搜索引擎，对1GB的数据集合每次查询将需10s。Sphinx可使BoardReader在数据量和查询的吞吐量上很好地扩展。
+
+下面是一些常规信息。
+
++ 在数据库中有10亿个文档和1.5TB的文本。 
++ 有大概50万个页面视图，每天的查询量在70万~100万。 
+
+在写作本书的时候，搜索集群由6台服务器组成，每台有4个逻辑CPU（两个Xeon双核），有16GB的RAM和0.5TB的磁盘空间。数据库本身存储在一个分开的集群上。搜索集群只用来做索引和搜索。
+
+6台服务器中每台有4个*searchd*实例，因此所有4个核都被使用。4个实例其中之一聚集了其他三个上的结果。总共24个*searchd*实例。数据在它们中间平均分布。每个*searchd*副本携带几个索引，大概超过总数据的1/24（大约60GB）。
+
+来自6个“第一层”*searchd*节点的搜索结果由另外一个运行在Web服务器前端的*searchd*实例所聚集。这个实例只携带几个纯分布的索引，指向6个搜索集群服务器，但本地并没有数据。
+
+为什么每个节点上要有4个*searchd*实例？为什么不是每个服务器上只一个*searchd*实例，配置它运载4个索引块，自己和自己通信，就像远程服务器那样来利用多核CPU，一如我们之前建议的那样？有四个实例而不是一个有它的好处。首先，它减少了启动时间。有几个GB的属性数据需要预先加载到RAM中；在同一时间启动几个后台进程可以并行执行。其次，这可增加可用性。在*searchd*失败或更新的情形下，整个索引中只有1/24不可访问，而不是1/6。
+
+在搜索集群的24个实例里，我们使用基于时间的分片来进一步减少负载量。许多查询只需运行在最近的数据之上，因此，数据可以被分成3个不相交的索引集：最近一个星期的数据、最近3个月的数据和全部数据。这些索引分布在每个实例所在服务器的几块物理磁盘上。通过这个方法，每个实例都拥有了自己的CPU和物理磁盘驱动器，且互不干扰。
+
+本地的*cron*任务会定时更新索引，跨网络从MySQL上拉数据，但是只在本地创建索引文件。
+
+使用几块明确独立的“裸”磁盘被证明快于单独的RAID卷。裸磁盘能够控制哪一些文件存储到哪块物理磁盘上，而在RAID里却不一样，控制器将决定哪一个数据块存储在哪一块物理磁盘上。裸磁盘也能保证在不同的索引块上充分使用并行I/O，但基于RAID的并发查询仍然受制于I/O层级。我们在此处选择的是没有冗余的RAID 0，这是因为我们不关心磁盘故障；我们可以在搜索节点很方便地重建索引。当需要提高可靠性时，也可以使用几个RAID 1（镜像）卷提供跟裸盘相同的吞吐量。
+
+从BoardReader那里了解到的另一个有趣的事情是Sphinx版本升级是如何执行的。显然，整个集群是不可能停掉的，因此，向后兼容非常重要。幸运的是，Sphinx提供了这个功能——新版本的*searchd*一般都能读出旧版本的索引文件，也总能跨网络跟旧的客户端通信。要注意的是第一层上用来聚集搜索结果的节点对于第二层节点而言就像客户端，而由第二层节点执行实际的大多数搜索。所以，第二层上的节点首先升级，然后是第一层上的节点，最后才是Web前端。
+
+在本例中学到的经验如下。
+
++ 对于超大型数据库的格言是：分片，分片，分片，并行。 
++ 在大规模的搜索应用里，组织*searchd*为多层树状结构。 
++ 尽可能地针对全部数据的一小部分建立优化的索引。 
++ 明确地将文件映射到磁盘而不是依靠RAID控制器。 
+
+## Sahibinden.com对SELECT的优化
+
+Sahibinden（*http://www.sahibinden.com*）是土耳其一家领先的在线拍卖网站，存在着大量的性能问题，包括全文搜索性能。在部署了Sphinx并对查询做了一些分析之后，我们发现Sphinx高频执行应用相关的过滤查询，要比MySQL快许多——即使在MySQL中有对相关列的索引。另外，运用Sphinx于非全文搜索时，可产生易于编写和支持的统一的应用代码。
+
+MySQL的表现不佳是因为每个单独列的选择性不足以明显地缩小搜索空间。事实上，要创建和维护所有需要的索引几乎不可能，因为有太多的列需要它们。产品信息表大约有100个列，从技术上讲，Web应用可能使用任一列来过滤或排序。
+
+在这个“热门”的产品表上的插入和更新都是龟速，因为有太多的索引需要随之更新。
+
+基于这些原因，要应付产品信息表上的所有SELECT查询，而不仅仅是全文搜索查询， Sphinx就是一个自然的选择。
+
+网站数据库的大小和负载量如下。
+
++ 数据库里包含了大约400 000行记录，500MB数据。 
++ 负载量大约是每天300万个查询。 
+
+为了模拟普通的带WHERE条件的SELECT查询，Sphinx在建索引过程中把一些特别的关键字写在全文索引里。这些关键字都形如\_ \_CATN\_ \_ \_，这里的*N*可以用相应的分类ID来代替。这个替代发生在MySQL查询中运行带CONCAT()函数的索引之时，因此源数据不会被修改。
+
+索引需要尽可能频繁地重建。我们是固定每分钟重建一次。在多CPU环境里每次重建的时间是9～15s，因此，早先讨论过的*main\+delta*方案是不需要的。
+
+实践证明，PHP API在解析带有大量属性的结果集时，会花费相当数量的时间（每个查询大约7～9ms）。通常，这个开销不会构成问题，因为全文搜索的开销，特别是在大数据集上执行时，会高于这个解析。为了能减少这个因素的影响，索引被分隔成一对对的：“轻量”的有34个常用的属性，而“完整”的有全部99个属性。
+
+其他可能的解决办法是使用SphinxSE或者实现一个能够把特定的列读到Sphinx里的功能。然而，使用两个索引的方法是目前实现起来最快的，时间也是重要因素。
+
+以下是我们从这个案例里学到的经验。
+
++ 有时，Sphinx上的全扫描的执行效率要好过MySQL的索引读取。 
++ 对于选择性条件，用“伪关键字”代替属性过滤之后，全文搜索引擎能做更多的工作。 
++ 脚本语言里的API在某些极端但现实的条件下可能会成为性能瓶颈。 
+
+## BoardReader.com对GROUP BY的优化
+
+对BoardReader服务的改进需要统计超链接数，并且要根据关联数据创建不同的报表。例如，报表之一就是要显示出最近一个星期来链接数排在最前面的N个二级域名。另外一个统计链接到指定站点例如YouTube的最前面N个二级和三级域名。用来创建这些报表的查询具有下列这些常见特征。
+
++ 它们总是按域来分组的。 
++ 它们按每个组里的链接数排序，或者是以每个组里的唯一域名的链接数。 
++ 它们要处理大量的数据（接近几百万行记录），但是，最后生成的带有最佳分组的结果集往往又很小。 
++ 近似的结果也能接受。 
+
+在原型测试环节里，MySQL大概花了300s来执行这些查询。理论上，通过数据分片技术，把它们分拆到各个服务器执行，再在应用里用人工方式聚合查询结果，还可能将这些查询的时间优化到10s左右。但是，这需要构建一个复杂的架构，即使分片的实现也远不是那么直接明了。
+
+因为已经成功地使用Sphinx对搜索负载进行过分布式处理，所以，我们决定还使用Sphinx来实现一个近似的分布式的GROUP BY。这就要求在建立索引之前预处理这些数据，把所有感兴趣的子串转换为单独的“词语”。以下就是一个示例URL在预处理前后的样子。
+
+
+        **    source_url    = http://my.blogger.com/my/best-post.php**    
+        **    processed_url = my$blogger$com, blogger$com, my$blogger$com$my,**    
+                          **    my$blogger$com$my$best, my$blogger$com$my$best$post.php**    
+
+美元符号（$）仅仅是对URL分隔符统一的替换，这样搜索就能工作在任何URL部分，域或者路径。这种预处理能析取所有“感兴趣”的子串成为单独的关键字，这样搜索起来是最快的。从技术上说，我们可以采用短语查询或者前缀索引，但那些都会导致更大的索引，速度也更慢。
+
+链接是在构建索引时预处理的，使用了特定的MySQL UDF。在这个任务里，我们还定制了一个计算唯一性值的功能用来加速Sphinx。在此之后，我们就能把查询全部移到搜索集群里，简单地分发，同时明显减少查询延迟。
+
+数据库的大小和负载量如下。
+
++ 里面约有1.5亿~2亿行记录，预处理之后会生成50~100GB数据。 
++ 负载是每天大概60 000~100 000个GROUP BY查询。 
+
+用于分布的GROUP BY的索引也是部署在先前我们提到的同一个搜索集群上——有着6台机器，24个逻辑CPU。相对存储了1.5TB文本的数据库而言，这只是主要搜索负载的一个零头。
+
+Sphinx 替代了MySQL 的精确、缓慢、单CPU 的计算方式，转而用近似、快速、分布式的计算方式。所有会引入近似错误的因素都会存在：输入数据常常包含太多的行，以至于无法放入“排序缓冲区”里（我们使用的是一个固定的10万行的RAM），我们使用了COUNT(DISTINCT)，结果集是通过网络聚合的。除此以外，对于结果集里的前10～1000组——这常常是报表实际所需的——能够有99％～100％的准确率。
+
+索引的数据跟普通全文搜索用的数据很不一样。它里面有巨额的文档和关键字，尽管文档都非常小。文档的编号也是非连续的，因为它使用的是一种特殊的编号约定（综合了源服务器、源表和主键），因而无法用32位来存储。巨大数量的搜索“关键字”也会引发频繁的CRC32 冲突（Sphinx 用CRC32把关键字映射到内部词语的ID）。因为这些原因，我们只能被迫在内部到处使用64位的标识符。
+
+系统目前的性能很让人满意。对于最复杂的域名，完成一次查询的时间通常是0.1～1.0s。
+
+以下就是从这个案例里学到的经验。
+
++ 对于GROUP BY查询，可以牺牲掉一些精度以获取更快的速度。 
++ 对于大量文本的集合或者适当大小的特殊数据集，可能要用64位标识符。 
+
+## Grouply.com对联接查询的优化
+
+Grouply（*http://www.grouply.com*）构建了一个基于Sphinx的解决方案来搜索几百万行的标签信息数据库，其中利用了Sphinx的MVA支持。为了高可扩展性，数据库被分解到许多物理服务器上，因而对跨不同服务器的表的查询是必需的。然而任意大规模的联接是不可能的，因为会有太多的服务器、数据库和表参与执行。
+
+Grouply使用Sphinx的MVA特性来存储消息标签。标签列表通过PHP的API从Sphinx集群中获取。这替代了从MySQL服务器来的多个顺序的SELECT。同时，为了减少SQL查询的数量，某些特定用于展现的数据（例如，最后读取消息的一小部分用户的列表）同样存储在单独的MVA属性中，并且通过Sphinx访问。
+
+这里有两项创新点：使用了Sphinx预先构建JOIN结果，并且使用分布式功能合并了分散在各个数据块上的数据。只使用MySQL是不可能做到这些的。高效的归并要求数据能够分拆到尽可能少的物理服务器和表上，但这又会损害可扩展性和可扩充性。
+
+从本案例中学到的经验如下。
+
++ Sphinx能够用于有效地聚合高度分区化的数据。 
++ MVA能够用于存储和优化预先构建的JOIN结果。 
+
+# 总结
+
+在本附录里，我们只是简要地讨论了Sphinx全文搜索系统。为了缩短篇幅，我们特意略过了关于Sphinx其他许多功能特性的讨论，例如对HTML索引的支持、对MyISAM有更好支持的范围搜索、词法和同义词的支持、前缀和中缀索引以及CJK索引。不过，这个附录应该已经给了你一些关于Sphinx如何高效解决真实世界各种问题的启发。它并不限于做全文搜索，还能解决许多传统SQL的老难题。
+
+Sphinx既不是一颗银弹，也不是MySQL的一个替代品，但是在许多应用案例里（对于现代Web应用已经变得很常见），它可以被当作MySQL很有用的补充。你可以简单地用它来减轻一些工作的负担，甚至为你的应用创造新的可能性。
+
+你可以从*http://www.sphinxsearch.com*下载Sphinx，另外，别忘记分享你自己的使用心得。
+
+
+
+————————————————————
+
+(1) 详情参考*http://en.wikipedia.org/wiki/Okapi\_BM25*
+
+
+
+
+
+ 索引**(1)**
+
+**Symbols**
+
+32-bit architecture
+
+404 errors
+
+451 Group
+
+64-bit architecture
+
+:= assign operator
+
+@ user variable
+
+@@ system variable
+
+**A**
+
+ab tool, Apache
+
+Aborted\_clients variable
+
+Aborted\_connects variable
+
+access time
+
+access types
+
+ACID transactions
+
+active caches
+
+active data, keeping separate
+
+active-active access
+
+Adaptec controllers
+
+adaptive hash indexes
+
+Adaptive Query Localization
+
+Address Resolution Protocol (ARP)
+
+Adminer
+
+admission control features
+
+advanced performance control
+
+after-action reviews
+
+aggregating sharded data
+
+Ajax
+
+Aker, Brian
+
+Akiban
+
+algebraic equivalence rules
+
+algorithms, load-balancing
+
+ALL\_O\_DIRECT variable
+
+ALTER TABLE command
+
+Amazon EBS (Elastic Block Store)
+
+Amazon EC2 (Elastic Compute Cloud)
+
+Amazon RDS (Relational Database Service)
+
+Amazon Web Services (AWS)
+
+Amdahl scaling
+
+Amdahl's Law
+
+ANALYZE TABLE command
+
+ANSI SQL isolation levels
+
+Apache ab
+
+application-level optimization
+
+　alternatives to MySQL
+
+　caching
+
+　common problems
+
+　extending MySQL
+
+　finding the optimal concurrency
+
+　web server issues
+
+approximations
+
+Archive storage engine
+
+Aria storage engine
+
+ARP (Address Resolution Protocol)
+
+Aslett, Matt
+
+Aspersa (see Percona Toolkit)
+
+asynchronous I/O
+
+asynchronous replication
+
+async\_unbuffered
+
+atomicity
+
+attributes
+
+audit plugins
+
+auditing
+
+authentication plugins
+
+auto-increment keys
+
+AUTOCOMMIT mode
+
+autogenerated schemas
+
+AUTO\_INCREMENT
+
+availability zone
+
+AVG() function
+
+AWS (Amazon Web Services)
+
+**B**
+
+B-Tree indexes
+
+Background Patrol Read
+
+Backup＆Recovery (Preston)
+
+backup load
+
+backup time
+
+backup tools
+
+　Enterprise Backup, MySQL
+
+　mydumper
+
+　mylvmbackup
+
+　mysqldump
+
+　Percona XtraBackup
+
+　Zmanda Recovery Manager
+
+backups
+
+　binary logs
+
+　data
+
+　designing a MySQL solution
+
+　online or offline
+
+　reasons for
+
+　and replication
+
+　scripting
+
+　snapshots not
+
+　and storage engines
+
+　tools for
+
+balanced trees
+
+Barth, Wolfgang
+
+batteries in SSDs
+
+BBU (battery backup unit)
+
+BEFORE INSERT trigger
+
+Beginning Database Design (Churcher)
+
+Bell, Charles
+
+Benchmark Suite
+
+BENCHMARK() function
+
+benchmarks
+
+　analyzing results
+
+　capturing system performance and status
+
+　common mistakes
+
+　design and planning
+
+　examples
+
+　file copy
+
+　flash memory
+
+　getting accurate results
+
+　good uses for
+
+　how long to run
+
+　iterative optimization by
+
+　MySQL versions read-only
+
+　plotting
+
+　SAN
+
+　strategies
+
+　tactics
+
+　tools
+
+　what to measure
+
+BerkeleyDB
+
+BIGINT type
+
+binary logs
+
+　backing up
+
+　format
+
+　master record changes (events)
+
+　purging old logs safely
+
+　status
+
+binlog dump command
+
+binlog\_do\_db variable
+
+binlog\_ignore\_db variable
+
+Birthday Paradox
+
+BIT type
+
+bit-packed data types
+
+bitwise operations
+
+Blackhole storage engine
+
+blktrace
+
+BLOB type
+
+blog, MySQL Performance
+
+BoardReader.com
+
+Boolean full-text searches
+
+Boost library
+
+Bouman, Roland
+
+buffer pool
+
+　InnoDB
+
+　size of
+
+buffer threads
+
+built-in MySQL engines
+
+bulletin boards
+
+burstable capacity
+
+bzip
+
+**C**
+
+cache hits
+
+CACHE INDEX command
+
+cache tables
+
+cache units
+
+cachegrind
+
+caches
+
+　allocating memory for
+
+　control policies
+
+　hierarchy
+
+　invalidations
+
+　misses
+
+　RAID
+
+　read-ahead data
+
+　tuning by ratio
+
+　writes
+
+Cacti
+
+Calpont InfiniDB
+
+capacitors in SSDs
+
+capacity planning
+
+cardinality
+
+case studies
+
+　building a queue table
+
+　computing the distance between points
+
+　diagnostics
+
+　indexing
+
+　using user-defined functions
+
+CD-ROM applications
+
+Change Data Capture (CDC) utilities
+
+CHANGE MASTER TO command
+
+CHAR type
+
+character sets
+
+character\_set\_database
+
+CHARSET() function
+
+CHAR\_LENGTH() function
+
+CHECK OPTION variable
+
+CHECK TABLES command
+
+CHECKSUM TABLE command
+
+chunk size
+
+Churcher, Clare
+
+Circonus
+
+circular replication
+
+Cisco server
+
+client, returning results to
+
+client-side emulated prepared statements
+
+client/server communication settings
+
+cloud, MySQL in the
+
+　benchmarks
+
+　benefits and drawbacks
+
+　DBaaS
+
+　economics
+
+　four fundamental resources
+
+　performance
+
+　scaling and HA
+
+Cluster Control, SeveralNines
+
+Cluster, MySQL
+
+clustered indexes
+
+clustering, scaling by
+
+Clustrix
+
+COALESCE() function
+
+code
+
+　backing up
+
+　stored
+
+Codership Oy
+
+COERCIBILITY() function
+
+cold or warm copy
+
+Cole, Jeremy
+
+collate clauses
+
+COLLATION() function
+
+collations
+
+collisions, hash
+
+column-oriented storage engines
+
+command counters
+
+command-line monitoring with innotop
+
+command-line utilities
+
+comments
+
+　stripping before compare
+
+　version-specific
+
+commercial monitoring systems
+
+common\_schema
+
+community storage engines
+
+complete result sets
+
+COMPRESS() function
+
+compressed files
+
+compressed MyISAM tables
+
+computations
+
+　distance between points
+
+　integer
+
+　temporal
+
+Com\_admin\_commands variable
+
+CONCAT() function
+
+concurrency
+
+　control
+
+　inserts
+
+　measuring
+
+　multiversion concurrency control (MVCC)
+
+　need for high
+
+configuration
+
+　by cache hit ratio
+
+　completing basic
+
+　creating configuration files
+
+　InnoDB flushing algorithm
+
+　memory usage
+
+　MySQL concurrency
+
+　workload-based
+
+connection management
+
+connection pooling
+
+connection refused error
+
+connection statistics
+
+CONNECTION\_ID() function
+
+consistency
+
+consolidation
+
+　scaling by
+
+　storage
+
+constant expressions
+
+Continuent Tungsten Replicator
+
+CONVERT() function
+
+Cook, Richard
+
+correlated subqueries
+
+corrupt system structures
+
+corruption, finding and repairing
+
+COUNT() function optimizations
+
+counter tables
+
+counters
+
+covering indexes
+
+CPU-bound machines
+
+CPUs
+
+crash recovery
+
+crash testing
+
+CRC32() function
+
+CREATE and SELECT conversions
+
+CREATE INDEX command
+
+CREATE TABLE command
+
+CREATE TEMPORARY TABLE command
+
+cron jobs
+
+crontab
+
+cross-data center replication
+
+cross-shard queries
+
+CSV format
+
+CSV logging table
+
+CSV storage engine
+
+CURRENT\_DATE() function
+
+CURRENT\_USER() function
+
+cursors
+
+custom benchmark suite
+
+custom replication solutions
+
+**D**
+
+daemon plugins
+
+dangling pointer records
+
+data
+
+　archiving
+
+　backing up nonobvious
+
+　changes on the replica
+
+　consistency
+
+　deduplication
+
+　dictionary
+
+　distribution
+
+　fragmentation
+
+　loss, avoiding
+
+　optimizing access to
+
+　scanning
+
+　sharding
+
+　types
+
+　volume of and search engine choice
+
+Data Definition Language (DDL)
+
+Data Recovery Toolkit
+
+data types
+
+　BIGINT
+
+　BIT
+
+　BLOB
+
+　CHAR
+
+　DATETIME
+
+　DECIMAL
+
+　DOUBLE
+
+　ENUM
+
+　FLOAT
+
+　GEOMETRY
+
+　INT
+
+　LONGBLOB
+
+　LONGTEXT
+
+　MEDIUMBLOB
+
+　MEDIUMINT
+
+　MEDIUMTEXT
+
+　RANGE COLUMNS
+
+　SET
+
+　SMALLBLOB
+
+　SMALLINT
+
+　SMALLTEXT
+
+　TEXT
+
+　TIMESTAMP
+
+　TINYBLOB
+
+　TINYINT
+
+　TINYTEXT
+
+　VARCHAR
+
+data=journal option
+
+data=ordered option
+
+data=writeback option
+
+Database as a Service (DBaaS)
+
+database servers
+
+Database Test Suite
+
+Date, C. J.
+
+DATETIME type
+
+DBaaS (Database as a Service)
+
+dbShards
+
+dbt2 tool
+
+DDL (Data Definition Language)
+
+deadlocks
+
+Debian
+
+debug symbols
+
+debugging locks
+
+DECIMAL type
+
+deduplication, data
+
+“degraded” mode
+
+DELAYED hint
+
+delayed key writes
+
+delayed replication
+
+DELETE command
+
+delimited file backups
+
+DeNA
+
+denormalization
+
+dependencies on nonreplicated data
+
+derived tables
+
+DETERMINISTIC variable
+
+diagnostics
+
+　capturing diagnostic data
+
+　case study
+
+　single-query versus server-wide problems
+
+differential backups
+
+directio() function
+
+directory servers
+
+dirty reads
+
+DISABLE KEYS command
+
+disaster recovery
+
+disk queue scheduler
+
+disk space
+
+disruptive innovations
+
+DISTINCT queries
+
+distributed (XA) transactions
+
+distributed indexes
+
+distributed memory caches
+
+distributed replicated block device (DRBD)
+
+distribution master and replicas
+
+DNS (Domain Name System)
+
+document pointers
+
+Domain Name System (DNS)
+
+DorsalSource
+
+DOUBLE type
+
+doublewrite buffer
+
+downtime, causes of
+
+DRBD (distributed replicated block device)
+
+drinking from the fire hose
+
+Drizzle
+
+DROP DATABASE command
+
+DROP TABLE command
+
+DTrace
+
+dump and import conversions
+
+duplicate indexes
+
+durability
+
+DVD-ROM applications
+
+dynamic allocation
+
+dynamic optimizations
+
+dynamic SQL
+
+**E**
+
+early termination
+
+EBS (Elastic Block Store), Amazon
+
+EC2 (Elastic Compute Cloud)
+
+edge side (ESI)
+
+Elastic Block Store (EBS), Amazon
+
+Elastic Compute Cloud (EC2), Amazon
+
+embedded escape sequences
+
+eMLC (enterprise MLC)
+
+ENABLE KEYS command
+
+encryption overhead, avoiding
+
+end\_log\_pos
+
+Enterprise Backup, MySQL
+
+enterprise MLC (eMLC)
+
+Enterprise Monitor, MySQL
+
+ENUM type
+
+equality propagation
+
+errors
+
+　404 error
+
+　from data corruption or loss
+
+　ERROR
+
+　ERROR
+
+　ERROR
+
+escape sequences
+
+evaluation order
+
+Even Faster Websites (Souders)
+
+events
+
+exclusive locks
+
+exec\_time
+
+EXISTS operator
+
+expire\_logs\_days variable
+
+EXPLAIN command
+
+explicit allocation
+
+explicit invalidation
+
+explicit locking
+
+external XA transactions
+
+extra column
+
+**F**
+
+Facebook
+
+fadvise() function
+
+failback
+
+failover
+
+failures, mean time between
+
+Falcon storage engine
+
+fallback
+
+fast warmup feature
+
+FathomDB
+
+FCP (Fibre Channel Protocol)
+
+fdatasync() function
+
+Federated storage engine
+
+Fedora
+
+fencing
+
+fetching mistakes
+
+Fibre Channel Protocol (FCP)
+
+FIELD() function
+
+FILE () function
+
+FILE I/O
+
+files
+
+　consistency of
+
+　copying
+
+　descriptors
+
+　transferring large
+
+filesort
+
+filesystems
+
+filtered column
+
+filtering
+
+fincore tool
+
+FIND\_IN\_SET() function
+
+fire hose, drinking from the
+
+FIRST() function
+
+first-write penalty
+
+Five Whys
+
+fixed allocation
+
+flapping
+
+flash storage
+
+Flashcache
+
+Flexviews tools
+
+FLOAT type
+
+FLOOR() function
+
+FLUSH LOGS command
+
+FLUSH QUERY CACHE command
+
+FLUSH TABLES WITH READ LOCK command
+
+flushing algorithm, InnoDB
+
+flushing binary logs
+
+flushing log buffer
+
+flushing tables
+
+FOR UPDATE hint
+
+FORCE INDEX hint
+
+foreign keys
+
+Forge, MySQL
+
+FOUND\_ROWS() function
+
+fractal trees
+
+fragmentation
+
+free space fragmentation
+
+FreeBSD
+
+“freezes”
+
+frequency scaling
+
+.frm file
+
+FROM\_UNIXTIME() function
+
+fsync() function
+
+full-stack benchmarking
+
+full-text searching
+
+　on BoardReader.com
+
+　Boolean full-text searches
+
+　collection
+
+　on Mininova.org
+
+　parser plugins
+
+　Sphinx storage engine
+
+functional partitioning
+
+furious flushing
+
+Fusion-io
+
+**G**
+
+Galbraith, Patrick
+
+Galera
+
+Ganglia
+
+garbage collection
+
+GDB stack traces
+
+gdb tool
+
+general log
+
+GenieDB
+
+Gentoo
+
+GEOMETRY type
+
+geospatial searches
+
+GET\_LOCK() function
+
+get\_name\_from\_id() function
+
+Gladwell, Malcom
+
+glibc libraries
+
+global locks
+
+global scope
+
+global version/session splits
+
+globally unique IDs (GUIDs)
+
+gnuplot
+
+Goal (Goldratt)
+
+Goal-Driven Performance Optimization white paper
+
+GoldenGate, Oracle
+
+Goldratt, Eliyahu M.
+
+Golubchik, Sergei
+
+Graphite
+
+great-circle formula
+
+GREATEST() function
+
+grep
+
+Grimmer, Lenz
+
+Groonga storage engine
+
+Groundwork Open Source
+
+GROUP BY queries
+
+group commit
+
+Grouply.com
+
+GROUP\_CONCAT() function
+
+Guerrilla Capacity Planning (Gunther)
+
+GUID values
+
+Gunther, Neil J.
+
+gunzip tool
+
+gzip compression
+
+**H**
+
+Hadoop
+
+handler API
+
+handler operations
+
+HandlerSocket
+
+HAProxy
+
+hard disks, choosing
+
+hardware and software RAID
+
+hardware threads
+
+hash codes
+
+hash indexes
+
+hash joins
+
+Haversine formula
+
+header
+
+headroom
+
+HEAP tables
+
+heartbeat record
+
+HEX() function
+
+Hibernate Core interfaces
+
+Hibernate Shards
+
+high availability
+
+　achieving
+
+　avoiding single points of failure
+
+　defined
+
+　failover and failback
+
+High Availability Linux project
+
+high bits
+
+High Performance Web Sites (Souders)
+
+high throughput
+
+HIGH\_PRIORITY hint
+
+hit rate
+
+HiveDB
+
+hot data, segregating
+
+“hot” online backups
+
+How Complex Systems Fail (Cook)
+
+HTTP proxy
+
+http\_load tool
+
+Hutchings, Andrew
+
+Hyperic HQ
+
+hyperthreading
+
+**I**
+
+I/O
+
+　benchmark
+
+　InnoDB
+
+　MyISAM
+
+　performance
+
+　slave thread
+
+I/O-bound machines
+
+IaaS (Infrastructure as a Service)
+
+.ibd files
+
+Icinga
+
+id column
+
+identifiers, choosing
+
+idle machine's vmstat output
+
+IF() function
+
+IfP (instrumentation-for-php)
+
+IGNORE INDEX hint
+
+implicit locking
+
+IN() function
+
+incr() function
+
+incremental backups
+
+.index files
+
+index-covered queries
+
+indexer, Sphinx
+
+indexes
+
+　benefits of
+
+　case study
+
+　clustered
+
+　covering
+
+　and locking
+
+　maintaining
+
+　merge optimizations
+
+　and mismatched PARTITION BY
+
+　MyISAM storage engine
+
+　order of columns
+
+　packed (prefix-compressed)
+
+　reducing fragmentation
+
+　redundant and duplicate
+
+　and scans
+
+　statistics
+
+　strategies for high performance
+
+　types of
+
+　unused
+
+INET\_ATON() function
+
+INET\_NTOA() function
+
+InfiniDB, Calpont
+
+info() function
+
+Infobright
+
+INFORMATION\_SCHEMA tables
+
+infrastructure
+
+Infrastructure as a Service (IaaS)
+
+Ingo, Henrik
+
+inner joins
+
+Innobase Oy
+
+InnoDB
+
+　advanced settings
+
+　buffer pool
+
+　concurrency configuration
+
+　crash recovery
+
+　data dictionary
+
+　data layout
+
+　Data Recovery Toolkit
+
+　and deadlocks
+
+　and filesystem snapshots
+
+　flushing algorithm
+
+　Hot Backup
+
+　I/O configuration
+
+　lock waits in
+
+　log files
+
+　and query cache
+
+　release history
+
+　row locks
+
+　tables
+
+　tablespace
+
+　transaction log
+
+InnoDB locking selects
+
+innodb variable
+
+InnoDB-specific variables
+
+innodb\_adaptive\_checkpoint variable
+
+innodb\_analyze\_is\_persistent variable
+
+innodb\_autoinc\_lock\_mode variable
+
+innodb\_buffer\_pool\_instances variable
+
+innodb\_buffer\_pool\_size variable
+
+innodb\_commit\_concurrency variable
+
+innodb\_concurrency\_tickets variable
+
+innodb\_data\_file\_path variable
+
+innodb\_data\_home\_dir variable
+
+innodb\_doublewrite variable
+
+innodb\_file\_io\_threads variable
+
+innodb\_file\_per\_table variable
+
+innodb\_flush\_log\_at\_trx\_commit variable
+
+innodb\_flush\_method variable
+
+innodb\_flush\_neighbor\_pages variable
+
+innodb\_force\_recovery variable
+
+innodb\_io\_capacity variable
+
+innodb\_lazy\_drop\_table variable
+
+innodb\_locks\_unsafe\_for\_binlog variable
+
+innodb\_log\_buffer\_size variable
+
+innodb\_log\_files\_in\_group variable
+
+innodb\_log\_file\_size variable
+
+innodb\_max\_dirty\_pages\_pct variable
+
+innodb\_max\_purge\_lag variable
+
+innodb\_old\_blocks\_time variable
+
+innodb\_open\_files variable
+
+innodb\_overwrite\_relay\_log\_info variable
+
+innodb\_read\_io\_threads variable
+
+innodb\_recovery\_stats variable
+
+innodb\_stats\_auto\_update variable
+
+innodb\_stats\_on\_metadata variable
+
+innodb\_stats\_sample\_pages variable
+
+innodb\_strict\_mode variable
+
+innodb\_support\_xa variable
+
+innodb\_sync\_spin\_loops variable
+
+innodb\_thread\_concurrency variable
+
+innodb\_thread\_sleep\_delay variable
+
+innodb\_use\_sys\_stats\_table variable
+
+innodb\_version variable
+
+innodb\_write\_io\_threads variable
+
+innotop tool
+
+INSERT ... SELECT statements
+
+insert buffer
+
+INSERT command
+
+INSERT ON DUPLICATE KEY UPDATE command
+
+insert-to-select rate
+
+inspecting server status variables
+
+INSTEAD OF trigger
+
+instrumentation
+
+instrumentation-for-php (IfP)
+
+INT type
+
+integer computations
+
+integer types
+
+Intel X-25E drives
+
+Intel Xeon X5670 Nehalem CPU
+
+interface tools
+
+intermittent problems, diagnosing
+
+　capturing diagnostic data
+
+　case study
+
+　single-query versus server-wide problems
+
+internal concurrency issues
+
+internal XA transactions
+
+intra-row fragmentation
+
+introducers
+
+invalidation on read
+
+ionice
+
+iostat
+
+IP addresses
+
+IP takeover
+
+ISNULL() function
+
+isolating columns
+
+isolation
+
+iterative optimization by benchmarking
+
+**J**
+
+JMeter
+
+joins
+
+　decomposition
+
+　execution strategy
+
+　JOIN queries
+
+　optimizers for
+
+journaling filesystems
+
+Joyent
+
+**K**
+
+Karlsson, Anders
+
+Karwin, Bill
+
+Keep-Alive
+
+key block size
+
+key buffers
+
+key column
+
+key\_buffer\_size variable
+
+key\_len column
+
+Köhntopp, Kristian
+
+Kyte, Tom
+
+**L**
+
+L-values
+
+lag
+
+Lahdenmaki, Tapio
+
+LAST() function
+
+LAST\_INSERT\_ID() function
+
+latency
+
+LATEST DETECTED DEADLOCK
+
+LATEST FOREIGN KEY ERROR
+
+Launchpad
+
+lazy UNIONs
+
+LDAP authentication
+
+Leach, Mike
+
+LEAST() function
+
+LEFT JOIN queries
+
+LEFT OUTER JOIN queries
+
+left-deep trees
+
+Leith, Mark
+
+LENGTH() function
+
+lighttpd
+
+lightweight profiling
+
+LIMIT query
+
+limited replication bandwidth
+
+linear scalability
+
+“lint checking”
+
+Linux Virtual Server (LVS)
+
+Linux-HA stack
+
+linuxthreads
+
+Little's Law
+
+load balancers
+
+load balancing
+
+LOAD DATA FROM MASTER command
+
+LOAD DATA INFILE command
+
+LOAD INDEX command
+
+LOAD TABLE FROM MASTER command
+
+LOAD\_FILE() function
+
+local caches
+
+local shared-memory caches
+
+locality of reference
+
+lock contention
+
+LOCK IN SHARE MODE command
+
+LOCK TABLES command
+
+lock time
+
+lock waits
+
+lock-all-tables variable
+
+lock-free InnoDB backups
+
+locks
+
+　debugging
+
+　granularities
+
+　implicit and explicit
+
+　read/write
+
+　row
+
+　table
+
+log buffer
+
+log file coordinates
+
+log file size
+
+log positions, locating
+
+log servers
+
+log threads
+
+log, InnoDB transaction
+
+logging
+
+logical backups
+
+logical concurrency issues
+
+logical reads
+
+logical replication
+
+logical unit numbers (LUNs)
+
+log\_bin variable
+
+log\_slave\_updates variable
+
+LONGBLOB type
+
+LONGTEXT type
+
+lookup tables
+
+loose index scans
+
+lost time
+
+low latency
+
+LOW\_PRIORITY hint
+
+Lua language
+
+Lucene
+
+LucidDB
+
+LUNs (logical unit numbers)
+
+LVM snapshots
+
+lvremove command
+
+LVS (Linux Virtual Server)
+
+lzo
+
+**M**
+
+Maatkit (see Percona Toolkit)
+
+maintenance operations
+
+malloc() function
+
+manual joins
+
+mapping tables
+
+MariaDB
+
+master and replicas
+
+master shutdown, unexpected
+
+master-data variable
+
+master-master in active-active mode
+
+master-master in active-passive mode
+
+master-master replication
+
+master.info file
+
+Master\_Log\_File
+
+MASTER\_POS\_WAIT ( ) function
+
+MATCH() function
+
+materialized views
+
+Matsunobu, Yoshinori
+
+MAX() function
+
+Maxia, Giuseppe
+
+maximum system capacity
+
+max\_allowed\_packet variable
+
+max\_connections setting variable
+
+max\_connect\_errors variable
+
+max\_heap\_table\_size setting variable
+
+mbox mailbox messages
+
+MBRCONTAINS() function
+
+McCullagh, Paul
+
+MD5() function
+
+780|Index
+
+md5sum
+
+mean time between failures (MTBF)
+
+mean time to recover (MTTR)
+
+measurement uncertainty
+
+MEDIUMBLOB type
+
+MEDIUMINT type
+
+MEDIUMTEXT type
+
+memcached
+
+Memcached Access
+
+memory
+
+　allocating for caches
+
+　configuring
+
+　consumption formula for
+
+　InnoDB buffer pool
+
+　InnoDB data dictionary
+
+　limits on
+
+　memory-to-disk ratio
+
+　MyISAM key cache
+
+　per-connection needs
+
+　pool
+
+　reserving for operating system
+
+　size
+
+　Sphinx RAM
+
+　table cache
+
+　thread cache
+
+Memory storage engine
+
+Merge storage engine
+
+merge tables
+
+merged read and write requests
+
+mget() call
+
+MHA toolkit
+
+middleman solutions
+
+migration, benchmarking after
+
+Millsap, Cary
+
+MIN() function
+
+Mininova.org
+
+mk-parallel-dump tool
+
+mk-parallel-restore tool
+
+mk-query-digest tool
+
+mk-slave-prefetch tool
+
+MLC (multi-level cell)
+
+MMM replication manager
+
+mod\_log\_config variable
+
+MonetDB
+
+Monitis
+
+monitoring tools
+
+MONyog
+
+mpstat tool
+
+MRTG (Multi Router Traffic Grapher)
+
+MTBF (mean time between failures)
+
+mtop tool
+
+MTTR (mean time to recovery)
+
+Mulcahy, Lachlan
+
+Multi Router Traffic Grapher (MRTG)
+
+multi-level cell (MLC)
+
+multi-query mechanism
+
+multicolumn indexes
+
+multiple disk volumes
+
+multiple partitioning keys
+
+multisource replication
+
+multivalued attributes
+
+Munin
+
+MVCC (multiversion concurrency control)
+
+my.cnf file
+
+.MYD file
+
+mydumper
+
+.MYI file
+
+MyISAM storage engine
+
+　and backups
+
+　concurrency configuration
+
+　and COUNT() queries
+
+　data layout
+
+　delayed key writes
+
+　indexes
+
+　key block size
+
+　key buffer/cache
+
+　performance
+
+　tables
+
+myisamchk
+
+myisampack
+
+mylvmbackup
+
+MySQL
+
+　concurrency
+
+　configuration mechanisms
+
+　development model
+
+　GPL-licensing
+
+　logical architecture
+
+　proprietary plugins
+
+　Sandbox script
+
+　version history
+
+MySQL 5.1 Plugin Development (Golubchik＆Hutchings)
+
+MySQL Benchmark Suite
+
+MySQL Cluster
+
+MySQL Enterprise Backup
+
+MySQL Enterprise Monitor
+
+MySQL Forge
+
+MySQL High Availability (Bell et al.)
+
+MySQL Stored Procedure Programming (Harrison＆Feuerstein)
+
+MySQL Workbench Utilities
+
+mysql-bin.index file
+
+mysql-relay-bin.index file
+
+mysqladmin
+
+mysqlbinlog tool
+
+mysqlcheck tool
+
+mysqld tool
+
+mysqldump tool
+
+mysqlhotcopy tool
+
+mysqlimport tool
+
+mysqlslap tool
+
+mysql\_query() function
+
+mysql\_unbuffered\_query() function
+
+mytop tool
+
+**N**
+
+Nagios
+
+Nagios System and Network Monitoring (Barth)
+
+name locks
+
+NAS (network-attached storage)
+
+NAT (network address translation)
+
+Native POSIX Threads Library (NPTL)
+
+natural identifiers
+
+natural-language full-text searches
+
+NDB API
+
+NDB Cluster storage engine
+
+nesting cursors
+
+netcat
+
+network address translation (NAT)
+
+network configuration
+
+network overhead
+
+network performance
+
+network provider, reliance on single
+
+network-attached storage (NAS)
+
+New Relic
+
+next-key locking
+
+NFS, SAN over
+
+Nginx
+
+nice
+
+nines rule of availability
+
+Noach, Shlomi
+
+nodes
+
+non-SELECT queries
+
+nondeterministic statements
+
+nonrepeatable reads
+
+nonreplicated data
+
+nonsharded data
+
+nontransactional tables
+
+nonunique server IDs
+
+nonvolatile random access memory (NVRAM)
+
+normalization
+
+NOT EXISTS() queries
+
+NOT NULL
+
+NOW() function
+
+NOW\_USEC() function
+
+NPTL (Native POSIX Threads Library)
+
+NULL
+
+null hypothesis
+
+NULLIF() function
+
+NuoDB
+
+NVRAM (nonvolatile random access memory)
+
+**O**
+
+object versioning
+
+object-relational mapping (ORM) tool
+
+OCZ
+
+OFFSET variable
+
+OLTP (online transaction processing)
+
+on-controller cache (see RAID)
+
+on-disk caches
+
+on-disk temporary tables
+
+online transaction processing (OLTP)
+
+open() function
+
+openark kit
+
+opened tables
+
+opening and locking partitions
+
+OpenNMS
+
+operating system
+
+　choosing an
+
+　how to select CPUs for MySQL
+
+　optimization
+
+　status of
+
+　what limits performance
+
+oprofile tool
+
+Opsview
+
+optimistic concurrency control
+
+optimization
+
+　(see also application-level optimization)
+
+　(see also query optimization)
+
+　BLOB workload
+
+　DISTINCT queries
+
+　filesort
+
+　full-text indexes
+
+　GROUP BY queries
+
+　JOIN queries
+
+　LIMIT and OFFSET
+
+　OPTIMIZE TABLE command
+
+　optimizer traces
+
+　optimizer\_prune\_level
+
+　optimizer\_search\_depth
+
+　optimizer\_switch
+
+　prepared statements
+
+　queries
+
+　query cache
+
+　query optimizer
+
+　RAID performance
+
+　ranking queries
+
+　selects on Sahibinden.com
+
+　server setting optimization
+
+　sharded JOIN queries on Grouply.com
+
+　for solid-state storage
+
+　sorts
+
+　SQL\_CALC\_FOUND\_ROWS variable
+
+　subqueries
+
+　TEXT workload
+
+　through profiling
+
+　UNION variable
+
+Optimizer
+
+　hints
+
+DELAYED
+
+FOR UPDATE
+
+FORCE INDEX
+
+HIGH\_PRIORITY
+
+IGNORE INDEX
+
+LOCK IN SHARE MODE
+
+LOW\_PRIORITY
+
+SQL\_BIG\_RESULT
+
+SQL\_BUFFER\_RESULT
+
+SQL\_CACHE
+
+SQL\_CALC\_FOUND\_ROWS
+
+SQL\_NO\_CACHE
+
+SQL\_SMALL\_RESULT
+
+STRAIGHT\_JOIN
+
+USE INDEX
+
+　limitations of
+
+correlated subqueries
+
+equality propogation
+
+hash joins
+
+index merge optimizations
+
+loose index scans
+
+MIN() and MAX()
+
+parallel execution
+
+SELECT and UPDATE on the Same Table
+
+UNION limitations
+
+　query
+
+complex queries versus many queries
+
+COUNT() aggregate function
+
+join decomposition
+
+limitations of MySQL
+
+optimizing data access
+
+reasons for slow queries
+
+restructuring queries
+
+Optimizing Oracle Performance (Millsap)
+
+options
+
+OQGraph storage engine
+
+Oracle Database
+
+Oracle development milestones
+
+Oracle Enterprise Linux
+
+Oracle GoldenGate
+
+ORDER BY queries
+
+order processing
+
+ORM (object-relational mapping)
+
+OurDelta
+
+out-of-sync replicas
+
+OUTER JOIN queries
+
+outer joins
+
+outliers
+
+oversized packets
+
+O\_DIRECT variable
+
+O\_DSYNC variable
+
+**P**
+
+Pacemaker
+
+packed indexes
+
+packed tables
+
+PACK\_KEYS variable
+
+page splits
+
+paging
+
+PAM authentication
+
+parallel execution
+
+parallel result sets
+
+parse tree
+
+parser
+
+PARTITION BY variable
+
+partitioning
+
+　across multiple nodes
+
+　how to use
+
+　keys
+
+　with replication filters
+
+　sharding
+
+　tables
+
+　types of
+
+passive caches
+
+Patricia tries
+
+PBXT
+
+PCIe cards
+
+Pen
+
+per-connection memory needs
+
+per-connection needs
+
+percent() function
+
+percentile response times
+
+Percona InnoDB Recovery Toolkit
+
+Percona Server
+
+　BLOB and TEXT types
+
+　buffer pool
+
+　bypassing operating system caches
+
+　corrupted tables
+
+　doublewrite buffer
+
+　enhanced slow query log
+
+　expand\_fast\_index\_creation
+
+　extended slow query log
+
+　fast warmup features
+
+　FNV64() function
+
+　HandlerSocket plugin
+
+　idle transaction timeout parameter
+
+　INFORMATION\_SCHEMA.INDEX\_STA TISTICS table
+
+　innobd\_use\_sys\_stats\_table option
+
+　InnoDB online text creation
+
+　innodb\_overwrite\_relay\_log\_info option
+
+　innodb\_read\_io\_threads option
+
+　innodb\_recovery\_stats option
+
+　innodb\_use\_sys\_stats\_table option
+
+　innodb\_write\_io\_threads option
+
+　larger log files
+
+　lazy page invalidation
+
+　limit data dictionary size
+
+　mutex issues
+
+　mysqldump
+
+　object-level usage statistics
+
+　query-level instrumentation
+
+　read-ahead
+
+　replication
+
+　slow query log
+
+　stripping query comments
+
+　temporary tables
+
+　user statistics tables
+
+Percona Toolkit
+
+　Aspersa
+
+　Maatkit
+
+　mk-parallel-dump tool
+
+　mk-parallel-restore tool
+
+　mk-query-digest tool
+
+　mk-slave-prefetch tool
+
+　pt-archiver
+
+　pt-collect
+
+　pt-deadlock-logger
+
+　pt-diskstats
+
+　pt-duplicate-key-checker
+
+　pt-fifo-split
+
+　pt-find
+
+　pt-heartbeat
+
+　pt-index-usage
+
+　pt-kill
+
+　pt-log-player
+
+　pt-mext
+
+　pt-mysql-summary
+
+　pt-online-schema-change
+
+　pt-pmp
+
+　pt-query-advisor
+
+　pt-query-digest
+
+extracting from comments
+
+profiling
+
+query log
+
+slow query logging
+
+　pt-sift
+
+　pt-slave-delay
+
+　pt-slave-restart
+
+　pt-stalk
+
+　pt-summary
+
+　pt-table-checksum
+
+　pt-table-sync
+
+　pt-tcp-model
+
+　pt-upgrade
+
+　pt-visual-explain
+
+Percona tools
+
+Percona XtraBackup
+
+Percona XtraDB Cluster
+
+performance optimization
+
+　plotting metrics
+
+　profiling
+
+　SAN
+
+　views and
+
+Performance Schema
+
+Perl scripts
+
+Perldoc
+
+perror utility
+
+persistent connections
+
+persistent memory
+
+pessimistic concurrency control
+
+phantom reads
+
+PHP profiling tools
+
+phpMyAdmin tool
+
+phrase proximity ranking
+
+phrase searches
+
+physical reads
+
+physical size of disk
+
+pigz tool
+
+“pileups”
+
+Pingdom
+
+pinging
+
+Planet MySQL blog aggregator
+
+planned promotions
+
+plugin-specific variables
+
+plugins
+
+point-in-time recovery
+
+poor man's profiler
+
+port forwarding
+
+possible\_keys column
+
+post-mortems
+
+PostgreSQL
+
+potential cache size
+
+power grid
+
+preferring a join
+
+prefix indexes
+
+prefix-compressed indexes
+
+preforking
+
+pregenerating content
+
+prepared statements
+
+preprocessor
+
+Preston, W. Curtis
+
+primary key
+
+PRIMARY KEY constraint
+
+priming the cache
+
+PROCEDURE ANALYSE command
+
+procedure plugins
+
+processor speed
+
+profiling
+
+　and application speed
+
+　applications
+
+　diagnosing intermittent problems
+
+　interpretation
+
+　MySQL queries
+
+　optimization through
+
+　single queries
+
+　tools
+
+promotions of replicas
+
+propagation of changes
+
+proprietary plugins
+
+proxies
+
+pruning
+
+pt-archiver tool
+
+pt-collect tool
+
+pt-deadlock-logger tool
+
+pt-diskstats tool
+
+pt-duplicate-key-checker tool
+
+pt-fifo-split tool
+
+pt-find tool
+
+pt-heartbeat tool
+
+pt-index-usage tool
+
+pt-kill tool
+
+pt-log-player tool
+
+pt-mext tool
+
+pt-mysql-summary tool
+
+pt-online-schema-change tool
+
+pt-pmp tool
+
+pt-query-advisor tool
+
+pt-query-digest (see Percona Toolkit)
+
+pt-sift tool
+
+pt-slave-delay tool
+
+pt-slave-restart tool
+
+pt-stalk tool
+
+pt-summary tool
+
+pt-table-checksum tool
+
+pt-table-sync tool
+
+pt-tcp-model tool
+
+pt-upgrade tool
+
+pt-visual-explain tool
+
+PURGE MASTER LOGS command
+
+purging old binary logs
+
+pushdown joins
+
+**Q**
+
+Q mode
+
+Q4M storage engine
+
+Qcache\_lowmem\_prunes variable
+
+query cache
+
+　alternatives to
+
+　configuring and maintaining
+
+　InnoDB and the
+
+　memory use
+
+　optimizations
+
+　when to use
+
+query execution
+
+　MySQL client/server protocol
+
+　optimization process
+
+　query cache
+
+query execution engine
+
+query logging
+
+query optimization
+
+　complex queries versus many queries
+
+　COUNT() aggregate function
+
+　join decomposition
+
+　limitations of MySQL
+
+　optimizing data access
+
+　reasons for slow queries
+
+　restructuring queries
+
+query states
+
+query-based splits
+
+querying across shards
+
+query\_cache\_limit variable
+
+query\_cache\_min\_res\_unit value variable
+
+query\_cache\_size variable
+
+query\_cache\_type variable
+
+query\_cache\_wlock\_invalidate variable
+
+queue scheduler
+
+queue tables
+
+queue time
+
+quicksort
+
+**R**
+
+R-Tree indexes
+
+Rackspace Cloud
+
+RAID
+
+　balancing hardware and software
+
+　configuration and caching
+
+　failure, recovery, and monitoring
+
+　moving files from flash to
+
+　not for backup
+
+　performance optimization
+
+　splits
+
+　with SSDs
+
+RAND() function
+
+random read-ahead
+
+random versus sequential I/O
+
+RANGE COLUMNS type
+
+range conditions
+
+raw file
+
+　backup
+
+　restoration
+
+RDBMS technology
+
+RDS (Relational Database Service)
+
+read buffer size
+
+READ COMMITTED isolation level
+
+read locks
+
+read threads
+
+READ UNCOMMITTED isolation level
+
+read-ahead
+
+read-around writes
+
+read-mostly tables
+
+read-only variable
+
+read-write splitting
+
+read\_buffer\_size variable
+
+Read\_Master\_Log\_Pos
+
+read\_rnd\_buffer\_size variable
+
+real number data types
+
+rebalancing shards
+
+records\_in\_range() function
+
+recovery
+
+　from a backup
+
+　defined
+
+　defining requirements
+
+　more advanced techniques
+
+recovery point objective (RPO)
+
+recovery time objective (RTO)
+
+Red Hat
+
+Redis
+
+redundancy, replication-based
+
+Redundant Array of Inexpensive Disks (see RAID)
+
+redundant indexes
+
+ref column
+
+Relational Database Index Design and the Optimizers (Lahdenmaki＆Leach)
+
+Relational Database Service (RDS), Amazon
+
+relay log
+
+relay-log.info file
+
+relay\_log variable
+
+relay\_log\_purge variable
+
+relay\_log\_space\_limit variable
+
+RELEASE\_LOCK() function
+
+reordering joins
+
+REORGANIZE PARTITION command
+
+REPAIR TABLE command
+
+repairing MyISAM tables
+
+REPEATABLE READ isolation level
+
+replica hardware
+
+replica shutdown, unexpected
+
+replicate\_ignore\_db variable
+
+replication
+
+　administration and maintenance
+
+　advanced features in MySQL
+
+　backing up configuration
+
+　and capacity planning
+
+　changing masters
+
+　checking consistency of
+
+　checking for up-to-dateness
+
+　configuring master and replica
+
+　creating accounts for
+
+　custom solutions
+
+　filtering
+
+　how it works
+
+　initializing replica from another server
+
+　limitations
+
+　master and multiple replicas
+
+　master, distribution master, and replicas
+
+　master-master in active-active mode
+
+　master-master in active-passive mode
+
+　master-master with replicas
+
+　measuring lag
+
+　monitoring
+
+　other technologies
+
+　problems and solutions
+
+　problems solved by
+
+　promotions of replicas
+
+　recommended configuration
+
+　replica consistency with master
+
+　replication files
+
+　resyncing replica from master
+
+　ring
+
+　row-based
+
+　sending events to other replicas
+
+　setting up
+
+　speed of
+
+　splitting reads and writes in
+
+　starting the replica
+
+　statement-based
+
+　status
+
+　switching master-master configuration roles
+
+　topologies
+
+　tree or pyramid
+
+REPLICATION CLIENT privilege
+
+REPLICATION SLAVE privilege
+
+replication-based redundancy
+
+RESET QUERY CACHE command
+
+RESET SLAVE command
+
+resource consumption
+
+response time
+
+restoring
+
+　defined
+
+　logical backups
+
+RethinkDB
+
+ring replication
+
+ROLLBACK command
+
+round-robin database (RRD) files
+
+row fragmentation
+
+row locks
+
+ROW OPERATIONS
+
+row-based logging
+
+row-based replication
+
+rows column
+
+rows examined, number of
+
+rows returned, number of
+
+ROW\_COUNT command
+
+RPO (recovery point objective)
+
+RRDTool
+
+rsync
+
+RTO (recovery time objective)
+
+running totals and averages
+
+**S**
+
+safety and sanity settings
+
+Sahibinden.com
+
+SandForce
+
+SANs (storage area networks)
+
+sar
+
+sargs
+
+SATA SSDs
+
+scalability
+
+　by clustering
+
+　by consolidation
+
+　frequency
+
+　and load balancing
+
+　mathematical definition
+
+　multiple CPUs/cores
+
+　planning for
+
+　preparing for
+
+　“scale-out” architecture
+
+　scaling back
+
+　scaling out
+
+　scaling pattern
+
+　scaling up
+
+　scaling writes
+
+　Sphinx
+
+　universal law of
+
+scalability measurements
+
+ScaleArc
+
+ScaleBase
+
+ScaleDB
+
+scanning data
+
+scheduled tasks
+
+schemas
+
+　changes
+
+　design
+
+　normalized and denormalized
+
+Schooner Active Cluster
+
+scope
+
+scp
+
+search engine, selecting the right
+
+search space
+
+searchd, Sphinx
+
+secondary indexes
+
+security, connection management
+
+sed
+
+segmented key cache
+
+segregating hot data
+
+SELECT command
+
+SELECT FOR UPDATE command
+
+SELECT INTO OUTFILE command
+
+SELECT types
+
+selective replication
+
+selectivity, index
+
+select\_type column
+
+SEMAPHORES
+
+sequential versus random I/O
+
+sequential writes
+
+SERIALIZABLE isolation level
+
+serialized writes
+
+server
+
+　adding/removing
+
+　configuration, backing up
+
+　consolidation
+
+　INFORMATION\_SCHEMA database
+
+　MySQL configuration
+
+　PERFORMANCE\_SCHEMA database
+
+　profiling and speed of
+
+　server-wide problems
+
+　setting optimization
+
+　SHOW ENGINE INNODB MUTEX command
+
+　SHOW ENGINE INNODB STATUS command
+
+　SHOW PROCESSLIST command
+
+　SHOW STATUS command
+
+　status variables
+
+　workload profiling
+
+server-side prepared statements
+
+service time
+
+session scope
+
+session-based splits
+
+SET CHARACTER SET command
+
+SET GLOBAL command
+
+SET GLOBAL SQL\_SLAVE\_SKIP\_COUNTER command
+
+SET NAMES command
+
+SET NAMES utf8 command
+
+SET SQL\_LOG\_BIN command
+
+SET TIMESTAMP command
+
+SET TRANSACTION ISOLATION LEVEL command
+
+SET type
+
+SetLimits() function
+
+SetMaxQueryTime() function
+
+SeveralNines
+
+SHA1() function
+
+Shard-Query system
+
+sharding
+
+shared locks
+
+shared storage
+
+SHOW BINLOG EVENTS command
+
+SHOW commands
+
+SHOW CREATE TABLE command
+
+SHOW CREATE VIEW command
+
+SHOW ENGINE INNODB MUTEX command
+
+SHOW ENGINE INNODB STATUS command
+
+SHOW FULL PROCESSLIST command
+
+SHOW GLOBAL STATUS command
+
+SHOW INDEX command
+
+SHOW INDEX FROM command
+
+SHOW INNODB STATUS command (see SHOW ENGINE INNODB STATUS command)
+
+SHOW MASTER STATUS command
+
+SHOW PROCESSLIST command
+
+SHOW PROFILE command
+
+SHOW RELAYLOG EVENTS command
+
+SHOW SLAVE STATUS command
+
+SHOW STATUS command
+
+SHOW TABLE STATUS command
+
+SHOW VARIABLES command
+
+SHOW WARNINGS command
+
+signed types
+
+single-component benchmarking
+
+single-level cell (SLC)
+
+single-shard queries
+
+single-transaction variable
+
+skip\_innodb variable
+
+skip\_name\_resolve variable
+
+skip\_slave\_start variable
+
+slavereadahead tool
+
+slave\_compressed\_protocol variable
+
+slave\_master\_info variable
+
+slave\_net\_timeout variable
+
+Slave\_open\_temp\_tables variable
+
+SLC (single-level cell)
+
+Sleep state
+
+SLEEP() function
+
+sleeping before entering queue
+
+slots
+
+slow queries
+
+SMALLBLOB type
+
+SMALLINT type
+
+SMALLTEXT type
+
+Smokeping tool
+
+snapshots
+
+Solaris SPARC hardware
+
+Solaris ZFS filesystem
+
+solid-state drives (SSD)
+
+solid-state storage
+
+sort buffer size
+
+sort optimizations
+
+sorting
+
+sort\_buffer\_size variable
+
+Souders, Steve
+
+SourceForge
+
+SPARC hardware
+
+spatial indexes
+
+Sphinx
+
+　advanced performance control
+
+　applying WHERE clauses
+
+　architectural overview
+
+　efficient and scalable full-text searching
+
+　filtering
+
+　finding top results in order
+
+　geospatial search functions
+
+　installation overview
+
+　optimizing GROUP BY queries
+
+　optimizing selects on Sahibinden.com
+
+　optimizing sharded JOIN queries on Grouply.com
+
+　phrase proximity ranking
+
+　searching
+
+　special features
+
+　SphinxSE
+
+　support for attributes
+
+　typical partition use
+
+Spider storage engine
+
+spin-wait
+
+spindle rotation speed
+
+splintering
+
+split-brain syndrome
+
+splitting reads and write in replication
+
+Splunk
+
+spoon-feeding
+
+SQL and Relational Theory (Date)
+
+SQL Antipatterns (Karwin)
+
+SQL dumps
+
+SQL interface prepared statements
+
+SQL slave thread
+
+SQL statements
+
+SQL utilities
+
+sql-bench
+
+SQLyog tool
+
+SQL\_BIG\_RESULT hint
+
+SQL\_BUFFER\_RESULT hint
+
+SQL\_CACHE hint
+
+SQL\_CACHE variable
+
+SQL\_CALC\_FOUND\_ROWS hint
+
+SQL\_CALC\_FOUND\_ROWS variable
+
+sql\_mode
+
+SQL\_MODE configuration variable
+
+SQL\_NO\_CACHE hint
+
+SQL\_NO\_CACHE variable
+
+SQL\_SMALL\_RESULT hint
+
+Squid
+
+SSD (solid-state drives)
+
+SSH
+
+staggering numbers
+
+stale-data splits
+
+“stalls”
+
+Starkey, Jim
+
+START SLAVE command
+
+START SLAVE UNTIL command
+
+start-position variable
+
+statement handles
+
+statement-based replication
+
+static optimizations
+
+static query analysis
+
+STEC
+
+STONITH
+
+STOP SLAVE command
+
+stopwords
+
+storage area networks (SANs)
+
+storage capacity
+
+storage consolidation
+
+storage engine API
+
+storage engines
+
+　Archive
+
+　Blackhole
+
+　column-oriented
+
+　community
+
+　and consistency
+
+　CSV
+
+　Falcon
+
+　Federated
+
+　InnoDB
+
+　Memory
+
+Merge
+
+mixing
+
+MyISAM
+
+NDB Cluster
+
+OLTP
+
+ScaleDB
+
+XtraDB
+
+stored code
+
+Stored Procedure Library
+
+stored procedures and functions
+
+stored routines
+
+strace tool
+
+STRAIGHT\_JOIN hint
+
+string data types
+
+string locks
+
+stripe chunk size
+
+subqueries
+
+SUBSTRING() function
+
+sudo rules
+
+SUM() function
+
+summary tables
+
+Super Smack
+
+surrogate keys
+
+Swanhart, Justin
+
+swapping
+
+switchover
+
+synchronization, two-way
+
+synchronous MySQL replication
+
+sync\_relay\_log variable
+
+sync\_relay\_log\_info variable
+
+sysbench
+
+SYSDATE() function
+
+sysdate\_is\_now variable
+
+system of record approach
+
+system performance, benchmarking
+
+system under test (SUT)
+
+system variables
+
+**T**
+
+table definition cache
+
+tables
+
+　building a queue
+
+　cache memory
+
+　column
+
+　conversions
+
+　derived
+
+　finding and repairing corruption
+
+　INFORMATION\_SCHEMA in Percona Server
+
+　locks
+
+　maintenance
+
+　merge
+
+　partitioned
+
+　reducing to an MD5 hash value
+
+　SELECT and UPDATE on
+
+　SHOW TABLE STATUS output
+
+　splitting
+
+　statistics
+
+　tablespaces
+
+　views
+
+table\_cache\_size variable
+
+tagged cache
+
+TCP
+
+tcpdump tool
+
+tcp\_max\_syn\_backlog variable
+
+temporal computations
+
+temporary files and tables
+
+TEMPTABLE algorithm
+
+Texas Memory Systems
+
+TEXT type
+
+TEXT workload, optimizing for
+
+Theory of Constraints
+
+third-party storage engines
+
+thread and connection statistics
+
+thread cache memory
+
+threaded discussion forums
+
+threading
+
+Threads\_connected variable
+
+Threads\_created variable
+
+Threads\_running variable
+
+thread\_cache\_size variable
+
+throttling variables
+
+throughput
+
+tickets
+
+time to live (TTL)
+
+time-based data partitioning
+
+TIMESTAMP type
+
+TIMESTAMPDIFF() function
+
+TINYBLOB type
+
+TINYINT type
+
+TINYTEXT type
+
+Tkachenko, Vadim
+
+tmp\_table\_size setting
+
+TokuDB
+
+TO\_DAYS() function
+
+TPC Benchmarks
+
+　dbt
+
+　TPC-C
+
+　TPC-H
+
+　TPCC-MySQL tool
+
+transactional tables
+
+transactions
+
+　ACID test
+
+　deadlocks
+
+　InnoDB
+
+　isolation levels
+
+　logging
+
+　in MySQL
+
+　and storage engines
+
+transfer speed
+
+transferring large files
+
+transparency
+
+tree or pyramid replication
+
+tree-formatted output
+
+trial-and-error troubleshooting
+
+triggers
+
+TRIM command
+
+Trudeau, Yves
+
+tsql2mysql tool
+
+TTL (time to live)
+
+tunefs
+
+Tungsten Replicator, Continuent
+
+“tuning”
+
+turbo boost technology
+
+type column
+
+**U**
+
+Ubuntu
+
+UDF Library
+
+UDFs
+
+unarchiving
+
+uncommitted data
+
+uncompressed files
+
+undefined server IDs
+
+underutilization
+
+UNHEX() function
+
+UNION ALL query
+
+UNION limitations
+
+UNION query
+
+UNION syntax
+
+UNIQUE constraint
+
+unit of sharding
+
+Universal Scalability Law (USL)
+
+Unix
+
+UNIX\_TIMESTAMP() function
+
+UNLOCK TABLES command
+
+UNSIGNED attribute
+
+“unsinkable” systems
+
+unused indexes
+
+unwrapping
+
+updatable views
+
+UPDATE command
+
+UPDATE RETURNING command
+
+upgrades
+
+　replication before
+
+　validating MySQL
+
+USE INDEX hint
+
+user logs
+
+user optimization issues
+
+user statistics tables
+
+user-defined functions (UDFs)
+
+user-defined variables
+
+USER\_STATISTICS tables
+
+“Using filesort” value
+
+“Using index” value
+
+USING query
+
+“Using temporary” value
+
+“Using where” value
+
+USL (Universal Scalability Law)
+
+UTF-
+
+utilities, SQL
+
+UUID() function
+
+UUID\_SHORT() function
+
+**V**
+
+Valgrind
+
+validating MySQL upgrades
+
+VARCHAR type
+
+variables
+
+　assignments in statements
+
+　setting dynamically
+
+　user-defined
+
+version-based splits
+
+versions
+
+　and full-text searching
+
+　history of MySQL
+
+　improvements in MySQL 5.
+
+　old row
+
+　replication before upgrading
+
+　version-specific comments
+
+vgdisplay command
+
+views
+
+Violin Memory
+
+Virident
+
+virtual IP addresses
+
+virtualization
+
+vmstat tool
+
+volatile memory
+
+VoltDB
+
+volume groups
+
+VPForMySQL storage engine
+
+**W**
+
+Wackamole
+
+waiters flag
+
+warmup
+
+wear leveling
+
+What the Dog Saw (Gladwell)
+
+WHERE clauses
+
+whole number data types
+
+Widenius, Monty
+
+Windows
+
+WITH ROLLUP variable
+
+Workbench Utilities, MySQL
+
+working concurrency
+
+working sets of data
+
+workload-based configuration
+
+worst-case selectivity
+
+write amplification
+
+write cache and power failure
+
+write locks
+
+write synchronization
+
+write threads
+
+write-ahead logging
+
+write-invalidate policy
+
+write-set replication
+
+write-update
+
+writes, scaling
+
+WriteThrough vs. WriteBack
+
+**X**
+
+X-25E drives
+
+X.509 certificates
+
+x86 architecture
+
+XA transactions
+
+xdebug
+
+Xeround
+
+xhprof tool
+
+XtraBackup, Percona
+
+XtraDB Cluster, Percona
+
+**Y**
+
+YEAR() function
+
+**Z**
+
+Zabbix
+
+Zenoss
+
+ZFS filer
+
+ZFS filesystem
+
+zlib
+
+Zmanda Recovery Manager (ZRM)
+
+
+
+————————————————————
+
+(1) 索引所列页码为本书英文版页码，请参照用“![](img/000018.jpeg)”表示的原书页码。
+
+
+
+### 关于作者
+
+Baron Schwartz是一位软件工程师，居住在弗吉尼亚州的Charlottesville，网络常用名是Xaprb，这是按照QWERTY键盘的顺序在Dvorak键盘上打出来的名字。在不忙于解决有趣的编程挑战时，Baron会和他的妻子Lynn以及小狗Carbon一起享受闲暇的时光。他有一个软件工程方面的博客，地址是*http://www.xaprb.com/blog/*
+
+Peter Zaitsev曾经是MySQL AB公司高性能组的经理，目前在运作*mysqlperformance blog.com*网站。他擅长于帮助那些每天有数以百万计访问量的网站的管理员解决问题，这些网站通常需要几百台机器来处理TB级的数据。他常常为了解决一个问题而不停地升级硬件和软件（比如查询优化）。Peter还经常在各种会议上演讲。
+
+Vadim Tkachenko曾经是MySQL AB公司的性能工程师。作为一名在多线程编程和同步方面的专家，他的主要工作是基准测试、性能剖析，以及找出系统的性能瓶颈。他还在性能监控和调优方面做了一些工作，使得MySQL在多核机器上有更好的可扩展性。
+
+### 封面说明
+
+本书封面上的动物是雀鹰（sparrow hawk），又名鹞（Accipiternisus）。它是猎鹰家族的一名成员，生活在欧亚大陆和北非的树林里。雀鹰有着长长的尾巴和短小的翅膀：雄鸟是蓝灰色的，有着浅棕色的胸部；雌鸟大多数是棕灰色的，胸部几乎是纯白色。雄鸟（11英寸）的体型通常比雌鸟（15英寸）要小一些。
+
+雀鹰生活在针叶林中，以小型哺乳动物、昆虫和鸟类为食。它们的巢一般筑在树上，有时甚至在悬崖峭壁上。每年夏初，在位于最高的树的主干上的巢里，雌鸟会产下四到六颗白中略带一些红色和棕色的蛋；雄鸟则负责给雌鸟和幼鸟们喂食。
+
+和所有的鹰一样，雀鹰也具有在飞行时高速俯冲的能力。无论是展翅高飞还是盘旋滑翔时，雀鹰都会有带着明显特征的拍翅—拍翅—滑行的动作；它的大尾巴使其能够轻松地盘旋和转身，从容地出入树林之间。
+
+封面图片是一幅19世纪的雕版画，出自Dover Pictorial Archive。
+
+### 译者简介
+
+宁海元　有超过十年的数据库管理经验，从最初的SQL Server 2000到Oracle再到MySQL，擅长数据库高可用架构、性能优化和故障诊断。2007年加入淘宝，带领淘宝DBA团队完成了数据库的垂直拆分、水平拆分，迁移到MySQL体系等主要工作，为淘宝业务的快速增长提供支撑。目前专注于无线数据领域。网络常用名NinGoo，个人博客：*http://www.ningoo.net*
+
+周振兴　毕业于北京师范大学数学系，2009年加入淘宝数据库团队，负责MySQL运维管理工作，有丰富的MySQL性能优化、Troubleshooting经验，对MySQL主要模块的实现和原理有深入的研究，经历了淘宝MySQL实例从30到3000的发展，对系统架构、高可用环境规划都有深入理解。个人博客：*http://orczhou.com*
+
+彭立勋　2010年大学毕业后加入阿里巴巴运维部。作为一名MySQL DBA，在运维MySQL的过程中对MySQL和InnoDB的一些功能和缺陷进行了补充，编写了多主复制和数据闪回等补丁。目前在阿里集团核心系统研发部数据库组，专注于MySQL数据库相关的开发工作。后来一些补丁被MySQL之父Mony看中，多主复制、线程内存监控等补丁被合并到了MariaDB 10.0版本，本人也因此成为MariaDB提交组（Maria-captains）成员。
+
+翟卫祥　毕业于武汉大学，研究生阶段从事数据库相关研究。毕业后就职于阿里巴巴集团数据库技术团队至今，主要负责阿里内部MySQL代码分支维护，包括MySQL Bug Fix及新特性开发。对MySQL内核有一定的研究。
+
+刘辉　2008年毕业于西安电子科技大学计算机系，硕士学位。2011年加入阿里巴巴集团数据库技术团队，花名希羽，MySQL内核开发工程师。
+
+
+
