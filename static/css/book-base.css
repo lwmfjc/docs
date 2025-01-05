@@ -14,8 +14,10 @@ article{
 } 
  
 /*<em>xxx</em> 下划线*/
-/*<em><strong>xxx</strong></em> 波浪线*/
+/*<em><strong>xxx</strong></em> ==整体给1斜体之后2加粗== 波浪线*/
 /*<strong>xxx</strong> 加粗*/
+/*<strong><em>xxx</em></strong>  ==整体给1加粗之后2斜体==  加粗中给下划线*/
+/*<strong><em>xxx</em></strong>  ==整体给1加粗之后(2斜体再3加粗)==  加粗中给波浪线*/
 
 /*没有strong子元素的em元素--<em>xxx</em> 下划线*/
 em:not(:has(strong)) {  
