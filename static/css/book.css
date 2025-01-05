@@ -1,14 +1,17 @@
 @import url("/css/book-base.css");
 article{ 
-	font-size: 1.7em;
+	font-size: 1.3em;
 	color: rgba(0, 0, 0); 
 }
 em:not(:has(strong)) { 
 	/*text-decoration: underline  ; */
 	text-decoration: unset  ; 
 	font-style: normal; 
-	font-size: 0.7em;
-	color: rgba(0, 0, 0, 0.5);
+	font-size: 0.85em; 
+	border: 1px black; 
+	border-bottom-style: solid; 
+	/*	background-color: rgba(65,105,225,0.5);*/ 
+	color: rgba(65,105,225,1);
 }
 
 :not(em) > strong {   

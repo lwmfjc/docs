@@ -18,15 +18,18 @@ article{
 /*<strong>xxx</strong> 加粗*/
 
 /*没有strong子元素的em元素--<em>xxx</em> 下划线*/
-em:not(:has(strong)) { 
-	text-decoration: underline  ; 
+em:not(:has(strong)) {  
+	border: 2px black; 
+	border-bottom-style: solid; 
 	font-style: normal; 
 }
 
 /*------------------------波浪线的处理start-----------------*/
 /*em下的strong子元素-<em><strong>xxx</strong></em> 波浪线*/
 em > strong {  
-	text-decoration: underline wavy  ; 
+	border: 2px black; 
+	border-bottom-style: dashed; 
+/* 	text-decoration: underline wavy  ;  */
 	font-style: unset;  
 } 
  
