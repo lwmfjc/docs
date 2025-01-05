@@ -8,3 +8,10 @@ article{
 	font-size: 1.3em; 
 	color: rgb(0,0,0); 
 } 
+
+/*html,body,.book-menu,nav,.book-menu-content,.container { 
+	background-image: linear-gradient(to top, #a8edea 0%, #fed6e3 100%) !important;
+	opacity: 1  ;
+	scrollbar-color: rgba(0,0,0,0.15) rgba(255,255,255,0.1) ;
+	scrollbar-width: thin; 
+}  */

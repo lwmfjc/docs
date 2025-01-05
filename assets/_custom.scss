@@ -2,6 +2,17 @@
 
 //@import "plugins/numbered";
 //@import "plugins/scrollbars";
+:root {
+ //--body-background: url("img/bg.png") fixed ;  
+   --body-background: linear-gradient(to top,#c1dfc4 100%, #c1dfc4 100%) fixed;
+  //--body-background: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%) fixed;
+  //--body-background: linear-gradient(to top, #9795f0 0%, #fbc8d4 100%)  fixed;   
+  /*========================================================================*/
+  //--body-background: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%)  fixed; 
+  //--body-background:  linear-gradient(to top, #a18cd1 0%, #fbc2eb 100%) fixed; 
+  //--body-background: linear-gradient(to top, #a8edea 0%, #fed6e3 100%) fixed; 
+} 
+
 .book-toc { 
   font-size: $font-size-16;  //增大侧目录字号 原来是12
 }
@@ -17,20 +28,12 @@ h1,h2,h3,h4,h5,h6 {
   font-weight: 900 !important;
 }
 
- html,body,.book-menu,nav,.book-menu-content,.container {
-  /* 添加!important表示覆盖默认的设置 */
-  // background-image: url("sys/bg.png") !important;
-  //background-image: linear-gradient(to top, #c1dfc4 0%, #c1dfc4 100%) !important;
-  //background-attachment: fixed;
-   //添加浅绿色背景
-   background-color: #c1dfc4 !important;
-  opacity: 1  ;
-  scrollbar-color: rgba(222,236,221,1) rgba(193,223,196,1) ;
-  //scrollbar-width: thin;
+  
+/* 设置滚动条宽度及颜色 */
+ .book-menu-content,  .book-toc-content  {
+    scrollbar-color: rgba(0,0,0,0.15) rgba(255,255,255,0.1) ; 
+    scrollbar-width: thin !important; 
 } 
-//aside.book-menu {
-//  font-size: 1.5em;
-//}
 #book-search-input{
   
    background-color: rgba(240,255,240,0.4) !important;
