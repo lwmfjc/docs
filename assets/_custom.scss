@@ -35,3 +35,7 @@ h1,h2,h3,h4,h5,h6 {
   
    background-color: rgba(240,255,240,0.4) !important;
 }
+//超出自动换行
+code {
+  white-space: pre-wrap;  
+}

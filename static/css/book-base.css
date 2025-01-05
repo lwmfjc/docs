@@ -67,5 +67,15 @@ h1,h2,h3,h4,h5,h6{
 } 
  
 img {
-	display: block; 
-}  
+	display: block;  
+}
+img[alt^="i-"] { 
+	display: inline-block;  
+	height: 1em;
+} 
+
+pre:has(code){
+	font-size: 0.7em !important;
+/*	white-space: pre-wrap;*/
+/*	line-height: 0.5em;*/
+}
