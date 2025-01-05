@@ -1,11 +1,9 @@
 {{ $cssMap :=  dict "book" "/css/book.css"  "book-zztj" "/css/book-zztj.css"  "bookin" "/css/bookin.css"}}
 {{/*获取md中指定的样式*/}}
 {{ $cssArr := .Param "cssAttach" }}
-{{ range $v := $cssArr }}
-	{{ if $v }}
-		{{ $cssHref := (index $cssMap $v) }} 
-		{{ if and $cssHref }} 
-			<link type=text/css rel="stylesheet" href="{{ $cssHref }}">
-		{{ end }}
-	{{ end }}
+{{ range $v := $cssArr }} 
+	{{ $cssHref := (index $cssMap $v) }} 
+	{{ if $cssHref }} 
+		<link type=text/css rel="stylesheet" href="{{ $cssHref }}">
+	{{ end }} 
 {{ end }} 
