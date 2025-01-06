@@ -9,8 +9,8 @@ title: My New Hugo Site
 module:
   mounts:
   - includeFiles:
-#       - "**"
-       - "docs/culture/**"
+       - "**"
+#       - "docs/culture/**"
 #       - "docs/life/**"
 #       - "docs/problem/**"
 #       - "docs/technology/**"
