@@ -50,7 +50,7 @@ if [[ $(uname -a | awk '{print $1}') == 'Linux' ]]; then
       fi
       hugostart_cmd="(cd $docsDir;"' if [[ $(pgrep hugo | wc -l) == 0  ]] ; then '" $hugoParams "' hugo server --minify --environment aarch --bind 0.0.0.0 --noBuildLock ; else echo "hugo 已经在运行" ; fi)' 
    elif [[ $(uname -m) == "armv7l" ]]; then
-      docsDir="~/000Ly/git/docs";
+      docsDir="/data/data/com.termux/files/home/000Ly/git/docs";
       myip=$( ifconfig | grep -P "192(\.\d+){3}" | awk '{print $2}')
       #clear #这里清除了ifconfig的没权限提示
       if [[ $myip != "" ]]; then
