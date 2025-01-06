@@ -86,7 +86,7 @@ else #windows平台下
    if [[ $myip != "" ]]; then
      hugoParams=${hugoParams/'localhost'/$myip}
    fi
-   hugostart_cmd="(cd $docsDir;"' if [[ $(tasklist | grep hugo | wc -l) == 0  ]] ; then '" $hugoParams "' hugo server --minify --environment vmMin --bind 0.0.0.0 --noBuildLock ; else echo "hugo 已经在运行" ; fi)' 
+   hugostart_cmd="(cd $docsDir;"' if [[ $(tasklist | grep hugo | wc -l) == 0  ]] ; then '" $hugoParams "' hugo server --minify --environment cmderWin --bind 0.0.0.0 --noBuildLock ; else echo "hugo 已经在运行" ; fi)' 
  
 
    dufsShareDir="$docsDir/attachments";  

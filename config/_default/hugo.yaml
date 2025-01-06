@@ -6,7 +6,17 @@ defaultContentLanguage: zh
 defaultContentLanguageInSubdir: true
 title: My New Hugo Site
 # hugo server --minify --themesDir ../.. --baseURL=http://0.0.0.0:1313/theme/hugo-book/
-
+module:
+  mounts:
+  - includeFiles:
+#       - "**"
+       - "docs/culture/**"
+#       - "docs/life/**"
+#       - "docs/problem/**"
+#       - "docs/technology/**"
+#       - "docs/test/**"
+    source: content.zh
+    target: content
 
 theme: hugo-book
 
