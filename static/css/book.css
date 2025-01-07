@@ -28,10 +28,11 @@ em > strong  {
 /*-webkit-text-stroke: 2px rgba(0, 0, 0,1);*/
 }
 
-article.book-article h1+hr~p:has(~hr):not(h2~p:has(+h1))
+/*不知道有没有其他办法*/
+/*article.book-article :is(h1+hr+p,h1+hr+p+p,h1+hr+p+p+p,h1+hr+p+p+p+p,h1+hr+p+p+p+p+p,h1+hr+p+p+p+p+p+p)
  {
 	color: red;
-}
+}*/
 /*article.book-article h1+hr,article.book-article h1+hr~p+hr{
 	display: none;
 }  */
