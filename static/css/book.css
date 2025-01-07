@@ -27,3 +27,11 @@ em > strong  {
 /*	color: rgba(65,105,225,1); */
 /*-webkit-text-stroke: 2px rgba(0, 0, 0,1);*/
 }
+
+article.book-article h1+hr~p:has(~hr):not(h2~p:has(+h1))
+ {
+	color: red;
+}
+/*article.book-article h1+hr,article.book-article h1+hr~p+hr{
+	display: none;
+}  */

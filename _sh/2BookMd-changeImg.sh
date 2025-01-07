@@ -30,6 +30,7 @@ categories:
   - 学习
 tags: 
   - 文化
+  - 恰同学少年
 cssAttach: 
   - book
 date: $time
@@ -98,10 +99,16 @@ handleDir(){
 			#替换\(\) \[\]之类的默认转义（不需要）
 			perl -i -pe 's/\\\[(.*?)\\\]/\[$1\]/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\\\((.*?)\\\)/\($1\)/gp' "$dirBook/index.txt"
+			#标题降1级(#\s+)\*{2}(.*?)\*{4}
+			perl -i -pe 's/^##(.*?\s)/$1/gp' "$dirBook/index.txt"
+
+			#去除#号后面4个星号(#\s+)(.*?)\s*\n\*{4}\s*\n\*{2}(.*)
+			perl -i -0 -pe 's/(#\s+)\*{2}(.*?)\*{4}.*\n\*{4}.*\n\*{2}(.*)\n.*\n/$1$2 $3/gp' "$dirBook/index.txt" 
+			
 			#去除#后面连续的4个星号
-			perl -i -pe 's/^(#.*?\s)\*{4}/$1/gp' "$dirBook/index.txt" 
-			#标题降1级
-			#perl -i -pe 's/^#(.*?\s)/$1/gp' "$dirBook/index.txt"
+			#perl -i -pe 's/^(#.*?\s)\*{4}/$1/gp' "$dirBook/index.txt" 
+			#去除#号后面4个星号(#\s+)\*{2}(.*?)\*{4}
+			#perl -i -pe 's/(#\s+)\*{2}(.*?)\*{4}/$1$2/gp' "$dirBook/index.txt"
 			
 			#处理img图片
 			# sed -Ei "s/(\!\[\.*?\])\(images/\1\(img/g"  "$dirBook/index.txt"
