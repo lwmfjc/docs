@@ -30,7 +30,7 @@ categories:
   - 学习
 tags: 
   - 文化
-  - 恰同学少年
+  - xxxxx
 cssAttach: 
   - book
 date: $time
@@ -106,7 +106,7 @@ handleDir(){
 			#perl -i -0 -pe 's/(#\s+)\*{2}(.*?)\*{4}.*\n\*{4}.*\n\*{2}(.*)\n.*\n/$1$2 $3/gp' "$dirBook/index.txt" 
 			
 
-			
+
 			#去除#后面连续的4个星号
 			#perl -i -pe 's/^(#.*?\s)\*{4}/$1/gp' "$dirBook/index.txt" 
 			#去除#号后面4个星号(#\s+)\*{2}(.*?)\*{4}

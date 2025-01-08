@@ -3,6 +3,7 @@ article{
 	font-size: 1.4em;
 	color: rgba(0, 0, 0); 
 }
+
 em > strong  { 
 	/*text-decoration: underline  ; */
 	text-decoration: unset  ; 
@@ -14,6 +15,7 @@ em > strong  {
 	color: rgba(0, 0, 0,0.6); 
 }
 
+/*重点语句：波浪线*/
 :not(em) > strong {   
 
 /*	border: 4px black; */
@@ -28,11 +30,38 @@ em > strong  {
 /*-webkit-text-stroke: 2px rgba(0, 0, 0,1);*/
 }
 
-/*不知道有没有其他办法*/
-/*article.book-article :is(h1+hr+p,h1+hr+p+p,h1+hr+p+p+p,h1+hr+p+p+p+p,h1+hr+p+p+p+p+p,h1+hr+p+p+p+p+p+p)
- {
-	color: red;
-}*/
-/*article.book-article h1+hr,article.book-article h1+hr~p+hr{
+/*覆盖默认的hr样式*/
+hr {
+	border: 1.5px black !important; 
+	border-bottom-style: solid !important; 
+	/*	background-color: rgba(0,0,0,0.05);  */ 
+	margin-left: 2em;
+	margin-right: 2em; 
+}
+
+
+
+
+/*双分隔线处理*/
+/*hr+hr{
 	display: none;
-}  */
+}
+hr:has(+hr){  
+	display: none;
+}
+ 
+hr+hr~p:has(+hr+hr),
+hr+hr~p:has(+p+hr+hr),
+hr+hr~p:has(+p+p+hr+hr),
+hr+hr~p:has(+p+p+p+hr+hr),
+hr+hr~p:has(+p+p+p+p+hr+hr),
+hr+hr~p:has(+p+p+p+p+p+hr+hr),
+hr+hr~p:has(+p+p+p+p+p+p+hr+hr) ,
+hr+hr~p:has(+p+p+p+p+p+p+p+hr+hr) ,
+hr+hr~p:has(+p+p+p+p+p+p+p+p+hr+hr) { 
+	font-size: 0.8em;   
+	color: rgba(0, 0, 0,0.6); 
+} 
+hr+hr~p:has(+hr+hr){
+	margin-bottom: -2em;
+}*/
