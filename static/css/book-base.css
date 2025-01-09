@@ -68,7 +68,8 @@ hr {
 }
 
 blockquote,.HyperMD-quote{
-	font-size: 0.7em !important;
+	font-size: 0.8em !important;
 	background-color: rgba(0, 0, 0, 0.1) !important;
 	border-inline-start: 0rem solid !important;
+/*	padding-left: 10% !important;*/
 }
