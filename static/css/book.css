@@ -4,7 +4,7 @@ article{
 	color: rgba(0, 0, 0); 
 }
 
-em > strong  { 
+del { 
 	/*text-decoration: underline  ; */
 	text-decoration: unset  ; 
 	font-style: normal; 
@@ -16,43 +16,8 @@ em > strong  {
 }
 
 /*重点语句：波浪线*/
-:not(em) > strong {   
-
-/*	border: 4px black; */
+strong {
   	text-decoration: underline wavy ;  
-  	text-underline-offset: 0.2em;
-
-/*	border-bottom-style: solid; */
-
-
-/*	font-size: 1.2em; */
-/*	color: rgba(65,105,225,1); */
-/*-webkit-text-stroke: 2px rgba(0, 0, 0,1);*/
-}
-
-
-
-
-/*双分隔线处理*/
-/*hr+hr{
-	display: none;
-}
-hr:has(+hr){  
-	display: none;
+  	text-underline-offset: 0.2em; 
 }
  
-hr+hr~p:has(+hr+hr),
-hr+hr~p:has(+p+hr+hr),
-hr+hr~p:has(+p+p+hr+hr),
-hr+hr~p:has(+p+p+p+hr+hr),
-hr+hr~p:has(+p+p+p+p+hr+hr),
-hr+hr~p:has(+p+p+p+p+p+hr+hr),
-hr+hr~p:has(+p+p+p+p+p+p+hr+hr) ,
-hr+hr~p:has(+p+p+p+p+p+p+p+hr+hr) ,
-hr+hr~p:has(+p+p+p+p+p+p+p+p+hr+hr) { 
-	font-size: 0.8em;   
-	color: rgba(0, 0, 0,0.6); 
-} 
-hr+hr~p:has(+hr+hr){
-	margin-bottom: -2em;
-}*/
