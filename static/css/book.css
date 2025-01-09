@@ -1,12 +1,12 @@
-@import url("/css/book-base.css");
-article{ 
+/*@import url("/css/book-base.css");*/
+article,.view-content{ 
 	font-size: 1.4em;
 	color: rgba(0, 0, 0); 
 }
 
-del { 
+del, .cm-strikethrough { 
 	/*text-decoration: underline  ; */
-	text-decoration: unset  ; 
+	text-decoration: unset !important ; 
 	font-style: normal; 
 	font-size: 0.8em; 
 	border: 2px black; 
@@ -16,7 +16,7 @@ del {
 }
 
 /*重点语句：波浪线*/
-strong {
+strong ,.cm-strong{
   	text-decoration: underline wavy ;  
   	text-underline-offset: 0.2em; 
 }

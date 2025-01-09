@@ -1,4 +1,4 @@
-article{
+article,.view-content{
 /*	font-family: "SYST";*/
 	display: block;
 	line-height: 1.5;
@@ -18,7 +18,7 @@ article{
 /*<del>xxx</del> 专有名词(书名) ~~ */ 
 /*涉及到加粗里第一个字为斜体时，加粗改为__ 双下划线*/
 
-em{  
+em, .cm-em{  
 /*	border: 2px black;
 	border-bottom-style: solid; 
 	padding-bottom: 0.05em;*/
@@ -27,13 +27,13 @@ em{
 	font-style: unset; 
 }
 
-strong {   
+strong, .cm-strong {   
 	font-style: unset; 
 	font-weight: normal !important;   
 } 
   
 
-del { 
+del, .cm-strikethrough { 
 	text-decoration: underline wavy  ;  
 	text-underline-offset: 0.2em; 
 }
