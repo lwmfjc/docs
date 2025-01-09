@@ -1,5 +1,5 @@
 /*资治通鉴里字体默认1.4em 灰色。而加粗时：黑色加大 */ 
-/*@import url("/css/book-base.css");*/
+@import url("/css/book-base.css");
 article{ 
 	font-size: 1.4em;
 	color: rgba(0, 0, 0,0.5); 
