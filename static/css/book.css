@@ -30,15 +30,6 @@ em > strong  {
 /*-webkit-text-stroke: 2px rgba(0, 0, 0,1);*/
 }
 
-/*覆盖默认的hr样式*/
-hr {
-	border: 1.5px black !important; 
-	border-bottom-style: solid !important; 
-	/*	background-color: rgba(0,0,0,0.05);  */ 
-	margin-left: 2em;
-	margin-right: 2em; 
-}
-
 
 
 
