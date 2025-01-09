@@ -42,3 +42,26 @@ h1,h2,h3,h4,h5,h6 {
 code {
   //white-space: pre-wrap;  
 }
+
+/*
+@mixin sticky {
+  margin: -$padding-16;
+  padding: $padding-16;
+  margin-bottom: 0;
+
+  background: var(--body-background);
+  position: sticky; 
+}
+
+.book-header {
+  @include sticky;
+  top: 0 !important;
+  z-index: 1 !important;
+}
+*/
+
+/*.book-footer {
+  @include sticky;
+  bottom: 0;
+  z-index: 1;
+}*/
