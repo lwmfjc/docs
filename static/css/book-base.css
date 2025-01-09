@@ -46,6 +46,7 @@ em:has(strong) {
 /*:not(strong) > em > strong {  
 	font-weight: normal !important;  
 }*/
+/*只要是em下的strong都不需要加粗*/
 em > strong {  
 	font-weight: normal !important;  
 }
