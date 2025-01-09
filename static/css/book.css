@@ -1,23 +1,26 @@
-@import url("/css/book-base.css");
-article,.view-content{ 
-	font-size: 1.4em;
-	color: rgba(0, 0, 0); 
-}
+/*.book{*/
+	@import url("/css/book-base.css");
+	article p,.cm-line:not(.HyperMD-header),
+	.markdown-preview-section p{ 
+		font-size: 1.4em !important;
+		color: rgba(0, 0, 0) !important; 
+/*		color: red ;*/
+	}
 
-del, .cm-strikethrough { 
-	/*text-decoration: underline  ; */
-	text-decoration: unset !important ; 
-	font-style: normal; 
-	font-size: 0.8em; 
-	border: 2px black; 
-	border-bottom-style: dashed; 
-/*	background-color: rgba(0,0,0,0.05);  */
-	color: rgba(0, 0, 0,0.6); 
-}
+	/*自注：虚线*/
+	del, .cm-strikethrough { 
+		text-decoration: underline dashed !important ; 
+		text-underline-offset: 0.3em; 
+		font-style: normal; 
+		font-size: 0.8em;  
+		color: rgba(0, 0, 0,0.6); 
+	}
 
-/*重点语句：波浪线*/
-strong ,.cm-strong{
-  	text-decoration: underline wavy ;  
-  	text-underline-offset: 0.2em; 
-}
+	/*重点语句：波浪线*/
+	strong ,.cm-strong{
+	  	text-decoration: underline wavy ;  
+	  	text-underline-offset: 0.2em; 
+	}
+/*}*/
+
  

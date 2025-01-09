@@ -1,16 +1,17 @@
-article p,.view-content{
+article p,.cm-line:not(.HyperMD-header),
+.markdown-preview-section p{
 /*	font-family: "SYST";*/
 	display: block; 
 	margin-bottom: 0.5em;
 	margin-right: 0;
 	margin-top: 0.5em;
-/*	line-height: 1.8em;*/
+/*	line-height: 2em;*/
 /*	letter-spacing: 0.1em;*/
 	text-align: justify;
 	text-indent: 2em;
 	color: rgba(0, 0, 0); 
 
-} 
+}  
 
 /*字修饰-----start*/
 /*<em>xxx</em> 专有名词(人名地名) 下划线 * */
@@ -29,7 +30,7 @@ em, .cm-em{
 
 strong, .cm-strong {   
 	font-style: unset; 
-	font-weight: normal !important;   
+	font-weight: normal !important;
 } 
   
 
@@ -64,4 +65,8 @@ hr {
 	/*	background-color: rgba(0,0,0,0.05);  */ 
 	margin-left: 2em;
 	margin-right: 2em; 
+}
+
+blockquote,.HyperMD-quote{
+	font-size: 0.7em !important;
 }
