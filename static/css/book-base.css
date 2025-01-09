@@ -1,11 +1,11 @@
-article,.view-content{
+article p,.view-content{
 /*	font-family: "SYST";*/
-	display: block;
-	line-height: 1.5;
-	list-style-type: circle;
+	display: block; 
 	margin-bottom: 0.5em;
 	margin-right: 0;
 	margin-top: 0.5em;
+/*	line-height: 1.8em;*/
+/*	letter-spacing: 0.1em;*/
 	text-align: justify;
 	text-indent: 2em;
 	color: rgba(0, 0, 0); 
@@ -39,11 +39,7 @@ del, .cm-strikethrough {
 }
 /*字修饰-----end*/
 
-
-h1,h2,h3,h4,h5,h6{
-	text-indent: 0em;  
-	color: black;
-} 
+ 
  
 img {
 	display: block;  
