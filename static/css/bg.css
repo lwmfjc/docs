@@ -1,43 +1,50 @@
- /*整个背景色*/
-.horizontal-main-container{ 
-/*  background: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%)  fixed;  */
-  background: linear-gradient(to top,#c1dfc4 100%, #c1dfc4 100%) fixed;
-  background-size: cover;
+/*整个背景色*/
+.horizontal-main-container {
+    /*  background: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%)  fixed;  */
+    background: linear-gradient(to top, #c1dfc4 100%, #c1dfc4 100%) fixed;
+    background-size: cover;
 }
+
 /*工作区和目录区透明*/
-.workspace ,.mod-horizontal { 
-	background: transparent ;
-  --background-primary: transparent;
-  --background-secondary: transparent;
-  --divider-width: 0px;
-} 
+.workspace, .mod-horizontal {
+    background: transparent;
+    --background-primary: transparent;
+    --background-secondary: transparent;
+    --divider-width: 0px;
+}
+
 /*最顶层部分按钮*/
 .titlebar-button-container /*最右边按钮*/,
-.workspace-ribbon.mod-left:before /*最左边按钮*/ {   
-  background: rgba(255,255,255,0.0) !important; 
-  --titlebar-background: transparent;
+.workspace-ribbon.mod-left:before /*最左边按钮*/
+{
+    background: rgba(255, 255, 255, 0.0) !important;
+    --titlebar-background: transparent;
 }
 
 
 /*激活的tab按钮---start*/
-.workspace-tab-header::before{
-	display: none;
+.workspace-tab-header::before {
+    display: none;
 }
-.workspace-tab-header::after{
-	display: none;
+
+.workspace-tab-header::after {
+    display: none;
 }
-.workspace-tab-header.is-active.mod-active{
-  background: rgba(255,255,255,0.5) !important; 
+
+.workspace-tab-header.is-active.mod-active {
+    background: rgba(255, 255, 255, 0.5) !important;
 
 }
+
 /*激活的tab按钮---end*/
 
 
-.workspace-sidedock-vault-profile /*文件树下面*/,.status-bar /*文件信息统计*/,
-.mod-left /*最左侧那列*/,.workspace-tab-header-container /*最顶层中间按钮*/{  
-  --background-primary: transparent;
-  --background-secondary: transparent;
-  background: rgba(255,255,255,0.3) !important;;
-} 
+.workspace-sidedock-vault-profile /*文件树下面*/, .status-bar /*文件信息统计*/,
+.mod-left /*最左侧那列*/, .workspace-tab-header-container /*最顶层中间按钮*/
+{
+    --background-primary: transparent;
+    --background-secondary: transparent;
+    background: rgba(255, 255, 255, 0.3) !important;;
+}
 
 /* ============================================================ */

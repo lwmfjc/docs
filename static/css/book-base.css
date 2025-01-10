@@ -1,75 +1,64 @@
-article p,.cm-line:not(.HyperMD-header),
-.markdown-preview-section p{
-/*	font-family: "SYST";*/
-	display: block; 
-	margin-bottom: 0.5em;
-	margin-right: 0;
-	margin-top: 0.5em;
-/*	line-height: 2em;*/
-/*	letter-spacing: 0.1em;*/
-	text-align: justify;
-	text-indent: 2em;
-	color: rgba(0, 0, 0); 
-
-}  
+article p, div.cm-line:not(.HyperMD-header), div.el-p {
+    /*	font-family: "SYST";*/
+    /*	display: block; */
+    /*	margin-bottom: 0.5em;*/
+    /*	margin-right: 0em;*/
+    /*	margin-top: 0.5em;*/
+    line-height: 1.8em;
+    letter-spacing: 0.1em;
+    text-align: justify;
+    text-indent: 2em;
+}
 
 /*字修饰-----start*/
 /*<em>xxx</em> 专有名词(人名地名) 下划线 * */
 /*<strong>xxx</strong> 重点 加粗 ** */
-/*<del>xxx</del> 专有名词(书名) ~~ */ 
+/*<del>xxx</del> 专有名词(书名) ~~ */
 /*涉及到加粗里第一个字为斜体时，加粗改为__ 双下划线*/
 
-em, .cm-em{  
-/*	border: 2px black;
-	border-bottom-style: solid; 
-	padding-bottom: 0.05em;*/
-	text-decoration: underline  ;  
-	text-underline-offset: 0.2em; 
-	font-style: unset; 
+
+em, .cm-em {
+    border: 2px black;
+    border-bottom-style: solid;
+    padding-bottom: 0.05em;
+    /*	text-decoration: underline  ;  
+        text-underline-offset: 0.2em; */
+    font-style: normal;
 }
 
-strong, .cm-strong {   
-	font-style: unset; 
-	font-weight: normal !important;
-} 
-  
-
-del, .cm-strikethrough { 
-	text-decoration: underline wavy  ;  
-	text-underline-offset: 0.2em; 
+strong, .cm-strong {
+    font-weight: normal;
+    --font-weight: normal;
 }
+
+
+del, .cm-strikethrough {
+    text-decoration: underline wavy;
+    text-underline-offset: 0.2em;
+}
+
 /*字修饰-----end*/
 
- 
- 
+
 img {
-	display: block;  
-}
-img[alt^="i-"] { 
-	display: inline-block;  
-	height: 1em;
-} 
-
-pre:has(code){
-	font-size: 0.7em !important;
-/*	white-space: pre-wrap;*/
-/*	line-height: 0.5em;*/
+    display: block;
 }
 
+img[alt^="i-"] {
+    display: inline-block;
+    height: 1em;
+}
+
+pre:has(code) {
+    font-size: 0.7em;
+}
 
 
 /*覆盖默认的hr样式*/
 hr {
-	border: 1.5px black !important; 
-	border-bottom-style: solid !important; 
-	/*	background-color: rgba(0,0,0,0.05);  */ 
-	margin-left: 2em;
-	margin-right: 2em; 
-}
-
-blockquote,.HyperMD-quote{
-	font-size: 0.8em !important;
-	background-color: rgba(0, 0, 0, 0.1) !important;
-	border-inline-start: 0rem solid !important;
-/*	padding-left: 10% !important;*/
+    border: 1.5px black;
+    border-bottom-style: solid;
+    /*	background-color: rgba(0,0,0,0.05);  */
+    margin-left: 2em;
+    margin-right: 2em;
 }

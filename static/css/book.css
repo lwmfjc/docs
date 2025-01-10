@@ -1,26 +1,35 @@
 /*.book{cssstart*/
-	@import url("/css/book-base.css");
-	article p,.cm-line:not(.HyperMD-header),
-	.markdown-preview-section p{ 
-		font-size: 1.4em !important;
-		color: rgba(0, 0, 0) !important; 
-/*		color: red ;*/
-	}
+@import url("/css/book-base.css");
 
-	/*自注：虚线*/
-	del, .cm-strikethrough { 
-		text-decoration: underline dashed !important ; 
-		text-underline-offset: 0.3em; 
-		font-style: normal; 
-		font-size: 0.8em;  
-		color: rgba(0, 0, 0,0.6); 
-	}
+article p, div.cm-line:not(.HyperMD-header,.HyperMD-quote), div.el-p {
+    font-size: 1.4em;
+}
 
-	/*重点语句：波浪线*/
-	strong ,.cm-strong{
-	  	text-decoration: underline wavy ;  
-	  	text-underline-offset: 0.2em; 
+/*自注：红色*/
+del, .cm-strikethrough {
+    /*text-decoration: underline dashed  ; 
+    text-underline-offset: 0.3em; 
+    font-style: normal; */
+    text-decoration: unset;
+    font-size: 0.8em;
+    /*color: rgba(0, 0, 0,0.6); */
+    color: rgba(255, 0, 0, 0.8);
+}
+
+/*	:is(del,.cm-strikethrough)::before{
+		content: '🐤';
 	}
+	:is(del,.cm-strikethrough)::after{
+		content: '🐤';
+	}*/
+
+/*重点语句：背景黑色*/
+strong, .cm-strong {
+    /*	  	text-decoration: underline wavy ;  
+              text-underline-offset: 0.2em; */
+    background: rgba(0, 0, 0, 0.1);
+}
+
 /*}cssend*/
 
  
