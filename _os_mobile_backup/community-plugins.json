@@ -2,8 +2,9 @@
   "obsidian-version-history-diff",
   "templater-obsidian",
   "obsidian-style-settings",
-  "quickadd",
-  "global-proxy",
+  "obsidian-custom-attachment-location",
   "obsidian-excalidraw-plugin",
-  "obsidian-custom-attachment-location"
+  "file-cleaner-redux",
+  "quickadd",
+  "custom-font-loader"
 ]

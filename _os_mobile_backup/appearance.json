@@ -1,6 +1,13 @@
 {
   "cssTheme": "Border",
   "baseFontSizeAction": true,
-  "baseFontSize": 16,
-  "showViewHeader": true
+  "baseFontSize": 17,
+  "showViewHeader": true,
+  "enabledCssSnippets": [
+    "book-zztj",
+    "book",
+    "book-base"
+  ],
+  "textFontFamily": "霞鹜文楷等宽",
+  "theme": "moonstone"
 }

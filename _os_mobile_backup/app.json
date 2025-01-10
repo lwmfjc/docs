@@ -1,5 +1,5 @@
 {
-  "showLineNumber": true,
+  "showLineNumber": false,
   "alwaysUpdateLinks": true,
   "newFileLocation": "current",
   "newLinkFormat": "relative",
@@ -10,5 +10,6 @@
   "autoConvertHtml": false,
   "showInlineTitle": true,
   "showRibbon": true,
-  "defaultViewMode": "preview"
+  "readableLineLength": false,
+  "strictLineBreaks": true
 }
