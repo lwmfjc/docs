@@ -1,7 +1,11 @@
 dir='.obsidian/snippets'
+fontDir='.obsidian/fonts'
 mkdir -p $dir 
+mkdir -p $fontDir
 rm -rf "$dir"'/*'
+rm -rf "$fontDir"'/*'
 cp -r static/css/*.css "$dir"
+cp -r static/fonts/*.ttf "$fontDir"
 files=$(ls "$dir")
  
 #临时修改SHELL中的分隔符
