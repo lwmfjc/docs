@@ -1,4 +1,4 @@
-/*.book{*/
+/*.book{cssstart*/
 	@import url("/css/book-base.css");
 	article p,.cm-line:not(.HyperMD-header),
 	.markdown-preview-section p{ 
@@ -21,6 +21,6 @@
 	  	text-decoration: underline wavy ;  
 	  	text-underline-offset: 0.2em; 
 	}
-/*}*/
+/*}cssend*/
 
  

@@ -20,6 +20,7 @@ elif [ $x == "pcr" ] ; then
     rm -rf  .obsidian
     #恢复pc上的source的obsidian配置
     cp -a  _os_pc_backup  .obsidian
+    bash '_sh/cfg-os-css.sh'
 elif [ $x == "mbb" ] ; then 
     echo "mbb1"
     rm -rf  _os_mobile_backup
@@ -30,5 +31,6 @@ elif [ $x == "mbr" ] ; then
     rm -rf  .obsidian
     #恢复mobile上的source的obsidian配置
     cp -a  _os_mobile_backup  .obsidian
+    bash '_sh/cfg-os-css.sh'
 fi
 exit 1

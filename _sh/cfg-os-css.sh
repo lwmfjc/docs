@@ -1,4 +1,6 @@
 dir='.obsidian/snippets'
+mkdir -p $dir 
+rm -rf "$dir"'/*'
 cp -r static/css/*.css "$dir"
 files=$(ls "$dir")
  
@@ -10,7 +12,7 @@ for file in $files; do
 	#如果是.css结尾
 	if [[ $(expr "$file" : ".\+\.css$") > 0 ]]; then
 		fullPathFile="$dir/$file";
-		echo $fullPathFile
+		# echo $fullPathFile
 		perl -i -pe 's/\/\*(.*?)cssstart\*\//$1/gp' "$fullPathFile"
 		perl -i -pe 's/\/\*(.*?)cssend\*\//$1/gp' "$fullPathFile"
 		perl -i -pe 's/(.*\@import.*;)/\/\*$1\*\//gp' "$fullPathFile" 
