@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "bf41f1fe6fe7b661",
+        "id": "3414ef546c7eab39",
         "type": "tabs",
         "children": [
           {
-            "id": "b2dfc9754272c985",
+            "id": "992685a7af26a4ed",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content.zh/docs/test/keyi/index.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "index"
+              "title": "新标签页"
             }
           }
         ]
@@ -44,6 +40,16 @@
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
+            }
+          },
+          {
+            "id": "366b3151582cceb1",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {},
+              "icon": "lucide-list",
+              "title": "大纲"
             }
           },
           {
@@ -93,6 +99,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +109,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "反向链接"
+              "title": "index 的反向链接列表"
             }
           },
           {
@@ -162,16 +169,43 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "b2dfc9754272c985",
+  "active": "7e052c6949893df9",
   "lastOpenFiles": [
-    "public/zh/docs/test/keyi/index.html",
-    "public/zh/docs/test/keyi",
-    "public/zh.search.min.137b3f8d208618de483a6ed039cf43e78528d745d66bf6858a0f675e84b4ba1d.js",
-    "public/zh.search-data.min.5f663d1f8f9f0090ef2956885ad8f809f1122b50a5b617a282fc25ab6e587c16.json",
+    "content.zh/docs/culture/资治通鉴/周纪/基本知识/index.md",
+    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+    "content.zh/docs/technology/Linux/_TheLinuxCommandsHandbook_/index.md",
+    "content.zh/docs/culture/中国通史(吕思勉)/下篇-中国文化史/index.md",
+    "content.zh/docs/culture/古代天文历法讲座/第4讲-第5讲/index.md",
+    "public/zh/categories/学习/index.xml",
+    "public/zh/index.xml",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/12-17/img/ly-20241212142200682.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/12-17/img/ly-20241212142200650.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/12-17/img/ly-20241212142200619.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/12-17/img/ly-20241212142200586.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/12-17/img/ly-20241212142200557.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/12-17/img/ly-20241212142200403.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/06-11/img/ly-20241212142200360.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/06-11/img/ly-20241212142200328.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/06-11/img/ly-20241212142200298.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/06-11/img/ly-20241212142200266.png",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/19-A/index.html",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/18/index.html",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/12-17/index.html",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/12-17/img",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/06-11/index.html",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/01-05/index.html",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/06-11/img",
+    "public/zh/docs/technology/Redis/shangguigu_BV1Rv41177Af_/01-05/img",
+    "content.zh/docs/technology/Linux/SHELL(learnLinuxTV)_/06ExitCode/index.md",
+    "content.zh/docs/technology/Hugo/GiraffeAcademy_/advanced11-16/index.md",
+    "content.zh/docs/technology/Hugo/_index.md",
+    "content.zh/docs/culture/古代天文历法讲座/第1讲-第3讲/index.md",
+    "content.zh/docs/culture/古代天文历法讲座/版权-序-前言/index.md",
+    "content.zh/docs/culture/中国通史(吕思勉)/封面-版权-读后-自序/index.md",
     "content.zh/docs/test/hello2/未命名.md",
     "content.zh/docs/test/keyi/index.md",
     "content.zh/docs/test/hello2/index.md",
-    "content.zh/docs/test/keyi",
     "content.zh/docs/test/未命名.md",
     "content.zh/docs/test/_index.md",
     "attachments/templates/property-life.md",
@@ -180,36 +214,9 @@
     "content.zh/docs/test/yyy/index.md",
     "content.zh/docs/test/pdf-test/index.md",
     "content.zh/docs/test/hello/index.md",
-    "public/zh/docs/test/yyy/img/ly-20241216202757446.png",
-    "public/zh/docs/test/yyy/index.html",
-    "public/zh/docs/test/yyy/img",
-    "public/zh/docs/test/yyy",
-    "public/zh.search.min.acdf6f92740733f2c39b289bac9a4a83983b5bd66c57b11539def7586fa8dead.js",
-    "public/zh.search-data.min.dfaca9a68a03406572f1894da0d24a32537733d137365f9907709fb90c534e18.json",
-    "attachments/books/work/JavaGuide/知识星球/Java面试指北/3面经篇/3中小厂/5金蝶 Java 后端校招三面面经（已OC，附参考答案）.pdf",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/西汉时期全图.jpg",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/西域都护府.jpg",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/荆州刺史部.jpg",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/益州刺史部南部、哀牢.jpg",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/益州刺史部北部.jpg",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/扬州刺史部.jpg",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/幽州刺史部.jpg",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/并州、朔方刺史部.jpg",
-    "attachments/books/tradition/0中国历史地图/谭其骧 - 中国历史地图集jpg/《中国历史地图集》第二册 秦汉/西汉组图/司隶部.jpg",
     "attachments/books/README.md",
     "content.zh/docs/life/20241216/index.md",
     "content.zh/docs/test/sss/index.md",
-    "content.zh/docs/test/hah/index.md",
-    "content.zh/docs/life/20240626/index.md",
-    "content.zh/docs/life/20231227/index.md",
-    "content.zh/docs/life/20231101/index.md",
-    "content.zh/docs/life/20231227/未命名 1.md",
-    "content.zh/docs/life/20231227/未命名.md",
-    "content.zh/docs/life/20241209.md",
-    "attachments/templates/property-normal - 副本.md",
-    "content.zh/docs/life/2024-12-16.md",
-    "attachments/templates/property-pdf.md",
-    "attachments/templates/content-pdfWeb.md",
     "未命名.canvas"
   ]
 }

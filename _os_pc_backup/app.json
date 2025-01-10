@@ -1,5 +1,5 @@
 {
-  "showLineNumber": true,
+  "showLineNumber": false,
   "alwaysUpdateLinks": true,
   "newFileLocation": "current",
   "newLinkFormat": "relative",
@@ -9,5 +9,7 @@
   "newFileFolderPath": "./img",
   "autoConvertHtml": false,
   "showInlineTitle": true,
-  "showRibbon": true
+  "showRibbon": true,
+  "readableLineLength": false,
+  "strictLineBreaks": true
 }

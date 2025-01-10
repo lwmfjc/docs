@@ -64,10 +64,10 @@
   "Appearance-light@@border-radius-activated-tab-header-light": "6px",
   "Appearance-light@@shadow-activated-tab-header-light": "0px 3px 0px var(--background-primary),0px 12px 0px -6px var(--color-accent)",
   "Appearance-light@@card-layout-open-light": true,
-  "Components@@tab-autohide": false,
+  "Components@@tab-autohide": true,
   "Components@@status-bar-autohide": true,
-  "Components@@Ribbon-autohide": false,
-  "Components@@nav-header-autohide": false,
+  "Components@@Ribbon-autohide": true,
+  "Components@@nav-header-autohide": true,
   "Components@@tab-title-bar-autohide": true,
   "Components@@vault-profile-autohide": true,
   "Appearance-dark@@mod-left-split-background-select-dark": "mod-left-split-background-transparent-dark",
@@ -75,5 +75,8 @@
   "Appearance-dark@@background-underlying-select-dark": "background-underlying-secondary-dark",
   "Appearance-dark@@background-primary-alt@@dark": "#111111",
   "Appearance-dark@@background-secondary-alt@@dark": "#363636",
-  "Appearance-dark@@workspace-background-translucent@@dark": "#00000099"
+  "Appearance-dark@@workspace-background-translucent@@dark": "#00000099",
+  "Appearance-light@@mod-left-split-background-select-light": "mod-left-split-background-transparent-light",
+  "Appearance-light@@mod-right-split-background-select-light": "mod-right-split-background-transparent-light",
+  "Appearance-light@@mod-root-split-background-select-light": "mod-root-split-background-transparent-light"
 }

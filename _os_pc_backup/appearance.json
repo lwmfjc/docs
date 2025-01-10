@@ -2,5 +2,12 @@
   "cssTheme": "Border",
   "baseFontSizeAction": true,
   "baseFontSize": 17,
-  "showViewHeader": true
+  "showViewHeader": true,
+  "enabledCssSnippets": [
+    "book-zztj",
+    "bg",
+    "book",
+    "book-base"
+  ],
+  "textFontFamily": "霞鹜文楷等宽"
 }
