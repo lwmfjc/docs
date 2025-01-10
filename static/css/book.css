@@ -3,6 +3,8 @@
 
 article p, div.cm-line:not(.HyperMD-header,.HyperMD-quote), div.el-p {
     font-size: 1.4em;
+    --bold-color: rgba(0, 0, 0);
+    --italic-color: rgb(0, 0, 0);
 }
 
 /*自注：红色*/

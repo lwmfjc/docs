@@ -8,6 +8,8 @@ article p, div.cm-line:not(.HyperMD-header), div.el-p {
     letter-spacing: 0.1em;
     text-align: justify;
     text-indent: 2em;
+    --bold-color: rgba(0, 0, 0);
+    --italic-color: rgb(0, 0, 0);
 }
 
 /*字修饰-----start*/
