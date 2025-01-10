@@ -26,7 +26,7 @@ em, .cm-em {
     font-style: normal;
 }
 
-strong, .cm-strong {
+strong, .cm-strong,.markdown strong {
     font-weight: normal;
     --font-weight: normal;
 }
