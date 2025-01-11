@@ -8,11 +8,12 @@
   "duplicateNameSeparator": " ",
   "jpegQuality": 1,
   "keepEmptyAttachmentFolders": true,
-  "pastedFileName": "ly-${date:YYYYMMDDHHmmssSSS}.png",
+  "pastedFileName": "ly-${date:YYYYMMDDHHmmssSSS}",
   "renameAttachmentsOnDragAndDrop": false,
   "renameCollectedFiles": true,
-  "renameOnlyImages": false,
+  "renameOnlyImages": true,
   "renamePastedFilesWithKnownNames": true,
-  "replaceWhitespace": true,
-  "toLowerCase": true
+  "toLowerCase": true,
+  "whitespaceReplacement": "-",
+  "customTokensStr": ""
 }
