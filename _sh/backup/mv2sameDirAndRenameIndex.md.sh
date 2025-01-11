@@ -13,24 +13,30 @@ fi
 
 readDir(){ 
 	local dir=$1;
-	local files=$(ls "$dir")
-	#echo "$files"
+	local files=$(ls "$dir") 
+	#临时修改SHELL中的分隔符
+	oldIFS=$IFS
+	IFS=$'\n'
+	nn=1
+	echo "$files"
 	for file in $files; do
 		local fullPathFile="$dir/$file";
-		#echo "$fullPathFile"
+		# echo "$fullPathFile"
 		# 如果是一个目录
 		if [[ -d $fullPathFile ]]; then  
+			echo $nn'文件夹'
 			#如果是文件夹，则递归该文件夹
 			readDir "$fullPathFile" 
 		#如果是以.md结尾的markdown文件
 		elif [[ $(expr "$fullPathFile" : ".\+\.md") > 0 ]]; then
+			echo $nn'文件'
 			#打印文件名(不包括文件夹)
 			#echo ${fullPathFile##*[/\\]}
 			#打印文件名(不包括文件后缀，如x/y/01.md->x/y/01)
 			#echo ${fullPathFile%.*}
 			local fileName=${fullPathFile##*[/\\]}; 
 			if [[ "index.md" == $fileName || "_index.md"  == $fileName ]]; then
-				return 1
+				continue
 			fi 
 			#获取文件名的同名文件夹
 			local fileNamePath=${fullPathFile%.*};
@@ -44,9 +50,11 @@ readDir(){
 			mv $fullPathFile "$fileNamePath/index.md"
 			
 		fi 
+		nn=nn+1
 	done
+	IFS=$oldIFS
 }
  
-curDir=$(pwd);
-#echo "20--$curDir"
-readDir $curDir/$1
+# curDir=$(pwd);
+# readDir $curDir/$1
+readDir $1

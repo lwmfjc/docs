@@ -29,9 +29,11 @@ description:
 categories:
   - 学习
 tags: 
-  - 文化
-  - xxxxx
+  - MySQL
+  - MySQL是怎样运行的
 cssAttach: 
+  - book
+cssclasses: 
   - book
 date: $time
 lastmod: $time
@@ -99,8 +101,12 @@ handleDir(){
 			#替换\(\) \[\]之类的默认转义（不需要）
 			perl -i -pe 's/\\\[(.*?)\\\]/\[$1\]/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\\\((.*?)\\\)/\($1\)/gp' "$dirBook/index.txt"
+			# 反引号`，星号*，下划线_
+			perl -i -pe 's/\\`/`/gp' "$dirBook/index.txt"
+			perl -i -pe 's/\\\*/\*/gp' "$dirBook/index.txt"
+			perl -i -pe 's/\\_/_/gp' "$dirBook/index.txt"
 			#标题降1级(#\s+)\*{2}(.*?)\*{4}
-			#perl -i -pe 's/^##(.*?\s)/$1/gp' "$dirBook/index.txt"
+			perl -i -pe 's/^##(.*?\s)/$1/gp' "$dirBook/index.txt" 
 
 			#去除#号后面4个星号(#\s+)(.*?)\s*\n\*{4}\s*\n\*{2}(.*)
 			#perl -i -0 -pe 's/(#\s+)\*{2}(.*?)\*{4}.*\n\*{4}.*\n\*{2}(.*)\n.*\n/$1$2 $3/gp' "$dirBook/index.txt" 
@@ -127,7 +133,7 @@ handleDir(){
 			mkdir -p "$dirMd/img" 
 			cp -r "$dirBook"/images/* "$dirMd/img"
 			rm -rf "$dirBook"/images
-			echo -ne "\n\n" >>  "$dirMd/index.md"
+			echo -ne "\n" >>  "$dirMd/index.md"
 			# echo "23" >>  "$dirMd/index.md"
 			cat "$dirBook/index.txt" >>  "$dirMd/index.md"
 			rm -rf "$dirBook"/index.txt
