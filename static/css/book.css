@@ -8,7 +8,7 @@ article p, div.cm-line:not(.HyperMD-header,.HyperMD-quote), div.el-p {
 }
 
 /*自注：红色*/
-del, .cm-strikethrough {
+p del, span.cm-strikethrough {
     /*text-decoration: underline dashed  ; 
     text-underline-offset: 0.3em; 
     font-style: normal; */
