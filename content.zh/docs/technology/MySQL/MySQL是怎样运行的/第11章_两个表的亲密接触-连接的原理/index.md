@@ -23,17 +23,23 @@ lastmod: 2025-01-11T16:40:07+08:00
 
 # 连接的本质
 
-为了故事的顺利发展，我们先建立两个简单的表并给它们填充一点数据： ``` mysql> CREATE TABLE t1 (m1 int, n1 char\(1)\); Query OK, 0 rows affected (0.02 sec)
+为了故事的顺利发展，我们先建立两个简单的表并给它们填充一点数据： 
+``` mysql> CREATE TABLE t1 (m1 int, n1 char\(1)\); Query OK, 0 rows affected (0.02 sec)
 
 mysql> CREATE TABLE t2 (m2 int, n2 char\(1)\); Query OK, 0 rows affected (0.02 sec)
 
 mysql> INSERT INTO t1 VALUES(1, 'a'), (2, 'b'), (3, 'c'); Query OK, 3 rows affected (0.00 sec) Records: 3 Duplicates: 0 Warnings: 0
 
-mysql> INSERT INTO t2 VALUES(2, 'b'), (3, 'c'), (4, 'd'); Query OK, 3 rows affected (0.00 sec) Records: 3 Duplicates: 0 Warnings: 0 `我们成功建立了`t1`、`t2`两个表，这两个表都有两个列，一个是`INT`类型的，一个是`CHAR(1)`类型的，填充好数据的两个表长这样：` mysql> SELECT * FROM t1; \+------\+------\+ | m1 | n1 | \+------\+------\+ | 1 | a | | 2 | b | | 3 | c | \+------\+------\+ 3 rows in set (0.00 sec)
+mysql> INSERT INTO t2 VALUES(2, 'b'), (3, 'c'), (4, 'd'); Query OK, 3 rows affected (0.00 sec) Records: 3 Duplicates: 0 Warnings: 0
+```
+`我们成功建立了`t1`、`t2`两个表，这两个表都有两个列，一个是`INT`类型的，一个是`CHAR(1)`类型的，填充好数据的两个表长这样：
+```
+ mysql> SELECT * FROM t1; \+------\+------\+ | m1 | n1 | \+------\+------\+ | 1 | a | | 2 | b | | 3 | c | \+------\+------\+ 3 rows in set (0.00 sec)
 
 mysql> SELECT * FROM t2; \+------\+------\+ | m2 | n2 | \+------\+------\+ | 2 | b | | 3 | c | | 4 | d | \+------\+------\+ 3 rows in set (0.00 sec)
+```
 
-````连接`的本质就是把各个连接表中的记录都取出来依次匹配的组合加入结果集并返回给用户。所以我们把`t1`和`t2`两个表连接起来的过程如下图所示：
+`连接`的本质就是把各个连接表中的记录都取出来依次匹配的组合加入结果集并返回给用户。所以我们把`t1`和`t2`两个表连接起来的过程如下图所示：
 
 ![](img/11-01.png)
 
@@ -94,9 +100,13 @@ mysql> SELECT * FROM t2; \+------\+------\+ | m2 | n2 | \+------\+------\+ | 2 |
 
 # 内连接和外连接
 
-为了大家更好理解后边内容，我们先创建两个有现实意义的表， ``` CREATE TABLE student ( number INT NOT NULL AUTO_INCREMENT COMMENT '学号', name VARCHAR\(5) COMMENT '姓名', major VARCHAR(30) COMMENT '专业', PRIMARY KEY (number) \) Engine=InnoDB CHARSET=utf8 COMMENT '学生信息表';
+为了大家更好理解后边内容，我们先创建两个有现实意义的表， 
+``` CREATE TABLE student ( number INT NOT NULL AUTO_INCREMENT COMMENT '学号', name VARCHAR\(5) COMMENT '姓名', major VARCHAR(30) COMMENT '专业', PRIMARY KEY (number) \) Engine=InnoDB CHARSET=utf8 COMMENT '学生信息表';
 
-CREATE TABLE score ( number INT COMMENT '学号', subject VARCHAR\(30) COMMENT '科目', score TINYINT COMMENT '成绩', PRIMARY KEY (number, score) \) Engine=InnoDB CHARSET=utf8 COMMENT '学生成绩表'; `我们新建了一个学生信息表，一个学生成绩表，然后我们向上述两个表中插入一些数据，为节省篇幅，具体插入过程就不介绍了，插入后两表中的数据如下：` mysql> SELECT * FROM student; \+----------\+-----------\+--------------------------\+ | number | name | major | \+----------\+-----------\+--------------------------\+ | 20180101 | 杜子腾 | 软件学院 | | 20180102 | 范统 | 计算机科学与工程 | | 20180103 | 史珍香 | 计算机科学与工程 | \+----------\+-----------\+--------------------------\+ 3 rows in set (0.00 sec)
+CREATE TABLE score ( number INT COMMENT '学号', subject VARCHAR\(30) COMMENT '科目', score TINYINT COMMENT '成绩', PRIMARY KEY (number, score) \) Engine=InnoDB CHARSET=utf8 COMMENT '学生成绩表';
+```
+我们新建了一个学生信息表，一个学生成绩表，然后我们向上述两个表中插入一些数据，为节省篇幅，具体插入过程就不介绍了，插入后两表中的数据如下：
+` mysql> SELECT * FROM student; \+----------\+-----------\+--------------------------\+ | number | name | major | \+----------\+-----------\+--------------------------\+ | 20180101 | 杜子腾 | 软件学院 | | 20180102 | 范统 | 计算机科学与工程 | | 20180103 | 史珍香 | 计算机科学与工程 | \+----------\+-----------\+--------------------------\+ 3 rows in set (0.00 sec)
 
 mysql> SELECT * FROM score; \+----------\+-----------------------------\+-------\+ | number | subject | score | \+----------\+-----------------------------\+-------\+ | 20180101 | 母猪的产后护理 | 78 | | 20180101 | 论萨达姆的战争准备 | 88 | | 20180102 | 论萨达姆的战争准备 | 98 | | 20180102 | 母猪的产后护理 | 100 | \+----------\+-----------------------------\+-------\+ 4 rows in set (0.00 sec) `现在我们想把每个学生的考试成绩都查询出来就需要进行两表连接了（因为`score`中没有姓名信息，所以不能单纯只查询`score`表）。连接过程就是从`student`表中取出记录，在`score`表中查找`number`相同的成绩记录，所以过滤条件就是`student.number = socre.number`，整个查询语句就是这样：` mysql> SELECT * FROM student, score WHERE student.number = score.number; \+----------\+-----------\+--------------------------\+----------\+-----------------------------\+-------\+ | number | name | major | number | subject | score | \+----------\+-----------\+--------------------------\+----------\+-----------------------------\+-------\+ | 20180101 | 杜子腾 | 软件学院 | 20180101 | 母猪的产后护理 | 78 | | 20180101 | 杜子腾 | 软件学院 | 20180101 | 论萨达姆的战争准备 | 88 | | 20180102 | 范统 | 计算机科学与工程 | 20180102 | 论萨达姆的战争准备 | 98 | | 20180102 | 范统 | 计算机科学与工程 | 20180102 | 母猪的产后护理 | 100 | \+----------\+-----------\+--------------------------\+----------\+-----------------------------\+-------\+ 4 rows in set (0.00 sec) ```
 
