@@ -9,7 +9,9 @@ article p, div.cm-line:not(.HyperMD-header,.HyperMD-quote), div.el-p {
     --italic-color: rgb(0, 0, 0, 0.5);
 }
 
+/*加粗的是黑体*/
 strong, .cm-strong {
+    --bold-color: rgba(0, 0, 0);
     font-size: 1.3em;
     color: rgb(0, 0, 0);
 }
