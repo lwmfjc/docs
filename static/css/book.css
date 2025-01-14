@@ -14,9 +14,7 @@ p del, span.cm-strikethrough {
 } 
 
 /*重点语句：背景黑色*/
-strong, .cm-strong {
-    /*	  	text-decoration: underline wavy ;  
-              text-underline-offset: 0.2em; */
+strong, .cm-strong { 
     background: rgba(0, 0, 0, 0.1);
 }
 
