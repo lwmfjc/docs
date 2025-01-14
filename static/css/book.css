@@ -2,7 +2,7 @@
 @import url("/css/book-base.css");
 
 article p, div.cm-line:not(.HyperMD-header,.HyperMD-quote), div.el-p {
-    font-size: 1.4em;
+/*    font-size: 1.4em;*/
     --bold-color: rgba(0, 0, 0);
     --italic-color: rgb(0, 0, 0);
 }
@@ -16,14 +16,7 @@ p del, span.cm-strikethrough {
     font-size: 0.8em;
     /*color: rgba(0, 0, 0,0.6); */
     color: rgba(255, 0, 0, 0.8);
-}
-
-/*	:is(del,.cm-strikethrough)::before{
-		content: '🐤';
-	}
-	:is(del,.cm-strikethrough)::after{
-		content: '🐤';
-	}*/
+} 
 
 /*重点语句：背景黑色*/
 strong, .cm-strong {

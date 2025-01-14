@@ -1,12 +1,12 @@
-/*.book-zztj,.book{cssstart*/
-article p, div.cm-line:not(.HyperMD-header), div.el-p {
-    /*  font-family: "SYST";*/
-    /*  display: block; */
-    /*  margin-bottom: 0.5em;*/
-    /*  margin-right: 0em;*/
-    /*  margin-top: 0.5em;*/
-    line-height: 1.8em;
-    letter-spacing: 0.1em;
+/*.book-guwen02,.book-guwen01,.book{cssstart*/
+article ,div.cm-line, div.el-p{
+    font-size: 1.4em ;
+}
+article p, div.cm-line:not(.HyperMD-header), div.el-p { 
+    margin-bottom: 0.5em; 
+    margin-top: 0.5em;
+/*    line-height: 1.8em;*/
+/*    letter-spacing: 0.1em;*/
     text-align: justify;
     text-indent: 2em;
     --bold-color: rgba(0, 0, 0);
