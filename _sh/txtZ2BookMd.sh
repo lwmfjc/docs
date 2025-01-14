@@ -29,9 +29,8 @@ description:
 categories:
   - 学习
 tags: 
-  - 论语
-  - 论语译注
-  - 杨伯峻
+  - 天纪
+  - 人间道
 cssAttach: 
   - book
 cssclasses: 
@@ -99,6 +98,8 @@ handleDir(){
 			# -p：对输入的每一行执行一次Perl代码，并打印输出结果。 
 			# g是全局,p：保存匹配的字符串到${^PREMATCH} ${^MATCH} ${^POSTMATCH}中，它们在结果上对应$` $& $'
 			perl -i -pe 's/(\!\[.*?\])\(images/$1\(img/gp' "$dirBook/index.txt"
+			#perl中$&表示整个字符串
+			perl -i -pe 's/(\!\[.*?\])\(img.*?\)/$&  \n/gp' "$dirBook/index.txt"
 			#替换\(\) \[\]之类的默认转义（不需要）
 			perl -i -pe 's/\\\[(.*?)\\\]/\[$1\]/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\\\((.*?)\\\)/\($1\)/gp' "$dirBook/index.txt"
@@ -107,7 +108,7 @@ handleDir(){
 			perl -i -pe 's/\\\*/\*/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\\_/_/gp' "$dirBook/index.txt"
 			#标题降1级(#\s+)\*{2}(.*?)\*{4}
-			perl -i -pe 's/^#(.*?\s)/$1/gp' "$dirBook/index.txt" 
+			perl -i -pe 's/^###(.*?\s)/$1/gp' "$dirBook/index.txt" 
 
 			#去除#号后面4个星号(#\s+)(.*?)\s*\n\*{4}\s*\n\*{2}(.*)
 			#perl -i -0 -pe 's/(#\s+)\*{2}(.*?)\*{4}.*\n\*{4}.*\n\*{2}(.*)\n.*\n/$1$2 $3/gp' "$dirBook/index.txt" 
