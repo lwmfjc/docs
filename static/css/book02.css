@@ -1,0 +1,10 @@
+/*.book02{cssstart*/
+/*  资治通鉴里字体默认灰色 */
+@import url("/css/book-base.css");
+
+article p, div.cm-line:not(.HyperMD-header),
+ div.el-p { 
+    color: rgba(0, 0, 0, 0.5);  
+} 
+
+/*}cssend*/

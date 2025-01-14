@@ -28,11 +28,23 @@ disablePathToLower: true
 markup:
   # goldmark:
   #   renderer:
-  #     unsafe: true
+  #     unsafe: false
   tableOfContents:
     startLevel: 1 
   goldmark:
     extensions:
+      extras:
+        delete:
+          enable: true
+        subscript:
+          enable: true
+        mark:
+          enable: true      
+        insert:
+          enable: true
+        superscript:
+          enable: true          
+      strikethrough: false
       passthrough:
         delimiters:
           block:

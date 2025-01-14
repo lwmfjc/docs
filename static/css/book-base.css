@@ -1,7 +1,11 @@
-/*.book-guwen02,.book-guwen01,.book{cssstart*/
+/*.book01,.book2{cssstart*/
+
+/*字体统一放大到1.4em*/
 article ,div.cm-line, div.el-p{
     font-size: 1.4em ;
 }
+
+/*段落统一设置格式*/
 article p, div.cm-line:not(.HyperMD-header), div.el-p { 
     margin-bottom: 0.5em; 
     margin-top: 0.5em;
@@ -9,9 +13,10 @@ article p, div.cm-line:not(.HyperMD-header), div.el-p {
 /*    letter-spacing: 0.1em;*/
     text-align: justify;
     text-indent: 2em;
-    --bold-color: rgba(0, 0, 0);
-    --italic-color: rgb(0, 0, 0);
+/*    --bold-color: rgba(0, 0, 0);
+    --italic-color: rgb(0, 0, 0);*/
 }
+
 
 /*字修饰-----start*/
 /*<em>xxx</em> 专有名词(人名地名) 下划线 * */
@@ -19,30 +24,65 @@ article p, div.cm-line:not(.HyperMD-header), div.el-p {
 /*<del>xxx</del> 专有名词(书名) ~~ */
 /*涉及到加粗里第一个字为斜体时，加粗改为__ 双下划线*/
 
-
+/*人名地名--下划线*/
 em, .cm-em {
     border: 2px black;
     border-bottom-style: solid;
     padding-bottom: 0.05em;
     /*  text-decoration: underline  ;  
         text-underline-offset: 0.2em; */
-    font-style: normal;
+    font-style: inherit;
 }
 
-strong, .cm-strong,.markdown strong {
+/*strong, .cm-strong,.markdown strong {
+    font-weight: normal;
+    --font-weight: normal;
+}*/
+
+/*重点--暗色背景*/
+mark { 
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/*自注--红色缩小字体*/
+p del, span.cm-strikethrough { 
+    text-decoration: unset;
+    font-size: 0.8em; 
+    color: rgba(255, 0, 0, 0.8);
+    position: relative;
+    bottom: -0.2em;
+} 
+
+/*正文--黑色加大*/
+strong, .cm-strong , .markdown strong{ 
+    color: initial;
+/*    --bold-color: rgba(0, 0, 0);*/
+    font-size: 1.3em;
     font-weight: normal;
     --font-weight: normal;
 }
 
-
-del, .cm-strikethrough {
+/*波浪线--书名*/
+.markdown p code { 
+    font-family: inherit;
+    background: inherit ;
+    font-size: inherit ; 
+    padding: inherit;
+    unicode-bidi: inherit;
     text-decoration: underline wavy;
     text-underline-offset: 0.2em;
+    text-decoration-thickness: 0.05em;
+
 }
+
+/*del, .cm-strikethrough {
+    text-decoration: underline wavy;
+    text-underline-offset: 0.2em;
+}*/
 
 /*字修饰-----end*/
 
-
+/*
 img {
     display: block;
 }
@@ -54,15 +94,15 @@ img[alt^="i-"] {
 
 pre:has(code) {
     font-size: 0.7em;
-}
+}*/
 
 
 /*覆盖默认的hr样式*/
-hr {
+/*hr {
     border: 1.5px black;
-    border-bottom-style: solid;
+    border-bottom-style: solid;*/
     /*  background-color: rgba(0,0,0,0.05);  */
-    margin-left: 2em;
+    /*margin-left: 2em;
     margin-right: 2em;
-}
+}*/
 /*}cssend*/
