@@ -55,7 +55,7 @@ p del, span.cm-strikethrough {
 } 
 
 /*正文--黑色加大*/
-strong, .cm-strong , .markdown strong{ 
+strong, .cm-strong , .markdown strong,.cm-strong.cm-inline-code{ 
     color: initial;
 /*    --bold-color: rgba(0, 0, 0);*/
     font-size: 1.3em;
@@ -63,16 +63,23 @@ strong, .cm-strong , .markdown strong{
     --font-weight: normal;
 }
 
+
 /*波浪线--书名*/ 
-.markdown p code ,span.cm-inline-code,
-.cm-inline-code:not(.cm-formatting),:not(pre)>code{ 
+span.cm-inline-code,
+.cm-inline-code:not(.cm-formatting),:not(pre)>code{
     /*obsidian里面需要的*/
     --inline-code-background-light: initial;
     --code-background: initial;
     --inline-code-normal: initial;
-    padding: initial;
-    --code-size: initial; 
+    --code-size: initial;
+    padding: initial; 
+    text-decoration: underline wavy;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 0.05em;
     /*obsidian里面需要的*/
+}
+.markdown p code { 
+    
     font-family: inherit;
     background: inherit ;
     font-size: inherit ; 
