@@ -13,8 +13,8 @@ article p, div.cm-line:not(.HyperMD-header), div.el-p {
 /*    letter-spacing: 0.1em;*/
     text-align: justify;
     text-indent: 2em;
-/*    --bold-color: rgba(0, 0, 0);
-    --italic-color: rgb(0, 0, 0);*/
+    --bold-color: initial;
+    --italic-color: initial;
 }
 
 
@@ -40,7 +40,8 @@ em, .cm-em {
 }*/
 
 /*重点--暗色背景*/
-mark { 
+mark,.cm-highlight { 
+    --text-highlight-bg: rgba(0, 0, 0, 0.1);
     background: rgba(0, 0, 0, 0.1);
 }
 
@@ -62,8 +63,16 @@ strong, .cm-strong , .markdown strong{
     --font-weight: normal;
 }
 
-/*波浪线--书名*/
-.markdown p code { 
+/*波浪线--书名*/ 
+.markdown p code ,span.cm-inline-code,
+.cm-inline-code:not(.cm-formatting),:not(pre)>code{ 
+    /*obsidian里面需要的*/
+    --inline-code-background-light: initial;
+    --code-background: initial;
+    --inline-code-normal: initial;
+    padding: initial;
+    --code-size: initial; 
+    /*obsidian里面需要的*/
     font-family: inherit;
     background: inherit ;
     font-size: inherit ; 
