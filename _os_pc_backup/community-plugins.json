@@ -8,5 +8,6 @@
   "obsidian-excalidraw-plugin",
   "file-cleaner-redux",
   "obsidian-git",
-  "custom-font-loader"
+  "custom-font-loader",
+  "obsidian-theme-design-utilities"
 ]

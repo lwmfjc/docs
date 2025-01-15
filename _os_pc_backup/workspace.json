@@ -13,8 +13,8 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
-                "mode": "source",
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
@@ -52,7 +52,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md"
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md"
               },
               "icon": "lucide-list",
               "title": "index 的大纲"
@@ -178,6 +178,7 @@
   },
   "active": "366b3151582cceb1",
   "lastOpenFiles": [
+    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
     "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第0章_万里长征第一步(非常重要)-如何愉快的阅读本小册/index.md",
     "content.zh/docs/culture/恰同学少年/第1章-第5章/index.md",
     "content.zh/docs/culture/汉字就是这么来的/01走进汉字世界/index.md",
@@ -223,7 +224,6 @@
     "content.zh/docs/culture/天纪/人间道/02坤爲地/index.md",
     "content.zh/docs/culture/天纪/人间道/01乾爲天/index.md",
     "content.zh/docs/culture/天纪/人间道/63Shui Huo Ji Ji (927)/index.md",
-    "content.zh/docs/culture/天纪/人间道/64火水未濟/index.md",
     "未命名.canvas"
   ]
 }
