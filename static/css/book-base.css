@@ -101,6 +101,13 @@ img[alt^="i-"] {
     bottom: -0.2em; 
 
 }
+/*覆盖默认的hr样式*/
+hr,.markdown hr {
+    border: 1.5px black;
+    border-bottom-style: solid;
+    background-color: rgba(0,0,0,0.05);
+    margin : 1em 2em ; 
+}
 /*
 img {
     display: block;
