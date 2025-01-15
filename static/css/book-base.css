@@ -18,11 +18,7 @@ article p, div.cm-line:not(.HyperMD-header), div.el-p {
 }
 
 
-/*字修饰-----start*/
-/*<em>xxx</em> 专有名词(人名地名) 下划线 * */
-/*<strong>xxx</strong> 重点 加粗 ** */
-/*<del>xxx</del> 专有名词(书名) ~~ */
-/*涉及到加粗里第一个字为斜体时，加粗改为__ 双下划线*/
+/*字修饰-----start*/ 
 
 /*人名地名--下划线*/
 em, .cm-em {
@@ -32,12 +28,7 @@ em, .cm-em {
     /*  text-decoration: underline  ;  
         text-underline-offset: 0.2em; */
     font-style: inherit;
-}
-
-/*strong, .cm-strong,.markdown strong {
-    font-weight: normal;
-    --font-weight: normal;
-}*/
+} 
 
 /*重点--暗色背景*/
 mark,.cm-highlight { 
@@ -64,7 +55,16 @@ strong, .cm-strong , .markdown strong,.cm-strong.cm-inline-code{
 }
 
 
-/*波浪线--书名*/ 
+/*波浪线--书名---start*/ 
+/*加波浪线*/
+.markdown p code ,span.cm-inline-code,
+.cm-inline-code:not(.cm-formatting),:not(pre)>code{    
+    text-decoration: underline wavy;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 0.08em;
+}
+
+/*去除code默认样式(obsidian)*/
 span.cm-inline-code,
 .cm-inline-code:not(.cm-formatting),:not(pre)>code{
     /*obsidian里面需要的*/
@@ -73,28 +73,19 @@ span.cm-inline-code,
     --inline-code-normal: initial;
     --code-size: initial;
     padding: initial; 
-    text-decoration: underline wavy;
-    text-underline-offset: 0.2em;
-    text-decoration-thickness: 0.05em;
     /*obsidian里面需要的*/
 }
-.markdown p code { 
-    
+
+/*去除code默认样式(markdown)*/
+.markdown p code {     
     font-family: inherit;
     background: inherit ;
     font-size: inherit ; 
     padding: inherit;
-    unicode-bidi: inherit;
-    text-decoration: underline wavy;
-    text-underline-offset: 0.2em;
-    text-decoration-thickness: 0.05em;
-
+    unicode-bidi: inherit; 
 }
-
-/*del, .cm-strikethrough {
-    text-decoration: underline wavy;
-    text-underline-offset: 0.2em;
-}*/
+/*波浪线--书名---end*/ 
+ 
 
 /*字修饰-----end*/
 
