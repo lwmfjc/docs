@@ -10,10 +10,26 @@
           {
             "id": "b63b8534c0e85bf8",
             "type": "leaf",
+            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "mode": "preview",
+                "source": false
+              },
+              "pinned": true,
+              "icon": "lucide-file",
+              "title": "index"
+            }
+          },
+          {
+            "id": "18dac6983c6a4579",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -21,7 +37,8 @@
               "title": "index"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -128,7 +145,7 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md"
+            "file": "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md"
           },
           "icon": "lucide-list",
           "title": "大纲"
@@ -150,10 +167,14 @@
       "file-cleaner-redux:Clean files": false
     }
   },
-  "active": "b63b8534c0e85bf8",
+  "active": "18dac6983c6a4579",
   "lastOpenFiles": [
-    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
     "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
+    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "content.zh/docs/test/mytest/index.md",
+    "content.zh/docs/culture/天纪/人间道/上经/29坎爲水/index.md",
+    "content.zh/posts/_index.md",
     "content.zh/docs/culture/中国通史(吕思勉)/_index.md"
   ]
 }
