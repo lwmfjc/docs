@@ -8,8 +8,9 @@
   "attachmentFolderPath": "./img",
   "newFileFolderPath": "./img",
   "autoConvertHtml": false,
-  "showInlineTitle": true,
+  "showInlineTitle": false,
   "showRibbon": true,
   "readableLineLength": false,
-  "strictLineBreaks": true
+  "strictLineBreaks": true,
+  "defaultViewMode": "preview"
 }
