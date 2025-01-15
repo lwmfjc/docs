@@ -89,6 +89,14 @@ span.cm-inline-code,
 
 /*字修饰-----end*/
 
+img[alt^="i-"] {
+    display: inline-block !important;
+    height: 1em; 
+    position: relative;
+    bottom: -0.2em; 
+
+}
+
 /*
 img {
     display: block;
