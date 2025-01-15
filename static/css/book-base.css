@@ -6,11 +6,11 @@ article ,div.cm-line, div.el-p{
 }
 
 /*段落统一设置格式*/
-article p, div.cm-line:not(.HyperMD-header), div.el-p { 
-    margin-bottom: 0.5em; 
+article p, div.cm-line:not(.HyperMD-header), div.el-p {
+    margin-bottom: 0.5em;
     margin-top: 0.5em;
-/*    line-height: 1.8em;*/
-/*    letter-spacing: 0.1em;*/
+    /*    line-height: 1.8em;*/
+    /*    letter-spacing: 0.1em;*/
     text-align: justify;
     text-indent: 2em;
     --bold-color: initial;
@@ -18,7 +18,7 @@ article p, div.cm-line:not(.HyperMD-header), div.el-p {
 }
 
 
-/*字修饰-----start*/ 
+/*字修饰-----start*/
 
 /*人名地名--下划线*/
 em, .cm-em {
@@ -28,37 +28,37 @@ em, .cm-em {
     /*  text-decoration: underline  ;  
         text-underline-offset: 0.2em; */
     font-style: inherit;
-} 
+}
 
 /*重点--暗色背景*/
-mark,.cm-highlight { 
+mark,.cm-highlight {
     --text-highlight-bg: rgba(0, 0, 0, 0.1);
     background: rgba(0, 0, 0, 0.1);
 }
 
 /*自注--红色缩小字体*/
-p del, span.cm-strikethrough { 
+p del, span.cm-strikethrough {
     text-decoration: unset;
-    font-size: 0.8em; 
+    font-size: 0.8em;
     color: rgba(255, 0, 0, 0.8);
     position: relative;
     bottom: -0.2em;
-} 
+}
 
 /*正文--黑色加大*/
-strong, .cm-strong , .markdown strong,.cm-strong.cm-inline-code{ 
+strong, .cm-strong , .markdown strong,.cm-strong.cm-inline-code{
     color: initial;
-/*    --bold-color: rgba(0, 0, 0);*/
+    /*    --bold-color: rgba(0, 0, 0);*/
     font-size: 1.3em;
     font-weight: normal;
     --font-weight: normal;
 }
 
 
-/*波浪线--书名---start*/ 
+/*波浪线--书名---start*/
 /*加波浪线*/
 .markdown p code ,span.cm-inline-code,
-.cm-inline-code:not(.cm-formatting),:not(pre)>code{    
+.cm-inline-code:not(.cm-formatting),:not(pre)>code{
     text-decoration: underline wavy;
     text-underline-offset: 0.2em;
     text-decoration-thickness: 0.07em;
@@ -72,7 +72,7 @@ span.cm-inline-code,
     --code-background: initial;
     --inline-code-normal: initial;
     --code-size: initial;
-    padding: initial; 
+    padding: initial;
     --code-normal: initial;
     /*obsidian里面需要的*/
 }
@@ -81,24 +81,35 @@ span.cm-inline-code,
 .markdown p code {
     font-family: inherit;
     background: inherit ;
-    font-size: inherit ; 
+    font-size: inherit ;
     padding: inherit;
-    unicode-bidi: inherit; 
+    unicode-bidi: inherit;
 }
-/*波浪线--书名---end*/ 
- 
+/*波浪线--书名---end*/
+
 
 /*字修饰-----end*/
+
+/*覆盖默认的hr样式*/
+hr,.markdown hr {
+    border: 1.5px black;
+    border-bottom-style: solid;
+    background-color: rgba(0,0,0,0.05);
+    margin : 1em 2em ;
+}
 
 img {
     display: block;
 }
 
+p:has(+div[alt^="i-"]),div[alt^="i-"]{
+    display: inline ;
+}
 img[alt^="i-"] {
     display: inline-block ;
-    height: 1em; 
+    height: 1em;
     position: relative;
-    bottom: -0.2em; 
+    bottom: -0.2em;
 
 }
 /*覆盖默认的hr样式*/
@@ -106,7 +117,7 @@ hr,.markdown hr {
     border: 1.5px black;
     border-bottom-style: solid;
     background-color: rgba(0,0,0,0.05);
-    margin : 1em 2em ; 
+    margin : 1em 2em ;
 }
 /*
 img {
@@ -127,8 +138,8 @@ pre:has(code) {
 /*hr {
     border: 1.5px black;
     border-bottom-style: solid;*/
-    /*  background-color: rgba(0,0,0,0.05);  */
-    /*margin-left: 2em;
-    margin-right: 2em;
+/*  background-color: rgba(0,0,0,0.05);  */
+/*margin-left: 2em;
+margin-right: 2em;
 }*/
 /*}cssend*/
