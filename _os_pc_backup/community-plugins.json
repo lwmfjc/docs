@@ -7,5 +7,6 @@
   "obsidian-custom-attachment-location",
   "obsidian-excalidraw-plugin",
   "file-cleaner-redux",
-  "obsidian-git"
+  "obsidian-git",
+  "custom-font-loader"
 ]
