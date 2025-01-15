@@ -61,7 +61,7 @@ strong, .cm-strong , .markdown strong,.cm-strong.cm-inline-code{
 .cm-inline-code:not(.cm-formatting),:not(pre)>code{    
     text-decoration: underline wavy;
     text-underline-offset: 0.2em;
-    text-decoration-thickness: 0.08em;
+    text-decoration-thickness: 0.07em;
 }
 
 /*去除code默认样式(obsidian)*/
@@ -73,11 +73,12 @@ span.cm-inline-code,
     --inline-code-normal: initial;
     --code-size: initial;
     padding: initial; 
+    --code-normal: initial;
     /*obsidian里面需要的*/
 }
 
 /*去除code默认样式(markdown)*/
-.markdown p code {     
+.markdown p code {
     font-family: inherit;
     background: inherit ;
     font-size: inherit ; 

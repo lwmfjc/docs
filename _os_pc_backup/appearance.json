@@ -4,10 +4,13 @@
   "baseFontSize": 17,
   "showViewHeader": true,
   "enabledCssSnippets": [
-    "book-zztj",
     "bg",
     "book",
-    "book-base"
+    "book-base",
+    "book-guwen02",
+    "book-guwen01",
+    "book01",
+    "book02"
   ],
   "textFontFamily": "霞鹜文楷等宽"
 }
