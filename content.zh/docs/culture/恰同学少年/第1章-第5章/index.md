@@ -7,9 +7,11 @@ tags:
   - 文化
   - 恰同学少年
 cssAttach:
-  - book
+  - book01
 date: 2025-01-08T17:27:23+08:00
 lastmod: 2025-01-08T17:27:23+08:00
+cssclasses:
+  - book01
 ---
 
 
