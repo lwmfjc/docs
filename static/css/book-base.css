@@ -15,6 +15,7 @@ article p, div.cm-line:not(.HyperMD-header), div.el-p {
     text-indent: 2em;
     --bold-color: initial;
     --italic-color: initial;
+    --text-normal: initial;
 }
 
 
@@ -50,7 +51,8 @@ p del,mark del, span.cm-strikethrough  {
 }
 
 /*正文--黑色加大*/
-strong, .cm-strong , .markdown strong,.cm-strong.cm-inline-code{
+strong, .cm-strong , .markdown strong,
+.cm-strong.cm-inline-code,.cm-strong.cm-highlight{
     color: initial;
     /*    --bold-color: rgba(0, 0, 0);*/
     font-size: 1.3em;
