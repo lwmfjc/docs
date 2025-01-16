@@ -35,9 +35,13 @@ mark,.cm-highlight {
     --text-highlight-bg: rgba(0, 0, 0, 0.1);
     background: rgba(0, 0, 0, 0.1);
 }
+span.cm-highlight.cm-inline-code{    
+    --inline-code-background-light: rgba(0, 0, 0, 0.1);
+}
+
 
 /*自注--红色缩小字体*/
-p del, span.cm-strikethrough {
+p del,mark del, span.cm-strikethrough  {
     text-decoration: unset;
     font-size: 0.8em;
     color: rgba(255, 0, 0, 0.8);
