@@ -107,3 +107,4 @@ else #windows平台下
 fi
 
 cd $docsDir
+git status 
