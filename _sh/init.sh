@@ -112,4 +112,4 @@ if [[ $(hostname) == 'tabs8' ]]; then
    sudo settings put secure default_input_method com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
 fi
 cd $docsDir
-git status 
+#git status 
