@@ -106,5 +106,10 @@ else #windows平台下
    alias allps="cd $docsDir ;bash $docsDir/_sh/docs-book-git.sh ps"
 fi
 
+
+if [[ $(hostname) == 'tabs8' ]]; then
+   #切换输入法
+   sudo settings put secure default_input_method com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
+fi
 cd $docsDir
 git status 
