@@ -33,7 +33,8 @@ if [[ $(uname -a | awk '{print $1}') == 'Linux' ]]; then
    #shell里字符串拼接就是直接写在一起(中间没有空格)
    #windows系统中vmwareDebian系统
    if [[ $(uname -m) == "x86_64" ]]; then
-      docsDir="/mnt/hgfs/gitrepo/docs"; 
+      # docsDir="/mnt/hgfs/gitrepo/docs"; 
+      docsDir="~";
       # docsDir="D:/Users/ly/Documents/git/docs";
       myip=$(ip a | grep -Po "192(\.\d+){3}(?=\/)")
       if [[ $myip != "" ]]; then
