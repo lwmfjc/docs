@@ -65,9 +65,9 @@ strong, .cm-strong , .markdown strong,
 /*加波浪线*/
 .markdown p code ,span.cm-inline-code,
 .cm-inline-code:not(.cm-formatting),:not(pre)>code{
-    text-decoration: underline wavy;
+    text-decoration: rgba(0,0,0,0.4) underline wavy;
     text-underline-offset: 0.2em;
-    text-decoration-thickness: 0.05em;
+    text-decoration-thickness: 0.06em;
 }
 
 /*去除code默认样式(obsidian)*/
