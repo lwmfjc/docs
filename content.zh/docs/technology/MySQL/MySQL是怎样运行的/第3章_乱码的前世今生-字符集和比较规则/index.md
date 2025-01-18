@@ -3,22 +3,22 @@ title: 第3章_乱码的前世今生-字符集和比较规则
 description: 第3章_乱码的前世今生-字符集和比较规则
 categories:
   - 学习
-tags:
+tags: 
   - MySQL
   - MySQL是怎样运行的
-cssAttach:
-  - book
-cssclasses:
-  - book
-date: 2025-01-11T16:39:59+08:00
-lastmod: 2025-01-11T16:39:59+08:00
+cssAttach: 
+  - book01
+cssclasses: 
+  - book01
+date: 2025-01-18T22:29:41+08:00
+lastmod: 2025-01-18T22:29:41+08:00
 ---
 
-# 第3章 乱码的前世今生-字符集和比较规则
+ 第3章 乱码的前世今生-字符集和比较规则
 
- 字符集和比较规则简介
+# 字符集和比较规则简介
 
-# 字符集简介
+## 字符集简介
 
 我们知道在计算机中只能存储二进制数据，那该怎么存储字符串呢？当然是建立字符与二进制数据的映射关系了，建立这个关系最起码要搞清楚两件事儿：
 
@@ -38,7 +38,7 @@ lastmod: 2025-01-11T16:39:59+08:00
 
 有了`xiaohaizi`字符集，我们就可以用二进制形式表示一些字符串了，下面是一些字符串用`xiaohaizi`字符集编码后的二进制表示： `'bA' -> 0000001000000011 (十六进制：0x0203) 'baB' -> 000000100000000100000100 (十六进制：0x020104) 'cd' -> 无法表示，字符集xiaohaizi不包含字符'c'和'd'`
 
-# 比较规则简介
+## 比较规则简介
 
 在我们确定了`xiaohaizi`字符集表示字符的范围以及编码规则后，怎么比较两个字符的大小呢？最容易想到的就是直接比较这两个字符对应的二进制编码的大小，比方说字符`'a'`的编码为`0x01`，字符`'b'`的编码为`0x02`，所以`'a'`小于`'b'`，这种简单的比较规则也可以被称为二进制比较规则，英文名为`binary collation`。
 
@@ -49,7 +49,7 @@ lastmod: 2025-01-11T16:39:59+08:00
 
 这是一种稍微复杂一点点的比较规则，但是实际生活中的字符不止英文字符一种，比如我们的汉字有几万之多，对于某一种字符集来说，比较两个字符大小的规则可以制定出很多种，也就是说**同一种字符集可以有多种比较规则**，我们稍后就要介绍各种现实生活中用的字符集以及它们的一些比较规则。
 
-# 一些重要的字符集
+## 一些重要的字符集
 
 不幸的是，这个世界太大了，不同的人制定出了好多种`字符集`，它们表示的字符范围和用到的编码规则可能都不一样。我们看一下一些常用字符集的情况：
 
@@ -85,9 +85,9 @@ lastmod: 2025-01-11T16:39:59+08:00
 
 对于同一个字符，不同字符集也可能有不同的编码方式。比如对于汉字`'我'`来说，`ASCII`字符集中根本没有收录这个字符，`utf8`和`gb2312`字符集对汉字`我`的编码方式如下： `utf8编码：111001101000100010010001 (3个字节，十六进制表示是：0xE68891) gb2312编码：1100111011010010 (2个字节，十六进制表示是：0xCED2)`
 
- MySQL中支持的字符集和排序规则
+# MySQL中支持的字符集和排序规则
 
-# MySQL中的utf8和utf8mb4
+## MySQL中的utf8和utf8mb4
 
 我们上面说`utf8`字符集表示一个字符需要使用1～4个字节，但是我们常用的一些字符使用1～3个字节就可以表示了。而在`MySQL`中字符集表示一个字符所用最大字节长度在某些方面会影响系统的存储和性能，所以设计`MySQL`的大佬偷偷的定义了两个概念：
 
@@ -100,11 +100,11 @@ lastmod: 2025-01-11T16:39:59+08:00
 
 有一点需要大家十分的注意，在`MySQL`中`utf8`是`utf8mb3`的别名，所以之后在`MySQL`中提到`utf8`就意味着使用1~3个字节来表示一个字符，如果大家有使用4字节编码一个字符的情况，比如存储一些emoji表情什么的，那请使用`utf8mb4`。
 
-# 字符集的查看
+## 字符集的查看
 
 `MySQL`支持好多好多种字符集，查看当前`MySQL`中支持的字符集可以用下面这个语句： `SHOW (CHARACTER SET|CHARSET) [LIKE 匹配的模式];` 其中`CHARACTER SET`和`CHARSET`是同义词，用任意一个都可以。我们查询一下（支持的字符集太多了，我们省略了一些）： `mysql> SHOW CHARSET; +----------+---------------------------------+---------------------+--------+ | Charset | Description | Default collation | Maxlen | +----------+---------------------------------+---------------------+--------+ | big5 | Big5 Traditional Chinese | big5_chinese_ci | 2 | ... | latin1 | cp1252 West European | latin1_swedish_ci | 1 | | latin2 | ISO 8859-2 Central European | latin2_general_ci | 1 | ... | ascii | US ASCII | ascii_general_ci | 1 | ... | gb2312 | GB2312 Simplified Chinese | gb2312_chinese_ci | 2 | ... | gbk | GBK Simplified Chinese | gbk_chinese_ci | 2 | | latin5 | ISO 8859-9 Turkish | latin5_turkish_ci | 1 | ... | utf8 | UTF-8 Unicode | utf8_general_ci | 3 | | ucs2 | UCS-2 Unicode | ucs2_general_ci | 2 | ... | latin7 | ISO 8859-13 Baltic | latin7_general_ci | 1 | | utf8mb4 | UTF-8 Unicode | utf8mb4_general_ci | 4 | | utf16 | UTF-16 Unicode | utf16_general_ci | 4 | | utf16le | UTF-16LE Unicode | utf16le_general_ci | 4 | ... | utf32 | UTF-32 Unicode | utf32_general_ci | 4 | | binary | Binary pseudo charset | binary | 1 | ... | gb18030 | China National Standard GB18030 | gb18030_chinese_ci | 4 | +----------+---------------------------------+---------------------+--------+ 41 rows in set (0.01 sec)` 可以看到，我使用的这个`MySQL`版本一共支持`41`种字符集，其中的`Default collation`列表示这种字符集中一种默认的`比较规则`。大家注意返回结果中的最后一列`Maxlen`，它代表该种字符集表示一个字符最多需要几个字节。为了让大家的印象更深刻，我把几个常用到的字符集的`Maxlen`列摘抄下来，大家务必记住：
     字符集名称 Maxlen     `ascii` `1`   `latin1` `1`   `gb2312` `2`   `gbk` `2`   `utf8` `3`   `utf8mb4` `4`    
-# 比较规则的查看
+## 比较规则的查看
 
 查看`MySQL`中支持的比较规则的命令如下： `SHOW COLLATION [LIKE 匹配的模式];` 我们前面说过一种字符集可能对应着若干种比较规则，`MySQL`支持的字符集就已经非常多了，所以支持的比较规则更多，我们先只查看一下`utf8`字符集下的比较规则： `mysql> SHOW COLLATION LIKE 'utf8_%'; +--------------------------+---------+-----+---------+----------+---------+ | Collation | Charset | Id | Default | Compiled | Sortlen | +--------------------------+---------+-----+---------+----------+---------+ | utf8_general_ci | utf8 | 33 | Yes | Yes | 1 | | utf8_bin | utf8 | 83 | | Yes | 1 | | utf8_unicode_ci | utf8 | 192 | | Yes | 8 | | utf8_icelandic_ci | utf8 | 193 | | Yes | 8 | | utf8_latvian_ci | utf8 | 194 | | Yes | 8 | | utf8_romanian_ci | utf8 | 195 | | Yes | 8 | | utf8_slovenian_ci | utf8 | 196 | | Yes | 8 | | utf8_polish_ci | utf8 | 197 | | Yes | 8 | | utf8_estonian_ci | utf8 | 198 | | Yes | 8 | | utf8_spanish_ci | utf8 | 199 | | Yes | 8 | | utf8_swedish_ci | utf8 | 200 | | Yes | 8 | | utf8_turkish_ci | utf8 | 201 | | Yes | 8 | | utf8_czech_ci | utf8 | 202 | | Yes | 8 | | utf8_danish_ci | utf8 | 203 | | Yes | 8 | | utf8_lithuanian_ci | utf8 | 204 | | Yes | 8 | | utf8_slovak_ci | utf8 | 205 | | Yes | 8 | | utf8_spanish2_ci | utf8 | 206 | | Yes | 8 | | utf8_roman_ci | utf8 | 207 | | Yes | 8 | | utf8_persian_ci | utf8 | 208 | | Yes | 8 | | utf8_esperanto_ci | utf8 | 209 | | Yes | 8 | | utf8_hungarian_ci | utf8 | 210 | | Yes | 8 | | utf8_sinhala_ci | utf8 | 211 | | Yes | 8 | | utf8_german2_ci | utf8 | 212 | | Yes | 8 | | utf8_croatian_ci | utf8 | 213 | | Yes | 8 | | utf8_unicode_520_ci | utf8 | 214 | | Yes | 8 | | utf8_vietnamese_ci | utf8 | 215 | | Yes | 8 | | utf8_general_mysql500_ci | utf8 | 223 | | Yes | 1 | +--------------------------+---------+-----+---------+----------+---------+ 27 rows in set (0.00 sec)` 这些比较规则的命名还挺有规律的，具体规律如下：
 
@@ -122,9 +122,9 @@ lastmod: 2025-01-11T16:39:59+08:00
 
 **每种字符集对应若干种比较规则，每种字符集都有一种默认的比较规则**，`SHOW COLLATION`的返回结果中的`Default`列的值为`YES`的就是该字符集的默认比较规则，比方说`utf8`字符集默认的比较规则就是`utf8_general_ci`。
 
- 字符集和比较规则的应用
+# 字符集和比较规则的应用
 
-# 各级别的字符集和比较规则
+## 各级别的字符集和比较规则
 
 `MySQL`有4个级别的字符集和比较规则，分别是：
 
@@ -135,7 +135,7 @@ lastmod: 2025-01-11T16:39:59+08:00
 
 我们接下来仔细看一下怎么设置和查看这几个级别的字符集和比较规则。
 
-## 服务器级别
+### 服务器级别
 
 `MySQL`提供了两个系统变量来表示服务器级别的字符集和比较规则：
     系统变量 描述     `character_set_server` 服务器级别的字符集   `collation_server` 服务器级别的比较规则    
@@ -147,7 +147,7 @@ mysql> SHOW VARIABLES LIKE 'collation_server'; \+------------------\+-----------
 
 我们可以在启动服务器程序时通过启动选项或者在服务器程序运行过程中使用`SET`语句修改这两个变量的值。比如我们可以在配置文件中这样写： `[server] character_set_server=gbk collation_server=gbk_chinese_ci` 当服务器启动的时候读取这个配置文件后这两个系统变量的值便修改了。
 
-## 数据库级别
+### 数据库级别
 
 我们在创建和修改数据库的时候可以指定该数据库的字符集和比较规则，具体语法如下： ``` CREATE DATABASE 数据库名 [\[DEFAULT] CHARACTER SET 字符集名称\] [\[DEFAULT] COLLATE 比较规则名称\];
 
@@ -163,13 +163,13 @@ mysql> ``` 可以看到这个`charset_demo_db`数据库的字符集和比较规�
 
 数据库的创建语句中也可以不指定字符集和比较规则，比如这样： `CREATE DATABASE 数据库名;` **这样的话，将使用服务器级别的字符集和比较规则作为数据库的字符集和比较规则**。
 
-## 表级别
+### 表级别
 
 我们也可以在创建和修改表的时候指定表的字符集和比较规则，语法如下： ``` CREATE TABLE 表名 (列的信息) [\[DEFAULT] CHARACTER SET 字符集名称\] [COLLATE 比较规则名称]\]
 
 ALTER TABLE 表名 [\[DEFAULT] CHARACTER SET 字符集名称\] [COLLATE 比较规则名称] `比方说我们在刚刚创建的`charset_demo_db`数据库中创建一个名为`t`的表，并指定这个表的字符集和比较规则：` mysql> CREATE TABLE t( -> col VARCHAR\(10) -> \) CHARACTER SET utf8 COLLATE utf8_general_ci; Query OK, 0 rows affected (0.03 sec) `如果创建和修改表的语句中没有指明字符集和比较规则，**将使用该表所在数据库的字符集和比较规则作为该表的字符集和比较规则**。假设我们的创建表`t`的语句是这么写的：` CREATE TABLE t( col VARCHAR\(10) \); ``` 因为表`t`的建表语句中并没有明确指定字符集和比较规则，则表`t`的字符集和比较规则将继承所在数据库`charset_demo_db`的字符集和比较规则，也就是`gb2312`和`gb2312_chinese_ci`。
 
-## 列级别
+### 列级别
 
 需要注意的是，对于存储字符串的列，**同一个表中的不同的列也可以有不同的字符集和比较规则**。我们在创建和修改列定义的时候可以指定该列的字符集和比较规则，语法如下： ``` CREATE TABLE 表名( 列名 字符串类型 [CHARACTER SET 字符集名称] [COLLATE 比较规则名称], 其他列... );
 
@@ -177,7 +177,7 @@ ALTER TABLE 表名 MODIFY 列名 字符串类型 [CHARACTER SET 字符集名称]
 
 mysql> `对于某个列来说，如果在创建和修改的语句中没有指明字符集和比较规则，**将使用该列所在表的字符集和比较规则作为该列的字符集和比较规则**。比方说表`t`的字符集是`utf8`，比较规则是`utf8_general_ci`，修改列`col`的语句是这么写的：` ALTER TABLE t MODIFY col VARCHAR(10); `那列`col`的字符集和编码将使用表`t`的字符集和比较规则，也就是`utf8`和`utf8_general_ci`。` 小贴士：在转换列的字符集时需要注意，如果转换前列中存储的数据不能用转换后的字符集进行表示，就会发生错误。比方说原先列使用的字符集是utf8，列中存储了一些汉字，现在把列的字符集转换为ascii的话就会出错，因为ascii字符集并不能表示汉字字符。 ```
 
-## 仅修改字符集或仅修改比较规则
+### 仅修改字符集或仅修改比较规则
 
 由于字符集和比较规则是互相有联系的，如果我们只修改了字符集，比较规则也会跟着变化，如果只修改了比较规则，字符集也会跟着变化，具体规则如下：
 
@@ -207,7 +207,7 @@ mysql> ```
 我们只修改了`collation_server`的值为`utf8_general_ci`，`character_set_server`的值自动变为了`utf8`。
 
 
-## 各级别字符集和比较规则小结
+### 各级别字符集和比较规则小结
 
 我们介绍的这4个级别字符集和比较规则的联系如下：
 
@@ -219,9 +219,9 @@ mysql> ```
 
 mysql> SELECT * FROM t; \+--------\+ | s | \+--------\+ | 我我 | \+--------\+ 1 row in set (0.00 sec) ``` 首先列`col`使用的字符集是`gbk`，一个字符`'我'`在`gbk`中的编码为`0xCED2`，占用两个字节，两个字符的实际数据就占用4个字节。如果把该列的字符集修改为`utf8`的话，这两个字符就实际占用6个字节。
 
-# 客户端和服务器通信中的字符集
+## 客户端和服务器通信中的字符集
 
-## 编码和解码使用的字符集不一致的后果
+### 编码和解码使用的字符集不一致的后果
 
 说到底，字符串在计算机上的体现就是一个字节串，如果你使用不同字符集去解码这个字节串，最后得到的结果可能让你挠头。
 
@@ -254,11 +254,11 @@ mysql> SELECT * FROM t; \+--------\+ | s | \+--------\+ | 我我 | \+--------\+ 
 
 可见，**如果对于同一个字符串编码和解码使用的字符集不一样，会产生意想不到的结果**，作为人类的我们看上去就像是产生了乱码一样。
 
-## 字符集转换的概念
+### 字符集转换的概念
 
 如果接收`0xE68891`这个字节串的程序按照`utf8`字符集进行解码，然后又把它按照`gbk`字符集进行编码，最后编码后的字节串就是`0xCED2`，我们把这个过程称为`字符集的转换`，也就是字符串`'我'`从`utf8`字符集转换为`gbk`字符集。
 
-## MySQL中字符集的转换
+### MySQL中字符集的转换
 
 我们知道从客户端发往服务器的请求本质上就是一个字符串，服务器向客户端返回的结果本质上也是一个字符串，而字符串其实是使用某种字符集编码的二进制数据。这个字符串可不是使用一种字符集的编码方式一条道走到黑的，从发送请求到返回结果这个过程中伴随着多次字符集的转换，在这个过程中会用到3个系统变量，我们先把它们写出来看一下：
     系统变量 描述     `character_set_client` 服务器解码请求时使用的字符集   `character_set_connection` 服务器处理请求时会把请求字符串从`character_set_client`转为`character_set_connection`   `character_set_results` 服务器向客户端返回数据时使用的字符集    
@@ -335,7 +335,7 @@ mysql> SHOW VARIABLES LIKE 'character_set_results'; \+-----------------------\+-
 
 mysql> `` 小贴士：如果你使用的是Windows系统，那应该设置成gbk。 `另外，如果你想在启动客户端的时候就把`character_set_client`、`character_set_connection`、`character_set_results`这三个系统变量的值设置成一样的，那我们可以在启动客户端的时候指定一个叫`default-character-set`的启动选项，比如在配置文件里可以这么写：` [client] default-character-set=utf8 ``` 它起到的效果和执行一遍`SET NAMES utf8`是一样一样的，都会将那三个系统变量的值设置成`utf8`。
 
-# 比较规则的应用
+## 比较规则的应用
 
 结束了字符集的漫游，我们把视角再次聚焦到`比较规则`，`比较规则`的作用通常体现比较字符串大小的表达式以及对某个字符串列进行排序中，所以有时候也称为`排序规则`。比方说表`t`的列`col`使用的字符集是`gbk`，使用的比较规则是`gbk_chinese_ci`，我们向里边插入几条记录： ``` mysql> INSERT INTO t(col) VALUES('a'), ('b'), ('A'), ('B'); Query OK, 4 rows affected (0.00 sec) Records: 4 Duplicates: 0 Warnings: 0
 
@@ -343,7 +343,7 @@ mysql> `我们查询的时候按照`t`列排序一下：` mysql> SELECT * FROM t
 
 mysql> `所以，如果以后大家在对字符串做比较或者对某个字符串列做排序操作时，没有得到想象中的结果，需要思考一下是不是`比较规则`的问题。` 小贴士： 列col中各个字符在使用gbk字符集编码后对应的数字如下： 'A' -> 65 （十进制） 'B' -> 66 （十进制） 'a' -> 97 （十进制） 'b' -> 98 （十进制） '我' -> 25105 （十进制） ```
 
- 总结
+# 总结
 
 1.  
 `字符集`指的是某个字符范围的编码规则。

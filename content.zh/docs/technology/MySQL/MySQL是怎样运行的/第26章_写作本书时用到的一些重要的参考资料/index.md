@@ -3,20 +3,20 @@ title: 第26章_写作本书时用到的一些重要的参考资料
 description: 第26章_写作本书时用到的一些重要的参考资料
 categories:
   - 学习
-tags:
+tags: 
   - MySQL
   - MySQL是怎样运行的
-cssAttach:
-  - book
-cssclasses:
-  - book
-date: 2025-01-11T16:40:21+08:00
-lastmod: 2025-01-11T16:40:21+08:00
+cssAttach: 
+  - book01
+cssclasses: 
+  - book01
+date: 2025-01-18T22:30:12+08:00
+lastmod: 2025-01-18T22:30:12+08:00
 ---
 
-# 第26章 写作本书时用到的一些重要的参考资料
+ 第26章 写作本书时用到的一些重要的参考资料
 
- 感谢
+# 感谢
 
 我不生产知识，只是知识的搬运工。写作本小册的时间主要用在了两个方面：
 
@@ -33,7 +33,7 @@ lastmod: 2025-01-11T16:40:21+08:00
 
 这两个方面用的时间基本上是一半一半吧，在搞清楚事情的本质是什么阶段，除了直接阅读`MySQL`的源码之外，查看参考资料也是一种比较偷懒的学习方式。本书只是`MySQL`进阶的一个入门，想了解更多关于`MySQL`的知识，大家可以从下面这些资料里找点灵感。
 
- 一些链接
+# 一些链接
 
 +  
 MySQL官方文档：[https://dev.mysql.com/doc/refman/5.7/en/](https://dev.mysql.com/doc/refman/5.7/en/)
@@ -95,7 +95,7 @@ Reconstructing Data Manipulation Queries from Redo Logs：[https://www.sba-resea
 MySQL8.0的源码文档：[https://dev.mysql.com/doc/dev/mysql-server](https://dev.mysql.com/doc/dev/mysql-server)
 
 
- 一些书籍
+# 一些书籍
 
 +  
 《数据库查询优化器的艺术》李海翔著
@@ -143,11 +143,11 @@ MySQL8.0的源码文档：[https://dev.mysql.com/doc/dev/mysql-server](https://d
 这本书只是象征性的看了1～5章，说实话看不太懂，总是get不到作者要表达的点。不过听说业界非常推崇这本书，而恰巧我也看过一点，就写上了，有兴趣的同学可以去看看。
 
 
- 说点不好的
+# 说点不好的
 
 上面尽说这些参考资料如何如何好了，主要是因为在我写作过程中的确参考到了，没有这些资料可能三五年都无法把小册写完。但是除了MySQL的文档以及《高性能MySQL》、《Effectiv MySQL：Optimizing SQL Statements》这两本书之外，其余的资料在大部分时间都是看的我头晕眼花，四肢乏力，不看个十遍八遍基本无法理清楚作者想要表达的点，这也是我写本小册的初衷---**让天下没有难学的知识**。
 
- 结语
+# 结语
 
 希望这是各位2019年最爽的一次知识付费，如果各位因为阅读本小册而顺利通过面试，或者解决了工作中的很多技术问题，觉得29.9实在是太物超所值，希望各位能来给点打赏（本人很穷，靠救济生活～ 添加好友可以问关于小册的问题，不过希望不要扯犊子聊八卦了，我其实挺忙的～ 微信号：xiaohaizi4919）。
 

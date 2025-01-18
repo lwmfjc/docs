@@ -3,24 +3,24 @@ title: 第16章_查询优化的百科全书-Explain详解(下)
 description: 第16章_查询优化的百科全书-Explain详解(下)
 categories:
   - 学习
-tags:
+tags: 
   - MySQL
   - MySQL是怎样运行的
-cssAttach:
-  - book
-cssclasses:
-  - book
-date: 2025-01-11T16:40:12+08:00
-lastmod: 2025-01-11T16:40:12+08:00
+cssAttach: 
+  - book01
+cssclasses: 
+  - book01
+date: 2025-01-18T22:29:59+08:00
+lastmod: 2025-01-18T22:29:59+08:00
 ---
 
-# 第16章 查询优化的百科全书-Explain详解（下）
+ 第16章 查询优化的百科全书-Explain详解（下）
 
- 执行计划输出中各列详解
+# 执行计划输出中各列详解
 
 本章紧接着上一节的内容，继续介绍`EXPLAIN`语句输出的各个列的意思。
 
-# Extra
+## Extra
 
 顾名思义，`Extra`列是用来说明一些额外信息的，我们可以通过这些额外信息来更准确的理解`MySQL`到底将如何执行给定的查询语句。`MySQL`提供的额外信息有好几十个，我们就不一个一个介绍了（都介绍了感觉我们的文章就跟文档差不多了～），所以我们只挑一些平时常见的或者比较重要的额外信息介绍给大家。
 
@@ -149,7 +149,7 @@ lastmod: 2025-01-11T16:40:12+08:00
 在将`In`子查询转为`semi-join`时，如果采用的是`FirstMatch`执行策略，则在被驱动表执行计划的`Extra`列就是显示`FirstMatch(tbl_name)`提示，比如这样： `mysql> EXPLAIN SELECT * FROM s1 WHERE common_field IN (SELECT key1 FROM s2 where s1.key3 = s2.key3); +----+-------------+-------+------------+------+-------------------+----------+---------+-------------------+------+----------+-----------------------------+ | id | select_type | table | partitions | type | possible_keys | key | key_len | ref | rows | filtered | Extra | +----+-------------+-------+------------+------+-------------------+----------+---------+-------------------+------+----------+-----------------------------+ | 1 | SIMPLE | s1 | NULL | ALL | idx_key3 | NULL | NULL | NULL | 9688 | 100.00 | Using where | | 1 | SIMPLE | s2 | NULL | ref | idx_key1,idx_key3 | idx_key3 | 303 | xiaohaizi.s1.key3 | 1 | 4.87 | Using where; FirstMatch(s1) | +----+-------------+-------+------------+------+-------------------+----------+---------+-------------------+------+----------+-----------------------------+ 2 rows in set, 2 warnings (0.00 sec)`
 
 
- Json格式的执行计划
+# Json格式的执行计划
 
 我们上面介绍的`EXPLAIN`语句输出中缺少了一个衡量执行计划好坏的重要属性 —— **成本**。不过设计`MySQL`的大佬贴心的为我们提供了一种查看某个执行计划花费的成本的方式：
 
@@ -259,7 +259,7 @@ EXPLAIN: \{ "query_block": \{ "select_id": 1, \# 整个查询语句只有1个SEL
 
 `小贴士：大家其实没必要关注MySQL为什么使用这么古怪的方式计算出read_cost和eval_cost，关注prefix_cost是查询s1表的成本就好了。` 对于`s2`表的`"cost_info"`部分是这样的： `"cost_info": { "read_cost": "968.80", "eval_cost": "193.76", "prefix_cost": "3197.16", "data_read_per_join": "1M" }` 由于`s2`表是被驱动表，所以可能被读取多次，这里的`read_cost`和`eval_cost`是访问多次`s2`表后累加起来的值，大家主要关注里边儿的`prefix_cost`的值代表的是整个连接查询预计的成本，也就是单次查询`s1`表和多次查询`s2`表后的成本的和，也就是： `968.80 + 193.76 + 2034.60 = 3197.16`
 
- Extented EXPLAIN
+# Extented EXPLAIN
 
 最后，设计`MySQL`的大佬还为我们留了个彩蛋，在我们使用`EXPLAIN`语句查看了某个查询的执行计划后，紧接着还可以使用`SHOW WARNINGS`语句查看与这个查询的执行计划有关的一些扩展信息，比如这样： ``` mysql> EXPLAIN SELECT s1.key1, s2.key1 FROM s1 LEFT JOIN s2 ON s1.key1 = s2.key1 WHERE s2.common_field IS NOT NULL; \+----\+-------------\+-------\+------------\+------\+---------------\+----------\+---------\+-------------------\+------\+----------\+-------------\+ | id | select_type | table | partitions | type | possible_keys | key | key_len | ref | rows | filtered | Extra | \+----\+-------------\+-------\+------------\+------\+---------------\+----------\+---------\+-------------------\+------\+----------\+-------------\+ | 1 | SIMPLE | s2 | NULL | ALL | idx_key1 | NULL | NULL | NULL | 9954 | 90.00 | Using where | | 1 | SIMPLE | s1 | NULL | ref | idx_key1 | idx_key1 | 303 | xiaohaizi.s2.key1 | 1 | 100.00 | Using index | \+----\+-------------\+-------\+------------\+------\+---------------\+----------\+---------\+-------------------\+------\+----------\+-------------\+ 2 rows in set, 1 warning (0.00 sec)
 

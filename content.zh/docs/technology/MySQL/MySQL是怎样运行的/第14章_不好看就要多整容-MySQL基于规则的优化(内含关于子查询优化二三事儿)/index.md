@@ -3,50 +3,50 @@ title: 第14章_不好看就要多整容-MySQL基于规则的优化(内含关于
 description: 第14章_不好看就要多整容-MySQL基于规则的优化(内含关于子查询优化二三事儿)
 categories:
   - 学习
-tags:
+tags: 
   - MySQL
   - MySQL是怎样运行的
-cssAttach:
-  - book
-cssclasses:
-  - book
-date: 2025-01-11T16:40:10+08:00
-lastmod: 2025-01-11T16:40:10+08:00
+cssAttach: 
+  - book01
+cssclasses: 
+  - book01
+date: 2025-01-18T22:29:56+08:00
+lastmod: 2025-01-18T22:29:56+08:00
 ---
 
-# 第14章 不好看就要多整容-MySQL基于规则的优化（内含关于子查询优化二三事儿）
+ 第14章 不好看就要多整容-MySQL基于规则的优化（内含关于子查询优化二三事儿）
 
 大家别忘了`MySQL`本质上是一个软件，设计`MySQL`的大佬并不能要求使用这个软件的人个个都是数据库高高手，就像我写这本书的时候并不能要求各位在学之前就会了里边儿的知识。 `吐槽一下：都会了的人谁还看呢，难道是为了精神上受感化？` 也就是说我们无法避免某些同学写一些执行起来十分耗费性能的语句。即使是这样，设计`MySQL`的大佬还是依据一些规则，竭尽全力的把这个很糟糕的语句转换成某种可以比较高效执行的形式，这个过程也可以被称作`查询重写`（就是人家觉得你写的语句不好，自己再重写一遍）。本章详细介绍一下一些比较重要的重写规则。
 
- 条件化简
+# 条件化简
 
 我们编写的查询语句的搜索条件本质上是一个表达式，这些表达式可能比较繁杂，或者不能高效的执行，`MySQL`的查询优化器会为我们简化这些表达式。为了方便大家理解，我们后边举例子的时候都使用诸如`a`、`b`、`c`之类的简单字母代表某个表的列名。
 
-# 移除不必要的括号
+## 移除不必要的括号
 
 有时候表达式里有许多无用的括号，比如这样： `((a = 5 AND b = c) OR ((a > c) AND (c < 5)))` 看着就很烦，优化器会把那些用不到的括号给干掉，就是这样： `(a = 5 and b = c) OR (a > c AND c < 5)`
 
-# 常量传递（constant_propagation）
+## 常量传递（constant_propagation）
 
 有时候某个表达式是某个列和某个常量做等值匹配，比如这样： `a = 5` 当这个表达式和其他涉及列`a`的表达式使用`AND`连接起来时，可以将其他表达式中的`a`的值替换为`5`，比如这样： `a = 5 AND b > a` 就可以被转换为： `a = 5 AND b > 5` `小贴士：为什么用OR连接起来的表达式就不能进行常量传递呢？自己想想～`
 
-# 等值传递（equality_propagation）
+## 等值传递（equality_propagation）
 
 有时候多个列之间存在等值匹配的关系，比如这样： `a = b and b = c and c = 5` 这个表达式可以被简化为： `a = 5 and b = 5 and c = 5`
 
-# 移除没用的条件（trivial_condition_removal）
+## 移除没用的条件（trivial_condition_removal）
 
 对于一些明显永远为`TRUE`或者`FALSE`的表达式，优化器会移除掉它们，比如这个表达式： `(a < 1 and b = b) OR (a = 6 OR 5 != 5)` 很明显，`b = b`这个表达式永远为`TRUE`，`5 != 5`这个表达式永远为`FALSE`，所以简化后的表达式就是这样的： `(a < 1 and TRUE) OR (a = 6 OR FALSE)` 可以继续被简化为： `a < 1 OR a = 6`
 
-# 表达式计算
+## 表达式计算
 
 在查询开始执行之前，如果表达式中只包含常量的话，它的值会被先计算出来，比如这个： `a = 5 + 1` 因为`5 + 1`这个表达式只包含常量，所以就会被化简成： `a = 6` 但是这里需要注意的是，如果某个列并不是以单独的形式作为表达式的操作数时，比如出现在函数中，出现在某个更复杂表达式中，就像这样： `ABS(a) > 5` 或者： `-a < -8` **优化器是不会尝试对这些表达式进行化简的**。我们前面说过只有搜索条件中索引列和常数使用某些运算符连接起来才可能使用到索引，所以如果可以的话，**最好让索引列以单独的形式出现在表达式中**。
 
-# HAVING子句和WHERE子句的合并
+## HAVING子句和WHERE子句的合并
 
 如果查询语句中没有出现诸如`SUM`、`MAX`等等的聚集函数以及`GROUP BY`子句，优化器就把`HAVING`子句和`WHERE`子句合并起来。
 
-# 常量表检测
+## 常量表检测
 
 设计`MySQL`的大佬觉得下面这两种查询运行的特别快：
 
@@ -61,7 +61,7 @@ lastmod: 2025-01-11T16:40:10+08:00
 
 设计`MySQL`的大佬觉得这两种查询花费的时间特别少，少到可以忽略，所以也把通过这两种方式查询的表称之为`常量表`（英文名：`constant tables`）。优化器在分析一个查询语句时，先首先执行常量表查询，然后把查询中涉及到该表的条件全部替换成常数，最后再分析其余表的查询成本，比方说这个查询语句： `SELECT * FROM table1 INNER JOIN table2 ON table1.column1 = table2.column2 WHERE table1.primary_key = 1;` 很明显，这个查询可以使用主键和常量值的等值匹配来查询`table1`表，也就是在这个查询中`table1`表相当于`常量表`，在分析对`table2`表的查询成本之前，就会执行对`table1`表的查询，并把查询中涉及`table1`表的条件都替换掉，也就是上面的语句会被转换成这样： `SELECT table1表记录的各个字段的常量值, table2.* FROM table1 INNER JOIN table2 ON table1表column1列的常量值 = table2.column2;`
 
- 外连接消除
+# 外连接消除
 
 我们前面说过，`内连接`的驱动表和被驱动表的位置可以相互转换，而`左（外）连接`和`右（外）连接`的驱动表和被驱动表是固定的。这就导致`内连接`可能通过优化表的连接顺序来降低整体的查询成本，而`外连接`却无法优化表的连接顺序。为了故事的顺利发展，我们还是把之前介绍连接原理时用过的`t1`和`t2`表请出来，为了防止大家早就忘掉了，我们再看一下这两个表的结构： ``` CREATE TABLE t1 ( m1 int, n1 char\(1) \) Engine=InnoDB, CHARSET=utf8;
 
@@ -73,11 +73,11 @@ mysql> SELECT * FROM t1 LEFT JOIN t2 ON t1.m1 = t2.m2; \+------\+------\+------\
 
 `小贴士：右（外）连接和左（外）连接其实只在驱动表的选取方式上是不同的，其余方面都是一样的，所以优化器会首先把右（外）连接查询转换成左（外）连接查询。我们后边就不再介绍右（外）连接了。` 我们知道`WHERE`子句的杀伤力比较大，**凡是不符合WHERE子句中条件的记录都不会参与连接**。只要我们在搜索条件中指定关于被驱动表相关列的值不为`NULL`，那么外连接中在被驱动表中找不到符合`ON`子句条件的驱动表记录也就被排除出最后的结果集了，也就是说：**在这种情况下：外连接和内连接也就没有什么区别了**！比方说这个查询： `mysql> SELECT * FROM t1 LEFT JOIN t2 ON t1.m1 = t2.m2 WHERE t2.n2 IS NOT NULL; +------+------+------+------+ | m1 | n1 | m2 | n2 | +------+------+------+------+ | 2 | b | 2 | b | | 3 | c | 3 | c | +------+------+------+------+ 2 rows in set (0.01 sec)` 由于指定了被驱动表`t2`的`n2`列不允许为`NULL`，所以上面的`t1`和`t2`表的左（外）连接查询和内连接查询是一样一样的。当然，我们也可以不用显式的指定被驱动表的某个列`IS NOT NULL`，只要隐含的有这个意思就行了，比方说这样： `mysql> SELECT * FROM t1 LEFT JOIN t2 ON t1.m1 = t2.m2 WHERE t2.m2 = 2; +------+------+------+------+ | m1 | n1 | m2 | n2 | +------+------+------+------+ | 2 | b | 2 | b | +------+------+------+------+ 1 row in set (0.00 sec)` 在这个例子中，我们在`WHERE`子句中指定了被驱动表`t2`的`m2`列等于`2`，也就相当于间接的指定了`m2`列不为`NULL`值，所以上面的这个左（外）连接查询其实和下面这个内连接查询是等价的： `mysql> SELECT * FROM t1 INNER JOIN t2 ON t1.m1 = t2.m2 WHERE t2.m2 = 2; +------+------+------+------+ | m1 | n1 | m2 | n2 | +------+------+------+------+ | 2 | b | 2 | b | +------+------+------+------+ 1 row in set (0.00 sec)` 我们把这种在外连接查询中，指定的`WHERE`子句中包含被驱动表中的列不为`NULL`值的条件称之为`空值拒绝`（英文名：`reject-NULL`）。**在被驱动表的WHERE子句符合空值拒绝的条件后，外连接和内连接可以相互转换**。这种转换带来的好处就是**查询优化器可以通过评估表的不同连接顺序的成本，选出成本最低的那种连接顺序来执行查询**。
 
- 子查询优化
+# 子查询优化
 
 我们的主题本来是介绍`MySQL`查询优化器是如何处理子查询的，但是我还是有一万个担心好多同学连子查询的语法都没掌握全，所以我们就先介绍介绍什么是个子查询（当然不会面面俱到啦，只是说个大概），然后再介绍关于子查询优化的事儿。
 
-# 子查询语法
+## 子查询语法
 
 想必大家都是妈妈生下来的吧，连孙猴子都有妈妈——**石头人**。怀孕妈妈肚子里的那个东东就是她的孩子，类似的，在一个查询语句里的某个位置也可以有另一个查询语句，这个出现在某个查询语句的某个位置中的查询就被称为`子查询`（我们也可以称它为宝宝查询），那个充当“妈妈”角色的查询也被称之为`外层查询`。不像人们怀孕时宝宝们都只在肚子里，子查询可以在一个外层查询的各种位置出现，比如：
 
@@ -111,7 +111,7 @@ mysql> SELECT * FROM t1 LEFT JOIN t2 ON t1.m1 = t2.m2; \+------\+------\+------\
 同上～
 
 
-## 按返回的结果集区分子查询
+### 按返回的结果集区分子查询
 
 因为子查询本身也算是一个查询，所以可以按照它们返回的不同结果集类型而把这些子查询分为不同的类型：
 
@@ -146,7 +146,7 @@ mysql> SELECT * FROM t1 LEFT JOIN t2 ON t1.m1 = t2.m2; \+------\+------\+------\
 `SELECT * FROM t1 WHERE (m1, n1) IN (SELECT m2, n2 FROM t2);` 其中的`(SELECT m2, n2 FROM t2)`就是一个表子查询，这里需要和行子查询对比一下，行子查询中我们用了`LIMIT 1`来保证子查询的结果只有一条记录，表子查询中不需要这个限制。
 
 
-## 按与外层查询关系来区分子查询
+### 按与外层查询关系来区分子查询
 
 +  
 不相关子查询
@@ -161,7 +161,7 @@ mysql> SELECT * FROM t1 LEFT JOIN t2 ON t1.m1 = t2.m2; \+------\+------\+------\
 `SELECT * FROM t1 WHERE m1 IN (SELECT m2 FROM t2 WHERE n1 = n2);` 例子中的子查询是`(SELECT m2 FROM t2 WHERE n1 = n2)`，可是这个查询中有一个搜索条件是`n1 = n2`，别忘了`n1`是表`t1`的列，也就是外层查询的列，也就是说子查询的执行需要依赖于外层查询的值，所以这个子查询就是一个`相关子查询`。
 
 
-## 子查询在布尔表达式中的使用
+### 子查询在布尔表达式中的使用
 
 你说写下面这样的子查询有什么意义： `SELECT (SELECT m1 FROM t1 LIMIT 1);` 貌似没什么意义～ 我们平时用子查询最多的地方就是把它作为布尔表达式的一部分来作为搜索条件用在`WHERE`子句或者`ON`子句里。所以我们这里来总结一下子查询在布尔表达式中的使用场景。
 
@@ -231,7 +231,7 @@ EXISTS子查询
 我们举一个例子啊： `SELECT * FROM t1 WHERE EXISTS (SELECT 1 FROM t2);` 对于子查询`(SELECT 1 FROM t2)`来说，我们并不关心这个子查询最后到底查询出的结果是什么，所以查询列表里填`*`、某个列名，或者其他什么东西都无所谓，我们真正关心的是子查询的结果集中是否存在记录。也就是说只要`(SELECT 1 FROM t2)`这个查询中有记录，那么整个`EXISTS`表达式的结果就为`TRUE`。
 
 
-## 子查询语法注意事项
+### 子查询语法注意事项
 
 +  
 子查询必须用小括号扩起来。
@@ -284,11 +284,11 @@ ERROR 1235 (42000): This version of MySQL doesn't yet support 'LIMIT & IN/ALL/AN
 ERROR 1093 (HY000): You can't specify target table 't1' for update in FROM clause ```
 
 
-# 子查询在MySQL中是怎么执行的
+## 子查询在MySQL中是怎么执行的
 
 好了，关于子查询的基础语法我们用最快的速度温习了一遍，如果想了解更多语法细节，大家可以去查看一下`MySQL`的文档，现在我们就假设各位都懂了什么是个子查询了喔，接下来就要介绍具体某种类型的子查询在`MySQL`中是怎么执行的了，想想就有点儿小激动呢～ 当然，为了故事的顺利发展，我们的例子也需要跟随形势鸟枪换炮，还是要祭出我们用了n遍的`single_table`表： `CREATE TABLE single_table ( id INT NOT NULL AUTO_INCREMENT, key1 VARCHAR(100), key2 INT, key3 VARCHAR(100), key_part1 VARCHAR(100), key_part2 VARCHAR(100), key_part3 VARCHAR(100), common_field VARCHAR(100), PRIMARY KEY (id), KEY idx_key1 (key1), UNIQUE KEY idx_key2 (key2), KEY idx_key3 (key3), KEY idx_key_part(key_part1, key_part2, key_part3) ) Engine=InnoDB CHARSET=utf8;` 为了方便，我们假设有两个表`s1`、`s2`与这个`single_table`表的构造是相同的，而且这两个表里边儿有10000条记录，除id列外其余的列都插入随机值。下面正式开始我们的表演。
 
-## 小白们眼中子查询的执行方式
+### 小白们眼中子查询的执行方式
 
 在我还是一个单纯无知的少年时，觉得子查询的执行方式是这样的：
 
@@ -317,7 +317,7 @@ ERROR 1093 (HY000): You can't specify target table 't1' for update in FROM claus
 
 其实设计`MySQL`的大佬想了一系列的办法来优化子查询的执行，大部分情况下这些优化措施其实挺有效的，但是保不齐有的时候马失前蹄，下面我们详细介绍各种不同类型的子查询具体是怎么执行的。 `小贴士：我们下面即将介绍的关于MySQL优化子查询的执行方式的事儿都是基于MySQL5.7这个版本的，以后版本可能有更新的优化策略！`
 
-## 标量子查询、行子查询的执行方式
+### 标量子查询、行子查询的执行方式
 
 我们经常在下面两个场景中使用到标量子查询或者行子查询：
 
@@ -350,11 +350,11 @@ ERROR 1093 (HY000): You can't specify target table 't1' for update in FROM claus
 
 也就是说对于一开始介绍的两种使用标量子查询以及行子查询的场景中，`MySQL`优化器的执行方式并没有什么新鲜的。
 
-## IN子查询优化
+### IN子查询优化
 
 
 
-### 物化表的提出
+#### 物化表的提出
 
 
 
@@ -396,7 +396,7 @@ ERROR 1093 (HY000): You can't specify target table 't1' for update in FROM claus
 
 
 
-### 物化表转连接
+#### 物化表转连接
 
 
 
@@ -434,7 +434,7 @@ ERROR 1093 (HY000): You can't specify target table 't1' for update in FROM claus
 
 
 
-### 将子查询转换为semi-join
+#### 将子查询转换为semi-join
 
 
 
@@ -484,7 +484,7 @@ FirstMatch execution strategy （首次匹配）
 
 
 
-### semi-join的适用条件
+#### semi-join的适用条件
 
 
 
@@ -500,7 +500,7 @@ FirstMatch execution strategy （首次匹配）
 
 
 
-### 不适用于semi-join的情况
+#### 不适用于semi-join的情况
 
 
 
@@ -567,7 +567,7 @@ mysql> SELECT 1 FROM s1 WHERE FALSE; Empty set (0.00 sec) `所以只要我们的
 
 
 
-### 小结一下
+#### 小结一下
 
 
 
@@ -589,15 +589,15 @@ mysql> SELECT 1 FROM s1 WHERE FALSE; Empty set (0.00 sec) `所以只要我们的
 	+ 执行`IN to EXISTS`转换。 
 
 
-## ANY/ALL子查询优化
+### ANY/ALL子查询优化
 
 如果ANY/ALL子查询是不相关子查询的话，它们在很多场合都能转换成我们熟悉的方式去执行，比方说：
     原始表达式 转换为     < ANY (SELECT inner_expr ...) < (SELECT MAX\(inner_expr) ...\)   > ANY (SELECT inner_expr ...) > (SELECT MIN\(inner_expr) ...\)   < ALL (SELECT inner_expr ...) < (SELECT MIN\(inner_expr) ...\)   > ALL (SELECT inner_expr ...) > (SELECT MAX\(inner_expr) ...\)    
-## [NOT] EXISTS子查询的执行
+### [NOT] EXISTS子查询的执行
 
 如果`[NOT] EXISTS`子查询是不相关子查询，可以先执行子查询，得出该`[NOT] EXISTS`子查询的结果是`TRUE`还是`FALSE`，并重写原先的查询语句，比如对这个查询来说： `SELECT * FROM s1 WHERE EXISTS (SELECT 1 FROM s2 WHERE key1 = 'a') OR key2 > 100;` 因为这个语句里的子查询是不相关子查询，所以优化器会首先执行该子查询，假设该EXISTS子查询的结果为`TRUE`，那么接着优化器会重写查询为： `SELECT * FROM s1 WHERE TRUE OR key2 > 100;` 进一步简化后就变成了： `SELECT * FROM s1 WHERE TRUE;` 对于相关的`[NOT] EXISTS`子查询来说，比如这个查询： `SELECT * FROM s1 WHERE EXISTS (SELECT 1 FROM s2 WHERE s1.common_field = s2.common_field);` 很不幸，这个查询只能按照我们年少时的那种执行相关子查询的方式来执行。不过如果`[NOT] EXISTS`子查询中如果可以使用索引的话，那查询速度也会加快不少，比如： `SELECT * FROM s1 WHERE EXISTS (SELECT 1 FROM s2 WHERE s1.common_field = s2.key1);` 上面这个`EXISTS`子查询中可以使用`idx_key1`来加快查询速度。
 
-## 对于派生表的优化
+### 对于派生表的优化
 
 我们前面说过把子查询放在外层查询的`FROM`子句后，那么这个子查询的结果相当于一个`派生表`，比如下面这个查询：
 

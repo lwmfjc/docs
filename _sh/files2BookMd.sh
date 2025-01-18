@@ -39,7 +39,9 @@ tags:
   - MySQL
   - MySQL是怎样运行的
 cssAttach: 
-  - book
+  - book01
+cssclasses: 
+  - book01
 date: $time
 lastmod: $time
 ---

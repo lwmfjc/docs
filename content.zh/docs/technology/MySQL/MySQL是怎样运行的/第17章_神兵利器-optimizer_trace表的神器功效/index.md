@@ -3,18 +3,18 @@ title: 第17章_神兵利器-optimizer_trace表的神器功效
 description: 第17章_神兵利器-optimizer_trace表的神器功效
 categories:
   - 学习
-tags:
+tags: 
   - MySQL
   - MySQL是怎样运行的
-cssAttach:
-  - book
-cssclasses:
-  - book
-date: 2025-01-11T16:40:13+08:00
-lastmod: 2025-01-11T16:40:13+08:00
+cssAttach: 
+  - book01
+cssclasses: 
+  - book01
+date: 2025-01-18T22:30:00+08:00
+lastmod: 2025-01-18T22:30:00+08:00
 ---
 
-# 第17章 神兵利器-optimizer trace表的神器功效
+ 第17章 神兵利器-optimizer trace表的神器功效
 
 对于`MySQL 5.6`以及之前的版本来说，查询优化器就像是一个黑盒子一样，你只能通过`EXPLAIN`语句查看到最后优化器决定使用的执行计划，却无法知道它为什么做这个决策。这对于一部分喜欢刨根问底的小伙伴来说简直是灾难：“我就觉得使用其他的执行方案比`EXPLAIN`输出的这种方案强，凭什么优化器做的决定和我想的不一样呢？”
 
@@ -22,23 +22,23 @@ lastmod: 2025-01-11T16:40:13+08:00
 
 完整的使用`optimizer trace`功能的步骤总结如下： ```
 
-# 1. 打开optimizer trace功能 (默认情况下它是关闭的):
+ 1. 打开optimizer trace功能 (默认情况下它是关闭的):
 
 SET optimizer_trace="enabled=on";
 
-# 2. 这里输入你自己的查询语句
+ 2. 这里输入你自己的查询语句
 
 SELECT ...; 
 
-# 3. 从OPTIMIZER_TRACE表中查看上一个查询的优化过程
+ 3. 从OPTIMIZER_TRACE表中查看上一个查询的优化过程
 
 SELECT * FROM information_schema.OPTIMIZER_TRACE;
 
-# 4. 可能你还要观察其他语句执行的优化过程，重复上面的第2、3步
+ 4. 可能你还要观察其他语句执行的优化过程，重复上面的第2、3步
 
 ...
 
-# 5. 当你停止查看语句的优化过程时，把optimizer trace功能关闭
+ 5. 当你停止查看语句的优化过程时，把optimizer trace功能关闭
 
 SET optimizer_trace="enabled=off"; `现在我们有一个搜索条件比较多的查询语句，它的执行计划如下：` mysql> EXPLAIN SELECT * FROM s1 WHERE -> key1 > 'z' AND -> key2 < 1000000 AND -> key3 IN ('a', 'b', 'c') AND -> common_field = 'abc'; \+----\+-------------\+-------\+------------\+-------\+----------------------------\+----------\+---------\+------\+------\+----------\+------------------------------------\+ | id | select_type | table | partitions | type | possible_keys | key | key_len | ref | rows | filtered | Extra | \+----\+-------------\+-------\+------------\+-------\+----------------------------\+----------\+---------\+------\+------\+----------\+------------------------------------\+ | 1 | SIMPLE | s1 | NULL | range | idx_key2,idx_key1,idx_key3 | idx_key2 | 5 | NULL | 12 | 0.42 | Using index condition; Using where | \+----\+-------------\+-------\+------------\+-------\+----------------------------\+----------\+---------\+------\+------\+----------\+------------------------------------\+ 1 row in set, 1 warning (0.00 sec) `可以看到该查询可能使用到的索引有3个，那么为什么优化器最终选择了`idx_key2`而不选择其他的索引或者直接全表扫描呢？这时候就可以通过`otpimzer trace`功能来查看优化器的具体工作过程：` SET optimizer_trace="enabled=on";
 
@@ -49,11 +49,11 @@ SELECT * FROM information_schema.OPTIMIZER_TRACE\\G
 
 ``` *************************** 1. row ***************************
 
-# 分析的查询语句是什么
+ 分析的查询语句是什么
 
 QUERY: SELECT * FROM s1 WHERE key1 > 'z' AND key2 < 1000000 AND key3 IN ('a', 'b', 'c') AND common_field = 'abc'
 
-# 优化的具体过程
+ 优化的具体过程
 
 TRACE: \{ "steps": [ \{ "join_preparation": \{ \# prepare阶段 "select\#": 1, "steps": \[ \{ "IN_uses_bisection": true \}, \{ "expanded_query": "/* select\#1 */ select `s1`.`id` AS `id`,`s1`.`key1` AS `key1`,`s1`.`key2` AS `key2`,`s1`.`key3` AS `key3`,`s1`.`key_part1` AS `key_part1`,`s1`.`key_part2` AS `key_part2`,`s1`.`key_part3` AS `key_part3`,`s1`.`common_field` AS `common_field` from `s1` where (\(`s1`.`key1` > 'z') and (`s1`.`key2` < 1000000) and (`s1`.`key3` in \('a','b','c')\) and (`s1`.`common_field` = 'abc')\)" \} ] /* steps */ \} /* join_preparation */ \}, \{ "join_optimization": \{ \# optimize阶段 "select\#": 1, "steps": \[ \{ "condition_processing": \{ \# 处理搜索条件 "condition": "WHERE", \# 原始搜索条件 "original_condition": "(\(`s1`.`key1` > 'z') and (`s1`.`key2` < 1000000) and (`s1`.`key3` in \('a','b','c')\) and (`s1`.`common_field` = 'abc')\)", "steps": \[ \{ \# 等值传递转换 "transformation": "equality_propagation", "resulting_condition": "(\(`s1`.`key1` > 'z') and (`s1`.`key2` < 1000000) and (`s1`.`key3` in \('a','b','c')\) and (`s1`.`common_field` = 'abc')\)" \}, \{ \# 常量传递转换   
 "transformation": "constant_propagation", "resulting_condition": "(\(`s1`.`key1` > 'z') and (`s1`.`key2` < 1000000) and (`s1`.`key3` in \('a','b','c')\) and (`s1`.`common_field` = 'abc')\)" \}, \{ \# 去除没用的条件 "transformation": "trivial_condition_removal", "resulting_condition": "(\(`s1`.`key1` > 'z') and (`s1`.`key2` < 1000000) and (`s1`.`key3` in \('a','b','c')\) and (`s1`.`common_field` = 'abc')\)" \} \] /* steps */ \} /* condition_processing */ \}, \{ \# 替换虚拟生成列 "substitute_generated_columns": \{ \} /* substitute_generated_columns */ \}, \{ \# 表的依赖信息 "table_dependencies": [ \{ "table": "`s1`", "row_may_be_null": false, "map_bit": 0, "depends_on_map_bits": \[ ] /* depends_on_map_bits */ \} \] /* table_dependencies */ \}, \{ "ref_optimizer_key_uses": [ ] /* ref_optimizer_key_uses */ \}, \{
@@ -257,11 +257,11 @@ TRACE: \{ "steps": [ \{ "join_preparation": \{ \# prepare阶段 "select\#": 1, "
 
 \] /* steps */ \}
 
-# 因优化过程文本太多而丢弃的文本字节大小，值为0时表示并没有丢弃
+ 因优化过程文本太多而丢弃的文本字节大小，值为0时表示并没有丢弃
 
 MISSING_BYTES_BEYOND_MAX_MEM_SIZE: 0
 
-# 权限字段
+ 权限字段
 
 INSUFFICIENT_PRIVILEGES: 0
 
