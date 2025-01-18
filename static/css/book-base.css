@@ -1,7 +1,7 @@
 /*.book01,.book02{cssstart*/
 
 /*字体统一放大到1.4em*/
-article ,div.cm-line, div.el-p{
+article ,div.cm-line:not(.HyperMD-codeblock), div.el-p{
     font-size: 1.4em ;
 }
 
@@ -67,7 +67,7 @@ strong, .cm-strong , .markdown strong,
 .cm-inline-code:not(.cm-formatting),:not(pre)>code{
     text-decoration: underline wavy;
     text-underline-offset: 0.2em;
-    text-decoration-thickness: 0.07em;
+    text-decoration-thickness: 0.05em;
 }
 
 /*去除code默认样式(obsidian)*/

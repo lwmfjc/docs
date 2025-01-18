@@ -51,29 +51,24 @@ lastmod: 2025-01-11T16:39:57+08:00
 # bin目录下的可执行文件
 
 在`MySQL`的安装目录下有一个特别特别重要的`bin`目录，这个目录下存放着许多可执行文件，以`macOS`系统为例，这个`bin`目录的绝对路径就是（在我的机器上）： `/usr/local/mysql/bin` 我们列出一些在`macOS`中这个`bin`目录下的一部分可执行文件来看一下（文件太多，全列出来会刷屏的）： 
+
 ``` shell
-╭─ ~                         ly@vmmin 18:47:55
-╰─❯ ls /usr/local/mysql/bin
-innochecksum                mysqldumpslow
-lz4_decompress              mysql_embedded
-myisamchk                   mysqlimport
-myisam_ftdump               mysql_install_db
-myisamlog                   mysql_plugin
-myisampack                  mysqlpump
-my_print_defaults           mysql_secure_installation
-mysql                       mysqlshow
-mysqladmin                  mysqlslap
-mysqlbinlog                 mysql_ssl_rsa_setup
-mysqlcheck                  mysqltest_embedded
-mysql_client_test_embedded  mysql_tzinfo_to_sql
-mysql_config                mysql_upgrade
-mysql_config_editor         mysqlxtest
-mysqld                      perror
-mysqld-debug                replace
-mysqld_multi                resolveip
-mysqld_safe                 resolve_stack_dump
-mysqldump                   zlib_decompress
+. 
+├── mysql 
+├── mysql.server -> ../support-files/mysql.server 
+├── mysqladmin 
+├── mysqlbinlog 
+├── mysqlcheck 
+├── mysqld 
+├── mysqld_multi 
+├── mysqld_safe 
+├── mysqldump 
+├── mysqlimport 
+├── mysqlpump 
+ ... (省略其他文件)
+ 0 directories, 40 files
 ```
+
 `Windows`中的可执行文件与`macOS`中的类似，不过都是以`.exe`为扩展名的。这些可执行文件都是与服务器程序和客户端程序相关的，后边我们会详细介绍一些比较重要的可执行文件，现在先看看执行这些文件的方式。
 
 对于有可视化界面的操作系统来说，我们拿着鼠标点点点就可以执行某个可执行文件，不过现在我们更关注在命令行环境下如何执行这些可执行文件，命令行通俗的说就是那些黑框框，这里的指的是类`UNIX`系统中的`Shell`或者`Windows`系统中的`cmd.exe`，如果你现在还不知道怎么启动这些命令行工具，网上搜搜吧～ 下面我们以`macOS`系统为例来看看如何启动这些可执行文件（`Windows`中的操作是类似的，依葫芦画瓢就好了）
