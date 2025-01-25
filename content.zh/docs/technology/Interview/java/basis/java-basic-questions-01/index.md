@@ -10,10 +10,9 @@ head:
   - - meta
     - name: description
       content: 全网质量最高的Java基础常见知识点和面试题总结，希望对你有帮助！
-cssclasses: []
+cssclasses:
+  - book01
 ---
-[]()
-
 
 ## 基础概念与常识
 
