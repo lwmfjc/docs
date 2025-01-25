@@ -57,7 +57,7 @@ tag:
 - 工号是单独的 300 号段，其他供应商员工的工号是 8 开头，或着 WX 开头；
 - 工卡带是红色的，和自有员工一样，但是工卡内容不同，OD 的明确标注：办公区通行证，并有德科公司的备注：
 
-![](https://oss.javaguide.cn/github/javaguide/high-quality-technical-articles/personal-experience/1438655-20210124231550508-1315720640.jpg)
+![](img/29365b19c0a460bf283ae75f96e3ac8d_MD5.jpg)
 
 还听到一些内部的说法：
 
@@ -78,7 +78,7 @@ tag:
 
 a) 内部发文啥的，还有心声平台的大部分内容，都是无权限看的：
 
-![](https://oss.javaguide.cn/github/javaguide/high-quality-technical-articles/personal-experience/1438655-20210124225007848-1701355006.png)
+![](img/0ff52e9222ee69fff48a917dc0af4233_MD5.jpg)
 
 b) 你的考勤是在租赁人员管理系统里考核，绩效管理也是；
 
@@ -133,7 +133,7 @@ OD 同学能拿到 A 吗？不知道，我入职晚，都没有经历一个完�
 
 这个听起来都感觉很玄学。还是那句话，实力和运气到了，应该可以的！成功转正员工图镇楼：
 
-![](https://oss.javaguide.cn/github/javaguide/high-quality-technical-articles/personal-experience/1438655-20210124231943817-1976130336.jpg)
+![](img/533a504989f3621cbaf86f9ed4ca7a49_MD5.jpg)
 
 ### 真的感谢 OD，也感谢华为
 

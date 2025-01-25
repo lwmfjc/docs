@@ -21,7 +21,7 @@ tag:
 
 ==CAP== 也就是 ==Consistency（一致性）==、==Availability（可用性）==、==Partition Tolerance（分区容错性）== 这三个单词首字母组合。
 
-![](https://oss.javaguide.cn/2020-11/cap.png)
+![](img/f051d08591c181c1a0908e705777ebf5_MD5.jpg)
 
 CAP 理论的提出者布鲁尔在提出 CAP 猜想的时候，并没有详细定义 ==Consistency==、==Availability==、==Partition Tolerance== 三个单词的明确定义。
 
@@ -37,7 +37,7 @@ CAP 理论的提出者布鲁尔在提出 CAP 猜想的时候，并没有详细�
 
 分布式系统中，多个节点之间的网络本来是连通的，但是因为某些故障（比如部分节点网络出了问题）某些节点之间不连通了，整个网络就分成了几块区域，这就叫 ==网络分区==。
 
-![partition-tolerance](https://oss.javaguide.cn/2020-11/partition-tolerance.png)
+![partition-tolerance](img/09697793be408e1fcaf6ddf700fe3a19_MD5.jpg)
 
 ### 不是所谓的“3 选 2”
 
@@ -63,7 +63,7 @@ CAP 理论的提出者布鲁尔在提出 CAP 猜想的时候，并没有详细�
 
 注册中心负责服务地址的注册与查找，相当于目录服务，服务提供者和消费者只在启动时与注册中心交互，注册中心不转发请求，压力较小。
 
-![](https://oss.javaguide.cn/2020-11/dubbo-architecture.png)
+![](img/7be085c2c315ead5483981f4a04f7a23_MD5.jpg)
 
 常见的可以作为注册中心的组件有：ZooKeeper、Eureka、Nacos...。
 
@@ -119,7 +119,7 @@ CAP 理论这节我们也说过了：
 
 ### BASE 理论三要素
 
-![BASE理论三要素](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91c2VyLWdvbGQtY2RuLnhpdHUuaW8vMjAxOC81LzI0LzE2MzkxNDgwNmQ5ZTE1YzY?x-oss-process=image/format,png)
+![BASE理论三要素](img/af46f4969f584aa792a38fab989e050c_MD5.jpg)
 
 #### 基本可用
 

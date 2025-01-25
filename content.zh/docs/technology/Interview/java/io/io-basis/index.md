@@ -64,7 +64,7 @@ try (InputStream fis = new FileInputStream("input.txt")) {
 
 `input.txt` 文件内容：
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220419155214614.png)
+![](img/ad280752520f2b3ce1cf7fc7d76c7ed5_MD5.jpg)
 
 输出：
 
@@ -135,7 +135,7 @@ try (FileOutputStream output = new FileOutputStream("output.txt")) {
 
 运行结果：
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220419155514392.png)
+![](img/1da161bd7daaab79d75771638b2a862d_MD5.jpg)
 
 类似于 `FileInputStream`，`FileOutputStream` 通常也会配合 `BufferedOutputStream`（字节缓冲输出流，后文会讲到）来使用。
 
@@ -174,7 +174,7 @@ output.writeObject(person);
 
 乱码问题这个很容易就可以复现，我们只需要将上面提到的 `FileInputStream` 代码示例中的 `input.txt` 文件内容改为中文即可，原代码不需要改动。
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220419154632551.png)
+![](img/bfb3155c27811740a3a152fb10441fd8_MD5.jpg)
 
 输出：
 
@@ -235,7 +235,7 @@ try (FileReader fileReader = new FileReader("input.txt");) {
 
 `input.txt` 文件内容：
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220419154632551.png)
+![](img/bfb3155c27811740a3a152fb10441fd8_MD5.jpg)
 
 输出：
 
@@ -283,7 +283,7 @@ try (Writer output = new FileWriter("output.txt")) {
 
 输出结果：
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220419155802288.png)
+![](img/eded79a5ada523eb210b25b2d42f4fd6_MD5.jpg)
 
 ## 字节缓冲流
 
@@ -518,7 +518,7 @@ System.out.println("读取之前的偏移量：" + randomAccessFile.getFilePoint
 
 `input.txt` 文件内容：
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220421162050158.png)
+![](img/6734076fc8012526c751853fbcfc7fda_MD5.jpg)
 
 输出：
 
@@ -543,11 +543,11 @@ randomAccessFile.write(new byte[]{'H', 'I', 'J', 'K'});
 
 `RandomAccessFile` 可以帮助我们合并文件分片，示例代码如下：
 
-![](https://oss.javaguide.cn/github/javaguide/java/io/20210609164749122.png)
+![](img/eca6ba264f9e937dfe96e4d13817c04f_MD5.jpg)
 
 我在[《Java 面试指北》](https://javaguide.cn/zhuanlan/java-mian-shi-zhi-bei.html)中详细介绍了大文件的上传问题。
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220428104115362.png)
+![](img/4081db4a223eee762f27b7cc408fd930_MD5.jpg)
 
 `RandomAccessFile` 的实现依赖于 `FileDescriptor` (文件描述符) 和 `FileChannel` （内存映射文件）。
 

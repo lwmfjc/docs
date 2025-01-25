@@ -16,7 +16,7 @@ tag:
 
 AQS 的全称为 `AbstractQueuedSynchronizer` ，翻译过来的意思就是抽象队列同步器。这个类在 `java.util.concurrent.locks` 包下面。
 
-![](https://oss.javaguide.cn/github/javaguide/AQS.png)
+![](img/1de28206f29fa6f492f8610260d510e0_MD5.jpg)
 
 AQS 就是一个抽象类，主要用来构建锁和同步器。
 
@@ -83,7 +83,7 @@ AQS 核心思想是，如果被请求的共享资源空闲，则将当前请求�
 
 ==CLH 锁== 对自旋锁进行了改进，是基于单链表的自旋锁。在多线程场景下，会将请求获取锁的线程组织成一个单向队列，每个等待的线程会通过自旋访问前一个线程节点的状态，前一个节点释放锁之后，当前节点才可以获取锁。==CLH 锁== 的队列结构如下图所示。
 
-![CLH 锁的队列结构](https://oss.javaguide.cn/github/javaguide/open-source-project/clh-lock-queue-structure.png)
+![CLH 锁的队列结构](img/0e45a32f94bab994d1de6a1a6f74efcc_MD5.jpg)
 
 AQS 中使用的 ==等待队列== 是 CLH 锁队列的变体（接下来简称为 CLH 变体队列）。
 
@@ -96,13 +96,13 @@ AQS 将每条请求共享资源的线程封装成一个 CLH 变体队列的一�
 
 AQS 中的 CLH 变体队列结构如下图所示：
 
-![CLH 变体队列结构](https://oss.javaguide.cn/github/javaguide/java/concurrent/clh-queue-structure-bianti.png)
+![CLH 变体队列结构](img/b10f775eebc01cc5fec54ffd0e5825ae_MD5.jpg)
 
 关于 AQS 核心数据结构-CLH 锁的详细解读，强烈推荐阅读 [Java AQS 核心数据结构-CLH 锁 - Qunar 技术沙龙](https://mp.weixin.qq.com/s/jEx-4XhNGOFdCo4Nou5tqg) 这篇文章。
 
 AQS(`AbstractQueuedSynchronizer`)的核心原理图：
 
-![CLH 变体队列](https://oss.javaguide.cn/github/javaguide/java/concurrent/clh-queue-state.png)
+![CLH 变体队列](img/71539dd78a9673d5c67e53c00efaee04_MD5.jpg)
 
 AQS 使用 ==int 成员变量 `state` 表示同步状态==，通过内置的 ==FIFO 线程等待/等待队列== 来完成获取资源线程的排队工作。
 
@@ -134,7 +134,7 @@ protected final boolean compareAndSetState(int expect, int update) {
 
 线程 A 尝试获取锁的过程如下图所示（图源[从 ReentrantLock 的实现看 AQS 的原理及应用 - 美团技术团队](./reentrantlock.md)）：
 
-![AQS 独占模式获取锁](https://oss.javaguide.cn/github/javaguide/java/concurrent/aqs-exclusive-mode-acquire-lock.png)
+![AQS 独占模式获取锁](img/f695f1394084ffdd845d06bd44eda713_MD5.jpg)
 
 再以倒计时器 `CountDownLatch` 以例，任务分为 N 个子线程去执行，`state` 也初始化为 N（注意 N 要与线程个数一致）。这 N 个子线程开始执行任务，每执行完一个子线程，就调用一次 `countDown()` 方法。该方法会尝试使用 CAS(Compare and Swap) 操作，让 `state` 的值减少 1。当所有的子线程都执行完毕后（即 `state` 的值变为 0），`CountDownLatch` 会调用 `unpark()` 方法，唤醒主线程。这时，主线程就可以从 `await()` 方法（`CountDownLatch` 中的`await()` 方法而非 AQS 中的）返回，继续执行后续的操作。
 
@@ -331,7 +331,7 @@ private Node enq(final Node node) {
 
 ==初始化后的队列如下图所示：==
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/clh-queue-structure-init.png)
+![](img/4657f0829740917696c0a606ba719ab2_MD5.jpg)
 
 #### `acquireQueued()` 分析
 
@@ -595,7 +595,7 @@ private Node addWaiter(Node mode) {
 
 在极端情况下，可能会出现 `head` 节点的下一个节点状态为 `CANCELLED` ，此时新入队的节点仅更新了 `node.prev` 指针，还未更新 `pred.next` 指针，如下图：
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/aqs-addWaiter.png)
+![](img/4192863b079031da91b242e0e8339449_MD5.jpg)
 
 这样如果从 `head` 指针向后遍历，无法找到新入队的节点，因此需要从 `tail` 指针向前遍历找到新入队的节点。
 
@@ -609,25 +609,25 @@ private Node addWaiter(Node mode) {
 
 此时，假设线程 `T1` 先获取到锁，线程 `T2` 排队等待获取锁。在线程 `T2` 进入队列之前，需要对 AQS 内部队列进行初始化。`head` 节点在初始化后状态为 `0` 。AQS 内部初始化后的队列如下图：
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/aqs-acquire-and-release-process.png)
+![](img/d1cdb490016a2df8a947a749b54ada04_MD5.jpg)
 
 此时，线程 `T2` 尝试获取锁。由于线程 `T1` 持有锁，因此线程 `T2` 会进入队列中等待获取锁。同时会将前继节点（ `head` 节点）的状态由 `0` 更新为 `SIGNAL` ，表示需要对 `head` 节点的后继节点进行唤醒。此时，AQS 内部队列如下图所示：
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/aqs-acquire-and-release-process-2.png)
+![](img/08bbe324080f5b597d3e0612d85b8288_MD5.jpg)
 
 此时，线程 `T3` 尝试获取锁。由于线程 `T1` 持有锁，因此线程 `T3` 会进入队列中等待获取锁。同时会将前继节点（线程 `T2` 节点）的状态由 `0` 更新为 `SIGNAL` ，表示线程 `T2` 节点需要对后继节点进行唤醒。此时，AQS 内部队列如下图所示：
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/aqs-acquire-and-release-process-3.png)
+![](img/f4a796c7acf29aca24b7d7216deac1b2_MD5.jpg)
 
 此时，假设线程 `T1` 释放锁，会唤醒后继节点 `T2` 。线程 `T2` 被唤醒后获取到锁，并且会从等待队列中退出。
 
 这里线程 `T2` 节点退出等待队列并不是直接从队列移除，而是令线程 `T2` 节点成为新的 `head` 节点，以此来退出资源获取的等待。此时 AQS 内部队列如下所示：
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/aqs-acquire-and-release-process-4.png)
+![](img/6126e367bdc2beb278930af1956d9678_MD5.jpg)
 
 此时，假设线程 `T2` 释放锁，会唤醒后继节点 `T3` 。线程 `T3` 获取到锁之后，同样也退出等待队列，即将线程 `T3` 节点变为 `head` 节点来退出资源获取的等待。此时 AQS 内部队列如下所示：
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/aqs-acquire-and-release-process-5.png)
+![](img/2ad5eed495c9f08a4a9fe6a95761b6d2_MD5.jpg)
 
 ### AQS 资源获取源码分析（共享模式）
 

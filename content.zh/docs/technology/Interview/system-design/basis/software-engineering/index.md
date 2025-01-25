@@ -48,7 +48,7 @@ Dijkstra（Dijkstra 算法的作者） 在 1972 年图灵奖获奖感言中也�
 
 ==瀑布模型== 定义了一套完成的软件开发周期，完整地展示了一个软件的的生命周期。
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/schedule-task/up-264f2750a3d30366e36c375ec3a30ec2775.png)
+![](img/3bb121adec011b17af3b86beb49e8d12_MD5.jpg)
 
 ==敏捷开发模型== 是目前使用的最多的一种软件开发模型。[MBA 智库百科对敏捷开发的描述](https://wiki.mbalib.com/wiki/%E6%95%8F%E6%8D%B7%E5%BC%80%E5%8F%91)是这样的:
 
@@ -82,7 +82,7 @@ Dijkstra（Dijkstra 算法的作者） 在 1972 年图灵奖获奖感言中也�
 
 这个最小可行产品，可以理解为刚好能够满足客户需求的产品。下面这张图片把这个思想展示的非常精髓。
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/schedule-task/up-a99961ff7725106c0592abca845d555568a.png)
+![](img/77ebe8ce42707ceceb80c95a2b91cb2c_MD5.jpg)
 
 利用最小可行产品，我们可以也可以提早进行市场分析，这对于我们在探索产品不确定性的道路上非常有帮助。可以非常有效地指导我们下一步该往哪里走。
 

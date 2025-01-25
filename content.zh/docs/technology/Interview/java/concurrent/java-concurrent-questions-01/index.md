@@ -30,7 +30,7 @@ head:
 
 如下图所示，在 Windows 中通过查看任务管理器的方式，我们就可以清楚看到 Windows 当前运行的进程（`.exe` 文件的运行）。
 
-![进程示例图片-Windows](https://oss.javaguide.cn/github/javaguide/java/%E8%BF%9B%E7%A8%8B%E7%A4%BA%E4%BE%8B%E5%9B%BE%E7%89%87-Windows.png)
+![进程示例图片-Windows](img/46845554e7b944990299924ba33b5178_MD5.jpg)
 
 #### 何为线程?
 
@@ -84,7 +84,7 @@ JDK 1.2 之前，Java 线程是基于绿色线程（Green Threads）实现的，
 2. 多对一（多个用户线程映射到一个内核线程）
 3. 多对多（多个用户线程映射到多个内核线程）
 
-![常见的三种线程模型](https://oss.javaguide.cn/github/javaguide/java/concurrent/three-types-of-thread-models.png)
+![常见的三种线程模型](img/32d031b9444699f50bd390442003748a_MD5.jpg)
 
 在 Windows 和 Linux 等主流操作系统中，Java 线程采用的是一对一的线程模型，也就是一个 Java 线程对应一个系统内核线程。Solaris 系统是一个特例（Solaris 系统本身就支持多对多的线程模型），HotSpot VM 在 Solaris 上支持多对多和一对一。具体可以参考 R 大的回答: [JVM 中的线程模型是用户级的么？](https://www.zhihu.com/question/23096638/answer/29617153)。
 
@@ -92,7 +92,7 @@ JDK 1.2 之前，Java 线程是基于绿色线程（Green Threads）实现的，
 
 下图是 Java 内存区域，通过下图我们从 JVM 的角度来说一下线程和进程之间的关系。
 
-![Java 运行时数据区域（JDK1.8 之后）](https://oss.javaguide.cn/github/javaguide/java/jvm/java-runtime-data-areas-jdk1.8.png)
+![Java 运行时数据区域（JDK1.8 之后）](img/d698ff2bf073633d56874a0a638b1046_MD5.jpg)
 
 从上图可以看出：一个进程中可以有多个线程，多个线程共享进程的==堆==和==方法区 (JDK1.8 之后的元空间)==资源，但是每个线程有自己的==程序计数器==、==虚拟机栈== 和 ==本地方法栈==。
 
@@ -149,7 +149,7 @@ Java 线程在运行的生命周期中的指定时刻只可能处于下面 6 种
 
 Java 线程状态变迁图(图源：[挑错 |《Java 并发编程的艺术》中关于线程状态的三处错误](https://mp.weixin.qq.com/s/UOrXql_LhOD8dhTq_EPI0w))：
 
-![Java 线程状态变迁图](https://oss.javaguide.cn/github/javaguide/java/concurrent/640.png)
+![Java 线程状态变迁图](img/52afb82f0ac369ec7193f9e6c8403e0c_MD5.jpg)
 
 由上图可以看出：线程创建之后它将处于 ==NEW（新建）== 状态，调用 `start()` 方法后开始运行，线程这时候处于 ==READY（可运行）== 状态。可运行状态的线程获得了 CPU 时间片（timeslice）后就处于 ==RUNNING（运行）== 状态。
 
@@ -157,7 +157,7 @@ Java 线程状态变迁图(图源：[挑错 |《Java 并发编程的艺术》中
 >
 > ==为什么 JVM 没有区分这两种状态呢？== （摘自：[Java 线程运行怎么有第六种状态？ - Dawell 的回答](https://www.zhihu.com/question/56494969/answer/154053599) ） 现在的时分（time-sharing）多任务（multi-task）操作系统架构通常都是用所谓的“时间分片（time quantum or time slice）”方式进行抢占式（preemptive）轮转调度（round-robin 式）。这个时间分片通常是很小的，一个线程一次最多只能在 CPU 上运行比如 10-20ms 的时间（此时处于 running 状态），也即大概只有 0.01 秒这一量级，时间片用后就要被切换下来放入调度队列的末尾等待再次调度。（也即回到 ready 状态）。线程切换的如此之快，区分这两种状态就没什么意义了。
 
-![RUNNABLE-VS-RUNNING](https://oss.javaguide.cn/github/javaguide/java/RUNNABLE-VS-RUNNING.png)
+![RUNNABLE-VS-RUNNING](img/e88ff3e5e84354d27511c6f8eb5e4930_MD5.jpg)
 
 - 当线程执行 `wait()`方法之后，线程进入 ==WAITING（等待）== 状态。进入等待状态的线程需要依靠其他线程的通知才能够返回到运行状态。
 - ==TIMED_WAITING(超时等待)== 状态相当于在等待状态的基础上增加了超时限制，比如通过 `sleep（long millis）`方法或 `wait（long millis）`方法可以将线程置于 TIMED_WAITING 状态。当超时时间结束后，线程将会返回到 RUNNABLE 状态。
@@ -275,7 +275,7 @@ Java 使用的线程调度是抢占式的。也就是说，JVM 本身不负责�
 
 如下图所示，线程 A 持有资源 2，线程 B 持有资源 1，他们同时都想申请对方的资源，所以这两个线程就会互相等待而进入死锁状态。
 
-![线程死锁示意图 ](https://oss.javaguide.cn/github/javaguide/java/2019-4%E6%AD%BB%E9%94%811.png)
+![线程死锁示意图](img/c1e190c7fbbd9c43a2b006cedc18f1ad_MD5.jpg)
 
 下面通过一个例子来说明线程死锁,代码模拟了上图的死锁的情况 (代码来源于《并发编程之美》)：
 
@@ -345,7 +345,7 @@ Thread[线程 2,5,main]waiting get resource1
 
 首先，我们要找到 JDK 的 bin 目录，找到 jconsole 并双击打开。
 
-![jconsole](https://oss.javaguide.cn/github/javaguide/java/concurrent/jdk-home-bin-jconsole.png)
+![jconsole](img/88f0a76e7ae9f0fbf77b3b85b68126e4_MD5.jpg)
 
 对于 MAC 用户来说，可以通过 `/usr/libexec/java_home -V`查看 JDK 安装目录，找到后通过 `open . + 文件夹地址`打开即可。例如，我本地的某个 JDK 的路径是：
 
@@ -355,9 +355,9 @@ Thread[线程 2,5,main]waiting get resource1
 
 打开 jconsole 后，连接对应的程序，然后进入线程界面选择检测死锁即可！
 
-![jconsole 检测死锁](https://oss.javaguide.cn/github/javaguide/java/concurrent/jconsole-check-deadlock.png)
+![jconsole 检测死锁](img/fb81c86da0a4184f5c0c886caa9cdbab_MD5.jpg)
 
-![jconsole 检测到死锁](https://oss.javaguide.cn/github/javaguide/java/concurrent/jconsole-check-deadlock-done.png)
+![jconsole 检测到死锁](img/88ae8abc15d28bf10cc4edb7f6d8e42b_MD5.jpg)
 
 ### 如何预防和避免线程死锁?
 

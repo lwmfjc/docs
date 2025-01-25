@@ -7,7 +7,7 @@ tag:
 
 HTTP 状态码用于描述 HTTP 请求的结果，比如 2xx 就代表请求被成功处理。
 
-![常见 HTTP 状态码](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http-status-code.png)
+![常见 HTTP 状态码](img/4378448f26ba098a5b77de81a4852363_MD5.jpg)
 
 ### 1xx Informational（信息性状态码）
 
@@ -22,7 +22,7 @@ HTTP 状态码用于描述 HTTP 请求的结果，比如 2xx 就代表请求被�
 
 🐛 修正（参见：[issue#2458](https://github.com/Snailclimb/JavaGuide/issues/2458)）：201 Created 状态码更准确点来说是创建一个或多个新的资源，可以参考：<https://httpwg.org/specs/rfc9110.html#status.201>。
 
-![](https://oss.javaguide.cn/github/javaguide/cs-basics/network/rfc9110-201-created.png)
+![](img/543f36341f94027dc7965dfaa461cfc7_MD5.jpg)
 
 这里格外提一下 204 状态码，平时学习/工作中见到的次数并不多。
 

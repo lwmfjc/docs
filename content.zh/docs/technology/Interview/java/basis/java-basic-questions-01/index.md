@@ -56,13 +56,13 @@ Java 虚拟机（Java Virtual Machine, JVM）是运行 Java 字节码的虚拟�
 
 如下图所示，不同编程语言（Java、Groovy、Kotlin、JRuby、Clojure ...）通过各自的编译器编译成 `.class` 文件，并最终通过 JVM 在不同平台（Windows、Mac、Linux）上运行。
 
-![运行在 Java 虚拟机之上的编程语言](https://oss.javaguide.cn/github/javaguide/java/basis/java-virtual-machine-program-language-os.png)
+![运行在 Java 虚拟机之上的编程语言](img/d45be6b872c0b3079d81b4e1bbdfc823_MD5.jpg)
 
 ==JVM 并不是只有一种！只要满足 JVM 规范，每个公司、组织或者个人都可以开发自己的专属 JVM。== 也就是说我们平时接触到的 HotSpot VM 仅仅是是 JVM 规范的一种实现而已。
 
 除了我们平时最常用的 HotSpot VM 外，还有 J9 VM、Zing VM、JRockit VM 等 JVM 。维基百科上就有常见 JVM 的对比：[Comparison of Java virtual machines](https://en.wikipedia.org/wiki/Comparison_of_Java_virtual_machines) ，感兴趣的可以去看看。并且，你可以在 [Java SE Specifications](https://docs.oracle.com/javase/specs/index.html) 上找到各个版本的 JDK 对应的 JVM 规范。
 
-![](https://oss.javaguide.cn/github/javaguide/java/basis/JavaSeSpecifications.jpg)
+![](img/fee35d0118a72440dfcfe6f82229fd76_MD5.jpg)
 
 #### JDK 和 JRE
 
@@ -79,7 +79,7 @@ JRE 是运行已编译 Java 程序所需的环境，主要包含以下两个部�
 
 下图清晰展示了 JDK、JRE 和 JVM 的关系。
 
-![jdk-include-jre](https://oss.javaguide.cn/github/javaguide/java/basis/jdk-include-jre.png)
+![jdk-include-jre](img/cb0f58712c94d1627711d262ec560567_MD5.jpg)
 
 不过，从 JDK 9 开始，就不需要区分 JDK 和 JRE 的关系了，取而代之的是模块系统（JDK 被重新组织成 94 个模块）+ [jlink](http://openjdk.java.net/jeps/282) 工具 (随 Java 9 一起发布的新命令行工具，用于生成自定义 Java 运行时映像，该映像仅包含给定应用程序所需的模块) 。并且，从 JDK 11 开始，Oracle 不再提供单独的 JRE 下载。
 
@@ -97,7 +97,7 @@ JRE 是运行已编译 Java 程序所需的环境，主要包含以下两个部�
 
 ==Java 程序从源代码到运行的过程如下图所示==：
 
-![Java程序转变为机器代码的过程](https://oss.javaguide.cn/github/javaguide/java/basis/java-code-to-machine-code.png)
+![Java程序转变为机器代码的过程](img/e902a75a7ea735c07e3e072bb202515f_MD5.jpg)
 
 我们需要格外注意的是 `.class->机器码` 这一步。在这一步 JVM 类加载器首先加载字节码文件，然后通过解释器逐行解释执行，这种方式的执行速度会相对比较慢。而且，有些方法和代码块是经常需要被调用的(也就是所谓的热点代码)，所以后面引进了 ==JIT（Just in Time Compilation）== 编译器，而 JIT 属于运行时编译。当 JIT 编译器完成第一次编译后，其会将字节码对应的机器码保存下来，下次可以直接使用。而我们知道，机器码的运行效率肯定是高于 Java 解释器的。这也解释了我们为什么经常会说 ==Java 是编译与解释共存的语言== 。
 
@@ -106,17 +106,17 @@ JRE 是运行已编译 Java 程序所需的环境，主要包含以下两个部�
 > - [基本功 | Java 即时编译器原理解析及实践 - 美团技术团队](https://tech.meituan.com/2020/10/22/java-jit-practice-in-meituan.html)
 > - [基于静态编译构建微服务应用 - 阿里巴巴中间件](https://mp.weixin.qq.com/s/4haTyXUmh8m-dBQaEzwDJw)
 
-![Java程序转变为机器代码的过程](https://oss.javaguide.cn/github/javaguide/java/basis/java-code-to-machine-code-with-jit.png)
+![Java程序转变为机器代码的过程](img/780d3114acf3af58cc46e1aa5dcb904a_MD5.jpg)
 
 > HotSpot 采用了惰性评估(Lazy Evaluation)的做法，根据二八定律，消耗大部分系统资源的只有那一小部分的代码（热点代码），而这也就是 JIT 所需要编译的部分。JVM 会根据代码每次被执行的情况收集信息并相应地做出一些优化，因此执行的次数越多，它的速度就越快。
 
 JDK、JRE、JVM、JIT 这四者的关系如下图所示。
 
-![JDK、JRE、JVM、JIT 这四者的关系](https://oss.javaguide.cn/github/javaguide/java/basis/jdk-jre-jvm-jit.png)
+![JDK、JRE、JVM、JIT 这四者的关系](img/84fa76a840de1e5acad737f8577bd8a1_MD5.jpg)
 
 下面这张图是 JVM 的大致结构模型。
 
-![JVM 的大致结构模型](https://oss.javaguide.cn/github/javaguide/java/basis/jvm-rough-structure-model.png)
+![JVM 的大致结构模型](img/11d5cc3a85e6029f9cca82ed83998a64_MD5.jpg)
 
 ### 为什么说 Java 语言“编译与解释并存”？
 
@@ -127,7 +127,7 @@ JDK、JRE、JVM、JIT 这四者的关系如下图所示。
 - ==编译型==：[编译型语言](https://zh.wikipedia.org/wiki/%E7%B7%A8%E8%AD%AF%E8%AA%9E%E8%A8%80) 会通过[编译器](https://zh.wikipedia.org/wiki/%E7%B7%A8%E8%AD%AF%E5%99%A8)将源代码一次性翻译成可被该平台执行的机器码。一般情况下，编译语言的执行速度比较快，开发效率比较低。常见的编译性语言有 C、C++、Go、Rust 等等。
 - ==解释型==：[解释型语言](https://zh.wikipedia.org/wiki/%E7%9B%B4%E8%AD%AF%E8%AA%9E%E8%A8%80)会通过[解释器](https://zh.wikipedia.org/wiki/直譯器)一句一句的将代码解释（interpret）为机器代码后再执行。解释型语言开发效率比较快，执行速度比较慢。常见的解释性语言有 Python、JavaScript、PHP 等等。
 
-![编译型语言和解释型语言](https://oss.javaguide.cn/github/javaguide/java/basis/compiled-and-interpreted-languages.png)
+![编译型语言和解释型语言](img/86e6d198413643511e547e2620f629b4_MD5.jpg)
 
 根据维基百科介绍：
 
@@ -145,7 +145,7 @@ JDK 9 引入了一种新的编译模式 ==AOT(Ahead of Time Compilation)== 。�
 
 ==JIT 与 AOT 两者的关键指标对比==:
 
-![](https://oss.javaguide.cn/github/javaguide/java/basis/jit-vs-aot.png)
+![](img/5f9faaf060b22d0f2e7bd69847796bef_MD5.jpg)
 
 可以看出，AOT 的主要优势在于启动时间、内存占用和打包体积。JIT 的主要优势在于具备更高的极限处理能力，可以降低请求的最大延迟。
 
@@ -190,7 +190,7 @@ JDK 9 引入了一种新的编译模式 ==AOT(Ahead of Time Compilation)== 。�
 >
 > 基于以上这些原因，OpenJDK 还是有存在的必要的！
 
-![oracle jdk release cadence](https://oss.javaguide.cn/github/javaguide/java/basis/oracle-jdk-release-cadence.jpg)
+![oracle jdk release cadence](img/98e94ec14cdd5a3e658f1a48d7416bdb_MD5.jpg)
 
 ==Oracle JDK 和 OpenJDK 如何选择？==
 
@@ -227,7 +227,7 @@ Java 中的注释有三种：
 
 用的比较多的还是单行注释和文档注释，多行注释在实际开发中使用的相对较少。
 
-![](https://oss.javaguide.cn/github/javaguide/java/basis/image-20220714112336911.png)
+![](img/d84d68196fe04cf99e9298c19ac0b37c_MD5.jpg)
 
 在我们编写代码的时候，如果代码量比较少，我们自己或者团队其他成员还可以很轻易地看懂代码，但是当项目结构一旦复杂起来，我们就需要用到注释了。注释并不会执行(编译器在编译代码之前会把代码中的所有注释抹掉,字节码中不保留注释)，是我们程序员写给自己看的，注释是你的代码说明书，能够帮助看代码的人快速地理清代码之间的逻辑关系。因此，在写程序的时候随手加上注释是一个非常好的习惯。
 
@@ -598,7 +598,7 @@ System.out.println(i1==i2);
 
 记住：==所有整型包装类对象之间值的比较，全部使用 equals 方法比较==。
 
-![](https://oss.javaguide.cn/github/javaguide/up-1ae0425ce8646adfb768b5374951eeb820d.png)
+![](img/b8aae0a2cf9c50b03c253268783e3e7c_MD5.jpg)
 
 ### 自动装箱与拆箱了解吗？原理是什么？
 

@@ -23,7 +23,7 @@ Java 中的大部分同步类（Semaphore、ReentrantLock 等）都是基于 Abs
 
 ReentrantLock 意思为可重入锁，指的是一个线程能够对一个临界资源重复加锁。为了帮助大家更好地理解 ReentrantLock 的特性，我们先将 ReentrantLock 跟常用的 Synchronized 进行比较，其特性如下（蓝色部分为本篇文章主要剖析的点）：
 
-![](https://p0.meituan.net/travelcube/412d294ff5535bbcddc0d979b2a339e6102264.png)
+![](img/5b1f54f985721d5a7fbff2f32bee7d53_MD5.jpg)
 
 下面通过伪代码，进行更加直观的比较：
 
@@ -122,7 +122,7 @@ static final class FairSync extends Sync {
 
 首先，我们通过下面的架构图来整体了解一下 AQS 框架：
 
-![](https://p1.meituan.net/travelcube/82077ccf14127a87b77cefd1ccf562d3253591.png)
+![](img/a58da77ece8806445d2c6754ba466c0b_MD5.jpg)
 
 - 上图中有颜色的为 Method，无颜色的为 Attribution。
 - 总的来说，AQS 框架共分为五层，自上而下由浅入深，从 AQS 对外暴露的 API 到底层基础数据。
@@ -130,7 +130,7 @@ static final class FairSync extends Sync {
 
 下面我们会从整体到细节，从流程到方法逐一剖析 AQS 框架，主要分析过程如下：
 
-![](https://p1.meituan.net/travelcube/d2f7f7fffdc30d85d17b44266c3ab05323338.png)
+![](img/7ea1044cfd6b66be5353f1efc4073bc5_MD5.jpg)
 
 ### 2.1 原理概览
 
@@ -140,7 +140,7 @@ CLH：Craig、Landin and Hagersten 队列，是单向链表，AQS 中的队列�
 
 主要原理图如下：
 
-![](https://p0.meituan.net/travelcube/7132e4cef44c26f62835b197b239147b18062.png)
+![](img/9d724d7126671c9536c854fc6de17b63_MD5.jpg)
 
 AQS 使用一个 Volatile 的 int 类型的成员变量来表示同步状态，通过内置的 FIFO 队列来完成资源获取的排队工作，通过 CAS 完成对 State 值的修改。
 
@@ -148,7 +148,7 @@ AQS 使用一个 Volatile 的 int 类型的成员变量来表示同步状态，�
 
 先来看下 AQS 中最基本的数据结构——Node，Node 即为上面 CLH 变体队列中的节点。
 
-![](https://p1.meituan.net/travelcube/960271cf2b5c8a185eed23e98b72c75538637.png)
+![](img/eb43ddf05341e1bdbb57de015076a978_MD5.jpg)
 
 解释一下几个方法和属性值的含义：
 
@@ -198,9 +198,9 @@ private volatile int state;
 
 这几个方法都是 Final 修饰的，说明子类中无法重写它们。我们可以通过修改 State 字段表示的同步状态来实现多线程的独占模式和共享模式（加锁过程）。
 
-![](https://p0.meituan.net/travelcube/27605d483e8935da683a93be015713f331378.png)
+![](img/a94948c07243369f2d4fc65b67d55869_MD5.jpg)
 
-![](https://p0.meituan.net/travelcube/3f1e1a44f5b7d77000ba4f9476189b2e32806.png)
+![](img/ce6b8ac0463f0f22dce4954e047aacc6_MD5.jpg)
 
 对于我们自定义的同步工具，需要自定义获取同步状态和释放状态的方式，也就是 AQS 架构图中的第一层：API 层。
 
@@ -220,7 +220,7 @@ private volatile int state;
 
 以非公平锁为例，这里主要阐述一下非公平锁与 AQS 之间方法的关联之处，具体每一处核心方法的作用会在文章后面详细进行阐述。
 
-![](https://p1.meituan.net/travelcube/b8b53a70984668bc68653efe9531573e78636.png)
+![](img/a2a128d776ecf2e224c33131e96cc1f4_MD5.jpg)
 
 > 🐛 修正（参见：[issue#1761](https://github.com/Snailclimb/JavaGuide/issues/1761)）: 图中的一处小错误，(AQS)CAS 修改共享资源 State 成功之后应该是获取锁成功(非公平锁)。
 >
@@ -249,7 +249,7 @@ private volatile int state;
 
 为了帮助大家理解 ReentrantLock 和 AQS 之间方法的交互过程，以非公平锁为例，我们将加锁和解锁的交互流程单独拎出来强调一下，以便于对后续内容的理解。
 
-![](https://p1.meituan.net/travelcube/7aadb272069d871bdee8bf3a218eed8136919.png)
+![](img/9c91ba7fb842f0d9c8e92f80c0bfcf3a_MD5.jpg)
 
 加锁：
 
@@ -267,7 +267,7 @@ private volatile int state;
 
 通过上面的描述，大概可以总结出 ReentrantLock 加锁解锁时 API 层核心方法的映射关系。
 
-![](https://p0.meituan.net/travelcube/f30c631c8ebbf820d3e8fcb6eee3c0ef18748.png)
+![](img/c349f29e035c05c8ea97a13704ce1842_MD5.jpg)
 
 ## 3 通过 ReentrantLock 理解 AQS
 
@@ -400,7 +400,7 @@ private Node enq(final Node node) {
 
 2、线程 2 申请锁，但是锁被线程 1 占有。
 
-![img](https://p0.meituan.net/travelcube/e9e385c3c68f62c67c8d62ab0adb613921117.png)
+![img](img/3e1c32dc6d9e30fc2a8000be52cc5c1c_MD5.jpg)
 
 3、如果再有线程要获取锁，依次在队列中往后排队即可。
 
@@ -540,11 +540,11 @@ private final boolean parkAndCheckInterrupt() {
 
 上述方法的流程图如下：
 
-![](https://p0.meituan.net/travelcube/c124b76dcbefb9bdc778458064703d1135485.png)
+![](img/a01a393e529ffd3f4465d6b494401037_MD5.jpg)
 
 从上图可以看出，跳出当前循环的条件是当“前置节点是头结点，且当前线程获取锁成功”。为了防止因死循环导致 CPU 资源被浪费，我们会判断前置节点的状态来决定是否要将当前线程挂起，具体挂起流程用流程图表示如下（shouldParkAfterFailedAcquire 流程）：
 
-![](https://p0.meituan.net/travelcube/9af16e2481ad85f38ca322a225ae737535740.png)
+![](img/d0f1dfc61e1dce8d0fe3192d36c95e8e_MD5.jpg)
 
 从队列中释放节点的疑虑打消了，那么又有新问题了：
 
@@ -633,15 +633,15 @@ private void cancelAcquire(Node node) {
 
 当前节点是尾节点。
 
-![](https://p1.meituan.net/travelcube/b845211ced57561c24f79d56194949e822049.png)
+![](img/9d611823ca26e72b8919214c15f5f560_MD5.jpg)
 
 当前节点是 Head 的后继节点。
 
-![](https://p1.meituan.net/travelcube/ab89bfec875846e5028a4f8fead32b7117975.png)
+![](img/14e7ed2a47834f8f967935336f80a307_MD5.jpg)
 
 当前节点不是 Head 的后继节点，也不是尾节点。
 
-![](https://p0.meituan.net/travelcube/45d0d9e4a6897eddadc4397cf53d6cd522452.png)
+![](img/1e5be90e286648fe94f812efbf531586_MD5.jpg)
 
 通过上面的流程，我们对于 CANCELLED 节点状态的产生和变化已经有了大致的了解，但是为什么所有的变化都是对 Next 指针进行了操作，而没有对 Prev 指针进行操作呢？什么情况下会对 Prev 指针进行操作？
 

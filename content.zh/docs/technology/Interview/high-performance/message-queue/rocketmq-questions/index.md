@@ -31,13 +31,13 @@ tag:
 
 我来举个 🌰 吧，比如我们有一个购票系统，需求是用户在购买完之后能接收到购买完成的短信。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef37fee7e09230.jpg)
+![](img/76099e2c5e44827177a57729e4d06c88_MD5.jpg)
 
 我们省略中间的网络通信时间消耗，假如购票系统处理需要 150ms ，短信系统处理需要 200ms ，那么整个处理流程的时间消耗就是 150ms + 200ms = 350ms。
 
 当然，乍看没什么问题。可是仔细一想你就感觉有点问题，我用户购票在购票系统的时候其实就已经完成了购买，而我现在通过同步调用非要让整个请求拉长时间，而短信系统这玩意又不是很有必要，它仅仅是一个辅助功能增强用户体验感而已。我现在整个调用流程就有点 ==头重脚轻== 的感觉了，购票是一个不太耗时的流程，而我现在因为同步调用，非要等待发送短信这个比较耗时的操作才返回结果。那我如果再加一个发送邮件呢？
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef380429cf373e.jpg)
+![](img/5979f8160149c735377b26d4dbc83d5c_MD5.jpg)
 
 这样整个系统的调用链又变长了，整个时间就变成了 550ms。
 
@@ -55,7 +55,7 @@ tag:
 
 所以，为了解决这一个问题，聪明的程序员在中间也加了个类似于服务员的中间件——消息队列。这个时候我们就可以把模型给改造了。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef38124f55eaea.jpg)
+![](img/6583cd4b2f89d357009b25f678150f4c_MD5.jpg)
 
 这样，我们在将消息存入消息队列之后我们就可以直接返回了(我们告诉服务员我们要吃什么然后玩手机)，所以整个耗时只是 150ms + 10ms = 160ms。
 
@@ -65,21 +65,21 @@ tag:
 
 回到最初同步调用的过程，我们写个伪代码简单概括一下。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef381a505d3e1f.jpg)
+![](img/0e6ba9cbdcff528fdecc26c529e60086_MD5.jpg)
 
 那么第二步，我们又添加了一个发送邮件，我们就得重新去修改代码，如果我们又加一个需求：用户购买完还需要给他加积分，这个时候我们是不是又得改代码？
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef381c4e1b1ac7.jpg)
+![](img/1a5de4387c65e5e05f3b688214ab13b8_MD5.jpg)
 
 如果你觉得还行，那么我这个时候不要发邮件这个服务了呢，我是不是又得改代码，又得重启应用？
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef381f273a66bd.jpg)
+![](img/de427658bd975b259665bf3736b4b3c3_MD5.jpg)
 
 这样改来改去是不是很麻烦，那么 ==此时我们就用一个消息队列在中间进行解耦== 。你需要注意的是，我们后面的发送短信、发送邮件、添加积分等一些操作都依赖于上面的 `result` ，这东西抽象出来就是购票的处理结果呀，比如订单号，用户账号等等，也就是说我们后面的一系列服务都是需要同样的消息来进行处理。既然这样，我们是不是可以通过 ==“广播消息”== 来实现。
 
 我上面所讲的“广播”并不是真正的广播，而是接下来的系统作为消费者去 ==订阅== 特定的主题。比如我们这里的主题就可以叫做 `订票` ，我们购买系统作为一个生产者去生产这条消息放入消息队列，然后消费者订阅了这个主题，会从消息队列中拉取消息并消费。就比如我们刚刚画的那张图，你会发现，在生产者这边我们只需要关注 ==生产消息到指定主题中== ，而 ==消费者只需要关注从指定主题中拉取消息== 就行了。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef382674b66892.jpg)
+![](img/6583cd4b2f89d357009b25f678150f4c_MD5.jpg)
 
 > 如果没有消息队列，每当一个新的业务接入，我们都要在主系统调用新接口、或者当我们取消某些业务，我们也得在主系统删除某些接口调用。有了消息队列，我们只需要关心消息是否送达了队列，至于谁希望订阅，接下来收到消息如何处理，是下游的事情，无疑极大地减少了开发和联调的工作量。
 
@@ -87,7 +87,7 @@ tag:
 
 我们再次回到一开始我们使用同步调用系统的情况，并且思考一下，如果此时有大量用户请求购票整个系统会变成什么样？
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef382a9756bb1c.jpg)
+![](img/eea50e0ff4b339c2167b232c84311e11_MD5.jpg)
 
 如果，此时有一万的请求进入购票系统，我们知道运行我们主业务的服务器配置一般会比较好，所以这里我们假设购票系统能承受这一万的用户请求，那么也就意味着我们同时也会出现一万调用发短信服务的请求。而对于短信系统来说并不是我们的主要业务，所以我们配备的硬件资源并不会太高，那么你觉得现在这个短信系统能承受这一万的峰值么，且不说能不能承受，系统会不会 ==直接崩溃== 了？
 
@@ -129,13 +129,13 @@ tag:
 
 可用性降低，复杂度上升，又带来一系列的重复消费，顺序消费，分布式事务，消息堆积的问题，这消息队列还怎么用啊 😵？
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef382d709abc9d.png)
+![](img/9e1e51fde1aeaadb53bea0606bce3b02_MD5.jpg)
 
 别急，办法总是有的。
 
 ## RocketMQ 是什么？
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef383014430799.jpg)
+![](img/866098b437b7310f4092ab97a9a19659_MD5.jpg)
 
 哇，你个混蛋！上面给我抛出那么多问题，你现在又讲 `RocketMQ` ，还让不让人活了？！🤬
 
@@ -161,7 +161,7 @@ tag:
 
 就像我们理解队列一样，消息中间件的队列模型就真的只是一个队列。。。我画一张图给大家理解。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef3834ae653469.jpg)
+![](img/4922f72fbccf82b93ddd0e8d70efde85_MD5.jpg)
 
 在一开始我跟你提到了一个 ==“广播”== 的概念，也就是说如果我们此时我们需要将一个消息发送给多个消费者(比如此时我需要将信息发送给短信系统和邮件系统)，这个时候单个队列即不能满足需求了。
 
@@ -177,7 +177,7 @@ tag:
 
 其中，发布者将消息发送到指定主题中，订阅者需要 ==提前订阅主题== 才能接受特定主题的消息。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef3837887d9a54sds.jpg)
+![](img/a62da67f60e32ca345f832786091b662_MD5.jpg)
 
 ### RocketMQ 中的消息模型
 
@@ -187,7 +187,7 @@ tag:
 
 所以，`RocketMQ` 中的 ==主题模型== 到底是如何实现的呢？首先我画一张图，大家尝试着去理解一下。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef383d3e8c9788.jpg)
+![](img/fbf2b6fe67f905629a4088f2f5c1e3da_MD5.jpg)
 
 我们可以看到在整个图中有 `Producer Group`、`Topic`、`Consumer Group` 三个角色，我来分别介绍一下他们。
 
@@ -201,19 +201,19 @@ tag:
 
 当然也可以消费者个数小于队列个数，只不过不太建议。如下图。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef3850c808d707.jpg)
+![](img/a6df73122ee610f75a42f5723e933635_MD5.jpg)
 
 ==每个消费组在每个队列上维护一个消费位置== ，为什么呢？
 
 因为我们刚刚画的仅仅是一个消费者组，我们知道在发布订阅模式中一般会涉及到多个消费者组，而每个消费者组在每个队列中的消费位置都是不同的。如果此时有多个消费者组，那么消息被一个消费者组消费完之后是不会删除的(因为其它消费者组也需要呀)，它仅仅是为每个消费者组维护一个 ==消费位移(offset)== ，每次消费者组消费完会返回一个成功的响应，然后队列再把维护的消费位移加一，这样就不会出现刚刚消费过的消息再一次被消费了。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef3857fefaa079.jpg)
+![](img/d9785b474b1a00d63bce4a6dd0c2d5d3_MD5.jpg)
 
 可能你还有一个问题，==为什么一个主题中需要维护多个队列== ？
 
 答案是 ==提高并发能力== 。的确，每个主题中只存在一个队列也是可行的。你想一下，如果每个主题中只存在一个队列，这个队列中也维护着每个消费者组的消费位置，这样也可以做到 ==发布订阅模式== 。如下图。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef38600cdb6d4b.jpg)
+![](img/a3d2839d4fe29891b9b984a4e7ee426a_MD5.jpg)
 
 但是，这样我生产者是不是只能向一个队列发送消息？又因为需要维护消费位置所以一个队列只能对应一个消费者组中的消费者，这样是不是其他的 `Consumer` 就没有用武之地了？从这两个角度来讲，并发度一下子就小了很多。
 
@@ -235,7 +235,7 @@ tag:
 
   `Topic` 消息量都比较均匀的情况下，如果某个 `broker` 上的队列越多，则该 `broker` 压力越大。
 
-  ![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef38687488a5a4.jpg)
+  ![](img/19583f0c529c5c9c6d866c954bd1a7c2_MD5.jpg)
 
   > 所以说我们需要配置多个 Broker。
 
@@ -247,7 +247,7 @@ tag:
 
 听完了上面的解释你可能会觉得，这玩意好简单。不就是这样的么？
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef386c6d1e8bdb.jpg)
+![](img/c555ae1ec38b78a21d78ddc669c259ed_MD5.jpg)
 
 嗯？你可能会发现一个问题，这老家伙 `NameServer` 干啥用的，这不多余吗？直接 `Producer`、`Consumer` 和 `Broker` 直接进行生产消息，消费消息不就好了么？
 
@@ -259,7 +259,7 @@ tag:
 
 当然，`RocketMQ` 中的技术架构肯定不止前面那么简单，因为上面图中的四个角色都是需要做集群的。我给出一张官网的架构图，大家尝试理解一下。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef386fa3be1e53.jpg)
+![](img/d98db02fe8705aeca48e07d90761a43a_MD5.jpg)
 
 其实和我们最开始画的那张乞丐版的架构图也没什么区别，主要是一些细节上的差别。听我细细道来 🤨。
 
@@ -279,7 +279,7 @@ tag:
 
 普通消息一般应用于微服务解耦、事件驱动、数据集成等场景，这些场景大多数要求数据传输通道具有可靠传输的能力，且对消息的处理时机、处理顺序没有特别要求。以在线的电商交易场景为例，上游订单系统将用户下单支付这一业务事件封装成独立的普通消息并发送至 RocketMQ 服务端，下游按需从服务端订阅消息并按照本地消费逻辑处理下游任务。每个消息之间都是相互独立的，且不需要产生关联。另外还有日志系统，以离线的日志收集场景为例，通过埋点组件收集前端应用的相关操作日志，并转发到 RocketMQ 。
 
-![](https://rocketmq.apache.org/zh/assets/images/lifecyclefornormal-e8a2a7e42a0722f681eb129b51e1bd66.png)
+![](img/d5f43465ad73bedec4004f9f09a1961d_MD5.jpg)
 
 ==普通消息生命周期==
 
@@ -298,7 +298,7 @@ tag:
 - ==精度高、开发门槛低==：基于消息通知方式不存在定时阶梯间隔。可以轻松实现任意精度事件触发，无需业务去重。
 - ==高性能可扩展==：传统的数据库扫描方式较为复杂，需要频繁调用接口扫描，容易产生性能瓶颈。RocketMQ 的定时消息具有高并发和水平扩展的能力。
 
-![](https://rocketmq.apache.org/zh/assets/images/lifecyclefordelay-2ce8278df69cd026dd11ffd27ab09a17.png)
+![](img/2917ebcfc8b189482650e2ed258390d8_MD5.jpg)
 
 ==定时消息生命周期==
 
@@ -457,7 +457,7 @@ RocketMQ 服务端 3.x/4.x 历史版本：上述消费逻辑由消费者客户�
 
 那么，我们现在使用了 ==普通顺序模式== ，我们从上面学习知道了在 `Producer` 生产消息的时候会进行轮询(取决你的负载均衡策略)来向同一主题的不同消息队列发送消息。那么如果此时我有几个消息分别是同一个订单的创建、支付、发货，在轮询的策略下这 ==三个消息会被发送到不同队列== ，因为在不同的队列此时就无法使用 `RocketMQ` 带来的队列有序特性来保证消息有序性了。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef3874585e096e.jpg)
+![](img/55b6bc995e545a75c543ad8b8f80eb21_MD5.jpg)
 
 那么，怎么解决呢？
 
@@ -530,7 +530,7 @@ emmm，就两个字—— ==幂等== 。在编程中一个*幂等* 操作的特�
 
 在 `RocketMQ` 中使用的是 ==事务消息加上事务反查机制== 来解决分布式事务问题的。我画了张图，大家可以对照着图进行理解。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef38798d7a987f.png)
+![](img/dd6d760156c1744bf6e7b4ba35a4e934_MD5.jpg)
 
 在第一步发送的 half 消息 ，它的意思是 ==在事务提交之前，对于消费者来说，这个消息是不可见的== 。
 
@@ -762,7 +762,7 @@ public class ConsumerAddViewHistory implements RocketMQListener<Message> {
 >
 > 别忘了在 `RocketMQ` 中，==一个队列只会被一个消费者消费== ，如果你仅仅是增加消费者实例就会出现我一开始给你画架构图的那种情况。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef387d939ab66d.jpg)
+![](img/fbf2b6fe67f905629a4088f2f5c1e3da_MD5.jpg)
 
 ## 什么是回溯消费？
 
@@ -774,7 +774,7 @@ public class ConsumerAddViewHistory implements RocketMQListener<Message> {
 
 ### 传统 IO 方式
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/31699457085_.pic.jpg)
+![](img/cb9aadaf5c8ec370e4a8019d840e07e1_MD5.jpg)
 
 传统的 IO 读写其实就是 read + write 的操作，整个过程会分为如下几步
 
@@ -797,7 +797,7 @@ mmap（memory map）是一种内存映射文件的方法，即将一个文件或
 
 简单地说就是内核缓冲区和应用缓冲区共享，从而减少了从读缓冲区到用户缓冲区的一次 CPU 拷贝。基于此上述架构图可变为：
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/41699457086_.pic.jpg)
+![](img/6917950caf1528496989a8a0b4a45b2d_MD5.jpg)
 
 基于 mmap IO 读写其实就变成 mmap + write 的操作，也就是用 mmap 替代传统 IO 中的 read 操作。
 
@@ -814,7 +814,7 @@ MappedByteBuffer mappedByteBuffer = fileChannel.map(FileChannel.MapMode.READ_WRI
 
 sendfile()跟 mmap()一样，也会减少一次 CPU 拷贝，但是它同时也会减少两次上下文切换。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/51699457087_.pic.jpg)
+![](img/7f2c0633f4a349d6851155d1551ef436_MD5.jpg)
 
 如图，用户在发起 sendfile()调用时会发生切换 1，之后数据通过 DMA 拷贝到内核缓冲区，之后再将内核缓冲区的数据 CPU 拷贝到 Socket 缓冲区，最后拷贝到网卡，sendfile()返回，发生切换 2。发生了 3 次拷贝和两次切换。Java 也提供了相应 api：
 
@@ -844,7 +844,7 @@ RocketMQ 内部主要是使用基于 mmap 实现的零拷贝(其实就是调用�
 
 ### 同步刷盘和异步刷盘
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef387fba311cda-20230814005009889.jpg)
+![](img/8c8221968d3e2fe6258e72bfe2aa2ede_MD5.jpg)
 
 如上图所示，在同步刷盘中需要等待一个刷盘成功的 `ACK` ，同步刷盘对 `MQ` 消息可靠性来说是一种不错的保障，但是 ==性能上会有较大影响== ，一般地适用于金融等特定业务场景。
 
@@ -869,7 +869,7 @@ RocketMQ 内部主要是使用基于 mmap 实现的零拷贝(其实就是调用�
 
 在单主从架构中，如果一个主节点挂掉了，那么也就意味着整个系统不能再生产了。那么这个可用性的问题能否解决呢？==一个主从不行那就多个主从的呗==，别忘了在我们最初的架构图中，每个 `Topic` 是分布在不同 `Broker` 中的。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef38687488a5asadasfg4.jpg)
+![](img/19583f0c529c5c9c6d866c954bd1a7c2_MD5.jpg)
 
 但是这种复制方式同样也会带来一个问题，那就是无法保证 ==严格顺序== 。在上文中我们提到了如何保证的消息顺序性是通过将一个语义的消息发送在同一个队列中，使用 `Topic` 下的队列来保证顺序性的。如果此时我们主节点 A 负责的是订单 A 的一系列语义消息，然后它挂了，这样其他节点是无法代替主节点 A 的，如果我们任意节点都可以存入任何消息，那就没有顺序性可言了。
 
@@ -889,7 +889,7 @@ RocketMQ 内部主要是使用基于 mmap 实现的零拷贝(其实就是调用�
 
 总结来说，整个消息存储的结构，最主要的就是 `CommitLoq` 和 `ConsumeQueue` 。而 `ConsumeQueue` 你可以大概理解为 `Topic` 中的队列。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef3884c02acc72.png)
+![](img/2b38f1dd313aef0b634e6f013d14152d_MD5.jpg)
 
 `RocketMQ` 采用的是 ==混合型的存储结构== ，即为 `Broker` 单个实例下所有的队列共用一个日志数据文件来存储消息。有意思的是在同样高并发的 `Kafka` 中会为每个 `Topic` 分配一个存储文件。这就有点类似于我们有一大堆书需要装上书架，`RocketMQ` 是不分书的种类直接成批的塞上去的，而 `Kafka` 是将书本放入指定的分类区域的。
 
@@ -899,7 +899,7 @@ RocketMQ 内部主要是使用基于 mmap 实现的零拷贝(其实就是调用�
 
 讲到这里，你可能对 `RocketMQ` 的存储架构还有些模糊，没事，我们结合着图来理解一下。
 
-![](https://oss.javaguide.cn/github/javaguide/high-performance/message-queue/16ef388763c25c62.jpg)
+![](img/9cc1afd0781a4266c8583acabb30dcc6_MD5.jpg)
 
 emmm，是不是有一点复杂 🤣，看英文图片和英文文档的时候就不要怂，硬着头皮往下看就行。
 

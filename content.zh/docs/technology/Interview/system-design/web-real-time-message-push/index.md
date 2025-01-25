@@ -15,7 +15,7 @@ head:
 
 我有一个朋友做了一个小破站，现在要实现一个站内信 Web 消息推送的功能，对，就是下图这个小红点，一个很常用的功能。
 
-![站内信 Web 消息推送](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192380.png)
+![站内信 Web 消息推送](img/723bed2e79f927f629d51bc050c12415_MD5.jpg)
 
 不过他还没想好用什么方式做，这里我帮他整理了一下几种方案，并简单做了实现。
 
@@ -29,17 +29,17 @@ head:
 
 移动端消息推送示例：
 
-![移动端消息推送示例](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/IKleJ9auR1Ojdicyr0bH.png)
+![移动端消息推送示例](img/5d7fb1d82c7d589d7aa7ce0d3014bf56_MD5.jpg)
 
 Web 端消息推送示例：
 
-![Web 端消息推送示例](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/image-20220819100512941.png)
+![Web 端消息推送示例](img/73c5f57b55bbc670c4a206a7cb3708e8_MD5.jpg)
 
 在具体实现之前，咱们再来分析一下前边的需求，其实功能很简单，只要触发某个事件（主动分享了资源或者后台主动推送消息），Web 页面的通知小红点就会实时的 `+1` 就可以了。
 
 通常在服务端会有若干张消息推送表，用来记录用户触发不同事件所推送不同类型的消息，前端主动查询（拉）或者被动接收（推）用户所有未读的消息数。
 
-![消息推送表](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192384.png)
+![消息推送表](img/ee69f1f875238125768d031079fd7127_MD5.jpg)
 
 消息推送无非是推（push）和拉（pull）两种形式，下边我们逐个了解下。
 
@@ -76,7 +76,7 @@ setInterval(() => {
 
 这次我使用 Apollo 配置中心实现长轮询的方式，应用了一个类`DeferredResult`，它是在 Servlet3.0 后经过 Spring 封装提供的一种异步请求机制，直意就是延迟结果。
 
-![长轮询示意图](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192386.png)
+![长轮询示意图](img/781af927db032a46502b52523b0b5b44_MD5.jpg)
 
 `DeferredResult`可以允许容器线程快速释放占用的资源，不阻塞请求线程，以此接受更多的请求提升系统的吞吐量，然后启动异步工作线程处理真正的业务逻辑，处理完成调用`DeferredResult.setResult(200)`提交响应结果。
 
@@ -153,7 +153,7 @@ iframe 流就是在页面中插入一个隐藏的`<iframe>`标签，通过在`sr
 
 传输的数据通常是 HTML、或是内嵌的 JavaScript 脚本，来达到实时更新页面的效果。
 
-![iframe 流示意图](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192388.png)
+![iframe 流示意图](img/cfacc6a8e63a0e202f97f2a13593cfcb_MD5.jpg)
 
 这种方式实现简单，前端只要一个`<iframe>`标签搞定了
 
@@ -185,7 +185,7 @@ public class IframeController {
 
 iframe 流的服务器开销很大，而且 IE、Chrome 等浏览器一直会处于 loading 状态，图标会不停旋转，简直是强迫症杀手。
 
-![iframe 流效果](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192389.png)
+![iframe 流效果](img/7ac54e5802a98c8ea71902e38464836f_MD5.gif)
 
 iframe 流非常不友好，强烈不推荐。
 
@@ -195,17 +195,17 @@ iframe 流非常不友好，强烈不推荐。
 
 大名鼎鼎的 ChatGPT 就是采用的 SSE。对于需要长时间等待响应的对话场景，ChatGPT 采用了一种巧妙的策略：它会将已经计算出的数据“推送”给用户，并利用 SSE 技术在计算过程中持续返回数据。这样做的好处是可以避免用户因等待时间过长而选择关闭页面。
 
-![ChatGPT 使用 SSE 实现对话](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/chatgpt-sse.png)
+![ChatGPT 使用 SSE 实现对话](img/2ccdcf49bb84e07e6dbb85a76a385004_MD5.jpg)
 
 SSE 基于 HTTP 协议的，我们知道一般意义上的 HTTP 协议是无法做到服务端主动向客户端推送消息的，但 SSE 是个例外，它变换了一种思路。
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192390.png)
+![](img/60403619b6fba41867834231f5badf28_MD5.jpg)
 
 SSE 在服务器和客户端之间打开一个单向通道，服务端响应的不再是一次性的数据包而是`text/event-stream`类型的数据流信息，在有数据变更时从服务器流式传输到客户端。
 
 整体的实现思路有点类似于在线视频播放，视频流会连续不断的推送到浏览器，你也可以理解成，客户端在完成一次用时很长（网络不畅）的下载。
 
-![SSE 示意图](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192391.png)
+![SSE 示意图](img/abfe7568851960daaae0230b735b9ade_MD5.jpg)
 
 SSE 与 WebSocket 作用相似，都可以建立服务端与浏览器之间的通信，实现服务端向客户端推送消息，但还是有些许不同：
 
@@ -296,7 +296,7 @@ public static void sendMessage(String userId, String message) {
 
 ==注意：== SSE 不支持 IE 浏览器，对其他主流浏览器兼容性做的还不错。
 
-![SSE 兼容性](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192393.png)
+![SSE 兼容性](img/d55c3238a4987b531e1a03103172cf41_MD5.jpg)
 
 ### Websocket
 
@@ -304,7 +304,7 @@ Websocket 应该是大家都比较熟悉的一种实现消息推送的方式，�
 
 这是一种在 TCP 连接上进行全双工通信的协议，建立客户端和服务器之间的通信渠道。浏览器和服务器仅需一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。
 
-![Websocket 示意图](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192394.png)
+![Websocket 示意图](img/7a697d653cb38602ca1b25c2eca17c2b_MD5.jpg)
 
 WebSocket 的工作过程可以分为以下几个步骤：
 
@@ -435,7 +435,7 @@ public class WebSocketConfiguration {
 
 页面初始化建立 WebSocket 连接，之后就可以进行双向通信了，效果还不错。
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192395.png)
+![](img/94817e3f33b179b87343947e3247cbaf_MD5.jpg)
 
 ### MQTT
 
@@ -445,7 +445,7 @@ MQTT (Message Queue Telemetry Transport)是一种基于发布/订阅（publish/s
 
 该协议将消息的发布者（publisher）与订阅者（subscriber）进行分离，因此可以在不可靠的网络环境中，为远程连接的设备提供可靠的消息服务，使用方式与传统的 MQ 有点类似。
 
-![MQTT 协议示例](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000022986325.png)
+![MQTT 协议示例](img/c5a9e58c2a301b9c2bf1bb03ddab1eaf_MD5.jpg)
 
 TCP 协议位于传输层，MQTT 协议位于应用层，MQTT 协议构建于 TCP/IP 协议上，也就是说只要支持 TCP/IP 协议栈的地方，都可以使用 MQTT 协议。
 

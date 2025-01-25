@@ -23,11 +23,11 @@ SELECT * FROM t_order ORDER BY id LIMIT 1000000, 10
 
 当查询偏移量过大时，MySQL 的查询优化器可能会选择全表扫描而不是利用索引来优化查询。这是因为扫描索引和跳过大量记录可能比直接全表扫描更耗费资源。
 
-![深度分页问题](https://oss.javaguide.cn/github/javaguide/mysql/deep-pagination-phenomenon.png)
+![深度分页问题](img/a5901d63431ace7efa58dc2cc8a32c9b_MD5.jpg)
 
 不同机器上这个查询偏移量过大的临界点可能不同，取决于多个因素，包括硬件配置（如 CPU 性能、磁盘速度）、表的大小、索引的类型和统计信息等。
 
-![转全表扫描的临界点](https://oss.javaguide.cn/github/javaguide/mysql/deep-pagination-phenomenon-critical-point.png)
+![转全表扫描的临界点](img/812c51af38d13f8b32a3da28daee0bd2_MD5.jpg)
 
 MySQL 的查询优化器采用基于成本的策略来选择最优的查询执行计划。它会根据 CPU 和 I/O 的成本来决定是否使用索引扫描或全表扫描。如果优化器认为全表扫描的成本更低，它就会放弃使用索引。不过，即使偏移量很大，如果查询中使用了覆盖索引（covering index），MySQL 仍然可能会使用索引，避免回表操作。
 
@@ -60,7 +60,7 @@ SELECT * FROM t_order WHERE id > 100000 LIMIT 10
 
 > 利用延迟关联或者子查询优化超多分页场景。
 >
-> ![](https://oss.javaguide.cn/github/javaguide/mysql/alibaba-java-development-handbook-paging.png)
+> ![](img/462f78f9b9fe07cfbad9a1d1486abee6_MD5.jpg)
 
 ```sql
 # 通过子查询来获取 id 的起始值，把 limit 1000000 的条件转移到子查询

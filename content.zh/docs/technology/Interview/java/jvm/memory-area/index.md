@@ -33,11 +33,11 @@ JDK 1.8 和之前的版本略有不同，我们这里以 JDK 1.7 和 JDK 1.8 这
 
 ==JDK 1.7==：
 
-![Java 运行时数据区域（JDK1.7）](https://oss.javaguide.cn/github/javaguide/java/jvm/java-runtime-data-areas-jdk1.7.png)
+![Java 运行时数据区域（JDK1.7）](img/e0170f25989b6122d533d7d256d03ef0_MD5.jpg)
 
 ==JDK 1.8==：
 
-![Java 运行时数据区域（JDK1.8 ）](https://oss.javaguide.cn/github/javaguide/java/jvm/java-runtime-data-areas-jdk1.8.png)
+![Java 运行时数据区域（JDK1.8 ）](img/d698ff2bf073633d56874a0a638b1046_MD5.jpg)
 
 ==线程私有的：==
 
@@ -76,17 +76,17 @@ Java 虚拟机规范对于运行时数据区域的规定是相当宽松的。以
 
 栈由一个个栈帧组成，而每个栈帧中都拥有：局部变量表、操作数栈、动态链接、方法返回地址。和数据结构上的栈类似，两者都是先进后出的数据结构，只支持出栈和入栈两种操作。
 
-![Java 虚拟机栈](https://oss.javaguide.cn/github/javaguide/java/jvm/stack-area.png)
+![Java 虚拟机栈](img/f6fa855a6a9e8ed2f51ba68b6212598c_MD5.jpg)
 
 ==局部变量表== 主要存放了编译期可知的各种数据类型（boolean、byte、char、short、int、float、long、double）、对象引用（reference 类型，它不同于对象本身，可能是一个指向对象起始地址的引用指针，也可能是指向一个代表对象的句柄或其他与此对象相关的位置）。
 
-![局部变量表](https://oss.javaguide.cn/github/javaguide/java/jvm/local-variables-table.png)
+![局部变量表](img/981935e047f59fb08abf1b8812d7db07_MD5.jpg)
 
 ==操作数栈== 主要作为方法调用的中转站使用，用于存放方法执行过程中产生的中间计算结果。另外，计算过程中产生的临时变量也会放在操作数栈中。
 
 ==动态链接== 主要服务一个方法需要调用其他方法的场景。Class 文件的常量池里保存有大量的符号引用比如方法引用的符号引用。当一个方法要调用其他方法，需要将常量池中指向方法的符号引用转化为其在内存地址中的直接引用。动态链接的作用就是为了将符号引用转换为调用方法的直接引用，这个过程也被称为 ==动态连接== 。
 
-![](https://oss.javaguide.cn/github/javaguide/jvmimage-20220331175738692.png)
+![](img/604a6f77375b8f2c6eb6fe3716d0b355_MD5.jpg)
 
 栈空间虽然不是无限的，但一般正常调用的情况下是不会出现问题的。不过，如果函数调用陷入无限循环的话，就会导致栈中被压入太多栈帧而占用太多空间，导致栈空间过深。那么当线程请求栈的深度超过当前 Java 虚拟机栈的最大深度的时候，就抛出 `StackOverFlowError` 错误。
 
@@ -99,7 +99,7 @@ Java 方法有两种返回方式，一种是 return 语句正常返回，一种�
 - ==`StackOverFlowError`：== 若栈的内存大小不允许动态扩展，那么当线程请求栈的深度超过当前 Java 虚拟机栈的最大深度的时候，就抛出 `StackOverFlowError` 错误。
 - ==`OutOfMemoryError`：== 如果栈的内存大小可以动态扩展， 如果虚拟机在动态扩展栈时无法申请到足够的内存空间，则抛出`OutOfMemoryError`异常。
 
-![](https://oss.javaguide.cn/github/javaguide/java/jvm/%E3%80%8A%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E8%99%9A%E6%8B%9F%E6%9C%BA%E3%80%8B%E7%AC%AC%E4%B8%89%E7%89%88%E7%9A%84%E7%AC%AC2%E7%AB%A0-%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A0%88.png)
+![](img/c479366d16b781011407faccbf54d0a3_MD5.jpg)
 
 ### 本地方法栈
 
@@ -125,7 +125,7 @@ Java 堆是垃圾收集器管理的主要区域，因此也被称作 ==GC 堆（
 
 下图所示的 Eden 区、两个 Survivor 区 S0 和 S1 都属于新生代，中间一层属于老年代，最下面一层属于永久代。
 
-![堆内存结构](https://oss.javaguide.cn/github/javaguide/java/jvm/hotspot-heap-structure.png)
+![堆内存结构](img/107f94f9167078f313942b83660d955f_MD5.jpg)
 
 ==JDK 8 版本之后 PermGen(永久代) 已被 Metaspace(元空间) 取代，元空间使用的是本地内存。== （我会在方法区这部分内容详细介绍到）。
 
@@ -145,7 +145,7 @@ MaxTenuringThreshold of 20 is invalid; must be between 0 and 15
 
 这个年龄信息就是在标记字段中存放的（标记字段还存放了对象自身的其他信息比如哈希码、锁状态信息等等）。`markOop.hpp`定义了标记字（mark word）的结构：
 
-![标记字段结构](https://oss.javaguide.cn/github/javaguide/java/jvm/hotspot-markOop.hpp..png)
+![标记字段结构](img/a9686257a72232c00bba09c187e8715c_MD5.jpg)
 
 可以看到对象年龄占用的大小确实是 4 位。
 
@@ -185,13 +185,13 @@ MaxTenuringThreshold of 20 is invalid; must be between 0 and 15
 
 ==方法区和永久代以及元空间是什么关系呢？== 方法区和永久代以及元空间的关系很像 Java 中接口和类的关系，类实现了接口，这里的类就可以看作是永久代和元空间，接口可以看作是方法区，也就是说永久代以及元空间是 HotSpot 虚拟机对虚拟机规范中方法区的两种实现方式。并且，永久代是 JDK 1.8 之前的方法区实现，JDK 1.8 及以后方法区的实现变成了元空间。
 
-![HotSpot 虚拟机方法区的两种实现](https://oss.javaguide.cn/github/javaguide/java/jvm/method-area-implementation.png)
+![HotSpot 虚拟机方法区的两种实现](img/1509d85c2df19ef2fcb976a27b66023d_MD5.jpg)
 
 ==为什么要将永久代 (PermGen) 替换为元空间 (MetaSpace) 呢?==
 
 下图来自《深入理解 Java 虚拟机》第 3 版 2.2.5
 
-![](https://oss.javaguide.cn/github/javaguide/java/jvm/20210425134508117.png)
+![](img/a6e5da99fba7e53197ed3f10812f64de_MD5.jpg)
 
 1、整个永久代有一个 JVM 本身设置的固定大小上限，无法进行调整（也就是受到 JVM 内存的限制），而元空间使用的是本地内存，受本机可用内存的限制，虽然元空间仍旧可能溢出，但是比原来出现的几率会更小。
 
@@ -233,7 +233,7 @@ Class 文件中除了有类的版本、字段、方法、接口等描述信息�
 
 《深入理解 Java 虚拟机》7.34 节第三版对符号引用和直接引用的解释如下：
 
-![符号引用和直接引用](https://oss.javaguide.cn/github/javaguide/java/jvm/symbol-reference-and-direct-reference.png)
+![符号引用和直接引用](img/c253f592570e655d758c19421c5c4677_MD5.jpg)
 
 常量池表会在类加载后存放到方法区的运行时常量池中。
 
@@ -258,9 +258,9 @@ HotSpot 虚拟机中字符串常量池的实现是 `src/hotspot/share/classfile/
 
 JDK1.7 之前，字符串常量池存放在永久代。JDK1.7 字符串常量池和静态变量从永久代移动到了 Java 堆中。
 
-![method-area-jdk1.6](https://oss.javaguide.cn/github/javaguide/java/jvm/method-area-jdk1.6.png)
+![method-area-jdk1.6](img/bfd2128b16017fb3de602f2dbf26538f_MD5.jpg)
 
-![method-area-jdk1.7](https://oss.javaguide.cn/github/javaguide/java/jvm/method-area-jdk1.7.png)
+![method-area-jdk1.7](img/ec76b67f2c102ae931b9ed5d1bed4d5f_MD5.jpg)
 
 ==JDK 1.7 为什么要将字符串常量池移动到堆中？==
 
@@ -355,13 +355,13 @@ Java 对象的创建过程我建议最好是能默写出来，并且要掌握每
 
 如果使用句柄的话，那么 Java 堆中将会划分出一块内存来作为句柄池，reference 中存储的就是对象的句柄地址，而句柄中包含了对象实例数据与对象类型数据各自的具体地址信息。
 
-![对象的访问定位-使用句柄](https://oss.javaguide.cn/github/javaguide/java/jvm/access-location-of-object-handle.png)
+![对象的访问定位-使用句柄](img/c1bbd45751c6bac9f1ecace7faf3b553_MD5.jpg)
 
 #### 直接指针
 
 如果使用直接指针访问，reference 中存储的直接就是对象的地址。
 
-![对象的访问定位-直接指针](https://oss.javaguide.cn/github/javaguide/java/jvm/access-location-of-object-handle-direct-pointer.png)
+![对象的访问定位-直接指针](img/6d090dcf747a5b57151ab751bd8aefa3_MD5.jpg)
 
 这两种对象访问方式各有优势。使用句柄来访问的最大好处是 reference 中存储的是稳定的句柄地址，在对象被移动时只会改变句柄中的实例数据指针，而 reference 本身不需要修改。使用直接指针访问方式最大的好处就是速度快，它节省了一次指针定位的时间开销。
 

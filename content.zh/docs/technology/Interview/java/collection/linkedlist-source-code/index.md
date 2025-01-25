@@ -15,11 +15,11 @@ tag:
 
 `LinkedList` 是一个基于双向链表实现的集合类，经常被拿来和 `ArrayList` 做比较。关于 `LinkedList` 和`ArrayList`的详细对比，我们 [Java 集合常见面试题总结(上)](./java-collection-questions-01.md)有详细介绍到。
 
-![双向链表](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/bidirectional-linkedlist.png)
+![双向链表](img/cb762a473c5d7f948131270c28f8a4a8_MD5.jpg)
 
 不过，我们在项目中一般是不会使用到 `LinkedList` 的，需要用到 `LinkedList` 的场景几乎都可以使用 `ArrayList` 来代替，并且，性能通常会更好！就连 `LinkedList` 的作者约书亚 · 布洛克（Josh Bloch）自己都说从来不会使用 `LinkedList` 。
 
-![](https://oss.javaguide.cn/github/javaguide/redisimage-20220412110853807.png)
+![](img/de24121d9c57080bb543a2c88877ec2c_MD5.jpg)
 
 另外，不要下意识地认为 `LinkedList` 作为链表就最适合元素增删的场景。我在上面也说了，`LinkedList` 仅仅在头尾插入或者删除元素的时候时间复杂度近似 O(1)，其他情况增删元素的平均时间复杂度都是 O(n) 。
 
@@ -59,7 +59,7 @@ public class LinkedList<E>
 - `Cloneable` ：表明它具有拷贝能力，可以进行深拷贝或浅拷贝操作。
 - `Serializable` : 表明它可以进行序列化操作，也就是可以将对象转换为字节流进行持久化存储或网络传输，非常方便。
 
-![LinkedList 类图](https://oss.javaguide.cn/github/javaguide/java/collection/linkedlist--class-diagram.png)
+![LinkedList 类图](img/6f1fd5fd159f25205e03966b3bf53a2f_MD5.jpg)
 
 `LinkedList` 中的元素是通过 `Node` 定义的：
 
@@ -341,7 +341,7 @@ E unlink(Node<E> x) {
 
 可以参考下图理解（图源：[LinkedList 源码分析(JDK 1.8)](https://www.tianxiaobo.com/2018/01/31/LinkedList-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-JDK-1-8/)）：
 
-![unlink 方法逻辑](https://oss.javaguide.cn/github/javaguide/java/collection/linkedlist-unlink.jpg)
+![unlink 方法逻辑](img/18bd524fba62a24298c8d7cec77e74bf_MD5.jpg)
 
 ### 遍历链表
 

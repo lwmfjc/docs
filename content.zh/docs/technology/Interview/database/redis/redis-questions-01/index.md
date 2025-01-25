@@ -22,13 +22,13 @@ head:
 
 为了满足不同的业务场景，Redis 内置了多种数据类型实现（比如 String、Hash、Sorted Set、Bitmap、HyperLogLog、GEO）。并且，Redis 还支持事务、持久化、Lua 脚本、发布订阅模型、多种开箱即用的集群方案（Redis Sentinel、Redis Cluster）。
 
-![Redis 数据类型概览](https://oss.javaguide.cn/github/javaguide/database/redis/redis-overview-of-data-types-2023-09-28.jpg)
+![Redis 数据类型概览](img/c6f8e378c215438e49a75f6a94d0797e_MD5.jpg)
 
 Redis 没有外部依赖，Linux 和 OS X 是 Redis 开发和测试最多的两个操作系统，官方推荐生产环境使用 Linux 部署 Redis。
 
 个人学习的话，你可以自己本机安装 Redis 或者通过 Redis 官网提供的[在线 Redis 环境](https://try.redis.io/)（少部分命令无法使用）来实际体验 Redis。
 
-![try-redis](https://oss.javaguide.cn/github/javaguide/database/redis/try.redis.io.png)
+![try-redis](img/e95f14be45bdc743ad1a3a5c9b068ce6_MD5.jpg)
 
 全世界有非常多的网站使用到了 Redis ，[techstacks.io](https://techstacks.io/) 专门维护了一个[使用 Redis 的热门站点列表](https://techstacks.io/tech/redis) ，感兴趣的话可以看看。
 
@@ -189,7 +189,7 @@ null
 
 ==Redis 2.0 引入了发布订阅 (pub/sub) 功能，解决了 List 实现消息队列没有广播机制的问题。==
 
-![Redis 发布订阅 (pub/sub) 功能](https://oss.javaguide.cn/github/javaguide/database/redis/redis-pub-sub.png)
+![Redis 发布订阅 (pub/sub) 功能](img/7457c6d3170e82c2d2b6cec52f84b4e4_MD5.jpg)
 
 pub/sub 中引入了一个概念叫 ==channel（频道）==，发布订阅机制的实现就是基于这个 channel 来做的。
 
@@ -200,7 +200,7 @@ pub/sub 涉及发布者（Publisher）和订阅者（Subscriber，也叫消费�
 
 我们这里启动 3 个 Redis 客户端来简单演示一下：
 
-![pub/sub 实现消息队列演示](https://oss.javaguide.cn/github/javaguide/database/redis/redis-pubsub-message-queue.png)
+![pub/sub 实现消息队列演示](img/393e0c74b4130f9834ee2f3761c298a9_MD5.jpg)
 
 pub/sub 既能单播又能广播，还支持 channel 的简单正则匹配。不过，消息丢失（客户端断开连接或者 Redis 宕机都会导致消息丢失）、消息堆积（发布者发布消息的时候不会管消费者的具体消费能力如何）等问题依然没有一个比较好的解决办法。
 
@@ -214,7 +214,7 @@ pub/sub 既能单播又能广播，还支持 channel 的简单正则匹配。不
 
 `Stream` 的结构如下：
 
-![](https://oss.javaguide.cn/github/javaguide/database/redis/redis-stream-structure.png)
+![](img/82bcd1c4184cb1ff4931a7b06dc1f960_MD5.jpg)
 
 这是一个有序的消息链表，每个消息都有一个唯一的 ID 和对应的内容。ID 是一个时间戳和序列号的组合，用来保证消息的唯一性和递增性。内容是一个或多个键值对（类似 Hash 基本数据类型），用来存储消息的数据。
 
@@ -421,7 +421,7 @@ struct sdshdr {
 - 用户 id 为 key
 - 商品 id 为 field，商品数量为 value
 
-![Hash维护简单的购物车信息](https://oss.javaguide.cn/github/javaguide/database/redis/hash-shopping-cart.png)
+![Hash维护简单的购物车信息](img/97dc42cf2c6e5bb5b52ebc3f00305562_MD5.jpg)
 
 那用户购物车信息的维护具体应该怎么操作呢？
 
@@ -439,11 +439,11 @@ Redis 中有一个叫做 `Sorted Set` （有序集合）的数据类型经常被
 
 相关的一些 Redis 命令: `ZRANGE` (从小到大排序)、 `ZREVRANGE` （从大到小排序）、`ZREVRANK` (指定元素排名)。
 
-![](https://oss.javaguide.cn/github/javaguide/database/redis/2021060714195385.png)
+![](img/1fe889f0e62ce89330c04aae1d466083_MD5.jpg)
 
 [《Java 面试指北》](https://javaguide.cn/zhuanlan/java-mian-shi-zhi-bei.html) 的「技术面试题篇」就有一篇文章详细介绍如何使用 Sorted Set 来设计制作一个排行榜，感兴趣的小伙伴可以看看。
 
-![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220719071115140.png)
+![](img/8795e40d6a6716b4c0edab1455fd6066_MD5.jpg)
 
 ### Redis 的有序集合底层为什么要用跳表，而不用平衡树、红黑树或者 B+树？
 
@@ -479,7 +479,7 @@ Bitmap 存储的是连续的二进制数字（0 和 1），通过 Bitmap, 只需
 
 你可以将 Bitmap 看作是一个存储二进制数字（0 和 1）的数组，数组中每个元素的下标叫做 offset（偏移量）。
 
-![img](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220720194154133.png)
+![img](img/65f62c49cd7232d6f05f0e86da37c83e_MD5.jpg)
 
 如果想要使用 Bitmap 统计活跃用户的话，可以使用日期（精确到天）作为 key，然后用户 ID 为 offset，如果当日活跃过就设置为 1。
 
@@ -565,7 +565,7 @@ Redis 通过 ==IO 多路复用程序== 来监听来自客户端的大量连接�
 - 文件事件分派器（将 socket 关联到相应的事件处理器）
 - 事件处理器（连接应答处理器、命令请求处理器、命令回复处理器）
 
-![文件事件处理器（file event handler）](https://oss.javaguide.cn/github/javaguide/database/redis/redis-event-handler.png)
+![文件事件处理器（file event handler）](img/ad64bf783891e012925af7d1cba6116d_MD5.jpg)
 
 相关阅读：[Redis 事件机制详解](http://remcarpediem.net/article/1aa2da89/) 。
 
@@ -581,7 +581,7 @@ Redis 通过 ==IO 多路复用程序== 来监听来自客户端的大量连接�
 - `FLUSHALL ASYNC`：用于清空所有数据库的所有键，不限于当前 `SELECT` 的数据库。
 - `FLUSHDB ASYNC`：用于清空当前 `SELECT` 数据库中的所有键。
 
-![redis4.0 more thread](https://oss.javaguide.cn/github/javaguide/database/redis/redis4.0-more-thread.png)
+![redis4.0 more thread](img/8f108b525b102e8b17bd980d13b33bf5_MD5.jpg)
 
 总的来说，直到 Redis 6.0 之前，Redis 的主要操作仍然是单线程处理的。
 
@@ -687,7 +687,7 @@ OK
 
 Redis 通过一个叫做过期字典（可以看作是 hash 表）来保存数据过期的时间。过期字典的键指向 Redis 数据库中的某个 key(键)，过期字典的值是一个 long long 类型的整数，这个整数保存了 key 所指向的数据库键的过期时间（毫秒精度的 UNIX 时间戳）。
 
-![Redis 过期字典](https://oss.javaguide.cn/github/javaguide/database/redis/redis-expired-dictionary.png)
+![Redis 过期字典](img/8888715de1db065c6d28bb75503f60d7_MD5.jpg)
 
 过期字典是存储在 redisDb 这个结构里的：
 
@@ -752,7 +752,7 @@ hz 的取值范围为 1~500。增大 hz 参数的值会提升定期删除的频�
 
 下面是 hz 参数的官方注释，我翻译了其中的重要信息（Redis 7.2 版本）。
 
-![redis.conf 对于 hz 的注释](https://oss.javaguide.cn/github/javaguide/database/redis/redis.conf-hz.png)
+![redis.conf 对于 hz 的注释](img/2523d18771e702838631f82ad1b645b8_MD5.jpg)
 
 类似的参数还有一个 ==dynamic-hz==，这个参数开启之后 Redis 就会在 hz 的基础上动态计算一个值。Redis 提供并默认启用了使用自适应 hz 值的能力，
 

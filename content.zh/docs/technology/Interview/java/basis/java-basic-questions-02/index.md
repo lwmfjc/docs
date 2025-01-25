@@ -39,7 +39,7 @@ POP 的编程方式通常更为简单和直接，适合处理一些较简单的�
 
 POP 和 OOP 的性能差异主要取决于它们的运行机制，而不仅仅是编程范式本身。因此，简单地比较两者的性能是一个常见的误区（相关 issue : [面向过程：面向过程性能比面向对象高？？](https://github.com/Snailclimb/JavaGuide/issues/431) ）。
 
-![ POP 和 OOP  性能比较不合适](https://oss.javaguide.cn/github/javaguide/java/basis/pop-vs-oop-performance.png)
+![POP 和 OOP  性能比较不合适](img/2c0d720fe57dd4b32b7302a98a93e59c_MD5.jpg)
 
 在选择编程范式时，性能并不是唯一的考虑因素。代码的可维护性、可扩展性和开发效率同样重要。
 
@@ -367,7 +367,7 @@ System.out.println(person1.getAddress() == person1Copy.getAddress());
 
 我专门画了一张图来描述浅拷贝、深拷贝、引用拷贝：
 
-![shallow&deep-copy](https://oss.javaguide.cn/github/javaguide/java/basis/shallow&deep-copy.png)
+![shallow&deep-copy](img/18bb9b3d6c2eae2faa93906a4328a885_MD5.jpg)
 
 ## Object
 
@@ -493,7 +493,7 @@ public boolean equals(Object anObject) {
 
 `hashCode()` 的作用是获取哈希码（`int` 整数），也称为散列码。这个哈希码的作用是确定该对象在哈希表中的索引位置。
 
-![hashCode() 方法](https://oss.javaguide.cn/github/javaguide/java/basis/java-hashcode-method.png)
+![hashCode() 方法](img/54ff298550c3ba69bfc5e625192008e5_MD5.jpg)
 
 `hashCode()` 定义在 JDK 的 `Object` 类中，这就意味着 Java 中的任何类都包含有 `hashCode()` 函数。另外需要注意的是：`Object` 的 `hashCode()` 方法是本地方法，也就是用 C 语言或 C++ 实现的。
 
@@ -636,7 +636,7 @@ public final class String implements java.io.Serializable, Comparable<String>, C
 >
 > JDK 官方就说了绝大部分字符串对象只包含 Latin-1 可表示的字符。
 >
-> ![](https://oss.javaguide.cn/github/javaguide/jdk9-string-latin1.png)
+> ![](img/7a3232c5ebb8803d92e65a7ef4079de6_MD5.jpg)
 >
 > 如果字符串中包含的汉字超过 Latin-1 可表示范围内的字符，`byte` 和 `char` 所占用的空间是一样的。
 >
@@ -655,7 +655,7 @@ String str4 = str1 + str2 + str3;
 
 上面的代码对应的字节码如下：
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220422161637929.png)
+![](img/8991111380d3fef0106ab761c419c8f3_MD5.jpg)
 
 可以看出，字符串对象通过“+”的字符串拼接方式，实际上是通过 `StringBuilder` 调用 `append()` 方法实现的，拼接完成之后调用 `toString()` 得到一个 `String` 对象 。
 
@@ -672,7 +672,7 @@ System.out.println(s);
 
 `StringBuilder` 对象是在循环内部被创建的，这意味着每循环一次就会创建一个 `StringBuilder` 对象。
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220422161320823.png)
+![](img/18003f225d55c29af5cde7fa94cbcec0_MD5.jpg)
 
 如果直接使用 `StringBuilder` 对象进行字符串拼接的话，就不会存在这个问题了。
 
@@ -685,7 +685,7 @@ for (String value : arr) {
 System.out.println(s);
 ```
 
-![](https://oss.javaguide.cn/github/javaguide/java/image-20220422162327415.png)
+![](img/b4b12e57203506ffd189e08ce5e9ad12_MD5.jpg)
 
 如果你使用 IDEA 的话，IDEA 自带的代码检查机制也会提示你修改代码。
 
@@ -831,13 +831,13 @@ System.out.println(str4 == str5);//false
 
 > ==注意==：比较 String 字符串的值是否相等，可以使用 `equals()` 方法。 `String` 中的 `equals` 方法是被重写过的。 `Object` 的 `equals` 方法是比较的对象的内存地址，而 `String` 的 `equals` 方法比较的是字符串的值是否相等。如果你使用 `==` 比较两个字符串是否相等的话，IDEA 还是提示你使用 `equals()` 方法替换。
 
-![](https://oss.javaguide.cn/java-guide-blog/image-20210817123252441.png)
+![](img/59a458392fffd343bc04998c699d0c83_MD5.jpg)
 
 ==对于编译期可以确定值的字符串，也就是常量字符串 ，jvm 会将其存入字符串常量池。并且，字符串常量拼接得到的字符串常量在编译阶段就已经被存放字符串常量池，这个得益于编译器的优化。==
 
 在编译过程中，Javac 编译器（下文中统称为编译器）会进行一个叫做 ==常量折叠(Constant Folding)== 的代码优化。《深入理解 Java 虚拟机》中是也有介绍到：
 
-![](https://oss.javaguide.cn/javaguide/image-20210817142715396.png)
+![](img/91825c64255ccf906b187828dc9bb29f_MD5.jpg)
 
 常量折叠会把常量表达式的值求出来作为常量嵌在最终生成的代码中，这是 Javac 编译器会对源代码做的极少量优化措施之一(代码优化几乎都在即时编译器中进行)。
 

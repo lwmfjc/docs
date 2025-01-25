@@ -45,7 +45,7 @@ fd = socket(AF_INET,SOCK_STREAM,0);
 
 在定义了socket之后，我们就可以愉快的对这个socket进行操作，比如用`bind()`绑定IP端口，用`connect()`发起建连。
 
-![握手建立连接流程](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f410977cda814d32b0eff3645c385a8a~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![握手建立连接流程](img/51d1bda27fea39bd96ed660ee4af549d_MD5.gif)
 
 在连接建立之后，我们就可以使用`send()`发送数据，`recv()`接收数据。
 
@@ -57,7 +57,7 @@ fd = socket(AF_INET,SOCK_STREAM,0);
 
 八股文常背，TCP是有三个特点，**面向连接**、**可靠**、基于**字节流**。
 
-![TCP是什么](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/acb4508111cb47d8a3df6734d04818bc~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![TCP是什么](img/9b2a2a9eb7998867213b85c601e20513_MD5.webp)
 
 这三个特点真的概括的**非常精辟**，这个八股文我们没白背。
 
@@ -68,7 +68,7 @@ fd = socket(AF_INET,SOCK_STREAM,0);
 
 正因为这个没有**任何边界**的特点，所以当我们选择使用TCP发送 **"夏洛"和"特烦恼"** 的时候，接收端收到的就是 **"夏洛特烦恼"** ，这时候接收端没发区分你是想要表达 **"夏洛"+"特烦恼"** 还是 **"夏洛特"+"烦恼"** 。
 
-![消息对比](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/4e120d0f1152419585565f693e744a3a~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![消息对比](img/babad254069eade7c0df5d9db1635c92_MD5.webp)
 
 这就是所谓的**粘包问题**，之前也写过一篇专门的[文章](https://link.juejin.cn/?target=https%3A%2F%2Fmp.weixin.qq.com%2Fs%2F0-YBxU1cSbDdzcZEZjmQYA)聊过这个问题。
 
@@ -76,7 +76,7 @@ fd = socket(AF_INET,SOCK_STREAM,0);
 
 于是我们会把每条要发送的数据都包装一下，比如加入**消息头**，**消息头里写清楚一个完整的包长度是多少**，根据这个长度可以继续接收数据，截取出来后它们就是我们真正要传输的**消息体**。
 
-![消息边界长度标志](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cb29659d4907446e9f70551c44c6369f~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![消息边界长度标志](img/7f2c3dd6224e63c56e4977708244e594_MD5.webp)
 
 而这里头提到的**消息头**，还可以放各种东西，比如消息体是否被压缩过和消息体格式之类的，只要上下游都约定好了，互相都认就可以了，这就是所谓的**协议。**
 
@@ -88,7 +88,7 @@ fd = socket(AF_INET,SOCK_STREAM,0);
 
 我们回过头来看网络的分层图。
 
-![四层网络协议](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/04b603b5bd2443209233deea87816161~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![四层网络协议](img/dea756ded9c20f2a06905d73e33e08c9_MD5.webp)
 
 **TCP是传输层的协议**，而基于TCP造出来的HTTP和**各类**RPC协议，它们都只是定义了不同消息格式的**应用层协议**而已。
 
@@ -112,7 +112,7 @@ fd = socket(AF_INET,SOCK_STREAM,0);
 复制代码
 ```
 
-![RPC可以像调用本地方法那样调用远端方法](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/761da6c30af244e19b1c44075d8b4254~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![RPC可以像调用本地方法那样调用远端方法](img/bc5157db6567c2b300e6be034bc8c899_MD5.webp)
 
 基于这个思路，大佬们造出了非常多款式的RPC协议，比如比较有名的`gRPC`，`thrift`。
 
@@ -160,7 +160,7 @@ fd = socket(AF_INET,SOCK_STREAM,0);
 
 而**RPC**协议，也跟HTTP类似，也是通过建立TCP长链接进行数据交互，但不同的地方在于，RPC协议一般还会再建个**连接池**，在请求量大的时候，建立多条连接放在池内，要发数据的时候就从池里取一条连接出来，**用完放回去，下次再复用**，可以说非常环保。
 
-![connection_pool](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/72fcad064c9e4103a11f1a2d579f79b2~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![connection_pool](img/b333959adefbfbdb02bcc68f71c62d18_MD5.webp)
 
 **由于连接池有利于提升网络请求性能，所以不少编程语言的网络库里都会给HTTP加个连接池**，比如**go**就是这么干的。
 
@@ -190,7 +190,7 @@ fd = socket(AF_INET,SOCK_STREAM,0);
 
 ====缺一张图片====
 
-![RPC原理](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/edb050d383c644e895e505253f1c4d90~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+![RPC原理](img/7395d939c7169e87ee05837b16f2be34_MD5.webp)
 
 当然上面说的HTTP，其实**特指的是现在主流使用的HTTP1.1**，`HTTP2`在前者的基础上做了很多改进，所以**性能可能比很多RPC协议还要好**，甚至连`gRPC`底层都直接用的`HTTP2`。
 

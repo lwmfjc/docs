@@ -23,7 +23,7 @@ SqlSession在一开始就介绍过是高级接口，类似于JDBC操作的connec
 
 
 
-![img](https:////upload-images.jianshu.io/upload_images/1183379-d5d3c96bed2f4352.png?imageMogr2/auto-orient/strip|imageView2/2/w/413/format/webp)
+![img](img/6aa056bf515cfd3c4bc96542f4b99250_MD5.webp)
 
 SqlSession的方法
 
@@ -31,7 +31,7 @@ SqlSession的方法
 
 SqlSessionFactoryBuilder的build()方法使用建造者模式创建了SqlSessionFactory接口对象，SqlSessionFactory接口的默认实现是DefaultSqlSessionFactory。SqlSessionFactory使用实例工厂模式来创建SqlSession对象。SqlSession,SqlSessionFactory,SqlSessionFactoryBuilder的关系如下(图画得有点丑...)：
 
-![img](https:////upload-images.jianshu.io/upload_images/1183379-8e031424b84ca308.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![img](img/dda341fb9f426f5b159a42798973cbba_MD5.webp)
 
 类图
 

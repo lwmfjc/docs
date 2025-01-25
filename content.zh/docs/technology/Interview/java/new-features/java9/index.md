@@ -27,7 +27,7 @@ JShell 是 Java 9 新增的一个实用工具。为 Java 提供了类似于 Pyth
 
 在 JShell 中可以直接输入表达式并查看其执行结果。
 
-![](https://oss.javaguide.cn/java-guide-blog/image-20210816083417616.png)
+![](img/4a81bfaf43f8301bfec7ce63e2ac1867_MD5.jpg)
 
 ==JShell 为我们带来了哪些好处呢？==
 
@@ -54,7 +54,7 @@ JShell 是 Java 9 新增的一个实用工具。为 Java 提供了类似于 Pyth
 
 任意一个 jar 文件，只要加上一个模块描述文件（`module-info.java`），就可以升级为一个模块。
 
-![](https://oss.javaguide.cn/java-guide-blog/module-structure.png)
+![](img/e97f61bcb43fa7551abe8ee686a9bbc8_MD5.jpg)
 
 在引入了模块系统之后，JDK 被重新组织成 94 个模块。Java 应用可以通过新增的 ==[jlink](http://openjdk.java.net/jeps/282) 工具== (Jlink 是随 Java 9 一起发布的新命令行工具。它允许开发人员为基于模块的 Java 应用程序创建自己的轻量级、定制的 JRE)，创建出只包含所依赖的 JDK 模块的自定义运行时镜像。这样可以极大的减少 Java 运行时环境的大小。
 
@@ -226,7 +226,7 @@ System.out.println(currentProcess.info());
 
 `ProcessHandle` 接口概览：
 
-![](https://oss.javaguide.cn/java-guide-blog/image-20210816104614414.png)
+![](img/4bd2495de22e48d13593454cacea621b_MD5.jpg)
 
 ## 响应式流 （ Reactive Streams ）
 

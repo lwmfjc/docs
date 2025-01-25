@@ -9,7 +9,7 @@ tag:
 
 总的来说，网络通信模型可以用下图来表示，也就是大家只要熟记网络结构五层模型，按照这个体系，很多知识点都能顺出来了。访问网页的过程也是如此。
 
-![](https://oss.javaguide.cn/github/javaguide/cs-basics/network/five-layers.png)
+![](img/c60c53c126858a348fa02abf9f5c4a2e_MD5.jpg)
 
 开始之前，我们先简单过一遍完整流程：
 
@@ -31,7 +31,7 @@ URL（Uniform Resource Locators），即统一资源定位器。网络上的所�
 
 ### URL 的组成结构
 
-![URL的组成结构](https://oss.javaguide.cn/github/javaguide/cs-basics/network/URL-parts.png)
+![URL的组成结构](img/4b4f96d04b53e97940b432c7d90e87e2_MD5.jpg)
 
 1. 协议。URL 的前缀通常表示了该网址采用了何种应用层协议，通常有两种——HTTP 和 HTTPS。当然也有一些不太常见的前缀头，比如文件传输时用到的`ftp:`。
 2. 域名。域名便是访问网址的通用名，这里也有可能是网址的 IP 地址，域名可以理解为 IP 地址的可读版本，毕竟绝大部分人都不会选择记住一个网址的 IP 地址。

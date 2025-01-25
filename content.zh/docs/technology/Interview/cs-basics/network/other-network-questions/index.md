@@ -17,7 +17,7 @@ tag:
 
 ==OSI 七层模型== 是国际标准化组织提出的一个网络分层模型，其大体结构以及每一层提供的功能如下图所示：
 
-![OSI 七层模型](https://oss.javaguide.cn/github/javaguide/cs-basics/network/osi-7-model.png)
+![OSI 七层模型](img/3b5c8b835bdbf278e384c91c9bc66560_MD5.jpg)
 
 每一层都专注做一件事情，并且每一层都需要使用下一层提供的功能比如传输层需要使用网络层提供的路由和寻址功能，这样传输层才知道把数据传输到哪里去。
 
@@ -25,7 +25,7 @@ tag:
 
 上面这种图可能比较抽象，再来一个比较生动的图片。下面这个图片是我在国外的一个网站上看到的，非常赞！
 
-![osi七层模型2](https://oss.javaguide.cn/github/javaguide/osi七层模型2.png)
+![osi七层模型2](img/74247e8c92c7098c131e918e224eda90_MD5.jpg)
 
 #### TCP/IP 四层模型是什么？每一层的作用是什么？
 
@@ -38,7 +38,7 @@ tag:
 
 需要注意的是，我们并不能将 TCP/IP 四层模型 和 OSI 七层模型完全精确地匹配起来，不过可以简单将两者对应起来，如下图所示：
 
-![TCP/IP 四层模型](https://oss.javaguide.cn/github/javaguide/cs-basics/network/tcp-ip-4-model.png)
+![TCP/IP 四层模型](img/b2c2ed9e75219083ed2290f6d2c1e65f_MD5.jpg)
 
 关于每一层作用的详细介绍，请看 [OSI 和 TCP/IP 网络分层模型详解（基础）](./osi-and-tcp-ip-model.md) 这篇文章。
 
@@ -66,7 +66,7 @@ tag:
 
 #### 应用层有哪些常见的协议？
 
-![应用层常见协议](https://oss.javaguide.cn/github/javaguide/cs-basics/network/application-layer-protocol.png)
+![应用层常见协议](img/c5648dc668164a695bc75b73f1c5b100_MD5.jpg)
 
 - ==HTTP（Hypertext Transfer Protocol，超文本传输协议）==：基于 TCP 协议，是一种用于传输超文本和多媒体内容的协议，主要是为 Web 浏览器与 Web 服务器之间的通信而设计的。当我们使用浏览器浏览网页的时候，我们网页就是通过 HTTP 请求进行加载的。
 - ==SMTP（Simple Mail Transfer Protocol，简单邮件发送协议）==：基于 TCP 协议，是一种用于发送电子邮件的协议。注意 ⚠️：SMTP 协议只负责邮件的发送，而不是接收。要从邮件服务器接收邮件，需要使用 POP3 或 IMAP 协议。
@@ -81,7 +81,7 @@ tag:
 
 #### 传输层有哪些常见的协议？
 
-![传输层常见协议](https://oss.javaguide.cn/github/javaguide/cs-basics/network/transport-layer-protocol.png)
+![传输层常见协议](img/c75ca23181e9fa6534451ac7dfab55e6_MD5.jpg)
 
 - ==TCP（Transmission Control Protocol，传输控制协议 ）==：提供 ==面向连接== 的，==可靠== 的数据传输服务。
 - ==UDP（User Datagram Protocol，用户数据协议）==：提供 ==无连接== 的，==尽最大努力== 的数据传输服务（不保证数据传输的可靠性），简单高效。
@@ -106,7 +106,7 @@ tag:
 
 先来看一张图（来源于《图解 HTTP》）：
 
-![常见 HTTP 状态码](https://oss.javaguide.cn/github/javaguide/url%E8%BE%93%E5%85%A5%E5%88%B0%E5%B1%95%E7%A4%BA%E5%87%BA%E6%9D%A5%E7%9A%84%E8%BF%87%E7%A8%8B.jpg)  
+![常见 HTTP 状态码](img/cb8516e859860b7b2e7f29e9fd2d2836_MD5.jpg)  
   
 
 上图有一个错误需要注意：是 OSPF 不是 OPSF。 OSPF（Open Shortest Path First，ospf）开放最短路径优先协议, 是由 Internet 工程任务组开发的路由选择协议
@@ -127,7 +127,7 @@ tag:
 
 HTTP 状态码用于描述 HTTP 请求的结果，比如 2xx 就代表请求被成功处理。
 
-![常见 HTTP 状态码](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http-status-code.png)
+![常见 HTTP 状态码](img/4378448f26ba098a5b77de81a4852363_MD5.jpg)
 
 关于 HTTP 状态码更详细的总结，可以看我写的这篇文章：[HTTP 常见状态码总结（应用层）](./http-status-codes.md)。
 
@@ -170,7 +170,7 @@ HTTP 状态码用于描述 HTTP 请求的结果，比如 2xx 就代表请求被�
 
 ### HTTP 和 HTTPS 有什么区别？（重要）
 
-![HTTP 和 HTTPS 对比](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http-vs-https.png)
+![HTTP 和 HTTPS 对比](img/00af4c2fa3a08618a8a7a3a780d730e7_MD5.jpg)
 
 - ==端口号==：HTTP 默认是 80，HTTPS 默认是 443。
 - ==URL 前缀==：HTTP 的 URL 前缀是 `http://`，HTTPS 的 URL 前缀是 `https://`。
@@ -181,7 +181,7 @@ HTTP 状态码用于描述 HTTP 请求的结果，比如 2xx 就代表请求被�
 
 ### HTTP/1.0 和 HTTP/1.1 有什么区别？
 
-![HTTP/1.0 和 HTTP/1.1 对比](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http1.0-vs-http1.1.png)
+![HTTP/1.0 和 HTTP/1.1 对比](img/c3d21672fd44cb63dd308f9ebf7fccf3_MD5.jpg)
 
 - ==连接方式== : HTTP/1.0 为短连接，HTTP/1.1 支持长连接。HTTP 协议的长连接和短连接，实质上是 TCP 协议的长连接和短连接。
 - ==状态响应码== : HTTP/1.1 中新加入了大量的状态码，光是错误响应状态码就新增了 24 种。比如说，`100 (Continue)`——在请求大资源前的预热请求，`206 (Partial Content)`——范围请求的标识码，`409 (Conflict)`——请求与当前资源的规定冲突，`410 (Gone)`——资源已被永久转移，而且没有任何已知的转发地址。
@@ -193,7 +193,7 @@ HTTP 状态码用于描述 HTTP 请求的结果，比如 2xx 就代表请求被�
 
 ### HTTP/1.1 和 HTTP/2.0 有什么区别？
 
-![HTTP/1.0 和 HTTP/1.1 对比](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http1.1-vs-http2.0.png)
+![HTTP/1.0 和 HTTP/1.1 对比](img/0a391029db2eb4175789c829f02de42a_MD5.jpg)
 
 - ==多路复用（Multiplexing）==：HTTP/2.0 在同一连接上可以同时传输多个请求和响应（可以看作是 HTTP/1.1 中长链接的升级版本），互不干扰。HTTP/1.1 则使用串行方式，每个请求和响应都需要独立的连接，而浏览器为了控制资源会有 6-8 个 TCP 连接的限制。。这使得 HTTP/2.0 在处理多个请求时更加高效，减少了网络延迟和提高了性能。
 - ==二进制帧（Binary Frames）==：HTTP/2.0 使用二进制帧进行数据传输，而 HTTP/1.1 则使用文本格式的报文。二进制帧更加紧凑和高效，减少了传输的数据量和带宽消耗。
@@ -202,13 +202,13 @@ HTTP 状态码用于描述 HTTP 请求的结果，比如 2xx 就代表请求被�
 
 HTTP/2.0 多路复用效果图（图源： [HTTP/2 For Web Developers](https://blog.cloudflare.com/http-2-for-web-developers/)）：
 
-![HTTP/2 Multiplexing](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http2.0-multiplexing.png)
+![HTTP/2 Multiplexing](img/44b2c94a2d9371a85e0e99c27a546af1_MD5.jpg)
 
 可以看到，HTTP/2.0 的多路复用使得不同的请求可以共用一个 TCP 连接，避免建立多个连接带来不必要的额外开销，而 HTTP/1.1 中的每个请求都会建立一个单独的连接
 
 ### HTTP/2.0 和 HTTP/3.0 有什么区别？
 
-![HTTP/2.0 和 HTTP/3.0 对比](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http2.0-vs-http3.0.png)
+![HTTP/2.0 和 HTTP/3.0 对比](img/139fe9e6cd71ebb1186a04d9515378a2_MD5.jpg)
 
 - ==传输协议==：HTTP/2.0 是基于 TCP 协议实现的，HTTP/3.0 新增了 QUIC（Quick UDP Internet Connections） 协议来实现可靠的传输，提供与 TLS/SSL 相当的安全性，具有较低的连接和传输延迟。你可以将 QUIC 看作是 UDP 的升级版本，在其基础上新增了很多功能比如加密、重传等等。HTTP/3.0 之前名为 HTTP-over-QUIC，从这个名字中我们也可以发现，HTTP/3 最大的改造就是使用了 QUIC。
 - ==连接建立==：HTTP/2.0 需要经过经典的 TCP 三次握手过程（由于安全的 HTTPS 连接建立还需要 TLS 握手，共需要大约 3 个 RTT）。由于 QUIC 协议的特性（TLS 1.3，TLS 1.3 除了支持 1 个 RTT 的握手，还支持 0 个 RTT 的握手）连接建立仅需 0-RTT 或者 1-RTT。这意味着 QUIC 在最佳情况下不需要任何的额外往返时间就可以建立新连接。
@@ -220,11 +220,11 @@ HTTP/2.0 多路复用效果图（图源： [HTTP/2 For Web Developers](https://b
 
 HTTP/1.0、HTTP/2.0 和 HTTP/3.0 的协议栈比较：
 
-![http-3-implementation](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http-3-implementation.png)
+![http-3-implementation](img/0e9966990e08a3d9551897780272d10b_MD5.jpg)
 
 下图是一个更详细的 HTTP/2.0 和 HTTP/3.0 对比图：
 
-![HTTP/2.0 和 HTTP/3.0 详细对比图](https://oss.javaguide.cn/github/javaguide/cs-basics/network/http2-and-http3-stacks-comparison.png)
+![HTTP/2.0 和 HTTP/3.0 详细对比图](img/9de3c71047d640f027759e85ba7f1099_MD5.jpg)
 
 从上图可以看出：
 
@@ -258,7 +258,7 @@ URI 的作用像身份证号一样，URL 的作用更像家庭住址一样。URL
 
 这个问题在知乎上被讨论的挺火热的，地址：<https://www.zhihu.com/question/28586791> 。
 
-![](https://static001.geekbang.org/infoq/04/0454a5fff1437c32754f1dfcc3881148.png)
+![](img/9c2f0f678005fb45aa721852f31ee6ad_MD5.jpg)
 
 GET 和 POST 是 HTTP 协议中两种常用的请求方法，它们在不同的场景和目的下有不同的特点和用法。一般来说，可以从以下几个方面来区分二者（重点搞清两者在语义上的区别即可）：
 
@@ -280,7 +280,7 @@ WebSocket 协议在 2008 年诞生，2011 年成为国际标准，几乎所有�
 
 WebSocket 协议本质上是应用层的协议，用于弥补 HTTP 协议在持久通信能力上的不足。客户端和服务器仅需一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。
 
-![Websocket 示意图](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192394.png)
+![Websocket 示意图](img/7a697d653cb38602ca1b25c2eca17c2b_MD5.jpg)
 
 下面是 WebSocket 的常见应用场景：
 
@@ -383,7 +383,7 @@ PING 用到的 ICMP Echo Request（类型为 8 ） 和 ICMP Echo Reply（类型�
 
 DNS（Domain Name System）域名管理系统，是当用户使用浏览器访问网址之后，使用的第一个重要协议。DNS 要解决的是==域名和 IP 地址的映射问题==。
 
-![DNS:域名系统](https://oss.javaguide.cn/github/javaguide/cs-basics/network/dns-overview.png)
+![DNS:域名系统](img/505661288b24330a0eabbaf9dfcc577f_MD5.jpg)
 
 在一台电脑上，可能存在浏览器 DNS 缓存，操作系统 DNS 缓存，路由器 DNS 缓存。如果以上缓存都查询不到，那么 DNS 就闪亮登场了。
 

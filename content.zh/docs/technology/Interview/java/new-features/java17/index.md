@@ -15,7 +15,7 @@ Java 17 在 2021 年 9 月 14 日正式发布，是一个长期支持（LTS）�
 
 17 最多可以支持到 2029 年 9 月份。
 
-![](https://oss.javaguide.cn/github/javaguide/java/new-features/4c1611fad59449edbbd6e233690e9fa7.png)
+![](img/88a1899b5fada78807454db01ed73511_MD5.jpg)
 
 Java 17 将是继 Java 8 以来最重要的长期支持（LTS）版本，是 Java 社区八年努力的成果。Spring 6.x 和 Spring Boot 3.x 最低支持的就是 Java 17。
 

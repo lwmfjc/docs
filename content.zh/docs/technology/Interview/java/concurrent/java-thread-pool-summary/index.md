@@ -46,7 +46,7 @@ tag:
 
 如下图所示，包括任务执行机制的核心接口 ==`Executor`== ，以及继承自 `Executor` 接口的 ==`ExecutorService` 接口。`ThreadPoolExecutor`== 和 ==`ScheduledThreadPoolExecutor`== 这两个关键类实现了 ==`ExecutorService`== 接口。
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/executor-class-diagram.png)
+![](img/160ba0206fbb01ac6c2fa3a99cafc290_MD5.jpg)
 
 这里提了很多底层的类关系，但是，实际上我们需要更多关注的是 `ThreadPoolExecutor` 这个类，这个类在我们实际使用线程池的过程中，使用频率还是非常高的。
 
@@ -136,7 +136,7 @@ public class ScheduledThreadPoolExecutor
 
 下面这张图可以加深你对线程池中各个参数的相互关系的理解（图片来源：《Java 性能调优实战》）：
 
-![线程池各个参数的关系](https://oss.javaguide.cn/github/javaguide/java/concurrent/relationship-between-thread-pool-parameters.png)
+![线程池各个参数的关系](img/62cbb0942b83d34464137a76c45378b9_MD5.jpg)
 
 ==`ThreadPoolExecutor` 拒绝策略定义:==
 
@@ -175,7 +175,7 @@ public static class CallerRunsPolicy implements RejectedExecutionHandler {
 
 `Executors`工具类提供的创建线程池的方法如下图所示：
 
-![](https://oss.javaguide.cn/github/javaguide/java/concurrent/executors-new-thread-pool-methods.png)
+![](img/2d03d022f896b5d27136f0e37e41a961_MD5.jpg)
 
 可以看出，通过`Executors`工具类可以创建多种类型的线程池，包括：
 
@@ -422,7 +422,7 @@ Finished all threads  // 任务全部执行完了才会跳出来，因为executo
 3. 如果向任务队列投放任务失败（任务队列已经满了），但是当前运行的线程数是小于最大线程数的，就新建一个线程来执行任务。
 4. 如果当前运行的线程数已经等同于最大线程数了，新建线程将会使当前运行的线程超出最大线程数，那么当前任务会被拒绝，拒绝策略会调用`RejectedExecutionHandler.rejectedExecution()`方法。
 
-![图解线程池实现原理](https://oss.javaguide.cn/github/javaguide/java/concurrent/thread-pool-principle.png)
+![图解线程池实现原理](img/40be90abefbdc13abadda0ee1176376c_MD5.jpg)
 
 在 `execute` 方法中，多次调用 `addWorker` 方法。`addWorker` 这个方法主要用来创建新的工作线程，如果返回 true 说明创建和启动工作线程成功，否则的话返回的就是 false。
 

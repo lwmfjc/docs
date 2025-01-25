@@ -50,7 +50,7 @@ System.out.println(a == b);// false
 
 《阿里巴巴 Java 开发手册》中提到：==浮点数之间的等值判断，基本数据类型不能用 == 来比较，包装数据类型不能用 equals 来判断。==
 
-![](https://oss.javaguide.cn/javaguide/image-20211213101646884.png)
+![](img/4f9b40903977d5639ccca61f4bb298ac_MD5.jpg)
 
 具体原因我们在上面已经详细介绍了，这里就不多提了。
 
@@ -75,7 +75,7 @@ System.out.println(x.compareTo(y));// 0
 
 《阿里巴巴 Java 开发手册》对这部分内容也有提到，如下图所示。
 
-![](https://oss.javaguide.cn/javaguide/image-20211213102222601.png)
+![](img/d855f697384e229bc91f5a9f22c82f88_MD5.jpg)
 
 ### 加减乘除
 
@@ -146,7 +146,7 @@ System.out.println(n);// 1.255
 
 《阿里巴巴 Java 开发手册》中提到：
 
-![](https://oss.javaguide.cn/github/javaguide/java/basis/image-20220714161315993.png)
+![](img/b3a373d6a4e2bca22bb38bab8002b900_MD5.jpg)
 
 `BigDecimal` 使用 `equals()` 方法进行等值比较出现问题的代码示例：
 
@@ -160,7 +160,7 @@ System.out.println(a.equals(b));//false
 
 1.0 的 scale 是 1，1 的 scale 是 0，因此 `a.equals(b)` 的结果是 false。
 
-![](https://oss.javaguide.cn/github/javaguide/java/basis/image-20220714164706390.png)
+![](img/4226937ee3d5988d444473c69046db34_MD5.jpg)
 
 `compareTo()` 方法可以比较两个 `BigDecimal` 的值，如果相等就返回 0，如果第 1 个数比第 2 个数大则返回 1，反之返回-1。
 
@@ -357,7 +357,7 @@ public class BigDecimalUtil {
 
 相关 issue：[建议对保留规则设置为 RoundingMode.HALF_EVEN,即四舍六入五成双,#2129](https://github.com/Snailclimb/JavaGuide/issues/2129) 。
 
-![RoundingMode.HALF_EVEN](https://oss.javaguide.cn/github/javaguide/java/basis/RoundingMode.HALF_EVEN.png)
+![RoundingMode.HALF_EVEN](img/48b4044308e28bc9d1b1b56eb22a508f_MD5.jpg)
 
 ## 总结
 

@@ -12,7 +12,7 @@ head:
 
 ==常见 SQL 优化手段总结== 相关的内容为我的[知识星球](https://javaguide.cn/about-the-author/zhishixingqiu-two-years.html)（点击链接即可查看详细介绍以及加入方法）专属内容，已经整理到了[《Java 面试指北》](https://javaguide.cn/zhuanlan/java-mian-shi-zhi-bei.html)中。
 
-![](https://oss.javaguide.cn/javamianshizhibei/sql-optimization.png)
+![](img/bceabad9a0eb099b5018f196801dad55_MD5.jpg)
 
 
 

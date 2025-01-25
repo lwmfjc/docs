@@ -32,7 +32,7 @@ tag:
 
 共识算法允许一组节点像一个整体一样一起工作，即使其中的一些节点出现故障也能够继续工作下去，其正确性主要是源于复制状态机的性质：一组`Server`的状态机计算相同状态的副本，即使有一部分的`Server`宕机了它们仍然能够继续运行。
 
-![rsm-architecture.png](https://oss.javaguide.cn/github/javaguide/paxos-rsm-architecture.png)
+![rsm-architecture.png](img/e53237d8af56aa6747ea8c2520070fbd_MD5.jpg)
 
 `图-1 复制状态机架构`
 
@@ -60,13 +60,13 @@ tag:
 
 在正常的情况下，只有一个服务器是 Leader，剩下的服务器是 Follower。Follower 是被动的，它们不会发送任何请求，只是响应来自 Leader 和 Candidate 的请求。
 
-![](https://oss.javaguide.cn/github/javaguide/paxos-server-state.png)
+![](img/9711f00f8bebdfedfc1ae6d756599619_MD5.jpg)
 
 `图-2：服务器的状态`
 
 ### 2.2 任期
 
-![](https://oss.javaguide.cn/github/javaguide/paxos-term.png)
+![](img/e7369ed560c605d43d3a61938dd9b374_MD5.jpg)
 
 `图-3：任期`
 

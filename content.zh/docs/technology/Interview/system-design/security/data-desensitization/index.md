@@ -81,7 +81,7 @@ Hutool 一个 Java 基础工具类，对文件、流、加密解密、转码、�
 
 Hutool 提供的脱敏方法如下图所示：
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/security/2023-08-01-10-2119fnVCIDozqHgRGx.png)
+![](img/2ee8f63bd78235d0630c02be91d11c5d_MD5.jpg)
 
 注意：Hutool 脱敏是通过 \* 来代替敏感信息的，具体实现是在 StrUtil.hide 方法中，如果我们想要自定义隐藏符号，则可以把 Hutool 的源码拷出来，重新实现即可。
 
@@ -345,7 +345,7 @@ public class TestController {
 }
 ```
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/security/2023-08-02-16-497DdCBy8vbf2D69g.png)
+![](img/82b42876c66f7775fa2e18f7d3ab5a69_MD5.jpg)
 
 可以看到我们成功实现了数据脱敏。
 

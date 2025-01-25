@@ -28,7 +28,7 @@ Bitmap 存储的是连续的二进制数字（0 和 1），通过 Bitmap, 只需
 
 你可以将 Bitmap 看作是一个存储二进制数字（0 和 1）的数组，数组中每个元素的下标叫做 offset（偏移量）。
 
-![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220720194154133.png)
+![](img/65f62c49cd7232d6f05f0e86da37c83e_MD5.jpg)
 
 ### 常用命令
 
@@ -78,11 +78,11 @@ Redis 提供的 HyperLogLog 占用空间非常非常小，只需要 12k 的空�
 
 Redis 官方文档中有对应的详细说明：
 
-![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220721091424563.png)
+![](img/3c23659331daa4a918251765d1b8062b_MD5.jpg)
 
 基数计数概率算法为了节省内存并不会直接存储元数据，而是通过一定的概率统计方法预估基数值（集合中包含元素的个数）。因此， HyperLogLog 的计数结果并不是一个精确值，存在一定的误差（标准误差为 `0.81%` ）。
 
-![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220720194154133.png)
+![](img/65f62c49cd7232d6f05f0e86da37c83e_MD5.jpg)
 
 HyperLogLog 的使用非常简单，但原理非常复杂。HyperLogLog 的原理以及在 Redis 中的实现可以看这篇文章：[HyperLogLog 算法的原理讲解以及 Redis 是如何应用它的](https://juejin.cn/post/6844903785744056333) 。
 
@@ -136,7 +136,7 @@ Geospatial index（地理空间索引，简称 GEO） 主要用于存储地理�
 
 通过 GEO 我们可以轻松实现两个位置距离的计算、获取指定位置附近的元素等功能。
 
-![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220720194359494.png)
+![](img/24f4425d819fcb0e6307d8bc12b8c130_MD5.jpg)
 
 ### 常用命令
 
@@ -164,7 +164,7 @@ Geospatial index（地理空间索引，简称 GEO） 主要用于存储地理�
 
 GEO 中存储的地理位置信息的经纬度数据通过 GeoHash 算法转换成了一个整数，这个整数作为 Sorted Set 的 score(权重参数)使用。
 
-![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220721201545147.png)
+![](img/f96d3684b522333e00baf25c47992c37_MD5.jpg)
 
 ==获取指定位置范围内的其他元素==：
 

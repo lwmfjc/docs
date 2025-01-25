@@ -25,11 +25,11 @@ category: 分布式
 
 这个时候就需要生成==分布式 ID==了。
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/id-after-the-sub-table-not-conflict.png)
+![](img/669c5bb39544aa6fc415922694a97ebd_MD5.jpg)
 
 ### 分布式 ID 需要满足哪些要求?
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/distributed-id-requirements.png)
+![](img/92d8116df9d9a48acee30afb62b3db4a_MD5.jpg)
 
 分布式 ID 作为分布式系统中必不可少的一环，很多地方都要用到分布式 ID。
 
@@ -55,7 +55,7 @@ category: 分布式
 
 这种方式就比较简单直白了，就是通过关系型数据库的自增主键产生来唯一的 ID。
 
-![数据库主键自增](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/the-primary-key-of-the-database-increases-automatically.png)
+![数据库主键自增](img/0bb876d3aa7a0e309d44584a9f972ecd_MD5.jpg)
 
 以 MySQL 举例，我们通过下面的方式即可。
 
@@ -117,7 +117,7 @@ CREATE TABLE `sequence_id_generator` (
 
 `current_max_id` 字段和`step`字段主要用于获取批量 ID，获取的批量 id 为：`current_max_id ~ current_max_id+step`。
 
-![数据库号段模式](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/database-number-segment-mode.png)
+![数据库号段模式](img/a2887c2604903808cbf42e9f64edba70_MD5.jpg)
 
 `version` 字段主要用于解决并发问题（乐观锁）,`biz_type` 主要用于表示业务类型。
 
@@ -167,7 +167,7 @@ id current_max_id step version biz_type
 
 #### NoSQL
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/nosql-distributed-id.png)
+![](img/ce2049837b1542523990f8ee5f2c00fd_MD5.jpg)
 
 一般情况下，NoSQL 方案使用 Redis 多一些。我们通过 Redis 的 `incr` 命令即可实现对 id 原子顺序递增。
 
@@ -195,7 +195,7 @@ OK
 
 除了 Redis 之外，MongoDB ObjectId 经常也会被拿来当做分布式 ID 的解决方案。
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/mongodb9-objectId-distributed-id.png)
+![](img/64baacc238b9346656b9d5dc6219c2ff_MD5.jpg)
 
 MongoDB ObjectId 一共需要 12 个字节存储：
 
@@ -224,7 +224,7 @@ UUID.randomUUID()
 
 [RFC 4122](https://tools.ietf.org/html/rfc4122) 中关于 UUID 的示例是这样的：
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/rfc-4122-uuid.png)
+![](img/ba4e5eb8c32d5f6f712b36e3dc3b56bc_MD5.jpg)
 
 我们这里重点关注一下这个 Version(版本)，不同的版本对应的 UUID 的生成规则是不同的。
 
@@ -237,7 +237,7 @@ UUID.randomUUID()
 
 下面是 Version 1 版本下生成的 UUID 的示例：
 
-![Version 1 版本下生成的 UUID 的示例](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/version1-uuid.png)
+![Version 1 版本下生成的 UUID 的示例](img/c2c332b5a6cc073a3dbde1b21e1a2b49_MD5.jpg)
 
 JDK 中通过 `UUID` 的 `randomUUID()` 方法生成的 UUID 的版本默认为 4。
 
@@ -268,7 +268,7 @@ int version = uuid.version();// 4
 
 Snowflake 是 Twitter 开源的分布式 ID 生成算法。Snowflake 由 64 bit 的二进制数字组成，这 64bit 的二进制被分成了几部分，每一部分存储的数据都有特定的含义：
 
-![Snowflake 组成](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/snowflake-distributed-id-schematic-diagram.png)
+![Snowflake 组成](img/6e1c44fed114368a998ffe811fb189a4_MD5.jpg)
 
 - ==sign(1bit)==:符号位（标识正负），始终为 0，代表生成的 ID 为正数。
 - ==timestamp (41 bits)==:一共 41 位，用来表示时间戳，单位是毫秒，可以支撑 2 ^41 毫秒（约 69 年）
@@ -297,7 +297,7 @@ Snowflake 是 Twitter 开源的分布式 ID 生成算法。Snowflake 由 64 bit 
 
 不过，UidGenerator 对 Snowflake(雪花算法)进行了改进，生成的唯一 ID 组成如下：
 
-![UidGenerator 生成的 ID 组成](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/uidgenerator-distributed-id-schematic-diagram.png)
+![UidGenerator 生成的 ID 组成](img/18fdc6f5adcc0856a0d27c530d25791c_MD5.jpg)
 
 - ==sign(1bit)==:符号位（标识正负），始终为 0，代表生成的 ID 为正数。
 - ==delta seconds (28 bits)==:当前时间，相对于时间基点"2016-05-20"的增量值，单位：秒，最多可支持约 8.7 年
@@ -308,7 +308,7 @@ Snowflake 是 Twitter 开源的分布式 ID 生成算法。Snowflake 由 64 bit 
 
 UidGenerator 官方文档中的介绍如下：
 
-![](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/uidgenerator-introduction-official-documents.png)
+![](img/0c52a555bdbecc3798c6eb3ed6cce06e_MD5.jpg)
 
 自 18 年后，UidGenerator 就基本没有再维护了，我这里也不过多介绍。想要进一步了解的朋友，可以看看 [UidGenerator 的官方介绍](https://github.com/baidu/uid-generator/blob/master/README.zh_cn.md)。
 
@@ -322,7 +322,7 @@ Leaf 的诞生主要是为了解决美团各个业务线生成分布式 ID 的�
 
 Leaf 对原有的号段模式进行改进，比如它这里增加了双号段避免获取 DB 在获取号段的时候阻塞请求获取 ID 的线程。简单来说，就是我一个号段还没用完之前，我自己就主动提前去获取下一个号段（图片来自于美团官方文章：[《Leaf——美团点评分布式 ID 生成系统》](https://tech.meituan.com/2017/04/21/mt-leaf.html)）。
 
-![](https://oss.javaguide.cn/github/javaguide/distributed-system/distributed-id/leaf-principle.png)
+![](img/055a238eb3f0862fef2c6091c5fa3af1_MD5.jpg)
 
 根据项目 README 介绍，在 4C8G VM 基础上，通过公司 RPC 方式调用，QPS 压测结果近 5w/s，TP999 1ms。
 
@@ -334,7 +334,7 @@ Leaf 对原有的号段模式进行改进，比如它这里增加了双号段避
 
 为了搞清楚这个问题，我们先来看看基于数据库号段模式的简单架构方案。（图片来自于 Tinyid 的官方 wiki:[《Tinyid 原理介绍》](https://github.com/didi/tinyid/wiki/tinyid%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D)）
 
-![](https://oss.javaguide.cn/github/javaguide/distributed-system/distributed-id/tinyid-principle.png)
+![](img/c1bd65ec72c8e948f19e462047ecdcba_MD5.jpg)
 
 在这种架构模式下，我们通过 HTTP 请求向发号器服务申请唯一 ID。负载均衡 router 会把我们的请求送往其中的一台 tinyid-server。
 
@@ -347,7 +347,7 @@ Leaf 对原有的号段模式进行改进，比如它这里增加了双号段避
 
 Tinyid 的原理比较简单，其架构如下图所示：
 
-![](https://oss.javaguide.cn/github/javaguide/distributed-system/distributed-id/tinyid-architecture-design.png)
+![](img/f851eebdff6651446e7d5116e48f90c1_MD5.jpg)
 
 相比于基于数据库号段模式的简单架构方案，Tinyid 方案主要做了下面这些优化：
 
@@ -372,7 +372,7 @@ IdGenerator 有如下特点：
 
 IdGenerator 生成的唯一 ID 组成如下：
 
-![IdGenerator 生成的 ID 组成](https://oss.javaguide.cn/github/javaguide/system-design/distributed-system/idgenerator-distributed-id-schematic-diagram.png)
+![IdGenerator 生成的 ID 组成](img/1571cefd0bc56f2d15f1a36606c478f2_MD5.jpg)
 
 - ==timestamp (位数不固定)==:时间差，是生成 ID 时的系统时间减去 BaseTime(基础时间，也称基点时间、原点时间、纪元时间，默认值为 2020 年) 的总时间差（毫秒单位）。初始为 5bits，随着运行时间而增加。如果觉得默认值太老，你可以重新设置，不过要注意，这个值以后最好不变。
 - ==worker id (默认 6 bits)==:机器 id，机器码，最重要参数，是区分不同机器或不同应用的唯一 ID，最大值由 `WorkerIdBitLength`（默认 6）限定。如果一台服务器部署多个独立服务，需要为每个服务指定不同的 WorkerId。

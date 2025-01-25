@@ -15,7 +15,7 @@ tag:
 
 这 7 个阶段的顺序如下图所示：
 
-![一个类的完整生命周期](https://oss.javaguide.cn/github/javaguide/java/jvm/lifecycle-of-a-class.png)
+![一个类的完整生命周期](img/d0d0825c9136721be9761006405f1a07_MD5.jpg)
 
 ## 类加载过程
 
@@ -23,7 +23,7 @@ tag:
 
 系统加载 Class 类型的文件主要三步：==加载->连接->初始化==。连接过程又可分为三步：==验证->准备->解析==。
 
-![类加载过程](https://oss.javaguide.cn/github/javaguide/java/jvm/class-loading-procedure.png)
+![类加载过程](img/d17e67d0ec438d9f6533f3b04dfa411b_MD5.jpg)
 
 详见 [Java Virtual Machine Specification - 5.3. Creation and Loading](https://docs.oracle.com/javase/specs/jvms/se8/html/jvms-5.html#jvms-5.3 "Java Virtual Machine Specification - 5.3. Creation and Loading")。
 
@@ -62,7 +62,7 @@ tag:
 3. 字节码验证（程序语义检查）
 4. 符号引用验证（类的正确性检查）
 
-![验证阶段示意图](https://oss.javaguide.cn/github/javaguide/java/jvm/class-loading-process-verification.png)
+![验证阶段示意图](img/b56497ed0cb83b804ae10e5006ae31fc_MD5.jpg)
 
 文件格式验证这一阶段是基于该类的二进制字节流进行的，主要目的是保证输入的字节流能正确地解析并存储于方法区之内，格式上符合描述一个 Java 类型信息的要求。除了这一阶段之外，其余三个验证阶段都是基于方法区的存储结构上进行的，不会再直接读取、操作字节流了。
 
@@ -89,7 +89,7 @@ tag:
 
 ==基本数据类型的零值==：(图片来自《深入理解 Java 虚拟机》第 3 版 7.3.3 )
 
-![基本数据类型的零值](https://oss.javaguide.cn/github/javaguide/java/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E9%9B%B6%E5%80%BC.png)
+![基本数据类型的零值](img/48026feb3d3e9a0ec0dbc8ea32dd4a55_MD5.jpg)
 
 ### 解析
 
@@ -97,7 +97,7 @@ tag:
 
 《深入理解 Java 虚拟机》7.3.4 节第三版对符号引用和直接引用的解释如下：
 
-![符号引用和直接引用](https://oss.javaguide.cn/github/javaguide/java/jvm/symbol-reference-and-direct-reference.png)
+![符号引用和直接引用](img/c253f592570e655d758c19421c5c4677_MD5.jpg)
 
 举个例子：在程序执行方法时，系统需要明确知道这个方法所在的位置。Java 虚拟机为每个类都准备了一张方法表来存放类中所有的方法。当需要调用一个类的方法的时候，只要知道这个方法在方法表中的偏移量就可以直接调用该方法了。通过解析操作符号引用就可以直接转变为目标方法在类中方法表的位置，从而使得方法可以被调用。
 

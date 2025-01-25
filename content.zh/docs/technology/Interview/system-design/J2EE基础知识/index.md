@@ -44,7 +44,7 @@ Servlet 接口定义了 5 个方法，其中==前三个方法与 Servlet 生命�
 
 这个问题在知乎上被讨论的挺火热的，地址：<https://www.zhihu.com/question/28586791> 。
 
-![](https://static001.geekbang.org/infoq/04/0454a5fff1437c32754f1dfcc3881148.png)
+![](img/9c2f0f678005fb45aa721852f31ee6ad_MD5.jpg)
 
 GET 和 POST 是 HTTP 协议中两种常用的请求方法，它们在不同的场景和目的下有不同的特点和用法。一般来说，可以从以下几个方面来区分它们：
 
@@ -119,7 +119,7 @@ JSP 是一种 Servlet，但是与 HttpServlet 的工作方式不太一样。Http
 工程 JspLoginDemo 下有一个名为 login.jsp 的 Jsp 文件，把工程第一次部署到服务器上后访问这个 Jsp 文件，我们发现这个目录下多了下图这两个东东。
 .class 文件便是 JSP 对应的 Servlet。编译完毕后再运行 class 文件来响应客户端请求。以后客户端访问 login.jsp 的时候，Tomcat 将不再重新编译 JSP 文件，而是直接调用 class 文件来响应客户端请求。
 
-![JSP工作原理](https://oss.javaguide.cn/github/javaguide/1.jpeg)
+![JSP工作原理](img/3ac04609da8235010a9045e46d3a4e2c_MD5.jpg)
 
 由于 JSP 只会在客户端第一次请求的时候被编译 ，因此第一次请求 JSP 时会感觉比较慢，之后就会感觉快很多。如果把服务器保存的 class 文件删除，服务器也会重新编译 JSP。
 

@@ -11,7 +11,7 @@ tag:
 
 JDK 23 和 JDK 22 一样，这也是一个非 LTS（长期支持）版本，Oracle 仅提供六个月的支持。下一个长期支持版是 JDK 25，预计明年 9 月份发布。
 
-![](https://oss.javaguide.cn/github/javaguide/java/new-features/jdk8~jdk24.png)
+![](img/d3e2d52b5786c8fa2b486de7288b1385_MD5.webp)
 
 由于 JDK 22 和 JDK 23 重合的新特性较多，这里主要以 JDK 23 为主介绍，会补充 JDK 22 独有的一些特性。
 
@@ -32,7 +32,7 @@ JDK 23 一共有 12 个新特性：
 
 JDK 22 的新特性如下：
 
-![](https://oss.javaguide.cn/github/javaguide/java/new-features/jdk22-new-features.png)
+![](img/6911b57f8411b840dde1608f22ae1ece_MD5.jpg)
 
 其中，下面这 3 条新特性我会单独拎出来详细介绍一下：
 
@@ -120,7 +120,7 @@ byte[] newBytes = cf.build(classModel.thisClass().asSymbol(),
 
 Markdown 更简洁易读，减少了手动编写 HTML 的繁琐，同时保留了对 HTML 元素和 JavaDoc 标签的支持。这个增强旨在让 API 文档注释的编写和阅读变得更加轻松，同时不会影响现有注释的解释。Markdown 提供了对常见文档元素（如段落、列表、链接等）的简化表达方式，提升了文档注释的可维护性和开发者体验。
 
-![Markdown 文档注释](https://oss.javaguide.cn/github/javaguide/java/new-features/jep467-markdown-documentation-comments.png)
+![Markdown 文档注释](img/2a9902e69d0419f50a18fc4a7365c0db_MD5.jpg)
 
 ### JEP 469：向量 API（第八次孵化）
 

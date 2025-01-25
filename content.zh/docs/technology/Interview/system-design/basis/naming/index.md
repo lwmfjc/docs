@@ -19,11 +19,11 @@ category: 代码质量
 
 大名鼎鼎的《重构》的作者老马（Martin Fowler）曾经在[TwoHardThings](https://martinfowler.com/bliki/TwoHardThings.html)这篇文章中提到过 CS 领域有两大最难的事情：一是 ==缓存失效== ，一是 ==程序命名== 。
 
-![](https://oss.javaguide.cn/java-guide-blog/marting-naming.png)
+![](img/f83ab845f1c61c70b339cfbf000b1007_MD5.jpg)
 
 这个句话实际上也是老马引用别人的，类似的表达还有很多。比如分布式系统领域有两大最难的事情：一是 ==保证消息顺序== ，一是 ==严格一次传递== 。
 
-![](https://oss.javaguide.cn/java-guide-blog/20210629104844645.png)
+![](img/12cd9fc5b4cfb73f0fc757a848ab8df8_MD5.jpg)
 
 今天咱们就单独拎出 “==命名==” 来聊聊！
 
@@ -138,7 +138,7 @@ void shouldGet200StatusCodeWhenRequestIsValid() {
 
 建议项目文件夹名称使用串式命名法（kebab-case），比如 dubbo 项目的各个模块的命名是下面这样的。
 
-![](https://oss.javaguide.cn/java-guide-blog/dubbo-naming.png)
+![](img/245b116995d50179eb751c6df5eb7418_MD5.jpg)
 
 ## 常见命名规范
 

@@ -53,7 +53,7 @@ tag:
 
 更多书籍推荐建议大家看 [JavaGuide](https://javaguide.cn/books/) 这个网站上的书籍推荐，比较全面。
 
-![](https://oss.javaguide.cn/p3-juejin/62099c9b2fd24d3cb6511e49756f486b~tplv-k3u1fbpfcp-zoom-1.png)
+![](img/525bdd66c0169329bf5b0418b427de89_MD5.jpg)
 
 ### 教程推荐
 

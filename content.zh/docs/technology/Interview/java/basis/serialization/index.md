@@ -33,7 +33,7 @@ tag:
 
 综上：==序列化的主要目的是通过网络传输对象或者说是将对象存储到文件系统、数据库、内存中。==
 
-![](https://oss.javaguide.cn/github/javaguide/a478c74d-2c48-40ae-9374-87aacf05188c.png)
+![](img/0e01cb60c247264e0caf119279c0e152_MD5.jpg)
 
 {{< html >}}<p style="text-align:right;font-size:13px;color:gray">https://www.corejavaguru.com/java/serialization/interview-questions-1</p>{{< /html >}}
 
@@ -46,7 +46,7 @@ tag:
 3. 网络层
 4. 网络接口层
 
-![TCP/IP 四层模型](https://oss.javaguide.cn/github/javaguide/cs-basics/network/tcp-ip-4-model.png)
+![TCP/IP 四层模型](img/b2c2ed9e75219083ed2290f6d2c1e65f_MD5.jpg)
 
 如上图所示，OSI 七层协议模型中，表示层做的事情主要就是对应用层的用户数据进行处理转换为二进制流。反过来的话，就是将二进制流转换成应用层的用户数据。这不就对应的是序列化和反序列化么？
 
@@ -212,7 +212,7 @@ GitHub 地址：[https://github.com/protostuff/protostuff](https://github.com/pr
 
 Hessian 是一个轻量级的，自定义描述的二进制 RPC 协议。Hessian 是一个比较老的序列化实现了，并且同样也是跨语言的。
 
-![](https://oss.javaguide.cn/github/javaguide/8613ec4c-bde5-47bf-897e-99e0f90b9fa3.png)
+![](img/6b5c34c096c719860511f9d1a8c7a3a5_MD5.jpg)
 
 Dubbo2.x 默认启用的序列化方式是 Hessian2 ,但是，Dubbo 对 Hessian2 进行了修改，不过大体结构还是差不多。
 
@@ -220,7 +220,7 @@ Dubbo2.x 默认启用的序列化方式是 Hessian2 ,但是，Dubbo 对 Hessian2
 
 Kryo 是专门针对 Java 语言序列化方式并且性能非常好，如果你的应用是专门针对 Java 语言的话可以考虑使用，并且 Dubbo 官网的一篇文章中提到说推荐使用 Kryo 作为生产环境的序列化方式。(文章地址：<https://cn.dubbo.apache.org/zh-cn/docsv2.7/user/serialization/>）。
 
-![](https://oss.javaguide.cn/github/javaguide/java/569e541a-22b2-4846-aa07-0ad479f07440-20230814090158124.png)
+![](img/48cd82f822d3d6c6b49a17f12559fbbd_MD5.jpg)
 
 像 Protobuf、 ProtoStuff、hessian 这类都是跨语言的序列化方式，如果有跨语言需求的话可以考虑使用。
 

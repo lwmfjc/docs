@@ -54,7 +54,7 @@ head:
 
 你可以在 <https://mvnrepository.com/> 这个网站上找到几乎所有可用的构件，如果你的项目使用的是 Maven 作为构建工具，那这个网站你一定会经常接触。
 
-![Maven 仓库](https://oss.javaguide.cn/github/javaguide/tools/maven/mvnrepository.com.png)
+![Maven 仓库](img/960549411d3de6d5c9645b56fdbf7119_MD5.jpg)
 
 ## Maven 依赖
 
@@ -390,7 +390,7 @@ Maven 本质上是一个插件执行框架，所有的执行过程，都是由�
 
 本地默认插件路径: `${user.home}/.m2/repository/org/apache/maven/plugins`
 
-![](https://oss.javaguide.cn/github/javaguide/tools/maven/maven-plugins.png)
+![](img/57f2a466d9f8e043dcea22176b907a31_MD5.jpg)
 
 除了 Maven 自带的插件之外，还有一些三方提供的插件比如单测覆盖率插件 jacoco-maven-plugin、帮助开发检测代码中不合规范的地方的插件 maven-checkstyle-plugin、分析代码质量的 sonar-maven-plugin。并且，我们还可以自定义插件来满足自己的需求。
 
@@ -444,7 +444,7 @@ Maven 插件被分为下面两种类型：
 
 如下图所示，Dubbo 项目就被分成了多个子模块比如 dubbo-common（公共逻辑模块）、dubbo-remoting（远程通讯模块）、dubbo-rpc（远程调用模块）。
 
-![](https://oss.javaguide.cn/github/javaguide/tools/maven/dubbo-maven-multi-module.png)
+![](img/9774f35a01ca8337bf872c24ed5ceac0_MD5.jpg)
 
 ## 文章推荐
 

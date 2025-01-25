@@ -15,7 +15,7 @@ tag:
 
 ==Trie 树== 也称为字典树、单词查找树，哈希树的一种变种，通常被用于字符串匹配，用来解决在一组字符串集合中快速查找某个字符串的问题。像浏览器搜索的关键词提示就可以基于 Trie 树来做的。
 
-![浏览器 Trie 树效果展示](https://oss.javaguide.cn/github/javaguide/system-design/security/brower-trie.png)
+![浏览器 Trie 树效果展示](img/446d7acc36d037d255fd8b7820424a96_MD5.jpg)
 
 假如我们的敏感词库中有以下敏感词：
 
@@ -26,7 +26,7 @@ tag:
 
 我们构造出来的敏感词 Trie 树就是下面这样的：
 
-![敏感词 Trie 树](https://oss.javaguide.cn/github/javaguide/system-design/security/sensitive-word-trie.png)
+![敏感词 Trie 树](img/6c7c79aae1f44bf0164e1b0ae81d7c1d_MD5.jpg)
 
 当我们要查找对应的字符串“东京热”的话，我们会把这个字符串切割成单个的字符“东”、“京”、“热”，然后我们从 Trie 树的根节点开始匹配。
 
@@ -34,7 +34,7 @@ tag:
 
 [Apache Commons Collections](https://mvnrepository.com/artifact/org.apache.commons/commons-collections4) 这个库中就有 Trie 树实现：
 
-![Apache Commons Collections 中的 Trie 树实现](https://oss.javaguide.cn/github/javaguide/system-design/security/common-collections-trie.png)
+![Apache Commons Collections 中的 Trie 树实现](img/e3c76dea80395e59ebdd96a9c3375c0c_MD5.jpg)
 
 ```java
 Trie<String, String> trie = new PatriciaTrie<>();
@@ -68,7 +68,7 @@ AC 自动机算法使用 Trie 树来存放模式串的前缀，通过失败匹�
 
 [Hutool](https://hutool.cn/docs/#/dfa/%E6%A6%82%E8%BF%B0) 提供了 DFA 算法的实现：
 
-![Hutool 的 DFA 算法](https://oss.javaguide.cn/github/javaguide/system-design/security/hutool-dfa.png)
+![Hutool 的 DFA 算法](img/b6dc3ea470f0da2ccee0b51d2df72847_MD5.jpg)
 
 ```java
 WordTree wordTree = new WordTree();

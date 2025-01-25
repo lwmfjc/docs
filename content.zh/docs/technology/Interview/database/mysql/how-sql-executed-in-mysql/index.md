@@ -25,7 +25,7 @@ tag:
 - ==优化器：== 按照 MySQL 认为最优的方案去执行。
 - ==执行器：== 执行语句，然后从存储引擎返回数据。 -
 
-![](https://oss.javaguide.cn/javaguide/13526879-3037b144ed09eb88.png)
+![](img/36f1b6dccabc6d8a9be3c90b664afe6a_MD5.jpg)
 
 简单来说 MySQL 主要分为 Server 层和存储引擎层：
 

@@ -35,7 +35,7 @@ Leetcode 官方详细解答地址：
 我们使用变量来跟踪进位，并从包含最低有效位的表头开始模拟逐
 位相加的过程。
 
-![图1，对两数相加方法的可视化: 342 + 465 = 807， 每个结点都包含一个数字，并且数字按位逆序存储。](https://oss.javaguide.cn/github/javaguide/cs-basics/algorithms/34910956.jpg)
+![图1，对两数相加方法的可视化: 342 + 465 = 807， 每个结点都包含一个数字，并且数字按位逆序存储。](img/402be10d4d7679eb164cc4695b753def_MD5.jpg)
 
 ### Solution
 
@@ -83,7 +83,7 @@ public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
 > 剑指 offer:输入一个链表，反转链表后，输出链表的所有元素。
 
-![翻转链表](https://oss.javaguide.cn/github/javaguide/cs-basics/algorithms/81431871.jpg)
+![翻转链表](img/aa2dd05690cfa87fb7f1721da1274bab_MD5.jpg)
 
 ### 问题分析
 
@@ -249,7 +249,7 @@ public class Solution {
 
 我们注意到这个问题可以容易地简化成另一个问题：删除从列表开头数起的第 (L - n + 1)个结点，其中 L 是列表的长度。只要我们找到列表的长度 L，这个问题就很容易解决。
 
-![图 1. 删除列表中的第 L - n + 1 个元素](https://oss.javaguide.cn/github/javaguide/cs-basics/algorithms/94354387.jpg)
+![图 1. 删除列表中的第 L - n + 1 个元素](img/0aa05e8ebc8b84ba930a11b6e143f0ca_MD5.jpg)
 
 ### Solution
 

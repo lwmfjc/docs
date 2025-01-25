@@ -170,7 +170,7 @@ JWT 结构复杂（Header、Payload 和 Signature），包含了更多额外的�
 
 JWT 组成:
 
-![JWT 组成](https://oss.javaguide.cn/javaguide/system-design/jwt/jwt-composition.png)
+![JWT 组成](img/b3b9044e268944fa5691ff7c1d5419ce_MD5.jpg)
 
 JWT 示例：
 
