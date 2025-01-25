@@ -1,6 +1,10 @@
 ---
 title: 虚拟线程常见问题总结
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java并发
 ---

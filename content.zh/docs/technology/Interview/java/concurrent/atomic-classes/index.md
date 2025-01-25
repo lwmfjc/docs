@@ -1,6 +1,10 @@
 ---
 title: Atomic 原子类总结
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java并发
 ---

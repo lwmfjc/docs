@@ -1,6 +1,10 @@
 ---
 title: 系统设计常见面试题总结(付费)
-category: Java面试指北
+category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01面试指北
 icon: "design"
 ---
 

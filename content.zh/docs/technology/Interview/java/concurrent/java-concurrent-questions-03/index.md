@@ -1,6 +1,10 @@
 ---
 title: Java并发常见面试题总结（下）
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java并发
 head:

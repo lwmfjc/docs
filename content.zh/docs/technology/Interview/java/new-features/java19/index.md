@@ -1,6 +1,10 @@
 ---
 title: Java 19 新特性概览
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java新特性
 ---

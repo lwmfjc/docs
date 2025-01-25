@@ -1,6 +1,10 @@
 ---
 title: 大白话带你认识 JVM
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - JVM
 ---

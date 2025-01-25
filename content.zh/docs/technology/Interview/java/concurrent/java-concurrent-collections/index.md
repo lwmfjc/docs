@@ -1,6 +1,10 @@
 ---
 title: Java 常见并发容器总结
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java并发
 ---

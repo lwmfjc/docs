@@ -1,6 +1,10 @@
 ---
 title: PriorityQueue 源码分析（付费）
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java集合
 ---

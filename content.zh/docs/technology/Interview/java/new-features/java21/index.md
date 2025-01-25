@@ -1,6 +1,10 @@
 ---
 title: Java 21 新特性概览(重要)
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java新特性
 ---

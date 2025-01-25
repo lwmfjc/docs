@@ -1,6 +1,10 @@
 ---
 title: JVM垃圾回收详解（重点）
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - JVM
 ---

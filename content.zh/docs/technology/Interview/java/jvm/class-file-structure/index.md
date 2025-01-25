@@ -1,6 +1,10 @@
 ---
 title: 类文件结构详解
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - JVM
 ---

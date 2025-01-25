@@ -1,6 +1,10 @@
 ---
 title: Java集合常见面试题总结(上)
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java集合
 head:

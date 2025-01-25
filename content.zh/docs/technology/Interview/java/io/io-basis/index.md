@@ -1,6 +1,10 @@
 ---
 title: Java IO 基础知识总结
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java IO
   - Java基础

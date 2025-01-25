@@ -1,6 +1,10 @@
 ---
 title: Java IO 设计模式总结
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java IO
   - Java基础

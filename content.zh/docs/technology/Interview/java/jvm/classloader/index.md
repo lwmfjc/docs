@@ -1,6 +1,10 @@
 ---
 title: 类加载器详解（重点）
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - JVM
 ---

@@ -1,6 +1,10 @@
 ---
 title: Java SPI 机制详解
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java基础
 head:

@@ -1,6 +1,10 @@
 ---
 title: Java8 新特性实战
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java新特性
 ---

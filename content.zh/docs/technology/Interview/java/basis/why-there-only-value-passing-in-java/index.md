@@ -1,6 +1,10 @@
 ---
 title: Java 值传递详解
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - Java基础
 ---

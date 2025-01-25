@@ -1,6 +1,10 @@
 ---
 title: 最重要的JVM参数总结
 category: Java
+cssclasses:
+  - book01
+cssAttach:
+  - book01
 tag:
   - JVM
 ---
