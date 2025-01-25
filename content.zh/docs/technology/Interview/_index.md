@@ -10,7 +10,7 @@ weight: 20
 贡献指南    
 常见问题    
 # 面试准备  
-手把手教你如何准备Java面试(重要)    
+手把==手教你如何准==备Java面试(重要)    
 程序员简历编写指南(重要)    
 Java面试重点总结(重要)    
 项目经验指南    
@@ -37,7 +37,7 @@ Java集合使用注意事项总结
   
 ## 源码分析  
   
-[ArrayList 源码分析](java/collection/arraylist-source-code/index.md)
+[ArrayList 源码分析](java/collection/arraylist-source-code/index.md)  
 LinkedList 源码分析  
 HashMap 源码分析  
 ConcurrentHashMap 源码分析  

@@ -1,0 +1,9 @@
+{{- $u := urls.Parse .Destination -}} 
+{{ if strings.HasSuffix $u "/index.md" }}
+  {{ $u = replaceRE `(.*)\/index.md` "$1" $u 1  }}
+{{ end }}
+<a href="{{ $u | safeURL }}"
+  {{- with .Title }} title="{{ . }}"{{ end -}}
+>
+  {{- with .Text }}{{ . }}{{ end -}}
+</a>
