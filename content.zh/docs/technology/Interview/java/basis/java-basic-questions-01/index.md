@@ -1,7 +1,7 @@
 ---
 title: Java基础常见面试题总结(上)
 category: Java
-tag:
+tags:
   - Java基础
 head:
   - - meta
@@ -10,6 +10,7 @@ head:
   - - meta
     - name: description
       content: 全网质量最高的Java基础常见知识点和面试题总结，希望对你有帮助！
+cssclasses: []
 ---
 []()
 
