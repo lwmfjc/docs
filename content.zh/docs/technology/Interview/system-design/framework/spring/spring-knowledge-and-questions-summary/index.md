@@ -25,7 +25,7 @@ Spring 最核心的思想就是不重新造轮子，开箱即用，提高开发�
 
 Spring 翻译过来就是春天的意思，可见其目标和使命就是为 Java 程序员带来春天啊！感动！
 
-🤐 多提一嘴：**语言的流行通常需要一个杀手级的应用，Spring 就是 Java 生态的一个杀手级的应用框架。**
+🤐 多提一嘴：==语言的流行通常需要一个杀手级的应用，Spring 就是 Java 生态的一个杀手级的应用框架。==
 
 Spring 提供的核心功能主要是 IoC 和 AOP。学习 Spring ，一定要把 IoC 和 AOP 的核心思想搞懂！
 
@@ -34,11 +34,11 @@ Spring 提供的核心功能主要是 IoC 和 AOP。学习 Spring ，一定要�
 
 ### Spring 包含的模块有哪些？
 
-**Spring4.x 版本**：
+==Spring4.x 版本==：
 
 ![Spring4.x主要模块](https://oss.javaguide.cn/github/javaguide/system-design/framework/spring/jvme0c60b4606711fc4a0b6faf03230247a.png)
 
-**Spring5.x 版本**：
+==Spring5.x 版本==：
 
 ![Spring5.x主要模块](https://oss.javaguide.cn/github/javaguide/system-design/framework/spring/20200831175708.png)
 
@@ -52,35 +52,35 @@ Spring 各个模块的依赖关系如下：
 
 Spring 框架的核心模块，也可以说是基础模块，主要提供 IoC 依赖注入功能的支持。Spring 其他所有的功能基本都需要依赖于该模块，我们从上面那张 Spring 各个模块的依赖关系图就可以看出来。
 
-- **spring-core**：Spring 框架基本的核心工具类。
-- **spring-beans**：提供对 bean 的创建、配置和管理等功能的支持。
-- **spring-context**：提供对国际化、事件传播、资源加载等功能的支持。
-- **spring-expression**：提供对表达式语言（Spring Expression Language） SpEL 的支持，只依赖于 core 模块，不依赖于其他模块，可以单独使用。
+- ==spring-core==：Spring 框架基本的核心工具类。
+- ==spring-beans==：提供对 bean 的创建、配置和管理等功能的支持。
+- ==spring-context==：提供对国际化、事件传播、资源加载等功能的支持。
+- ==spring-expression==：提供对表达式语言（Spring Expression Language） SpEL 的支持，只依赖于 core 模块，不依赖于其他模块，可以单独使用。
 
 #### AOP
 
-- **spring-aspects**：该模块为与 AspectJ 的集成提供支持。
-- **spring-aop**：提供了面向切面的编程实现。
-- **spring-instrument**：提供了为 JVM 添加代理（agent）的功能。 具体来讲，它为 Tomcat 提供了一个织入代理，能够为 Tomcat 传递类文 件，就像这些文件是被类加载器加载的一样。没有理解也没关系，这个模块的使用场景非常有限。
+- ==spring-aspects==：该模块为与 AspectJ 的集成提供支持。
+- ==spring-aop==：提供了面向切面的编程实现。
+- ==spring-instrument==：提供了为 JVM 添加代理（agent）的功能。 具体来讲，它为 Tomcat 提供了一个织入代理，能够为 Tomcat 传递类文 件，就像这些文件是被类加载器加载的一样。没有理解也没关系，这个模块的使用场景非常有限。
 
 #### Data Access/Integration
 
-- **spring-jdbc**：提供了对数据库访问的抽象 JDBC。不同的数据库都有自己独立的 API 用于操作数据库，而 Java 程序只需要和 JDBC API 交互，这样就屏蔽了数据库的影响。
-- **spring-tx**：提供对事务的支持。
-- **spring-orm**：提供对 Hibernate、JPA、iBatis 等 ORM 框架的支持。
-- **spring-oxm**：提供一个抽象层支撑 OXM(Object-to-XML-Mapping)，例如：JAXB、Castor、XMLBeans、JiBX 和 XStream 等。
-- **spring-jms** : 消息服务。自 Spring Framework 4.1 以后，它还提供了对 spring-messaging 模块的继承。
+- ==spring-jdbc==：提供了对数据库访问的抽象 JDBC。不同的数据库都有自己独立的 API 用于操作数据库，而 Java 程序只需要和 JDBC API 交互，这样就屏蔽了数据库的影响。
+- ==spring-tx==：提供对事务的支持。
+- ==spring-orm==：提供对 Hibernate、JPA、iBatis 等 ORM 框架的支持。
+- ==spring-oxm==：提供一个抽象层支撑 OXM(Object-to-XML-Mapping)，例如：JAXB、Castor、XMLBeans、JiBX 和 XStream 等。
+- ==spring-jms== : 消息服务。自 Spring Framework 4.1 以后，它还提供了对 spring-messaging 模块的继承。
 
 #### Spring Web
 
-- **spring-web**：对 Web 功能的实现提供一些最基础的支持。
-- **spring-webmvc**：提供对 Spring MVC 的实现。
-- **spring-websocket**：提供了对 WebSocket 的支持，WebSocket 可以让客户端和服务端进行双向通信。
-- **spring-webflux**：提供对 WebFlux 的支持。WebFlux 是 Spring Framework 5.0 中引入的新的响应式框架。与 Spring MVC 不同，它不需要 Servlet API，是完全异步。
+- ==spring-web==：对 Web 功能的实现提供一些最基础的支持。
+- ==spring-webmvc==：提供对 Spring MVC 的实现。
+- ==spring-websocket==：提供了对 WebSocket 的支持，WebSocket 可以让客户端和服务端进行双向通信。
+- ==spring-webflux==：提供对 WebFlux 的支持。WebFlux 是 Spring Framework 5.0 中引入的新的响应式框架。与 Spring MVC 不同，它不需要 Servlet API，是完全异步。
 
 #### Messaging
 
-**spring-messaging** 是从 Spring4.0 开始新加入的一个模块，主要职责是为 Spring 框架集成一些基础的报文传送应用。
+==spring-messaging== 是从 Spring4.0 开始新加入的一个模块，主要职责是为 Spring 框架集成一些基础的报文传送应用。
 
 #### Spring Test
 
@@ -112,12 +112,12 @@ Spring Boot 只是简化了配置，如果你需要构建 MVC 架构的 Web 程�
 
 ### 谈谈自己对于 Spring IoC 的了解
 
-**IoC（Inversion of Control:控制反转）** 是一种设计思想，而不是一个具体的技术实现。IoC 的思想就是将原本在程序中手动创建对象的控制权，交由 Spring 框架来管理。不过， IoC 并非 Spring 特有，在其他语言中也有应用。
+==IoC（Inversion of Control:控制反转）== 是一种设计思想，而不是一个具体的技术实现。IoC 的思想就是将原本在程序中手动创建对象的控制权，交由 Spring 框架来管理。不过， IoC 并非 Spring 特有，在其他语言中也有应用。
 
-**为什么叫控制反转？**
+==为什么叫控制反转？==
 
-- **控制**：指的是对象创建（实例化、管理）的权力
-- **反转**：控制权交给外部环境（Spring 框架、IoC 容器）
+- ==控制==：指的是对象创建（实例化、管理）的权力
+- ==反转==：控制权交给外部环境（Spring 框架、IoC 容器）
 
 ![IoC 图解](https://oss.javaguide.cn/java-guide-blog/frc-365faceb5697f04f31399937c059c162.png)
 
@@ -219,7 +219,7 @@ Spring 内置的 `@Autowired` 以及 JDK 内置的 `@Resource` 和 `@Inject` 都
 
 `Autowired` 属于 Spring 内置的注解，默认的注入方式为`byType`（根据类型进行匹配），也就是说会优先根据接口类型去匹配并注入 Bean （接口的实现类）。
 
-**这会有什么问题呢？** 当一个接口存在多个实现类的话，`byType`这种方式就无法正确注入对象了，因为这个时候 Spring 会同时找到多个满足条件的选择，默认情况下它自己不知道选择哪一个。
+==这会有什么问题呢？== 当一个接口存在多个实现类的话，`byType`这种方式就无法正确注入对象了，因为这个时候 Spring 会同时找到多个满足条件的选择，默认情况下它自己不知道选择哪一个。
 
 这种情况下，注入方式会变为 `byName`（根据名称进行匹配），这个名称通常就是类名（首字母小写）。就比如说下面代码中的 `smsService` 就是我这里所说的名称，这样应该比较好理解了吧。
 
@@ -340,29 +340,29 @@ Spring 官方有对这个问题的回答：<https://docs.spring.io/spring-framew
 
 我这里主要提取总结完善一下 Spring 官方的建议。
 
-**Spring 官方推荐构造函数注入**，这种注入方式的优势如下：
+==Spring 官方推荐构造函数注入==，这种注入方式的优势如下：
 
 1. 依赖完整性：确保所有必需依赖在对象创建时就被注入，避免了空指针异常的风险。
 2. 不可变性：有助于创建不可变对象，提高了线程安全性。
 3. 初始化保证：组件在使用前已完全初始化，减少了潜在的错误。
 4. 测试便利性：在单元测试中，可以直接通过构造函数传入模拟的依赖项，而不必依赖 Spring 容器进行注入。
 
-构造函数注入适合处理**必需的依赖项**，而 **Setter 注入** 则更适合**可选的依赖项**，这些依赖项可以有默认值或在对象生命周期中动态设置。虽然 `@Autowired` 可以用于 Setter 方法来处理必需的依赖项，但构造函数注入仍然是更好的选择。
+构造函数注入适合处理==必需的依赖项==，而 ==Setter 注入== 则更适合==可选的依赖项==，这些依赖项可以有默认值或在对象生命周期中动态设置。虽然 `@Autowired` 可以用于 Setter 方法来处理必需的依赖项，但构造函数注入仍然是更好的选择。
 
-在某些情况下（例如第三方类不提供 Setter 方法），构造函数注入可能是**唯一的选择**。
+在某些情况下（例如第三方类不提供 Setter 方法），构造函数注入可能是==唯一的选择==。
 
 ### Bean 的作用域有哪些?
 
 Spring 中 Bean 的作用域通常有下面几种：
 
-- **singleton** : IoC 容器中只有唯一的 bean 实例。Spring 中的 bean 默认都是单例的，是对单例设计模式的应用。
-- **prototype** : 每次获取都会创建一个新的 bean 实例。也就是说，连续 `getBean()` 两次，得到的是不同的 Bean 实例。
-- **request** （仅 Web 应用可用）: 每一次 HTTP 请求都会产生一个新的 bean（请求 bean），该 bean 仅在当前 HTTP request 内有效。
-- **session** （仅 Web 应用可用） : 每一次来自新 session 的 HTTP 请求都会产生一个新的 bean（会话 bean），该 bean 仅在当前 HTTP session 内有效。
-- **application/global-session** （仅 Web 应用可用）：每个 Web 应用在启动时创建一个 Bean（应用 Bean），该 bean 仅在当前应用启动时间内有效。
-- **websocket** （仅 Web 应用可用）：每一次 WebSocket 会话产生一个新的 bean。
+- ==singleton== : IoC 容器中只有唯一的 bean 实例。Spring 中的 bean 默认都是单例的，是对单例设计模式的应用。
+- ==prototype== : 每次获取都会创建一个新的 bean 实例。也就是说，连续 `getBean()` 两次，得到的是不同的 Bean 实例。
+- ==request== （仅 Web 应用可用）: 每一次 HTTP 请求都会产生一个新的 bean（请求 bean），该 bean 仅在当前 HTTP request 内有效。
+- ==session== （仅 Web 应用可用） : 每一次来自新 session 的 HTTP 请求都会产生一个新的 bean（会话 bean），该 bean 仅在当前 HTTP session 内有效。
+- ==application/global-session== （仅 Web 应用可用）：每个 Web 应用在启动时创建一个 Bean（应用 Bean），该 bean 仅在当前应用启动时间内有效。
+- ==websocket== （仅 Web 应用可用）：每一次 WebSocket 会话产生一个新的 bean。
 
-**如何配置 bean 的作用域呢？**
+==如何配置 bean 的作用域呢？==
 
 xml 方式：
 
@@ -424,9 +424,9 @@ public class UserService {
 
 对于有状态单例 Bean 的线程安全问题，常见的三种解决办法是：
 
-1. **避免可变成员变量**: 尽量设计 Bean 为无状态。
-2. **使用`ThreadLocal`**: 将可变成员变量保存在 `ThreadLocal` 中，确保线程独立。
-3. **使用同步机制**: 利用 `synchronized` 或 `ReentrantLock` 来进行同步控制，确保线程安全。
+1. ==避免可变成员变量==: 尽量设计 Bean 为无状态。
+2. ==使用`ThreadLocal`==: 将可变成员变量保存在 `ThreadLocal` 中，确保线程独立。
+3. ==使用同步机制==: 利用 `synchronized` 或 `ReentrantLock` 来进行同步控制，确保线程安全。
 
 这里以 `ThreadLocal`为例，演示一下`ThreadLocal` 保存用户登录信息的场景：
 
@@ -453,9 +453,9 @@ public class UserThreadLocal {
 
 ### Bean 的生命周期了解么?
 
-1. **创建 Bean 的实例**：Bean 容器首先会找到配置文件中的 Bean 定义，然后使用 Java 反射 API 来创建 Bean 的实例。
-2. **Bean 属性赋值/填充**：为 Bean 设置相关属性和依赖，例如`@Autowired` 等注解注入的对象、`@Value` 注入的值、`setter`方法或构造函数注入依赖和值、`@Resource`注入的各种资源。
-3. **Bean 初始化**：
+1. ==创建 Bean 的实例==：Bean 容器首先会找到配置文件中的 Bean 定义，然后使用 Java 反射 API 来创建 Bean 的实例。
+2. ==Bean 属性赋值/填充==：为 Bean 设置相关属性和依赖，例如`@Autowired` 等注解注入的对象、`@Value` 注入的值、`setter`方法或构造函数注入依赖和值、`@Resource`注入的各种资源。
+3. ==Bean 初始化==：
    - 如果 Bean 实现了 `BeanNameAware` 接口，调用 `setBeanName()`方法，传入 Bean 的名字。
    - 如果 Bean 实现了 `BeanClassLoaderAware` 接口，调用 `setBeanClassLoader()`方法，传入 `ClassLoader`对象的实例。
    - 如果 Bean 实现了 `BeanFactoryAware` 接口，调用 `setBeanFactory()`方法，传入 `BeanFactory`对象的实例。
@@ -464,7 +464,7 @@ public class UserThreadLocal {
    - 如果 Bean 实现了`InitializingBean`接口，执行`afterPropertiesSet()`方法。
    - 如果 Bean 在配置文件中的定义包含 `init-method` 属性，执行指定的方法。
    - 如果有和加载这个 Bean 的 Spring 容器相关的 `BeanPostProcessor` 对象，执行`postProcessAfterInitialization()` 方法。
-4. **销毁 Bean**：销毁并不是说要立马把 Bean 给销毁掉，而是把 Bean 的销毁方法先记录下来，将来需要销毁 Bean 或者销毁容器的时候，就调用这些方法去释放 Bean 所持有的资源。
+4. ==销毁 Bean==：销毁并不是说要立马把 Bean 给销毁掉，而是把 Bean 的销毁方法先记录下来，将来需要销毁 Bean 或者销毁容器的时候，就调用这些方法去释放 Bean 所持有的资源。
    - 如果 Bean 实现了 `DisposableBean` 接口，执行 `destroy()` 方法。
    - 如果 Bean 在配置文件中的定义包含 `destroy-method` 属性，执行指定的 Bean 销毁方法。或者，也可以直接通过`@PreDestroy` 注解标记 Bean 销毁之前执行的方法。
 
@@ -548,7 +548,7 @@ public interface InitializingBean {
 </beans>
 ```
 
-**如何记忆呢？**
+==如何记忆呢？==
 
 1. 整体上可以简单分为四步：实例化 —> 属性赋值 —> 初始化 —> 销毁。
 2. 初始化这一步涉及到的步骤比较多，包含 `Aware` 接口的依赖注入、`BeanPostProcessor` 在初始化前后的处理以及 `InitializingBean` 和 `init-method` 的初始化操作。
@@ -564,11 +564,11 @@ public interface InitializingBean {
 
 AOP(Aspect-Oriented Programming:面向切面编程)能够将那些与业务无关，却为业务模块所共同调用的逻辑或责任（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，并有利于未来的可拓展性和可维护性。
 
-Spring AOP 就是基于动态代理的，如果要代理的对象，实现了某个接口，那么 Spring AOP 会使用 **JDK Proxy**，去创建代理对象，而对于没有实现接口的对象，就无法使用 JDK Proxy 去进行代理了，这时候 Spring AOP 会使用 **Cglib** 生成一个被代理对象的子类来作为代理，如下图所示：
+Spring AOP 就是基于动态代理的，如果要代理的对象，实现了某个接口，那么 Spring AOP 会使用 ==JDK Proxy==，去创建代理对象，而对于没有实现接口的对象，就无法使用 JDK Proxy 去进行代理了，这时候 Spring AOP 会使用 ==Cglib== 生成一个被代理对象的子类来作为代理，如下图所示：
 
 ![SpringAOPProcess](https://oss.javaguide.cn/github/javaguide/system-design/framework/spring/230ae587a322d6e4d09510161987d346.jpeg)
 
-当然你也可以使用 **AspectJ** ！Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java 生态系统中最完整的 AOP 框架了。
+当然你也可以使用 ==AspectJ== ！Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java 生态系统中最完整的 AOP 框架了。
 
 AOP 切面编程涉及到的一些专业术语：
 
@@ -584,7 +584,7 @@ AOP 切面编程涉及到的一些专业术语：
 
 ### Spring AOP 和 AspectJ AOP 有什么区别？
 
-**Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。** Spring AOP 基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode Manipulation)。
+==Spring AOP 属于运行时增强，而 AspectJ 是编译时增强。== Spring AOP 基于代理(Proxying)，而 AspectJ 基于字节码操作(Bytecode Manipulation)。
 
 Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java 生态系统中最完整的 AOP 框架了。AspectJ 相比于 Spring AOP 功能更加强大，但是 Spring AOP 相对来说更简单，
 
@@ -594,11 +594,11 @@ Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java 生态系�
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/framework/spring/aspectj-advice-types.jpg)
 
-- **Before**（前置通知）：目标对象的方法调用之前触发
-- **After** （后置通知）：目标对象的方法调用之后触发
-- **AfterReturning**（返回通知）：目标对象的方法调用完成，在返回结果值之后触发
-- **AfterThrowing**（异常通知）：目标对象的方法运行中抛出 / 触发异常后触发。AfterReturning 和 AfterThrowing 两者互斥。如果方法调用成功无异常，则会有返回值；如果方法抛出了异常，则不会有返回值。
-- **Around** （环绕通知）：编程式控制目标对象的方法调用。环绕通知是所有通知类型中可操作范围最大的一种，因为它可以直接拿到目标对象，以及要执行的方法，所以环绕通知可以任意的在目标对象的方法调用前后搞事，甚至不调用目标对象的方法
+- ==Before==（前置通知）：目标对象的方法调用之前触发
+- ==After== （后置通知）：目标对象的方法调用之后触发
+- ==AfterReturning==（返回通知）：目标对象的方法调用完成，在返回结果值之后触发
+- ==AfterThrowing==（异常通知）：目标对象的方法运行中抛出 / 触发异常后触发。AfterReturning 和 AfterThrowing 两者互斥。如果方法调用成功无异常，则会有返回值；如果方法抛出了异常，则不会有返回值。
+- ==Around== （环绕通知）：编程式控制目标对象的方法调用。环绕通知是所有通知类型中可操作范围最大的一种，因为它可以直接拿到目标对象，以及要执行的方法，所以环绕通知可以任意的在目标对象的方法调用前后搞事，甚至不调用目标对象的方法
 
 ### 多个切面的执行顺序如何控制？
 
@@ -612,7 +612,7 @@ Spring AOP 已经集成了 AspectJ ，AspectJ 应该算的上是 Java 生态系�
 public class LoggingAspect implements Ordered {
 ```
 
-**2、实现`Ordered` 接口重写 `getOrder` 方法。**
+==2、实现`Ordered` 接口重写 `getOrder` 方法。==
 
 ```java
 @Component
@@ -637,13 +637,13 @@ MVC 是模型(Model)、视图(View)、控制器(Controller)的简写，其核心
 
 ![](https://oss.javaguide.cn/java-guide-blog/image-20210809181452421.png)
 
-网上有很多人说 MVC 不是设计模式，只是软件设计规范，我个人更倾向于 MVC 同样是众多设计模式中的一种。**[java-design-patterns](https://github.com/iluwatar/java-design-patterns)** 项目中就有关于 MVC 的相关介绍。
+网上有很多人说 MVC 不是设计模式，只是软件设计规范，我个人更倾向于 MVC 同样是众多设计模式中的一种。==[java-design-patterns](https://github.com/iluwatar/java-design-patterns)== 项目中就有关于 MVC 的相关介绍。
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/framework/spring/159b3d3e70dd45e6afa81bf06d09264e.png)
 
 想要真正理解 Spring MVC，我们先来看看 Model 1 和 Model 2 这两个没有 Spring MVC 的时代。
 
-**Model 1 时代**
+==Model 1 时代==
 
 很多学 Java 后端比较晚的朋友可能并没有接触过 Model 1 时代下的 JavaWeb 应用开发。在 Model1 模式下，整个 Web 应用几乎全部用 JSP 页面组成，只用少量的 JavaBean 来处理数据库连接、访问等操作。
 
@@ -651,7 +651,7 @@ MVC 是模型(Model)、视图(View)、控制器(Controller)的简写，其核心
 
 ![mvc-mode1](https://oss.javaguide.cn/java-guide-blog/mvc-mode1.png)
 
-**Model 2 时代**
+==Model 2 时代==
 
 学过 Servlet 并做过相关 Demo 的朋友应该了解“Java Bean(Model)+ JSP（View）+Servlet（Controller） ”这种开发模式，这就是早期的 JavaWeb MVC 开发模式。
 
@@ -665,7 +665,7 @@ Model2 模式下还存在很多问题，Model2 的抽象和封装程度还远远
 
 于是，很多 JavaWeb 开发相关的 MVC 框架应运而生比如 Struts2，但是 Struts2 比较笨重。
 
-**Spring MVC 时代**
+==Spring MVC 时代==
 
 随着 Spring 轻量级开发框架的流行，Spring 生态圈出现了 Spring MVC 框架， Spring MVC 是当前最优秀的 MVC 框架。相比于 Struts2 ， Spring MVC 使用更加简单和方便，开发效率更高，并且 Spring MVC 运行速度更快。
 
@@ -675,21 +675,21 @@ MVC 是一种设计模式，Spring MVC 是一款很优秀的 MVC 框架。Spring
 
 记住了下面这些组件，也就记住了 SpringMVC 的工作原理。
 
-- **`DispatcherServlet`**：**核心的中央处理器**，负责接收请求、分发，并给予客户端响应。
-- **`HandlerMapping`**：**处理器映射器**，根据 URL 去匹配查找能处理的 `Handler` ，并会将请求涉及到的拦截器和 `Handler` 一起封装。
-- **`HandlerAdapter`**：**处理器适配器**，根据 `HandlerMapping` 找到的 `Handler` ，适配执行对应的 `Handler`；
-- **`Handler`**：**请求处理器**，处理实际请求的处理器。
-- **`ViewResolver`**：**视图解析器**，根据 `Handler` 返回的逻辑视图 / 视图，解析并渲染真正的视图，并传递给 `DispatcherServlet` 响应客户端
+- ==`DispatcherServlet`==：==核心的中央处理器==，负责接收请求、分发，并给予客户端响应。
+- ==`HandlerMapping`==：==处理器映射器==，根据 URL 去匹配查找能处理的 `Handler` ，并会将请求涉及到的拦截器和 `Handler` 一起封装。
+- ==`HandlerAdapter`==：==处理器适配器==，根据 `HandlerMapping` 找到的 `Handler` ，适配执行对应的 `Handler`；
+- ==`Handler`==：==请求处理器==，处理实际请求的处理器。
+- ==`ViewResolver`==：==视图解析器==，根据 `Handler` 返回的逻辑视图 / 视图，解析并渲染真正的视图，并传递给 `DispatcherServlet` 响应客户端
 
 ### SpringMVC 工作原理了解吗?
 
-**Spring MVC 原理如下图所示：**
+==Spring MVC 原理如下图所示：==
 
 > SpringMVC 工作原理的图解我没有自己画，直接图省事在网上找了一个非常清晰直观的，原出处不明。
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/framework/spring/de6d2b213f112297298f3e223bf08f28.png)
 
-**流程说明（重要）：**
+==流程说明（重要）：==
 
 1. 客户端（浏览器）发送请求， `DispatcherServlet`拦截请求。
 2. `DispatcherServlet` 根据请求信息调用 `HandlerMapping` 。`HandlerMapping` 根据 URL 去匹配查找能处理的 `Handler`（也就是我们平常说的 `Controller` 控制器） ，并会将请求涉及到的拦截器和 `Handler` 一起封装。
@@ -701,7 +701,7 @@ MVC 是一种设计模式，Spring MVC 是一款很优秀的 MVC 框架。Spring
 
 上述流程是传统开发模式（JSP，Thymeleaf 等）的工作原理。然而现在主流的开发方式是前后端分离，这种情况下 Spring MVC 的 `View` 概念发生了一些变化。由于 `View` 通常由前端框架（Vue, React 等）来处理，后端不再负责渲染页面，而是只负责提供数据，因此：
 
-- 前后端分离时，后端通常不再返回具体的视图，而是返回**纯数据**（通常是 JSON 格式），由前端负责渲染和展示。
+- 前后端分离时，后端通常不再返回具体的视图，而是返回==纯数据==（通常是 JSON 格式），由前端负责渲染和展示。
 - `View` 的部分在前后端分离的场景下往往不需要设置，Spring MVC 的控制器方法只需要返回数据，不再返回 `ModelAndView`，而是直接返回数据，Spring 会自动将其转换为 JSON 格式。相应的，`ViewResolver` 也将不再被使用。
 
 怎么做到呢？
@@ -757,19 +757,19 @@ public class GlobalExceptionHandler {
   }
 ```
 
-从源代码看出：**`getMappedMethod()`会首先找到可以匹配处理异常的所有方法信息，然后对其进行从小到大的排序，最后取最小的那一个匹配的方法(即匹配度最高的那个)。**
+从源代码看出：==`getMappedMethod()`会首先找到可以匹配处理异常的所有方法信息，然后对其进行从小到大的排序，最后取最小的那一个匹配的方法(即匹配度最高的那个)。==
 
 ## Spring 框架中用到了哪些设计模式？
 
 > 关于下面这些设计模式的详细介绍，可以看我写的 [Spring 中的设计模式详解](https://javaguide.cn/system-design/framework/spring/spring-design-patterns-summary.html) 这篇文章。
 
-- **工厂设计模式** : Spring 使用工厂模式通过 `BeanFactory`、`ApplicationContext` 创建 bean 对象。
-- **代理设计模式** : Spring AOP 功能的实现。
-- **单例设计模式** : Spring 中的 Bean 默认都是单例的。
-- **模板方法模式** : Spring 中 `jdbcTemplate`、`hibernateTemplate` 等以 Template 结尾的对数据库操作的类，它们就使用到了模板模式。
-- **包装器设计模式** : 我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。
-- **观察者模式:** Spring 事件驱动模型就是观察者模式很经典的一个应用。
-- **适配器模式** : Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配`Controller`。
+- ==工厂设计模式== : Spring 使用工厂模式通过 `BeanFactory`、`ApplicationContext` 创建 bean 对象。
+- ==代理设计模式== : Spring AOP 功能的实现。
+- ==单例设计模式== : Spring 中的 Bean 默认都是单例的。
+- ==模板方法模式== : Spring 中 `jdbcTemplate`、`hibernateTemplate` 等以 Template 结尾的对数据库操作的类，它们就使用到了模板模式。
+- ==包装器设计模式== : 我们的项目需要连接多个数据库，而且不同的客户在每次访问中根据需要会去访问不同的数据库。这种模式让我们可以根据客户的需求能够动态切换不同的数据源。
+- ==观察者模式:== Spring 事件驱动模型就是观察者模式很经典的一个应用。
+- ==适配器模式== : Spring AOP 的增强或通知(Advice)使用到了适配器模式、spring MVC 中也是用到了适配器模式适配`Controller`。
 - ……
 
 ## Spring 的循环依赖
@@ -822,15 +822,15 @@ private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(1
 
 简单来说，Spring 的三级缓存包括：
 
-1. **一级缓存（singletonObjects）**：存放最终形态的 Bean（已经实例化、属性填充、初始化），单例池，为“Spring 的单例属性”⽽⽣。一般情况我们获取 Bean 都是从这里获取的，但是并不是所有的 Bean 都在单例池里面，例如原型 Bean 就不在里面。
-2. **二级缓存（earlySingletonObjects）**：存放过渡 Bean（半成品，尚未属性填充），也就是三级缓存中`ObjectFactory`产生的对象，与三级缓存配合使用的，可以防止 AOP 的情况下，每次调用`ObjectFactory#getObject()`都是会产生新的代理对象的。
-3. **三级缓存（singletonFactories）**：存放`ObjectFactory`，`ObjectFactory`的`getObject()`方法（最终调用的是`getEarlyBeanReference()`方法）可以生成原始 Bean 对象或者代理对象（如果 Bean 被 AOP 切面代理）。三级缓存只会对单例 Bean 生效。
+1. ==一级缓存（singletonObjects）==：存放最终形态的 Bean（已经实例化、属性填充、初始化），单例池，为“Spring 的单例属性”⽽⽣。一般情况我们获取 Bean 都是从这里获取的，但是并不是所有的 Bean 都在单例池里面，例如原型 Bean 就不在里面。
+2. ==二级缓存（earlySingletonObjects）==：存放过渡 Bean（半成品，尚未属性填充），也就是三级缓存中`ObjectFactory`产生的对象，与三级缓存配合使用的，可以防止 AOP 的情况下，每次调用`ObjectFactory#getObject()`都是会产生新的代理对象的。
+3. ==三级缓存（singletonFactories）==：存放`ObjectFactory`，`ObjectFactory`的`getObject()`方法（最终调用的是`getEarlyBeanReference()`方法）可以生成原始 Bean 对象或者代理对象（如果 Bean 被 AOP 切面代理）。三级缓存只会对单例 Bean 生效。
 
 接下来说一下 Spring 创建 Bean 的流程：
 
-1. 先去 **一级缓存 `singletonObjects`** 中获取，存在就返回；
-2. 如果不存在或者对象正在创建中，于是去 **二级缓存 `earlySingletonObjects`** 中获取；
-3. 如果还没有获取到，就去 **三级缓存 `singletonFactories`** 中获取，通过执行 `ObjectFacotry` 的 `getObject()` 就可以获取该对象，获取成功之后，从三级缓存移除，并将该对象加入到二级缓存中。
+1. 先去 ==一级缓存 `singletonObjects`== 中获取，存在就返回；
+2. 如果不存在或者对象正在创建中，于是去 ==二级缓存 `earlySingletonObjects`== 中获取；
+3. 如果还没有获取到，就去 ==三级缓存 `singletonFactories`== 中获取，通过执行 `ObjectFacotry` 的 `getObject()` 就可以获取该对象，获取成功之后，从三级缓存移除，并将该对象加入到二级缓存中。
 
 在三级缓存中存储的是 `ObjectFacoty` ：
 
@@ -870,15 +870,15 @@ class B {
 以上面的循环依赖代码为例，整个解决循环依赖的流程如下：
 
 - 当 Spring 创建 A 之后，发现 A 依赖了 B ，又去创建 B，B 依赖了 A ，又去创建 A；
-- 在 B 创建 A 的时候，那么此时 A 就发生了循环依赖，由于 A 此时还没有初始化完成，因此在 **一二级缓存** 中肯定没有 A；
-- 那么此时就去三级缓存中调用 `getObject()` 方法去获取 A 的 **前期暴露的对象** ，也就是调用上边加入的 `getEarlyBeanReference()` 方法，生成一个 A 的 **前期暴露对象**；
+- 在 B 创建 A 的时候，那么此时 A 就发生了循环依赖，由于 A 此时还没有初始化完成，因此在 ==一二级缓存== 中肯定没有 A；
+- 那么此时就去三级缓存中调用 `getObject()` 方法去获取 A 的 ==前期暴露的对象== ，也就是调用上边加入的 `getEarlyBeanReference()` 方法，生成一个 A 的 ==前期暴露对象==；
 - 然后就将这个 `ObjectFactory` 从三级缓存中移除，并且将前期暴露对象放入到二级缓存中，那么 B 就将这个前期暴露对象注入到依赖，来支持循环依赖。
 
-**只用两级缓存够吗？** 在没有 AOP 的情况下，确实可以只使用一级和三级缓存来解决循环依赖问题。但是，当涉及到 AOP 时，二级缓存就显得非常重要了，因为它确保了即使在 Bean 的创建过程中有多次对早期引用的请求，也始终只返回同一个代理对象，从而避免了同一个 Bean 有多个代理对象的问题。
+==只用两级缓存够吗？== 在没有 AOP 的情况下，确实可以只使用一级和三级缓存来解决循环依赖问题。但是，当涉及到 AOP 时，二级缓存就显得非常重要了，因为它确保了即使在 Bean 的创建过程中有多次对早期引用的请求，也始终只返回同一个代理对象，从而避免了同一个 Bean 有多个代理对象的问题。
 
-**最后总结一下 Spring 如何解决三级缓存**：
+==最后总结一下 Spring 如何解决三级缓存==：
 
-在三级缓存这一块，主要记一下 Spring 是如何支持循环依赖的即可，也就是如果发生循环依赖的话，就去 **三级缓存 `singletonFactories`** 中拿到三级缓存中存储的 `ObjectFactory` 并调用它的 `getObject()` 方法来获取这个循环依赖对象的前期暴露对象（虽然还没初始化完成，但是可以拿到该对象在堆中的存储地址了），并且将这个前期暴露对象放到二级缓存中，这样在循环依赖时，就不会重复初始化了！
+在三级缓存这一块，主要记一下 Spring 是如何支持循环依赖的即可，也就是如果发生循环依赖的话，就去 ==三级缓存 `singletonFactories`== 中拿到三级缓存中存储的 `ObjectFactory` 并调用它的 `getObject()` 方法来获取这个循环依赖对象的前期暴露对象（虽然还没初始化完成，但是可以拿到该对象在堆中的存储地址了），并且将这个前期暴露对象放到二级缓存中，这样在循环依赖时，就不会重复初始化了！
 
 不过，这种机制也有一些缺点，比如增加了内存开销（需要维护三级缓存，也就是三个 Map），降低了性能（需要进行多次检查和转换）。并且，还有少部分情况是不支持循环依赖的，比如非单例的 bean 和`@Async`注解的 bean 无法支持循环依赖。
 
@@ -886,7 +886,7 @@ class B {
 
 `@Lazy` 用来标识类是否需要懒加载/延迟加载，可以作用在类上、方法上、构造器上、方法参数上、成员变量中。
 
-Spring Boot 2.2 新增了**全局懒加载属性**，开启后全局 bean 被设置为懒加载，需要时再去创建。
+Spring Boot 2.2 新增了==全局懒加载属性==，开启后全局 bean 被设置为懒加载，需要时再去创建。
 
 配置文件配置全局懒加载：
 
@@ -915,8 +915,8 @@ springApplication.run(args);
 
 从上面的加载流程可以看出： `@Lazy` 解决循环依赖的关键点在于代理对象的使用。
 
-- **没有 `@Lazy` 的情况下**：在 Spring 容器初始化 `A` 时会立即尝试创建 `B`，而在创建 `B` 的过程中又会尝试创建 `A`，最终导致循环依赖（即无限递归，最终抛出异常）。
-- **使用 `@Lazy` 的情况下**：Spring 不会立即创建 `B`，而是会注入一个 `B` 的代理对象。由于此时 `B` 仍未被真正初始化，`A` 的初始化可以顺利完成。等到 `A` 实例实际调用 `B` 的方法时，代理对象才会触发 `B` 的真正初始化。
+- ==没有 `@Lazy` 的情况下==：在 Spring 容器初始化 `A` 时会立即尝试创建 `B`，而在创建 `B` 的过程中又会尝试创建 `A`，最终导致循环依赖（即无限递归，最终抛出异常）。
+- ==使用 `@Lazy` 的情况下==：Spring 不会立即创建 `B`，而是会注入一个 `B` 的代理对象。由于此时 `B` 仍未被真正初始化，`A` 的初始化可以顺利完成。等到 `A` 实例实际调用 `B` 的方法时，代理对象才会触发 `B` 的真正初始化。
 
 `@Lazy` 能够在一定程度上打破循环依赖链，允许 Spring 容器顺利地完成 Bean 的创建和注入。但这并不是一个根本性的解决方案，尤其是在构造函数注入、复杂的多级依赖等场景中，`@Lazy` 无法有效地解决问题。因此，最佳实践仍然是尽量避免设计上的循环依赖。
 
@@ -936,30 +936,30 @@ SpringBoot 2.6.x 以后，如果你不想重构循环依赖的代码的话，也
 
 ### Spring 管理事务的方式有几种？
 
-- **编程式事务**：在代码中硬编码(在分布式系统中推荐使用) : 通过 `TransactionTemplate`或者 `TransactionManager` 手动管理事务，事务范围过大会出现事务未提交导致超时，因此事务要比锁的粒度更小。
-- **声明式事务**：在 XML 配置文件中配置或者直接基于注解（单体应用或者简单业务系统推荐使用） : 实际是通过 AOP 实现（基于`@Transactional` 的全注解方式使用最多）
+- ==编程式事务==：在代码中硬编码(在分布式系统中推荐使用) : 通过 `TransactionTemplate`或者 `TransactionManager` 手动管理事务，事务范围过大会出现事务未提交导致超时，因此事务要比锁的粒度更小。
+- ==声明式事务==：在 XML 配置文件中配置或者直接基于注解（单体应用或者简单业务系统推荐使用） : 实际是通过 AOP 实现（基于`@Transactional` 的全注解方式使用最多）
 
 ### Spring 事务中哪几种事务传播行为?
 
-**事务传播行为是为了解决业务层方法之间互相调用的事务问题**。
+==事务传播行为是为了解决业务层方法之间互相调用的事务问题==。
 
 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。
 
 正确的事务传播行为可能的值如下:
 
-**1.`TransactionDefinition.PROPAGATION_REQUIRED`**
+==1.`TransactionDefinition.PROPAGATION_REQUIRED`==
 
 使用的最多的一个事务传播行为，我们平时经常使用的`@Transactional`注解默认使用就是这个事务传播行为。如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。
 
-**`2.TransactionDefinition.PROPAGATION_REQUIRES_NEW`**
+==`2.TransactionDefinition.PROPAGATION_REQUIRES_NEW`==
 
 创建一个新的事务，如果当前存在事务，则把当前事务挂起。也就是说不管外部方法是否开启事务，`Propagation.REQUIRES_NEW`修饰的内部方法会新开启自己的事务，且开启的事务相互独立，互不干扰。
 
-**3.`TransactionDefinition.PROPAGATION_NESTED`**
+==3.`TransactionDefinition.PROPAGATION_NESTED`==
 
 如果当前存在事务，则创建一个事务作为当前事务的嵌套事务来运行；如果当前没有事务，则该取值等价于`TransactionDefinition.PROPAGATION_REQUIRED`。
 
-**4.`TransactionDefinition.PROPAGATION_MANDATORY`**
+==4.`TransactionDefinition.PROPAGATION_MANDATORY`==
 
 如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。（mandatory：强制性）
 
@@ -967,9 +967,9 @@ SpringBoot 2.6.x 以后，如果你不想重构循环依赖的代码的话，也
 
 若是错误的配置以下 3 种事务传播行为，事务将不会发生回滚：
 
-- **`TransactionDefinition.PROPAGATION_SUPPORTS`**: 如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。
-- **`TransactionDefinition.PROPAGATION_NOT_SUPPORTED`**: 以非事务方式运行，如果当前存在事务，则把当前事务挂起。
-- **`TransactionDefinition.PROPAGATION_NEVER`**: 以非事务方式运行，如果当前存在事务，则抛出异常。
+- ==`TransactionDefinition.PROPAGATION_SUPPORTS`==: 如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。
+- ==`TransactionDefinition.PROPAGATION_NOT_SUPPORTED`==: 以非事务方式运行，如果当前存在事务，则把当前事务挂起。
+- ==`TransactionDefinition.PROPAGATION_NEVER`==: 以非事务方式运行，如果当前存在事务，则抛出异常。
 
 ### Spring 事务中的隔离级别有哪几种?
 
@@ -999,11 +999,11 @@ public enum Isolation {
 
 下面我依次对每一种事务隔离级别进行介绍：
 
-- **`TransactionDefinition.ISOLATION_DEFAULT`** :使用后端数据库默认的隔离级别，MySQL 默认采用的 `REPEATABLE_READ` 隔离级别 Oracle 默认采用的 `READ_COMMITTED` 隔离级别.
-- **`TransactionDefinition.ISOLATION_READ_UNCOMMITTED`** :最低的隔离级别，使用这个隔离级别很少，因为它允许读取尚未提交的数据变更，**可能会导致脏读、幻读或不可重复读**
-- **`TransactionDefinition.ISOLATION_READ_COMMITTED`** : 允许读取并发事务已经提交的数据，**可以阻止脏读，但是幻读或不可重复读仍有可能发生**
-- **`TransactionDefinition.ISOLATION_REPEATABLE_READ`** : 对同一字段的多次读取结果都是一致的，除非数据是被本身事务自己所修改，**可以阻止脏读和不可重复读，但幻读仍有可能发生。**
-- **`TransactionDefinition.ISOLATION_SERIALIZABLE`** : 最高的隔离级别，完全服从 ACID 的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，**该级别可以防止脏读、不可重复读以及幻读**。但是这将严重影响程序的性能。通常情况下也不会用到该级别。
+- ==`TransactionDefinition.ISOLATION_DEFAULT`== :使用后端数据库默认的隔离级别，MySQL 默认采用的 `REPEATABLE_READ` 隔离级别 Oracle 默认采用的 `READ_COMMITTED` 隔离级别.
+- ==`TransactionDefinition.ISOLATION_READ_UNCOMMITTED`== :最低的隔离级别，使用这个隔离级别很少，因为它允许读取尚未提交的数据变更，==可能会导致脏读、幻读或不可重复读==
+- ==`TransactionDefinition.ISOLATION_READ_COMMITTED`== : 允许读取并发事务已经提交的数据，==可以阻止脏读，但是幻读或不可重复读仍有可能发生==
+- ==`TransactionDefinition.ISOLATION_REPEATABLE_READ`== : 对同一字段的多次读取结果都是一致的，除非数据是被本身事务自己所修改，==可以阻止脏读和不可重复读，但幻读仍有可能发生。==
+- ==`TransactionDefinition.ISOLATION_SERIALIZABLE`== : 最高的隔离级别，完全服从 ACID 的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，==该级别可以防止脏读、不可重复读以及幻读==。但是这将严重影响程序的性能。通常情况下也不会用到该级别。
 
 ### @Transactional(rollbackFor = Exception.class)注解了解吗？
 

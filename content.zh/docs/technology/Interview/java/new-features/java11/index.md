@@ -5,13 +5,13 @@ tag:
   - Java新特性
 ---
 
-**Java 11** 于 2018 年 9 月 25 日正式发布，这是很重要的一个版本！Java 11 和 2017 年 9 月份发布的 Java 9 以及 2018 年 3 月份发布的 Java 10 相比，其最大的区别就是：在长期支持(Long-Term-Support)方面，**Oracle 表示会对 Java 11 提供大力支持，这一支持将会持续至 2026 年 9 月。这是据 Java 8 以后支持的首个长期版本。**
+==Java 11== 于 2018 年 9 月 25 日正式发布，这是很重要的一个版本！Java 11 和 2017 年 9 月份发布的 Java 9 以及 2018 年 3 月份发布的 Java 10 相比，其最大的区别就是：在长期支持(Long-Term-Support)方面，==Oracle 表示会对 Java 11 提供大力支持，这一支持将会持续至 2026 年 9 月。这是据 Java 8 以后支持的首个长期版本。==
 
 下面这张图是 Oracle 官方给出的 Oracle JDK 支持的时间线。
 
 ![](https://oss.javaguide.cn/github/javaguide/java/new-features/4c1611fad59449edbbd6e233690e9fa7.png)
 
-**概览（精选了一部分）**：
+==概览（精选了一部分）==：
 
 - [JEP 321：HTTP Client 标准化](https://openjdk.java.net/jeps/321)
 - [JEP 333：ZGC(可伸缩低延迟垃圾收集器)](https://openjdk.java.net/jeps/333)
@@ -72,7 +72,7 @@ System.out.println(op.isEmpty());//判断指定的 Optional 对象是否为空
 
 ## ZGC(可伸缩低延迟垃圾收集器)
 
-**ZGC 即 Z Garbage Collector**，是一个可伸缩的、低延迟的垃圾收集器。
+==ZGC 即 Z Garbage Collector==，是一个可伸缩的、低延迟的垃圾收集器。
 
 ZGC 主要为了满足如下目标进行设计：
 
@@ -82,7 +82,7 @@ ZGC 主要为了满足如下目标进行设计：
 - 方便在此基础上引入新的 GC 特性和利用 colored 针以及 Load barriers 优化奠定基础
 - 当前只支持 Linux/x64 位平台
 
-ZGC 目前 **处在实验阶段**，只支持 Linux/x64 平台。
+ZGC 目前 ==处在实验阶段==，只支持 Linux/x64 平台。
 
 与 CMS 中的 ParNew 和 G1 类似，ZGC 也采用标记-复制算法，不过 ZGC 对该算法做了重大改进。
 
@@ -117,10 +117,10 @@ Consumer<String> consumer = (String i) -> System.out.println(i);
 
 ## 其他新特性
 
-- **新的垃圾回收器 Epsilon**：一个完全消极的 GC 实现，分配有限的内存资源，最大限度的降低内存占用和内存吞吐延迟时间
-- **低开销的 Heap Profiling**：Java 11 中提供一种低开销的 Java 堆分配采样方法，能够得到堆分配的 Java 对象信息，并且能够通过 JVMTI 访问堆信息
-- **TLS1.3 协议**：Java 11 中包含了传输层安全性（TLS）1.3 规范（RFC 8446）的实现，替换了之前版本中包含的 TLS，包括 TLS 1.2，同时还改进了其他 TLS 功能，例如 OCSP 装订扩展（RFC 6066，RFC 6961），以及会话散列和扩展主密钥扩展（RFC 7627），在安全性和性能方面也做了很多提升
-- **飞行记录器(Java Flight Recorder)**：飞行记录器之前是商业版 JDK 的一项分析工具，但在 Java 11 中，其代码被包含到公开代码库中，这样所有人都能使用该功能了。
+- ==新的垃圾回收器 Epsilon==：一个完全消极的 GC 实现，分配有限的内存资源，最大限度的降低内存占用和内存吞吐延迟时间
+- ==低开销的 Heap Profiling==：Java 11 中提供一种低开销的 Java 堆分配采样方法，能够得到堆分配的 Java 对象信息，并且能够通过 JVMTI 访问堆信息
+- ==TLS1.3 协议==：Java 11 中包含了传输层安全性（TLS）1.3 规范（RFC 8446）的实现，替换了之前版本中包含的 TLS，包括 TLS 1.2，同时还改进了其他 TLS 功能，例如 OCSP 装订扩展（RFC 6066，RFC 6961），以及会话散列和扩展主密钥扩展（RFC 7627），在安全性和性能方面也做了很多提升
+- ==飞行记录器(Java Flight Recorder)==：飞行记录器之前是商业版 JDK 的一项分析工具，但在 Java 11 中，其代码被包含到公开代码库中，这样所有人都能使用该功能了。
 - ……
 
 ## 参考

@@ -27,14 +27,14 @@ tag:
 
 ### 优点
 
-- **非常轻量级**：可以在单个线程中创建成百上千个虚拟线程而不会导致过多的线程创建和上下文切换。
-- **简化异步编程**： 虚拟线程可以简化异步编程，使代码更易于理解和维护。它可以将异步代码编写得更像同步代码，避免了回调地狱（Callback Hell）。
-- **减少资源开销**： 由于虚拟线程是由 JVM 实现的，它能够更高效地利用底层资源，例如 CPU 和内存。虚拟线程的上下文切换比平台线程更轻量，因此能够更好地支持高并发场景。
+- ==非常轻量级==：可以在单个线程中创建成百上千个虚拟线程而不会导致过多的线程创建和上下文切换。
+- ==简化异步编程==： 虚拟线程可以简化异步编程，使代码更易于理解和维护。它可以将异步代码编写得更像同步代码，避免了回调地狱（Callback Hell）。
+- ==减少资源开销==： 由于虚拟线程是由 JVM 实现的，它能够更高效地利用底层资源，例如 CPU 和内存。虚拟线程的上下文切换比平台线程更轻量，因此能够更好地支持高并发场景。
 
 ### 缺点
 
-- **不适用于计算密集型任务**： 虚拟线程适用于 I/O 密集型任务，但不适用于计算密集型任务，因为密集型计算始终需要 CPU 资源作为支持。
-- **与某些第三方库不兼容**： 虽然虚拟线程设计时考虑了与现有代码的兼容性，但某些依赖平台线程特性的第三方库可能不完全兼容虚拟线程。
+- ==不适用于计算密集型任务==： 虚拟线程适用于 I/O 密集型任务，但不适用于计算密集型任务，因为密集型计算始终需要 CPU 资源作为支持。
+- ==与某些第三方库不兼容==： 虽然虚拟线程设计时考虑了与现有代码的兼容性，但某些依赖平台线程特性的第三方库可能不完全兼容虚拟线程。
 
 ## 如何创建虚拟线程？
 
@@ -45,7 +45,7 @@ tag:
 3. 使用 `ThreadFactory` 创建
 4. 使用 `Executors.newVirtualThreadPerTaskExecutor()`创建
 
-**1、使用 `Thread.startVirtualThread()` 创建**
+==1、使用 `Thread.startVirtualThread()` 创建==
 
 ```java
 public class VirtualThreadTest {
@@ -63,7 +63,7 @@ static class CustomThread implements Runnable {
 }
 ```
 
-**2、使用 `Thread.ofVirtual()` 创建**
+==2、使用 `Thread.ofVirtual()` 创建==
 
 ```java
 public class VirtualThreadTest {
@@ -84,7 +84,7 @@ static class CustomThread implements Runnable {
 }
 ```
 
-**3、使用 `ThreadFactory` 创建**
+==3、使用 `ThreadFactory` 创建==
 
 ```java
 public class VirtualThreadTest {
@@ -104,7 +104,7 @@ static class CustomThread implements Runnable {
 }
 ```
 
-**4、使用`Executors.newVirtualThreadPerTaskExecutor()`创建**
+==4、使用`Executors.newVirtualThreadPerTaskExecutor()`创建==
 
 ```java
 public class VirtualThreadTest {
@@ -126,9 +126,9 @@ static class CustomThread implements Runnable {
 
 通过多线程和虚拟线程的方式处理相同的任务，对比创建的系统线程数和处理耗时。
 
-**说明**：统计创建的系统线程中部分为后台线程（比如 GC 线程），两种场景下都一样，所以并不影响对比。
+==说明==：统计创建的系统线程中部分为后台线程（比如 GC 线程），两种场景下都一样，所以并不影响对比。
 
-**测试代码**：
+==测试代码==：
 
 ```java
 public class VirtualThreadTest {
@@ -176,7 +176,7 @@ public class VirtualThreadTest {
 }
 ```
 
-**请求数 10000 单请求耗时 1s**：
+==请求数 10000 单请求耗时 1s==：
 
 ```plain
 // Virtual Thread
@@ -200,7 +200,7 @@ max：2009 platform thread/os thread
 totalMillis：5358ms
 ```
 
-**请求数 10000 单请求耗时 0.5s**：
+==请求数 10000 单请求耗时 0.5s==：
 
 ```plain
 // Virtual Thread
@@ -227,7 +227,7 @@ totalMillis：2865ms
 - 可以看到在密集 IO 的场景下，需要创建大量的平台线程异步处理才能达到虚拟线程的处理速度。
 - 因此，在密集 IO 的场景，虚拟线程可以大幅提高线程的执行效率，减少线程资源的创建以及上下文切换。
 
-**注意**：有段时间 JDK 一直致力于 Reactor 响应式编程来提高 Java 性能，但响应式编程难以理解、调试、使用，最终又回到了同步编程，最终虚拟线程诞生。
+==注意==：有段时间 JDK 一直致力于 Reactor 响应式编程来提高 Java 性能，但响应式编程难以理解、调试、使用，最终又回到了同步编程，最终虚拟线程诞生。
 
 ## 虚拟线程的底层原理是什么？
 

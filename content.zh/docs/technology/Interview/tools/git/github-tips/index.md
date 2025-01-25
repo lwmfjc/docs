@@ -101,13 +101,13 @@ Github 前段时间推出的 Codespaces 可以提供类似 VS Code 的在线 IDE
 
 ## 扩展 Github 的功能
 
-**Enhanced GitHub** 可以让你的 Github 更好用。这个 Chrome 插件可以可视化你的 Github 仓库大小，每个文件的大小并且可以让你快速下载单个文件。
+==Enhanced GitHub== 可以让你的 Github 更好用。这个 Chrome 插件可以可视化你的 Github 仓库大小，每个文件的大小并且可以让你快速下载单个文件。
 
 ![](https://oss.javaguide.cn/2020-11/image-20201107160817672.png)
 
 ## 自动为 Markdown 文件生成目录
 
-如果你想为 Github 上的 Markdown 文件生成目录的话，通过 VS Code 的 **Markdown Preview Enhanced** 这个插件就可以了。
+如果你想为 Github 上的 Markdown 文件生成目录的话，通过 VS Code 的 ==Markdown Preview Enhanced== 这个插件就可以了。
 
 生成的目录效果如下图所示。你直接点击目录中的链接即可跳转到文章对应的位置，可以优化阅读体验。
 

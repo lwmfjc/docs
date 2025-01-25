@@ -23,13 +23,13 @@ JDK1.8 之前 HashMap 由 数组+链表 组成的，数组是 HashMap 的主体�
 
 ### JDK1.8 之前
 
-JDK1.8 之前 HashMap 底层是 **数组和链表** 结合在一起使用也就是 **链表散列**。
+JDK1.8 之前 HashMap 底层是 ==数组和链表== 结合在一起使用也就是 ==链表散列==。
 
 HashMap 通过 key 的 hashCode 经过扰动函数处理过后得到 hash 值，然后通过 `(n - 1) & hash` 判断当前元素存放的位置（这里的 n 指的是数组的长度），如果当前位置存在元素的话，就判断该元素与要存入的元素的 hash 值以及 key 是否相同，如果相同的话，直接覆盖，不相同就通过拉链法解决冲突。
 
 所谓扰动函数指的就是 HashMap 的 hash 方法。使用 hash 方法也就是扰动函数是为了防止一些实现比较差的 hashCode() 方法 换句话说使用扰动函数之后可以减少碰撞。
 
-**JDK 1.8 HashMap 的 hash 方法源码:**
+==JDK 1.8 HashMap 的 hash 方法源码:==
 
 JDK 1.8 的 hash 方法 相比于 JDK 1.7 hash 方法更加简化，但是原理不变。
 
@@ -58,7 +58,7 @@ static int hash(int h) {
 
 相比于 JDK1.8 的 hash 方法 ，JDK 1.7 的 hash 方法的性能会稍差一点点，因为毕竟扰动了 4 次。
 
-所谓 **“拉链法”** 就是：将链表和数组相结合。也就是说创建一个链表数组，数组中每一格就是一个链表。若遇到哈希冲突，则将冲突的值加到链表中即可。
+所谓 ==“拉链法”== 就是：将链表和数组相结合。也就是说创建一个链表数组，数组中每一格就是一个链表。若遇到哈希冲突，则将冲突的值加到链表中即可。
 
 ![jdk1.8 之前的内部结构-HashMap](https://oss.javaguide.cn/github/javaguide/java/collection/jdk1.7_hashmap.png)
 
@@ -70,7 +70,7 @@ static int hash(int h) {
 
 ![jdk1.8之后的内部结构-HashMap](https://oss.javaguide.cn/github/javaguide/java/collection/jdk1.8_hashmap.png)
 
-**类的属性：**
+==类的属性：==
 
 ```java
 public class HashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable {
@@ -103,19 +103,19 @@ public class HashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneabl
 }
 ```
 
-- **loadFactor 负载因子**
+- ==loadFactor 负载因子==
 
   loadFactor 负载因子是控制数组存放数据的疏密程度，loadFactor 越趋近于 1，那么 数组中存放的数据(entry)也就越多，也就越密，也就是会让链表的长度增加，loadFactor 越小，也就是趋近于 0，数组中存放的数据(entry)也就越少，也就越稀疏。
 
-  **loadFactor 太大导致查找元素效率低，太小导致数组的利用率低，存放的数据会很分散。loadFactor 的默认值为 0.75f 是官方给出的一个比较好的临界值**。
+  ==loadFactor 太大导致查找元素效率低，太小导致数组的利用率低，存放的数据会很分散。loadFactor 的默认值为 0.75f 是官方给出的一个比较好的临界值==。
 
   给定的默认容量为 16，负载因子为 0.75。Map 在使用过程中不断的往里面存放数据，当数量超过了 16 \* 0.75 = 12 就需要将当前 16 的容量进行扩容，而扩容这个过程涉及到 rehash、复制数据等操作，所以非常消耗性能。
 
-- **threshold**
+- ==threshold==
 
-  **threshold = capacity \* loadFactor**，**当 Size>threshold**的时候，那么就要考虑对数组的扩增了，也就是说，这个的意思就是 **衡量数组是否需要扩增的一个标准**。
+  ==threshold = capacity \* loadFactor==，==当 Size>threshold==的时候，那么就要考虑对数组的扩增了，也就是说，这个的意思就是 ==衡量数组是否需要扩增的一个标准==。
 
-**Node 节点类源码:**
+==Node 节点类源码:==
 
 ```java
 // 继承自 Map.Entry<K,V>
@@ -159,7 +159,7 @@ static class Node<K,V> implements Map.Entry<K,V> {
 }
 ```
 
-**树节点类源码:**
+==树节点类源码:==
 
 ```java
 static final class TreeNode<K,V> extends LinkedHashMap.Entry<K,V> {
@@ -219,7 +219,7 @@ HashMap 中有四个构造方法，它们分别如下：
 
 > 值得注意的是上述四个构造方法中，都初始化了负载因子 loadFactor，由于 HashMap 中没有 capacity 这样的字段，即使指定了初始化容量 initialCapacity ，也只是通过 tableSizeFor 将其扩容到与 initialCapacity 最接近的 2 的幂次方大小，然后暂时赋值给 threshold ，后续通过 resize 方法将 threshold 赋值给 newCap 进行 table 的初始化。
 
-**putMapEntries 方法：**
+==putMapEntries 方法：==
 
 ```java
 final void putMapEntries(Map<? extends K, ? extends V> m, boolean evict) {
@@ -259,7 +259,7 @@ final void putMapEntries(Map<? extends K, ? extends V> m, boolean evict) {
 
 HashMap 只提供了 put 用于添加元素，putVal 方法只是给 put 方法调用的一个方法，并没有提供给用户使用。
 
-**对 putVal 方法添加元素的分析如下：**
+==对 putVal 方法添加元素的分析如下：==
 
 1. 如果定位到的数组位置没有元素 就直接插入。
 2. 如果定位到的数组位置有元素就和要插入的 key 比较，如果 key 相同就直接覆盖，如果 key 不相同，就判断 p 是否是一个树节点，如果是就调用`e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value)`将元素添加进入。如果不是就遍历链表插入(插入的是链表尾部)。
@@ -341,9 +341,9 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
 }
 ```
 
-**我们再来对比一下 JDK1.7 put 方法的代码**
+==我们再来对比一下 JDK1.7 put 方法的代码==
 
-**对于 put 方法的分析如下：**
+==对于 put 方法的分析如下：==
 
 - ① 如果定位到的数组位置没有元素 就直接插入。
 - ② 如果定位到的数组位置有元素，遍历以这个元素为头结点的链表，依次和插入的 key 比较，如果 key 相同就直接覆盖，不同就采用头插法插入元素。

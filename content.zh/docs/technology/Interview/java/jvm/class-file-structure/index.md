@@ -60,7 +60,7 @@ ClassFile {
     u4             magic; //Class 文件的标志
 ```
 
-每个 Class 文件的头 4 个字节称为魔数（Magic Number）,它的唯一作用是**确定这个文件是否为一个能被虚拟机接收的 Class 文件**。Java 规范规定魔数为固定值：0xCAFEBABE。如果读取的文件不是以这个魔数开头，Java 虚拟机将拒绝加载它。
+每个 Class 文件的头 4 个字节称为魔数（Magic Number）,它的唯一作用是==确定这个文件是否为一个能被虚拟机接收的 Class 文件==。Java 规范规定魔数为固定值：0xCAFEBABE。如果读取的文件不是以这个魔数开头，Java 虚拟机将拒绝加载它。
 
 ### Class 文件版本号（Minor&Major Version）
 
@@ -69,7 +69,7 @@ ClassFile {
     u2             major_version;//Class 的大版本号
 ```
 
-紧接着魔数的四个字节存储的是 Class 文件的版本号：第 5 和第 6 个字节是**次版本号**，第 7 和第 8 个字节是**主版本号**。
+紧接着魔数的四个字节存储的是 Class 文件的版本号：第 5 和第 6 个字节是==次版本号==，第 7 和第 8 个字节是==主版本号==。
 
 每当 Java 发布大版本（比如 Java 8，Java9）的时候，主版本号都会加 1。你可以使用 `javap -v` 命令来快速查看 Class 文件的版本号信息。
 
@@ -82,7 +82,7 @@ ClassFile {
     cp_info        constant_pool[constant_pool_count-1];//常量池
 ```
 
-紧接着主次版本号之后的是常量池，常量池的数量是 `constant_pool_count-1`（**常量池计数器是从 1 开始计数的，将第 0 项常量空出来是有特殊考虑的，索引值为 0 代表“不引用任何一个常量池项”**）。
+紧接着主次版本号之后的是常量池，常量池的数量是 `constant_pool_count-1`（==常量池计数器是从 1 开始计数的，将第 0 项常量空出来是有特殊考虑的，索引值为 0 代表“不引用任何一个常量池项”==）。
 
 常量池主要存放两大常量：字面量和符号引用。字面量比较接近于 Java 语言层面的的常量概念，如文本字符串、声明为 final 的常量值等。而符号引用则属于编译原理方面的概念。包括下面三类常量：
 
@@ -90,7 +90,7 @@ ClassFile {
 - 字段的名称和描述符
 - 方法的名称和描述符
 
-常量池中每一项常量都是一个表，这 14 种表有一个共同的特点：**开始的第一位是一个 u1 类型的标志位 -tag 来标识常量的类型，代表当前这个常量属于哪种常量类型．**
+常量池中每一项常量都是一个表，这 14 种表有一个共同的特点：==开始的第一位是一个 u1 类型的标志位 -tag 来标识常量的类型，代表当前这个常量属于哪种常量类型．==
 
 |               类型               | 标志（tag） |          描述          |
 | :------------------------------: | :---------: | :--------------------: |
@@ -160,19 +160,19 @@ Java 类的继承关系由类索引、父类索引和接口索引集合三项确
 
 字段表（field info）用于描述接口或类中声明的变量。字段包括类级变量以及实例变量，但不包括在方法内部声明的局部变量。
 
-**field info(字段表) 的结构:**
+==field info(字段表) 的结构:==
 
 ![字段表的结构 ](https://oss.javaguide.cn/github/javaguide/java/%E5%AD%97%E6%AE%B5%E8%A1%A8%E7%9A%84%E7%BB%93%E6%9E%84.png)
 
-- **access_flags:** 字段的作用域（`public` ,`private`,`protected`修饰符），是实例变量还是类变量（`static`修饰符）,可否被序列化（transient 修饰符）,可变性（final）,可见性（volatile 修饰符，是否强制从主内存读写）。
-- **name_index:** 对常量池的引用，表示的字段的名称；
-- **descriptor_index:** 对常量池的引用，表示字段和方法的描述符；
-- **attributes_count:** 一个字段还会拥有一些额外的属性，attributes_count 存放属性的个数；
-- **attributes[attributes_count]:** 存放具体属性具体内容。
+- ==access_flags:== 字段的作用域（`public` ,`private`,`protected`修饰符），是实例变量还是类变量（`static`修饰符）,可否被序列化（transient 修饰符）,可变性（final）,可见性（volatile 修饰符，是否强制从主内存读写）。
+- ==name_index:== 对常量池的引用，表示的字段的名称；
+- ==descriptor_index:== 对常量池的引用，表示字段和方法的描述符；
+- ==attributes_count:== 一个字段还会拥有一些额外的属性，attributes_count 存放属性的个数；
+- ==attributes[attributes_count]:== 存放具体属性具体内容。
 
 上述这些信息中，各个修饰符都是布尔值，要么有某个修饰符，要么没有，很适合使用标志位来表示。而字段叫什么名字、字段被定义为什么数据类型这些都是无法固定的，只能引用常量池中常量来描述。
 
-**字段的 access_flag 的取值:**
+==字段的 access_flag 的取值:==
 
 ![字段的 access_flag 的取值](https://oss.javaguide.cn/JVM/image-20201031084342859.png)
 
@@ -187,11 +187,11 @@ methods_count 表示方法的数量，而 method_info 表示方法表。
 
 Class 文件存储格式中对方法的描述与对字段的描述几乎采用了完全一致的方式。方法表的结构如同字段表一样，依次包括了访问标志、名称索引、描述符索引、属性表集合几项。
 
-**method_info(方法表的) 结构:**
+==method_info(方法表的) 结构:==
 
 ![方法表的结构](https://oss.javaguide.cn/github/javaguide/java/%E6%96%B9%E6%B3%95%E8%A1%A8%E7%9A%84%E7%BB%93%E6%9E%84.png)
 
-**方法表的 access_flag 取值：**
+==方法表的 access_flag 取值：==
 
 ![方法表的 access_flag 取值](https://oss.javaguide.cn/JVM/image-20201031084248965.png)
 

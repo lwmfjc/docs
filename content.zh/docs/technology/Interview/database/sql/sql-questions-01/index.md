@@ -192,7 +192,7 @@ ORDER BY vend_name DESC
 | 运算符  | 描述                                                         |
 | :------ | :----------------------------------------------------------- |
 | =       | 等于                                                         |
-| <>      | 不等于。 **注释：** 在 SQL 的一些版本中，该操作符可被写成 != |
+| <>      | 不等于。 ==注释：== 在 SQL 的一些版本中，该操作符可被写成 != |
 | >       | 大于                                                         |
 | <       | 小于                                                         |
 | >=      | 大于等于                                                     |
@@ -484,7 +484,7 @@ WHERE prod_desc LIKE '%toy%' AND prod_desc LIKE "%carrots%"
 | c0019     | gucci toy        |
 | d0019     | lego toy carrots |
 
-【问题】编写 SQL 语句，从 Products 表中检索产品名称（prod_name）和描述（prod_desc），仅返回在描述中以**先后顺序**同时出现 toy 和 carrots 的产品。提示：只需要用带有三个 `%` 符号的 `LIKE` 即可。
+【问题】编写 SQL 语句，从 Products 表中检索产品名称（prod_name）和描述（prod_desc），仅返回在描述中以==先后顺序==同时出现 toy 和 carrots 的产品。提示：只需要用带有三个 `%` 符号的 `LIKE` 即可。
 
 答案：
 
@@ -1164,7 +1164,7 @@ GROUP BY p.prod_name（这里不能用 p.prod_id，会报错）
 
 JOIN 是“连接”的意思，顾名思义，SQL JOIN 子句用于将两个或者多个表联合起来进行查询。
 
-连接表时需要在每个表中选择一个字段，并对这些字段的值进行比较，值相同的两条记录将合并为一条。**连接表的本质就是将不同表的记录合并起来，形成一张新表。当然，这张新表只是临时的，它仅存在于本次查询期间**。
+连接表时需要在每个表中选择一个字段，并对这些字段的值进行比较，值相同的两条记录将合并为一条。==连接表的本质就是将不同表的记录合并起来，形成一张新表。当然，这张新表只是临时的，它仅存在于本次查询期间==。
 
 使用 `JOIN` 连接两个表的基本语法如下：
 
@@ -1197,12 +1197,12 @@ USING(cust_id)
 ORDER BY c.cust_name
 ```
 
-**`ON` 和 `WHERE` 的区别**：
+==`ON` 和 `WHERE` 的区别==：
 
 - 连接表时，SQL 会根据连接条件生成一张新的临时表。`ON` 就是连接条件，它决定临时表的生成。
 - `WHERE` 是在临时表生成以后，再对临时表中的数据进行过滤，生成最终的结果集，这个时候已经没有 JOIN-ON 了。
 
-所以总结来说就是：**SQL 先根据 ON 生成一张临时表，然后再根据 WHERE 对临时表进行筛选**。
+所以总结来说就是：==SQL 先根据 ON 生成一张临时表，然后再根据 WHERE 对临时表进行筛选==。
 
 SQL 允许在 `JOIN` 左边加上一些修饰性的关键词，从而形成不同类型的连接，如下表所示：
 
@@ -1221,7 +1221,7 @@ SQL 允许在 `JOIN` 左边加上一些修饰性的关键词，从而形成不�
 
 如果不加任何修饰词，只写 `JOIN`，那么默认为 `INNER JOIN`
 
-对于 `INNER JOIN` 来说，还有一种隐式的写法，称为 “**隐式内连接**”，也就是没有 `INNER JOIN` 关键字，使用 `WHERE` 语句实现内连接的功能
+对于 `INNER JOIN` 来说，还有一种隐式的写法，称为 “==隐式内连接==”，也就是没有 `INNER JOIN` 关键字，使用 `WHERE` 语句实现内连接的功能
 
 ```sql
 # 隐式内连接
@@ -1339,9 +1339,9 @@ ORDER BY c.cust_name,o.order_num
 
 这是错误的！只对 `cust_name` 进行聚类确实符合题意，但是不符合 `GROUP BY` 的语法。
 
-select 语句中，如果没有 `GROUP BY` 语句，那么 `cust_name`、`order_num` 会返回若干个值，而 `sum(quantity * item_price)` 只返回一个值，通过 `group by` `cust_name` 可以让 `cust_name` 和 `sum(quantity * item_price)` 一一对应起来，或者说**聚类**，所以同样的，也要对 `order_num` 进行聚类。
+select 语句中，如果没有 `GROUP BY` 语句，那么 `cust_name`、`order_num` 会返回若干个值，而 `sum(quantity * item_price)` 只返回一个值，通过 `group by` `cust_name` 可以让 `cust_name` 和 `sum(quantity * item_price)` 一一对应起来，或者说==聚类==，所以同样的，也要对 `order_num` 进行聚类。
 
-> **一句话，select 中的字段要么都聚类，要么都不聚类**
+> ==一句话，select 中的字段要么都聚类，要么都不聚类==
 
 ### 确定哪些订单购买了 prod_id 为 BR01 的产品（二）
 
@@ -1731,7 +1731,7 @@ WHERE prod_id LIKE 'BNBG%'
 | a0003   | 5        |
 | BNBG    | 10002    |
 
-【问题】将两个 `SELECT` 语句结合起来，以便从 `OrderItems` 表中检索产品 id（`prod_id`）和 `quantity`。其中，一个 `SELECT` 语句过滤数量为 100 的行，另一个 `SELECT` 语句过滤 id 以 BNBG 开头的产品，最后按产品 id 对结果进行升序排序。 注意：**这次仅使用单个 SELECT 语句。**
+【问题】将两个 `SELECT` 语句结合起来，以便从 `OrderItems` 表中检索产品 id（`prod_id`）和 `quantity`。其中，一个 `SELECT` 语句过滤数量为 100 的行，另一个 `SELECT` 语句过滤 id 以 BNBG 开头的产品，最后按产品 id 对结果进行升序排序。 注意：==这次仅使用单个 SELECT 语句。==
 
 答案：
 

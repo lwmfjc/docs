@@ -21,11 +21,11 @@ tag:
 
 `Unsafe` 是位于 `sun.misc` 包下的一个类，主要提供一些用于执行低级别、不安全操作的方法，如直接访问系统内存资源、自主管理内存资源等，这些方法在提升 Java 运行效率、增强 Java 语言底层资源操作能力方面起到了很大的作用。但由于 `Unsafe` 类使 Java 语言拥有了类似 C 语言指针一样操作内存空间的能力，这无疑也增加了程序发生相关指针问题的风险。在程序中过度、不正确使用 `Unsafe` 类会使得程序出错的概率变大，使得 Java 这种安全的语言变得不再“安全”，因此对 `Unsafe` 的使用一定要慎重。
 
-另外，`Unsafe` 提供的这些功能的实现需要依赖本地方法（Native Method）。你可以将本地方法看作是 Java 中使用其他编程语言编写的方法。本地方法使用 **`native`** 关键字修饰，Java 代码中只是声明方法头，具体的实现则交给 **本地代码**。
+另外，`Unsafe` 提供的这些功能的实现需要依赖本地方法（Native Method）。你可以将本地方法看作是 Java 中使用其他编程语言编写的方法。本地方法使用 ==`native`== 关键字修饰，Java 代码中只是声明方法头，具体的实现则交给 ==本地代码==。
 
 ![](https://oss.javaguide.cn/github/javaguide/java/basis/unsafe/image-20220717115231125.png)
 
-**为什么要使用本地方法呢？**
+==为什么要使用本地方法呢？==
 
 1. 需要用到 Java 中不具备的依赖于操作系统的特性，Java 在实现跨平台的同时要实现对底层的控制，需要借助其他语言发挥作用。
 2. 对于其他语言已经完成的一些现成功能，可以使用 Java 直接调用。
@@ -65,15 +65,15 @@ Exception in thread "main" java.lang.SecurityException: Unsafe
  at com.cn.test.GetUnsafeTest.main(GetUnsafeTest.java:12)
 ```
 
-**为什么 `public static` 方法无法被直接调用呢？**
+==为什么 `public static` 方法无法被直接调用呢？==
 
 这是因为在`getUnsafe`方法中，会对调用者的`classLoader`进行检查，判断当前类是否由`Bootstrap classLoader`加载，如果不是的话那么就会抛出一个`SecurityException`异常。也就是说，只有启动类加载器加载的类才能够调用 Unsafe 类中的方法，来防止这些方法在不可信的代码中被调用。
 
-**为什么要对 Unsafe 类进行这么谨慎的使用限制呢?**
+==为什么要对 Unsafe 类进行这么谨慎的使用限制呢?==
 
 `Unsafe` 提供的功能过于底层（如直接访问系统内存资源、自主管理内存资源等），安全隐患也比较大，使用不当的话，很容易出现很严重的问题。
 
-**如若想使用 `Unsafe` 这个类的话，应该如何获取其实例呢？**
+==如若想使用 `Unsafe` 这个类的话，应该如何获取其实例呢？==
 
 这里介绍两个可行的方案。
 
@@ -176,7 +176,7 @@ addr3: 2433733894944
 
 需要注意，通过这种方式分配的内存属于 堆外内存 ，是无法进行垃圾回收的，需要我们把这些内存当做一种资源去手动调用`freeMemory`方法进行释放，否则会产生内存泄漏。通用的操作内存方式是在`try`中执行对内存的操作，最终在`finally`块中进行内存的释放。
 
-**为什么要使用堆外内存？**
+==为什么要使用堆外内存？==
 
 - 对垃圾回收停顿的改善。由于堆外内存是直接受操作系统管理而不是 JVM，所以当我们使用堆外内存时，即可保持较小的堆内内存规模。从而在 GC 时减少回收停顿对于应用的影响。
 - 提升程序 I/O 操作的性能。通常在 I/O 通信过程中，会存在堆内内存到堆外内存的数据拷贝操作，对于需要频繁进行内存间数据拷贝且生命周期较短的暂存数据，都建议存储到堆外内存。
@@ -244,7 +244,7 @@ public native void fullFence();
 ```java
 @Getter
 class ChangeThread implements Runnable{
-    /**volatile**/ boolean flag=false;
+    /==volatile==/ boolean flag=false;
     @Override
     public void run() {
         try {
@@ -307,7 +307,7 @@ public boolean validate(long stamp) {
 
 #### 介绍
 
-**例子**
+==例子==
 
 ```java
 import sun.misc.Unsafe;
@@ -350,7 +350,7 @@ value after putInt: 42
 value after putInt: 42
 ```
 
-**对象属性**
+==对象属性==
 
 对象成员属性的内存偏移量获取，以及字段属性值的修改，在上面的例子中我们已经测试过了。除了前面的`putInt`、`getInt`方法外，Unsafe 提供了全部 8 种基础数据类型以及`Object`的`put`和`get`方法，并且所有的`put`方法都可以越过访问权限，直接修改内存中的数据。阅读 openJDK 源码中的注释发现，基础数据类型和`Object`的读写稍有不同，基础数据类型是直接操作的属性值（`value`），而`Object`的操作则是基于引用值（`reference value`）。下面是`Object`的读写方法：
 
@@ -361,7 +361,7 @@ public native Object getObject(Object o, long offset);
 public native void putObject(Object o, long offset, Object x);
 ```
 
-除了对象属性的普通读写外，`Unsafe` 还提供了 **volatile 读写**和**有序写入**方法。`volatile`读写方法的覆盖范围与普通读写相同，包含了全部基础数据类型和`Object`类型，以`int`类型为例：
+除了对象属性的普通读写外，`Unsafe` 还提供了 ==volatile 读写==和==有序写入==方法。`volatile`读写方法的覆盖范围与普通读写相同，包含了全部基础数据类型和`Object`类型，以`int`类型为例：
 
 ```java
 //在对象的指定偏移地址处读取一个int值，支持volatile load语义
@@ -393,7 +393,7 @@ public native void putOrderedLong(Object o, long offset, long x);
 
 综上所述，在上面的三类写入方法中，在写入效率方面，按照`put`、`putOrder`、`putVolatile`的顺序效率逐渐降低。
 
-**对象实例化**
+==对象实例化==
 
 使用 `Unsafe` 的 `allocateInstance` 方法，允许我们使用非常规的方式进行对象的实例化，首先定义一个实体类，并且在构造函数中对其成员变量进行赋值操作：
 
@@ -424,8 +424,8 @@ public void objTest() throws Exception{
 
 #### 典型应用
 
-- **常规对象实例化方式**：我们通常所用到的创建对象的方式，从本质上来讲，都是通过 new 机制来实现对象的创建。但是，new 机制有个特点就是当类只提供有参的构造函数且无显式声明无参构造函数时，则必须使用有参构造函数进行对象构造，而使用有参构造函数时，必须传递相应个数的参数才能完成对象实例化。
-- **非常规的实例化方式**：而 Unsafe 中提供 allocateInstance 方法，仅通过 Class 对象就可以创建此类的实例对象，而且不需要调用其构造函数、初始化代码、JVM 安全检查等。它抑制修饰符检测，也就是即使构造器是 private 修饰的也能通过此方法实例化，只需提类对象即可创建相应的对象。由于这种特性，allocateInstance 在 java.lang.invoke、Objenesis（提供绕过类构造器的对象生成方式）、Gson（反序列化时用到）中都有相应的应用。
+- ==常规对象实例化方式==：我们通常所用到的创建对象的方式，从本质上来讲，都是通过 new 机制来实现对象的创建。但是，new 机制有个特点就是当类只提供有参的构造函数且无显式声明无参构造函数时，则必须使用有参构造函数进行对象构造，而使用有参构造函数时，必须传递相应个数的参数才能完成对象实例化。
+- ==非常规的实例化方式==：而 Unsafe 中提供 allocateInstance 方法，仅通过 Class 对象就可以创建此类的实例对象，而且不需要调用其构造函数、初始化代码、JVM 安全检查等。它抑制修饰符检测，也就是即使构造器是 private 修饰的也能通过此方法实例化，只需提类对象即可创建相应的对象。由于这种特性，allocateInstance 在 java.lang.invoke、Objenesis（提供绕过类构造器的对象生成方式）、Gson（反序列化时用到）中都有相应的应用。
 
 ### 数组操作
 
@@ -468,7 +468,7 @@ public final native boolean compareAndSwapInt(Object o, long offset, int expecte
 public final native boolean compareAndSwapLong(Object o, long offset, long expected, long update);
 ```
 
-**什么是 CAS?** CAS 即比较并替换（Compare And Swap)，是实现并发算法时常用到的一种技术。CAS 操作包含三个操作数——内存位置、预期原值及新值。执行 CAS 操作的时候，将内存位置的值与预期原值比较，如果相匹配，那么处理器会自动将该位置值更新为新值，否则，处理器不做任何操作。我们都知道，CAS 是一条 CPU 的原子指令（cmpxchg 指令），不会造成所谓的数据不一致问题，`Unsafe` 提供的 CAS 方法（如 `compareAndSwapXXX`）底层实现即为 CPU 指令 `cmpxchg` 。
+==什么是 CAS?== CAS 即比较并替换（Compare And Swap)，是实现并发算法时常用到的一种技术。CAS 操作包含三个操作数——内存位置、预期原值及新值。执行 CAS 操作的时候，将内存位置的值与预期原值比较，如果相匹配，那么处理器会自动将该位置值更新为新值，否则，处理器不做任何操作。我们都知道，CAS 是一条 CPU 的原子指令（cmpxchg 指令），不会造成所谓的数据不一致问题，`Unsafe` 提供的 CAS 方法（如 `compareAndSwapXXX`）底层实现即为 CPU 指令 `cmpxchg` 。
 
 #### 典型应用
 
@@ -619,7 +619,7 @@ unpark mainThread success
 
 `Unsafe` 对`Class`的相关操作主要包括类加载和静态变量的操作方法。
 
-**静态属性读取相关的方法**
+==静态属性读取相关的方法==
 
 ```java
 //获取静态属性的偏移量
@@ -670,7 +670,7 @@ true
 null
 ```
 
-**使用`defineClass`方法允许程序在运行时动态地创建一个类**
+==使用`defineClass`方法允许程序在运行时动态地创建一个类==
 
 ```java
 public native Class<?> defineClass(String name, byte[] b, int off, int len, ClassLoader loader,ProtectionDomain protectionDomain);

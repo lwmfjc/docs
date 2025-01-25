@@ -82,7 +82,7 @@ for (Map.Entry<Integer, String> entry : map.entrySet()) {
 
 ### LRU 缓存
 
-从上一个我们可以了解到通过 `LinkedHashMap` 我们可以封装一个简易版的 LRU（**L**east **R**ecently **U**sed，最近最少使用） 缓存，确保当存放的元素超过容器容量时，将最近最少访问的元素移除。
+从上一个我们可以了解到通过 `LinkedHashMap` 我们可以封装一个简易版的 LRU（==L==east ==R==ecently ==U==sed，最近最少使用） 缓存，确保当存放的元素超过容器容量时，将最近最少访问的元素移除。
 
 ![](https://oss.javaguide.cn/github/javaguide/java/collection/lru-cache.png)
 
@@ -146,7 +146,7 @@ five
 1. ~~链表上的节点个数达到树化的阈值 7，即`TREEIFY_THRESHOLD - 1`。~~
 2. bucket 的容量达到最小的树化容量即`MIN_TREEIFY_CAPACITY`。
 
-> **🐛 修正（参见：[issue#2147](https://github.com/Snailclimb/JavaGuide/issues/2147)）**：
+> ==🐛 修正（参见：[issue#2147](https://github.com/Snailclimb/JavaGuide/issues/2147)）==：
 >
 > 链表上的节点个数达到树化的阈值是 8 而非 7。因为源码的判断是从链表初始元素开始遍历，下标是从 0 开始的，所以判断条件设置为 8-1=7，其实是迭代到尾部元素时再判断整个链表长度大于等于 8 才进行树化操作。
 >

@@ -19,7 +19,7 @@ tag:
 
 但是，这并不代表反射没有用。相反，正是因为反射，你才能这么轻松地使用各种框架。像 Spring/Spring Boot、MyBatis 等等框架中都大量使用了反射机制。
 
-**这些框架中也大量使用了动态代理，而动态代理的实现也依赖反射。**
+==这些框架中也大量使用了动态代理，而动态代理的实现也依赖反射。==
 
 比如下面是通过 JDK 实现动态代理的示例代码，其中就使用了反射类 `Method` 来调用指定的方法。
 
@@ -45,7 +45,7 @@ public class DebugInvocationHandler implements InvocationHandler {
 
 ```
 
-另外，像 Java 中的一大利器 **注解** 的实现也用到了反射。
+另外，像 Java 中的一大利器 ==注解== 的实现也用到了反射。
 
 为什么你使用 Spring 的时候 ，一个`@Component`注解就声明了一个类为 Spring Bean 呢？为什么你通过一个 `@Value`注解就读取到配置文件中的值呢？究竟是怎么起作用的呢？
 
@@ -53,9 +53,9 @@ public class DebugInvocationHandler implements InvocationHandler {
 
 ## 谈谈反射机制的优缺点
 
-**优点**：可以让咱们的代码更加灵活、为各种框架提供开箱即用的功能提供了便利
+==优点==：可以让咱们的代码更加灵活、为各种框架提供开箱即用的功能提供了便利
 
-**缺点**：让我们在运行时有了分析操作类的能力，这同样也增加了安全问题。比如可以无视泛型参数的安全检查（泛型参数的安全检查发生在编译时）。另外，反射的性能也要稍差点，不过，对于框架来说实际是影响不大的。相关阅读：[Java Reflection: Why is it so slow?](https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow)
+==缺点==：让我们在运行时有了分析操作类的能力，这同样也增加了安全问题。比如可以无视泛型参数的安全检查（泛型参数的安全检查发生在编译时）。另外，反射的性能也要稍差点，不过，对于框架来说实际是影响不大的。相关阅读：[Java Reflection: Why is it so slow?](https://stackoverflow.com/questions/1392351/java-reflection-why-is-it-so-slow)
 
 ## 反射实战
 
@@ -63,7 +63,7 @@ public class DebugInvocationHandler implements InvocationHandler {
 
 如果我们动态获取到这些信息，我们需要依靠 Class 对象。Class 类对象将一个类的方法、变量等信息告诉运行的程序。Java 提供了四种方式获取 Class 对象:
 
-**1. 知道具体类的情况下可以使用：**
+==1. 知道具体类的情况下可以使用：==
 
 ```java
 Class alunbarClass = TargetObject.class;
@@ -71,20 +71,20 @@ Class alunbarClass = TargetObject.class;
 
 但是我们一般是不知道具体类的，基本都是通过遍历包下面的类来获取 Class 对象，通过此方式获取 Class 对象不会进行初始化
 
-**2. 通过 `Class.forName()`传入类的全路径获取：**
+==2. 通过 `Class.forName()`传入类的全路径获取：==
 
 ```java
 Class alunbarClass1 = Class.forName("cn.javaguide.TargetObject");
 ```
 
-**3. 通过对象实例`instance.getClass()`获取：**
+==3. 通过对象实例`instance.getClass()`获取：==
 
 ```java
 TargetObject o = new TargetObject();
 Class alunbarClass2 = o.getClass();
 ```
 
-**4. 通过类加载器`xxxClassLoader.loadClass()`传入类路径获取:**
+==4. 通过类加载器`xxxClassLoader.loadClass()`传入类路径获取:==
 
 ```java
 ClassLoader.getSystemClassLoader().loadClass("cn.javaguide.TargetObject");
@@ -177,7 +177,7 @@ I love JavaGuide
 value is JavaGuide
 ```
 
-**注意** : 有读者提到上面代码运行会抛出 `ClassNotFoundException` 异常，具体原因是你没有下面把这段代码的包名替换成自己创建的 `TargetObject` 所在的包 。
+==注意== : 有读者提到上面代码运行会抛出 `ClassNotFoundException` 异常，具体原因是你没有下面把这段代码的包名替换成自己创建的 `TargetObject` 所在的包 。
 可以参考：<https://www.cnblogs.com/chanshuyi/p/head_first_of_reflection.html> 这篇文章。
 
 ```java

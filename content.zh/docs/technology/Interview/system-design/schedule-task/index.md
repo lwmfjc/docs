@@ -145,13 +145,13 @@ public void reportCurrentTimeWithCronExpression() {
 
 我在大学那会做的一个 SSM 的企业级项目，就是用的 Spring Task 来做的定时任务。
 
-并且，Spring Task 还是支持 **Cron 表达式** 的。Cron 表达式主要用于定时作业(定时任务)系统定义执行时间或执行频率的表达式，非常厉害，你可以通过 Cron 表达式进行设置定时任务每天或者每个月什么时候执行等等操作。咱们要学习定时任务的话，Cron 表达式是一定是要重点关注的。推荐一个在线 Cron 表达式生成器：[http://cron.qqe2.com/](http://cron.qqe2.com/) 。
+并且，Spring Task 还是支持 ==Cron 表达式== 的。Cron 表达式主要用于定时作业(定时任务)系统定义执行时间或执行频率的表达式，非常厉害，你可以通过 Cron 表达式进行设置定时任务每天或者每个月什么时候执行等等操作。咱们要学习定时任务的话，Cron 表达式是一定是要重点关注的。推荐一个在线 Cron 表达式生成器：[http://cron.qqe2.com/](http://cron.qqe2.com/) 。
 
 但是，Spring 自带的定时调度只支持单机，并且提供的功能比较单一。之前写过一篇文章:[《5 分钟搞懂如何在 Spring Boot 中 Schedule Tasks》](https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&mid=2247485563&idx=1&sn=7419341f04036a10b141b74624a3f8c9&chksm=cea247b0f9d5cea6440759e6d49b4e77d06f4c99470243a10c1463834e873ca90266413fbc92&token=2133161636&lang=zh_CN#rd) ，不了解的小伙伴可以参考一下。
 
 Spring Task 底层是基于 JDK 的 `ScheduledThreadPoolExecutor` 线程池来实现的。
 
-**优缺点总结：**
+==优缺点总结：==
 
 - 优点：简单，轻量，支持 Cron 表达式
 - 缺点：功能单一
@@ -168,9 +168,9 @@ Kafka、Dubbo、ZooKeeper、Netty、Caffeine、Akka 中都有对时间轮的实�
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/schedule-task/one-layers-of-time-wheel.png)
 
-那当我们需要创建一个 13s 后执行的定时任务怎么办呢？这个时候可以引入一叫做 **圈数/轮数** 的概念，也就是说这个任务还是放在下标为 1 的时间格中， 不过它的圈数为 2 。
+那当我们需要创建一个 13s 后执行的定时任务怎么办呢？这个时候可以引入一叫做 ==圈数/轮数== 的概念，也就是说这个任务还是放在下标为 1 的时间格中， 不过它的圈数为 2 。
 
-除了增加圈数这种方法之外，还有一种 **多层次时间轮** （类似手表），Kafka 采用的就是这种方案。
+除了增加圈数这种方法之外，还有一种 ==多层次时间轮== （类似手表），Kafka 采用的就是这种方案。
 
 针对下图的时间轮，我来举一个例子便于大家理解。
 
@@ -184,7 +184,7 @@ Kafka、Dubbo、ZooKeeper、Netty、Caffeine、Akka 中都有对时间轮的实�
 
 这里在层与层之间的移动也叫做时间轮的升降级。参考手表来理解就好！
 
-**时间轮比较适合任务数量比较多的定时任务场景，它的任务写入和执行的时间复杂度都是 0（1）。**
+==时间轮比较适合任务数量比较多的定时任务场景，它的任务写入和执行的时间复杂度都是 0（1）。==
 
 ## 分布式定时任务
 
@@ -205,10 +205,10 @@ Redis 是可以用来做延时任务的，基于 Redis 实现延时任务的功�
 
 不过，在使用 MQ 定时消息之前一定要看清楚其使用限制，以免不适合项目需求，例如 RocketMQ 定时时长最大值默认为 24 小时且不支持自定义修改、只支持 18 个 Level 的延时并不支持任意时间。
 
-**优缺点总结：**
+==优缺点总结：==
 
-- **优点**：可以与 Spring 集成、支持分布式、支持集群、性能不错
-- **缺点**：功能性较差、不灵活、需要保障消息可靠性
+- ==优点==：可以与 Spring 集成、支持分布式、支持集群、性能不错
+- ==缺点==：功能性较差、不灵活、需要保障消息可靠性
 
 ## 分布式任务调度框架
 
@@ -216,9 +216,9 @@ Redis 是可以用来做延时任务的，基于 Redis 实现延时任务的功�
 
 通常情况下，一个分布式定时任务的执行往往涉及到下面这些角色：
 
-- **任务**：首先肯定是要执行的任务，这个任务就是具体的业务逻辑比如定时发送文章。
-- **调度器**：其次是调度中心，调度中心主要负责任务管理，会分配任务给执行器。
-- **执行器**：最后就是执行器，执行器接收调度器分派的任务并执行。
+- ==任务==：首先肯定是要执行的任务，这个任务就是具体的业务逻辑比如定时发送文章。
+- ==调度器==：其次是调度中心，调度中心主要负责任务管理，会分配任务给执行器。
+- ==执行器==：最后就是执行器，执行器接收调度器分派的任务并执行。
 
 ### Quartz
 
@@ -230,7 +230,7 @@ Redis 是可以用来做延时任务的，基于 Redis 实现延时任务的功�
 
 另外，Quartz 虽然也支持分布式任务。但是，它是在数据库层面，通过数据库的锁机制做的，有非常多的弊端比如系统侵入性严重、节点负载不均衡。有点伪分布式的味道。
 
-**优缺点总结：**
+==优缺点总结：==
 
 - 优点：可以与 Spring 集成，并且支持动态添加任务和集群。
 - 缺点：分布式支持不友好，不支持任务可视化管理、使用麻烦（相比于其他同类型框架来说）
@@ -273,12 +273,12 @@ public class TestJob implements SimpleJob {
 }
 ```
 
-**相关地址：**
+==相关地址：==
 
 - GitHub 地址：<https://github.com/apache/shardingsphere-elasticjob。>
 - 官方网站：<https://shardingsphere.apache.org/elasticjob/index_zh.html> 。
 
-**优缺点总结：**
+==优缺点总结：==
 
 - 优点：可以与 Spring 集成、支持分布式、支持集群、性能不错、支持任务可视化管理
 - 缺点：依赖了额外的中间件比如 Zookeeper（复杂度增加，可靠性降低、维护成本变高）
@@ -304,7 +304,7 @@ public class TestJob implements SimpleJob {
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/schedule-task/xxljob-architecture-design-v2.1.0.png)
 
-从上图可以看出，`XXL-JOB` 由 **调度中心** 和 **执行器** 两大部分组成。调度中心主要负责任务管理、执行器管理以及日志管理。执行器主要是接收调度信号并处理。另外，调度中心进行任务调度时，是通过自研 RPC 来实现的。
+从上图可以看出，`XXL-JOB` 由 ==调度中心== 和 ==执行器== 两大部分组成。调度中心主要负责任务管理、执行器管理以及日志管理。执行器主要是接收调度信号并处理。另外，调度中心进行任务调度时，是通过自研 RPC 来实现的。
 
 不同于 Elastic-Job 的去中心化设计， `XXL-JOB` 的这种设计也被称为中心化设计（调度中心调度多个执行器执行任务）。
 
@@ -337,12 +337,12 @@ public ReturnT<String> myAnnotationJobHandler(String param) throws Exception {
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/schedule-task/xxljob-admin-task-management.png)
 
-**相关地址：**
+==相关地址：==
 
 - GitHub 地址：<https://github.com/xuxueli/xxl-job/。>
 - 官方介绍：<https://www.xuxueli.com/xxl-job/> 。
 
-**优缺点总结：**
+==优缺点总结：==
 
 - 优点：开箱即用（学习成本比较低）、与 Spring 集成、支持分布式、支持集群、支持任务可视化管理。
 - 缺点：不支持动态添加任务（如果一定想要动态创建任务也是支持的，参见：[xxl-job issue277](https://github.com/xuxueli/xxl-job/issues/277)）。
@@ -359,15 +359,15 @@ public ReturnT<String> myAnnotationJobHandler(String param) throws Exception {
 
 |                | QuartZ                                      | xxl-job                                    | SchedulerX 2.0                                       | PowerJob                                                        |
 | -------------- | ------------------------------------------- | ------------------------------------------ | ---------------------------------------------------- | --------------------------------------------------------------- |
-| 定时类型       | CRON                                        | CRON                                       | CRON、固定频率、固定延迟、OpenAPI                    | **CRON、固定频率、固定延迟、OpenAPI**                           |
-| 任务类型       | 内置 Java                                   | 内置 Java、GLUE Java、Shell、Python 等脚本 | 内置 Java、外置 Java（FatJar）、Shell、Python 等脚本 | **内置 Java、外置 Java（容器）、Shell、Python 等脚本**          |
-| 分布式计算     | 无                                          | 静态分片                                   | MapReduce 动态分片                                   | **MapReduce 动态分片**                                          |
-| 在线任务治理   | 不支持                                      | 支持                                       | 支持                                                 | **支持**                                                        |
-| 日志白屏化     | 不支持                                      | 支持                                       | 不支持                                               | **支持**                                                        |
-| 调度方式及性能 | 基于数据库锁，有性能瓶颈                    | 基于数据库锁，有性能瓶颈                   | 不详                                                 | **无锁化设计，性能强劲无上限**                                  |
-| 报警监控       | 无                                          | 邮件                                       | 短信                                                 | **WebHook、邮件、钉钉与自定义扩展**                             |
-| 系统依赖       | JDBC 支持的关系型数据库（MySQL、Oracle...） | MySQL                                      | 人民币                                               | **任意 Spring Data Jpa 支持的关系型数据库（MySQL、Oracle...）** |
-| DAG 工作流     | 不支持                                      | 不支持                                     | 支持                                                 | **支持**                                                        |
+| 定时类型       | CRON                                        | CRON                                       | CRON、固定频率、固定延迟、OpenAPI                    | ==CRON、固定频率、固定延迟、OpenAPI==                           |
+| 任务类型       | 内置 Java                                   | 内置 Java、GLUE Java、Shell、Python 等脚本 | 内置 Java、外置 Java（FatJar）、Shell、Python 等脚本 | ==内置 Java、外置 Java（容器）、Shell、Python 等脚本==          |
+| 分布式计算     | 无                                          | 静态分片                                   | MapReduce 动态分片                                   | ==MapReduce 动态分片==                                          |
+| 在线任务治理   | 不支持                                      | 支持                                       | 支持                                                 | ==支持==                                                        |
+| 日志白屏化     | 不支持                                      | 支持                                       | 不支持                                               | ==支持==                                                        |
+| 调度方式及性能 | 基于数据库锁，有性能瓶颈                    | 基于数据库锁，有性能瓶颈                   | 不详                                                 | ==无锁化设计，性能强劲无上限==                                  |
+| 报警监控       | 无                                          | 邮件                                       | 短信                                                 | ==WebHook、邮件、钉钉与自定义扩展==                             |
+| 系统依赖       | JDBC 支持的关系型数据库（MySQL、Oracle...） | MySQL                                      | 人民币                                               | ==任意 Spring Data Jpa 支持的关系型数据库（MySQL、Oracle...）== |
+| DAG 工作流     | 不支持                                      | 不支持                                     | 支持                                                 | ==支持==                                                        |
 
 ## 定时任务方案总结
 

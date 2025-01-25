@@ -9,12 +9,12 @@ tag:
 
 这些命令在 JDK 安装目录下的 bin 目录下：
 
-- **`jps`** (JVM Process Status）: 类似 UNIX 的 `ps` 命令。用于查看所有 Java 进程的启动类、传入参数和 Java 虚拟机参数等信息；
-- **`jstat`**（JVM Statistics Monitoring Tool）: 用于收集 HotSpot 虚拟机各方面的运行数据;
-- **`jinfo`** (Configuration Info for Java) : Configuration Info for Java,显示虚拟机配置信息;
-- **`jmap`** (Memory Map for Java) : 生成堆转储快照;
-- **`jhat`** (JVM Heap Dump Browser) : 用于分析 heapdump 文件，它会建立一个 HTTP/HTML 服务器，让用户可以在浏览器上查看分析结果。JDK9 移除了 jhat；
-- **`jstack`** (Stack Trace for Java) : 生成虚拟机当前时刻的线程快照，线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合。
+- ==`jps`== (JVM Process Status）: 类似 UNIX 的 `ps` 命令。用于查看所有 Java 进程的启动类、传入参数和 Java 虚拟机参数等信息；
+- ==`jstat`==（JVM Statistics Monitoring Tool）: 用于收集 HotSpot 虚拟机各方面的运行数据;
+- ==`jinfo`== (Configuration Info for Java) : Configuration Info for Java,显示虚拟机配置信息;
+- ==`jmap`== (Memory Map for Java) : 生成堆转储快照;
+- ==`jhat`== (JVM Heap Dump Browser) : 用于分析 heapdump 文件，它会建立一个 HTTP/HTML 服务器，让用户可以在浏览器上查看分析结果。JDK9 移除了 jhat；
+- ==`jstack`== (Stack Trace for Java) : 生成虚拟机当前时刻的线程快照，线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合。
 
 ### `jps`:查看所有 Java 进程
 
@@ -50,7 +50,7 @@ C:\Users\SnailClimb>jps -l
 
 jstat（JVM Statistics Monitoring Tool） 使用于监视虚拟机各种运行状态信息的命令行工具。 它可以显示本地或者远程（需要远程主机提供 RMI 支持）虚拟机进程中的类信息、内存、垃圾收集、JIT 编译等运行数据，在没有 GUI，只提供了纯文本控制台环境的服务器上，它将是运行期间定位虚拟机性能问题的首选工具。
 
-**`jstat` 命令使用格式：**
+==`jstat` 命令使用格式：==
 
 ```powershell
 jstat -<option> [-t] [-h<lines>] <vmid> [<interval> [<count>]]
@@ -58,7 +58,7 @@ jstat -<option> [-t] [-h<lines>] <vmid> [<interval> [<count>]]
 
 比如 `jstat -gc -h3 31736 1000 10`表示分析进程 id 为 31736 的 gc 情况，每隔 1000ms 打印一次记录，打印 10 次停止，每 3 行后打印指标头部。
 
-**常见的 option 如下：**
+==常见的 option 如下：==
 
 - `jstat -class vmid`：显示 ClassLoader 的相关信息；
 - `jstat -compiler vmid`：显示 JIT 编译的相关信息；
@@ -114,9 +114,9 @@ Dumping heap to C:\Users\SnailClimb\Desktop\heap.hprof ...
 Heap dump file created
 ```
 
-### **`jhat`**: 分析 heapdump 文件
+### ==`jhat`==: 分析 heapdump 文件
 
-**`jhat`** 用于分析 heapdump 文件，它会建立一个 HTTP/HTML 服务器，让用户可以在浏览器上查看分析结果。
+==`jhat`== 用于分析 heapdump 文件，它会建立一个 HTTP/HTML 服务器，让用户可以在浏览器上查看分析结果。
 
 ```powershell
 C:\Users\SnailClimb>jhat C:\Users\SnailClimb\Desktop\heap.hprof
@@ -135,13 +135,13 @@ Server is ready.
 
 注意⚠️：JDK9 移除了 jhat（[JEP 241: Remove the jhat Tool](https://openjdk.org/jeps/241)），你可以使用其替代品 Eclipse Memory Analyzer Tool (MAT) 和 VisualVM，这也是官方所推荐的。
 
-### **`jstack`** :生成虚拟机当前时刻的线程快照
+### ==`jstack`== :生成虚拟机当前时刻的线程快照
 
 `jstack`（Stack Trace for Java）命令用于生成虚拟机当前时刻的线程快照。线程快照就是当前虚拟机内每一条线程正在执行的方法堆栈的集合.
 
 生成线程快照的目的主要是定位线程长时间出现停顿的原因，如线程间死锁、死循环、请求外部资源导致的长时间等待等都是导致线程长时间停顿的原因。线程出现停顿的时候通过`jstack`来查看各个线程的调用堆栈，就可以知道没有响应的线程到底在后台做些什么事情，或者在等待些什么资源。
 
-**下面是一个线程死锁的代码。我们下面会通过 `jstack` 命令进行死锁检查，输出死锁信息，找到发生死锁的线程。**
+==下面是一个线程死锁的代码。我们下面会通过 `jstack` 命令进行死锁检查，输出死锁信息，找到发生死锁的线程。==
 
 ```java
 public class DeadLockDemo {
@@ -193,7 +193,7 @@ Thread[线程 2,5,main]waiting get resource1
 
 线程 A 通过 synchronized (resource1) 获得 resource1 的监视器锁，然后通过`Thread.sleep(1000);`让线程 A 休眠 1s 为的是让线程 B 得到执行然后获取到 resource2 的监视器锁。线程 A 和线程 B 休眠结束了都开始企图请求获取对方的资源，然后这两个线程就会陷入互相等待的状态，这也就产生了死锁。
 
-**通过 `jstack` 命令分析：**
+==通过 `jstack` 命令分析：==
 
 ```powershell
 C:\Users\SnailClimb>jps
@@ -276,8 +276,8 @@ JConsole 可以显示当前内存的详细信息。不仅包括堆内存/非堆�
 
 点击右边的“执行 GC(G)”按钮可以强制应用程序执行一个 Full GC。
 
-> - **新生代 GC（Minor GC）**:指发生新生代的的垃圾收集动作，Minor GC 非常频繁，回收速度一般也比较快。
-> - **老年代 GC（Major GC/Full GC）**:指发生在老年代的 GC，出现了 Major GC 经常会伴随至少一次的 Minor GC（并非绝对），Major GC 的速度一般会比 Minor GC 的慢 10 倍以上。
+> - ==新生代 GC（Minor GC）==:指发生新生代的的垃圾收集动作，Minor GC 非常频繁，回收速度一般也比较快。
+> - ==老年代 GC（Major GC/Full GC）==:指发生在老年代的 GC，出现了 Major GC 经常会伴随至少一次的 Minor GC（并非绝对），Major GC 的速度一般会比 Minor GC 的慢 10 倍以上。
 
 ![内存监控 ](./pictures/jdk监控和故障处理工具总结/3内存监控.png)
 

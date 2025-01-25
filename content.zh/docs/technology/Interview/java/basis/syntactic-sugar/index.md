@@ -22,7 +22,7 @@ head:
 
 ## 什么是语法糖？
 
-**语法糖（Syntactic Sugar）** 也称糖衣语法，是英国计算机学家 Peter.J.Landin 发明的一个术语，指在计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但是更方便程序员使用。简而言之，语法糖让程序更加简洁，有更高的可读性。
+==语法糖（Syntactic Sugar）== 也称糖衣语法，是英国计算机学家 Peter.J.Landin 发明的一个术语，指在计算机语言中添加的某种语法，这种语法对语言的功能并没有影响，但是更方便程序员使用。简而言之，语法糖让程序更加简洁，有更高的可读性。
 
 ![](https://oss.javaguide.cn/github/javaguide/java/basis/syntactic-sugar/image-20220818175953954.png)
 
@@ -32,7 +32,7 @@ head:
 
 ## Java 中有哪些常见的语法糖？
 
-前面提到过，语法糖的存在主要是方便开发人员使用。但其实， **Java 虚拟机并不支持这些语法糖。这些语法糖在编译阶段就会被还原成简单的基础语法结构，这个过程就是解语法糖。**
+前面提到过，语法糖的存在主要是方便开发人员使用。但其实， ==Java 虚拟机并不支持这些语法糖。这些语法糖在编译阶段就会被还原成简单的基础语法结构，这个过程就是解语法糖。==
 
 说到编译，大家肯定都知道，Java 语言中，`javac`命令可以将后缀名为`.java`的源文件编译为后缀名为`.class`的可以运行于 Java 虚拟机的字节码。如果你去看`com.sun.tools.javac.main.JavaCompiler`的源码，你会发现在`compile()`中有一个步骤就是调用`desugar()`，这个方法就是负责解语法糖的实现的。
 
@@ -95,7 +95,7 @@ public class switchDemoString
 }
 ```
 
-看到这个代码，你知道原来 **字符串的 switch 是通过`equals()`和`hashCode()`方法来实现的。** 还好`hashCode()`方法返回的是`int`，而不是`long`。
+看到这个代码，你知道原来 ==字符串的 switch 是通过`equals()`和`hashCode()`方法来实现的。== 还好`hashCode()`方法返回的是`int`，而不是`long`。
 
 仔细看下可以发现，进行`switch`的实际是哈希值，然后通过使用`equals`方法比较进行安全检查，这个检查是必要的，因为哈希可能会发生碰撞。因此它的性能是不如使用枚举进行 `switch` 或者使用纯整数常量，但这也不是很差。
 
@@ -105,7 +105,7 @@ public class switchDemoString
 
 > Code sharing 方式为每个泛型类型创建唯一的字节码表示，并且将该泛型类型的实例都映射到这个唯一的字节码表示上。将多种泛型类形实例映射到唯一的字节码表示是通过类型擦除（`type erasue`）实现的。
 
-也就是说，**对于 Java 虚拟机来说，他根本不认识`Map<String, String> map`这样的语法。需要在编译阶段通过类型擦除的方式进行解语法糖。**
+也就是说，==对于 Java 虚拟机来说，他根本不认识`Map<String, String> map`这样的语法。需要在编译阶段通过类型擦除的方式进行解语法糖。==
 
 类型擦除的主要过程如下：1.将所有的泛型参数用其最左边界（最顶级的父类型）类型替换。 2.移除所有的类型参数。
 
@@ -158,7 +158,7 @@ public static <A extends Comparable<A>> A max(Collection<A> xs) {
 }
 ```
 
-**虚拟机中没有泛型，只有普通类和普通方法，所有泛型类的类型参数在编译时都会被擦除，泛型类并没有自己独有的`Class`类对象。比如并不存在`List<String>.class`或是`List<Integer>.class`，而只有`List.class`。**
+==虚拟机中没有泛型，只有普通类和普通方法，所有泛型类的类型参数在编译时都会被擦除，泛型类并没有自己独有的`Class`类对象。比如并不存在`List<String>.class`或是`List<Integer>.class`，而只有`List.class`。==
 
 ### 自动装箱与拆箱
 
@@ -205,7 +205,7 @@ public static void main(String args[])
 
 从反编译得到内容可以看出，在装箱的时候自动调用的是`Integer`的`valueOf(int)`方法。而在拆箱的时候自动调用的是`Integer`的`intValue`方法。
 
-所以，**装箱过程是通过调用包装器的 valueOf 方法实现的，而拆箱过程是通过调用包装器的 xxxValue 方法实现的。**
+所以，==装箱过程是通过调用包装器的 valueOf 方法实现的，而拆箱过程是通过调用包装器的 xxxValue 方法实现的。==
 
 ### 可变长参数
 
@@ -299,13 +299,13 @@ public final class T extends Enum
 
 通过反编译后代码我们可以看到，`public final class T extends Enum`，说明，该类是继承了`Enum`类的，同时`final`关键字告诉我们，这个类也是不能被继承的。
 
-**当我们使用`enum`来定义一个枚举类型的时候，编译器会自动帮我们创建一个`final`类型的类继承`Enum`类，所以枚举类型不能被继承。**
+==当我们使用`enum`来定义一个枚举类型的时候，编译器会自动帮我们创建一个`final`类型的类继承`Enum`类，所以枚举类型不能被继承。==
 
 ### 内部类
 
 内部类又称为嵌套类，可以把内部类理解为外部类的一个普通成员。
 
-**内部类之所以也是语法糖，是因为它仅仅是一个编译时的概念，`outer.java`里面定义了一个内部类`inner`，一旦编译成功，就会生成两个完全不同的`.class`文件了，分别是`outer.class`和`outer$inner.class`。所以内部类的名字完全可以和它的外部类名字相同。**
+==内部类之所以也是语法糖，是因为它仅仅是一个编译时的概念，`outer.java`里面定义了一个内部类`inner`，一旦编译成功，就会生成两个完全不同的`.class`文件了，分别是`outer.class`和`outer$inner.class`。所以内部类的名字完全可以和它的外部类名字相同。==
 
 ```java
 public class OutterClass {
@@ -379,7 +379,7 @@ public class OutterClass
 }
 ```
 
-**为什么内部类可以使用外部类的 private 属性**：
+==为什么内部类可以使用外部类的 private 属性==：
 
 我们在 InnerClass 中增加一个方法，打印外部类的 userName 属性
 
@@ -500,7 +500,7 @@ public class ConditionalCompilation
 
 首先，我们发现，在反编译后的代码中没有`System.out.println("Hello, ONLINE!");`，这其实就是条件编译。当`if(ONLINE)`为 false 的时候，编译器就没有对其内的代码进行编译。
 
-所以，**Java 语法的条件编译，是通过判断条件为常量的 if 语句实现的。其原理也是 Java 语言的语法糖。根据 if 判断条件的真假，编译器直接把分支为 false 的代码块消除。通过该方式实现的条件编译，必须在方法体内实现，而无法在整个 Java 类的结构或者类的属性上进行条件编译，这与 C/C++的条件编译相比，确实更有局限性。在 Java 语言设计之初并没有引入条件编译的功能，虽有局限，但是总比没有更强。**
+所以，==Java 语法的条件编译，是通过判断条件为常量的 if 语句实现的。其原理也是 Java 语言的语法糖。根据 if 判断条件的真假，编译器直接把分支为 false 的代码块消除。通过该方式实现的条件编译，必须在方法体内实现，而无法在整个 Java 类的结构或者类的属性上进行条件编译，这与 C/C++的条件编译相比，确实更有局限性。在 Java 语言设计之初并没有引入条件编译的功能，虽有局限，但是总比没有更强。==
 
 ### 断言
 
@@ -550,7 +550,7 @@ static final boolean $assertionsDisabled = !com/hollis/suguar/AssertTest.desired
 }
 ```
 
-很明显，反编译之后的代码要比我们自己的代码复杂的多。所以，使用了 assert 这个语法糖我们节省了很多代码。**其实断言的底层实现就是 if 语言，如果断言结果为 true，则什么都不做，程序继续执行，如果断言结果为 false，则程序抛出 AssertError 来打断程序的执行。**`-enableassertions`会设置\$assertionsDisabled 字段的值。
+很明显，反编译之后的代码要比我们自己的代码复杂的多。所以，使用了 assert 这个语法糖我们节省了很多代码。==其实断言的底层实现就是 if 语言，如果断言结果为 true，则什么都不做，程序继续执行，如果断言结果为 false，则程序抛出 AssertError 来打断程序的执行。==`-enableassertions`会设置\$assertionsDisabled 字段的值。
 
 ### 数值字面量
 
@@ -580,7 +580,7 @@ public class Test
 }
 ```
 
-反编译后就是把`_`删除了。也就是说 **编译器并不认识在数字字面量中的`_`，需要在编译阶段把他去掉。**
+反编译后就是把`_`删除了。也就是说 ==编译器并不认识在数字字面量中的`_`，需要在编译阶段把他去掉。==
 
 ### for-each
 
@@ -623,7 +623,7 @@ public static transient void main(String args[])
 }
 ```
 
-代码很简单，**for-each 的实现原理其实就是使用了普通的 for 循环和迭代器。**
+代码很简单，==for-each 的实现原理其实就是使用了普通的 for 循环和迭代器。==
 
 ### try-with-resource
 
@@ -723,11 +723,11 @@ public static transient void main(String args[])
 }
 ```
 
-**其实背后的原理也很简单，那些我们没有做的关闭资源的操作，编译器都帮我们做了。所以，再次印证了，语法糖的作用就是方便程序员的使用，但最终还是要转成编译器认识的语言。**
+==其实背后的原理也很简单，那些我们没有做的关闭资源的操作，编译器都帮我们做了。所以，再次印证了，语法糖的作用就是方便程序员的使用，但最终还是要转成编译器认识的语言。==
 
 ### Lambda 表达式
 
-关于 lambda 表达式，有人可能会有质疑，因为网上有人说他并不是语法糖。其实我想纠正下这个说法。**Lambda 表达式不是匿名内部类的语法糖，但是他也是一个语法糖。实现方式其实是依赖了几个 JVM 底层提供的 lambda 相关 api。**
+关于 lambda 表达式，有人可能会有质疑，因为网上有人说他并不是语法糖。其实我想纠正下这个说法。==Lambda 表达式不是匿名内部类的语法糖，但是他也是一个语法糖。实现方式其实是依赖了几个 JVM 底层提供的 lambda 相关 api。==
 
 先来看一个简单的 lambda 表达式。遍历一个 list：
 
@@ -788,13 +788,13 @@ private static /* synthetic */ boolean lambda$main$0(String string) {
 
 两个 lambda 表达式分别调用了`lambda$main$1`和`lambda$main$0`两个方法。
 
-**所以，lambda 表达式的实现其实是依赖了一些底层的 api，在编译阶段，编译器会把 lambda 表达式进行解糖，转换成调用内部 api 的方式。**
+==所以，lambda 表达式的实现其实是依赖了一些底层的 api，在编译阶段，编译器会把 lambda 表达式进行解糖，转换成调用内部 api 的方式。==
 
 ## 可能遇到的坑
 
 ### 泛型
 
-**一、当泛型遇到重载**
+==一、当泛型遇到重载==
 
 ```java
 public class GenericTypes {
@@ -811,11 +811,11 @@ public class GenericTypes {
 
 上面这段代码，有两个重载的函数，因为他们的参数类型不同，一个是`List<String>`另一个是`List<Integer>` ，但是，这段代码是编译通不过的。因为我们前面讲过，参数`List<Integer>`和`List<String>`编译之后都被擦除了，变成了一样的原生类型 List，擦除动作导致这两个方法的特征签名变得一模一样。
 
-**二、当泛型遇到 catch**
+==二、当泛型遇到 catch==
 
 泛型的类型参数不能用在 Java 异常处理的 catch 语句中。因为异常处理是由 JVM 在运行时刻来进行的。由于类型信息被擦除，JVM 是无法区分两个异常类型`MyException<String>`和`MyException<Integer>`的
 
-**三、当泛型内包含静态变量**
+==三、当泛型内包含静态变量==
 
 ```java
 public class StaticTest{
@@ -840,7 +840,7 @@ class GT<T>{
 
 ### 自动装箱与拆箱
 
-**对象相等比较**
+==对象相等比较==
 
 ```java
 public static void main(String[] args) {

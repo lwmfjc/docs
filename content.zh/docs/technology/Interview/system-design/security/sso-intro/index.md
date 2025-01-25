@@ -23,9 +23,9 @@ SSO 英文全称 Single Sign On，单点登录。SSO 是在多个应用系统中
 
 ### SSO 有什么好处？
 
-1. **用户角度** :用户能够做到一次登录多次使用，无需记录多套用户名和密码，省心。
-2. **系统管理员角度** : 管理员只需维护好一个统一的账号中心就可以了，方便。
-3. **新系统开发角度:** 新系统开发时只需直接对接统一的账号中心即可，简化开发流程，省时。
+1. ==用户角度== :用户能够做到一次登录多次使用，无需记录多套用户名和密码，省心。
+2. ==系统管理员角度== : 管理员只需维护好一个统一的账号中心就可以了，方便。
+3. ==新系统开发角度:== 新系统开发时只需直接对接统一的账号中心即可，简化开发流程，省时。
 
 ## SSO 设计与实现
 
@@ -70,7 +70,7 @@ SSO 英文全称 Single Sign On，单点登录。SSO 是在多个应用系统中
 
 ### 用户登录/登录校验
 
-**登录时序图**
+==登录时序图==
 
 ![SSO系统设计-登录时序图](https://oss.javaguide.cn/github/javaguide/system-design/security/sso/sso-login-sequence.png-kbrb.png)
 
@@ -80,7 +80,7 @@ SSO 英文全称 Single Sign On，单点登录。SSO 是在多个应用系统中
 这样访问所有 \*.test.com 的 web 站点，都会将 AuthToken 携带到服务器端。
 然后通过 SSO 服务，完成对用户状态的校验/用户登录信息的获取
 
-**登录信息获取/登录状态校验**
+==登录信息获取/登录状态校验==
 
 ![SSO系统设计-登录信息获取/登录状态校验](https://oss.javaguide.cn/github/javaguide/system-design/security/sso/sso-logincheck-sequence.png-kbrb.png)
 
@@ -91,7 +91,7 @@ SSO 英文全称 Single Sign On，单点登录。SSO 是在多个应用系统中
 1. 服务端清除缓存（Redis）中的登录状态
 2. 客户端清除存储的 AuthToken
 
-**登出时序图**
+==登出时序图==
 
 ![SSO系统设计-用户登出](https://oss.javaguide.cn/github/javaguide/system-design/security/sso/sso-logout-sequence.png-kbrb.png)
 
@@ -104,15 +104,15 @@ SSO 英文全称 Single Sign On，单点登录。SSO 是在多个应用系统中
 - 登录完成之后通过回调的方式，将 AuthToken 传递给主域名之外的站点，该站点自行将 AuthToken 保存在当前域下的 Cookie 中。
 - 登出完成之后通过回调的方式，调用非主域名站点的登出页面，完成设置 Cookie 中的 AuthToken 过期的操作。
 
-**跨域登录（主域名已登录）**
+==跨域登录（主域名已登录）==
 
 ![SSO系统设计-跨域登录（主域名已登录）](https://oss.javaguide.cn/github/javaguide/system-design/security/sso/sso-crossdomain-login-loggedin-sequence.png-kbrb.png)
 
-**跨域登录（主域名未登录）**
+==跨域登录（主域名未登录）==
 
 ![SSO系统设计-跨域登录（主域名未登录）](https://oss.javaguide.cn/github/javaguide/system-design/security/sso/sso-crossdomain-login-unlogin-sequence.png-kbrb.png)
 
-**跨域登出**
+==跨域登出==
 
 ![SSO系统设计-跨域登出](https://oss.javaguide.cn/github/javaguide/system-design/security/sso/sso-crossdomain-logout-sequence.png-kbrb.png)
 

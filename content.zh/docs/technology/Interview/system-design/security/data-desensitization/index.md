@@ -102,24 +102,24 @@ public class HuToolDesensitizationTest {
     @Test
     public void testPhoneDesensitization(){
         String phone="13723231234";
-        System.out.println(DesensitizedUtil.mobilePhone(phone)); //输出：137****1234
+        System.out.println(DesensitizedUtil.mobilePhone(phone)); //输出：137====1234
     }
     @Test
     public void testBankCardDesensitization(){
         String bankCard="6217000130008255666";
-        System.out.println(DesensitizedUtil.bankCard(bankCard)); //输出：6217 **** **** *** 5666
+        System.out.println(DesensitizedUtil.bankCard(bankCard)); //输出：6217 ==== ==== *** 5666
     }
 
     @Test
     public void testIdCardNumDesensitization(){
         String idCardNum="411021199901102321";
         //只显示前4位和后2位
-        System.out.println(DesensitizedUtil.idCardNum(idCardNum,4,2)); //输出：4110************21
+        System.out.println(DesensitizedUtil.idCardNum(idCardNum,4,2)); //输出：4110============21
     }
     @Test
     public void testPasswordDesensitization(){
         String password="www.jd.com_35711";
-        System.out.println(DesensitizedUtil.password(password)); //输出：****************
+        System.out.println(DesensitizedUtil.password(password)); //输出：================
     }
 }
 ```
@@ -132,7 +132,7 @@ public class HuToolDesensitizationTest {
 
 如果项目是基于 Spring Boot 的 web 项目，则可以利用 Spring Boot 自带的 jackson 自定义序列化实现。它的实现原理其实就是在 json 进行序列化渲染给前端时，进行脱敏。
 
-**第一步：脱敏策略的枚举。**
+==第一步：脱敏策略的枚举。==
 
 ```java
 /**
@@ -167,7 +167,7 @@ public enum DesensitizationTypeEnum {
 
 上面表示支持的脱敏类型。
 
-**第二步：定义一个用于脱敏的 Desensitization 注解。**
+==第二步：定义一个用于脱敏的 Desensitization 注解。==
 
 - `@Retention (RetentionPolicy.RUNTIME)`：运行时生效。
 - `@Target (ElementType.FIELD)`：可用在字段上。
@@ -202,7 +202,7 @@ public @interface Desensitization {
 
 注：只有使用了自定义的脱敏枚举 `MY_RULE` 的时候，开始位置和结束位置才生效。
 
-**第三步：创建自定的序列化类**
+==第三步：创建自定的序列化类==
 
 这一步是我们实现数据脱敏的关键。自定义序列化类继承 `JsonSerializer`，实现 `ContextualSerializer` 接口，并重写两个方法。
 
@@ -391,7 +391,7 @@ public class SensitiveStrategyConfig {
     @Bean
     public ISensitiveStrategy sensitiveStrategy() {
         // 自定义 testStrategy 类型脱敏处理
-        return new SensitiveStrategy().addStrategy("testStrategy", t -> t + "***test***");
+        return new SensitiveStrategy().addStrategy("testStrategy", t -> t + "==*test==*");
     }
 }
 
@@ -495,9 +495,9 @@ public class Account {
 
 并且，对于需要跳过脱密处理的场景，例如进入编辑页面编辑用户数据，MyBatis-Flex 也提供了对应的支持：
 
-1. **`MaskManager#execWithoutMask`**（推荐）：该方法使用了模版方法设计模式，保障跳过脱敏处理并执行相关逻辑后自动恢复脱敏处理。
-2. **`MaskManager#skipMask`**：跳过脱敏处理。
-3. **`MaskManager#restoreMask`**：恢复脱敏处理，确保后续的操作继续使用脱敏逻辑。
+1. ==`MaskManager#execWithoutMask`==（推荐）：该方法使用了模版方法设计模式，保障跳过脱敏处理并执行相关逻辑后自动恢复脱敏处理。
+2. ==`MaskManager#skipMask`==：跳过脱敏处理。
+3. ==`MaskManager#restoreMask`==：恢复脱敏处理，确保后续的操作继续使用脱敏逻辑。
 
 `MaskManager#execWithoutMask`方法实现如下：
 

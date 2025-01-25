@@ -13,7 +13,7 @@ JWT （JSON Web Token） 是目前最流行的跨域认证解决方案，是一�
 
 JWT 自身包含了身份验证所需要的所有信息，因此，我们的服务器不需要存储 Session 信息。这显然增加了系统的可用性和伸缩性，大大减轻了服务端的压力。
 
-可以看出，**JWT 更符合设计 RESTful API 时的「Stateless（无状态）」原则** 。
+可以看出，==JWT 更符合设计 RESTful API 时的「Stateless（无状态）」原则== 。
 
 并且， 使用 JWT 认证可以有效避免 CSRF 攻击，因为 JWT 一般是存在在 localStorage 中，使用 JWT 进行身份验证的过程中是不会涉及到 Cookie 的。
 
@@ -29,9 +29,9 @@ JWT 自身包含了身份验证所需要的所有信息，因此，我们的服�
 
 JWT 本质上就是一组字串，通过（`.`）切分成三个为 Base64 编码的部分：
 
-- **Header（头部）** : 描述 JWT 的元数据，定义了生成签名的算法以及 `Token` 的类型。Header 被 Base64Url 编码后成为 JWT 的第一部分。
-- **Payload（载荷）** : 用来存放实际需要传递的数据，包含声明（Claims），如`sub`（subject，主题）、`jti`（JWT ID）。Payload 被 Base64Url 编码后成为 JWT 的第二部分。
-- **Signature（签名）**：服务器通过 Payload、Header 和一个密钥(Secret)使用 Header 里面指定的签名算法（默认是 HMAC SHA256）生成。生成的签名会成为 JWT 的第三部分。
+- ==Header（头部）== : 描述 JWT 的元数据，定义了生成签名的算法以及 `Token` 的类型。Header 被 Base64Url 编码后成为 JWT 的第一部分。
+- ==Payload（载荷）== : 用来存放实际需要传递的数据，包含声明（Claims），如`sub`（subject，主题）、`jti`（JWT ID）。Payload 被 Base64Url 编码后成为 JWT 的第二部分。
+- ==Signature（签名）==：服务器通过 Payload、Header 和一个密钥(Secret)使用 Header 里面指定的签名算法（默认是 HMAC SHA256）生成。生成的签名会成为 JWT 的第三部分。
 
 JWT 通常是这样的：`xxxxx.yyyyy.zzzzz`。
 
@@ -73,9 +73,9 @@ Payload 也是 JSON 格式数据，其中包含了 Claims(声明，包含 JWT �
 
 Claims 分为三种类型：
 
-- **Registered Claims（注册声明）**：预定义的一些声明，建议使用，但不是强制性的。
-- **Public Claims（公有声明）**：JWT 签发方可以自定义的声明，但是为了避免冲突，应该在 [IANA JSON Web Token Registry](https://www.iana.org/assignments/jwt/jwt.xhtml) 中定义它们。
-- **Private Claims（私有声明）**：JWT 签发方因为项目需要而自定义的声明，更符合实际项目场景使用。
+- ==Registered Claims（注册声明）==：预定义的一些声明，建议使用，但不是强制性的。
+- ==Public Claims（公有声明）==：JWT 签发方可以自定义的声明，但是为了避免冲突，应该在 [IANA JSON Web Token Registry](https://www.iana.org/assignments/jwt/jwt.xhtml) 中定义它们。
+- ==Private Claims（私有声明）==：JWT 签发方因为项目需要而自定义的声明，更符合实际项目场景使用。
 
 下面是一些常见的注册声明：
 
@@ -100,7 +100,7 @@ Claims 分为三种类型：
 }
 ```
 
-Payload 部分默认是不加密的，**一定不要将隐私信息存放在 Payload 当中！！！**
+Payload 部分默认是不加密的，==一定不要将隐私信息存放在 Payload 当中！！！==
 
 JSON 形式的 Payload 被转换成 Base64 编码，成为 JWT 的第二部分。
 
@@ -143,7 +143,7 @@ HMACSHA256(
 1. 建议将 JWT 存放在 localStorage 中，放在 Cookie 中会有 CSRF 风险。
 2. 请求服务端并携带 JWT 的常见做法是将其放在 HTTP Header 的 `Authorization` 字段中（`Authorization: Bearer Token`）。
 
-**[spring-security-jwt-guide](https://github.com/Snailclimb/spring-security-jwt-guide)** 就是一个基于 JWT 来做身份认证的简单案例，感兴趣的可以看看。
+==[spring-security-jwt-guide](https://github.com/Snailclimb/spring-security-jwt-guide)== 就是一个基于 JWT 来做身份认证的简单案例，感兴趣的可以看看。
 
 ## 如何防止 JWT 被篡改？
 
@@ -153,7 +153,7 @@ HMACSHA256(
 
 不过，如果服务端的秘钥也被泄露的话，黑客就可以同时篡改 Signature、Header、Payload 了。黑客直接修改了 Header 和 Payload 之后，再重新生成一个 Signature 就可以了。
 
-**密钥一定保管好，一定不要泄露出去。JWT 安全的核心在于签名，签名安全的核心在密钥。**
+==密钥一定保管好，一定不要泄露出去。JWT 安全的核心在于签名，签名安全的核心在密钥。==
 
 ## 如何加强 JWT 的安全性？
 

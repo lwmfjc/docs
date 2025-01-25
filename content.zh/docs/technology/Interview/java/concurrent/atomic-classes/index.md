@@ -21,7 +21,7 @@ tag:
 
 根据操作的数据类型，可以将 JUC 包中的原子类分为 4 类：
 
-**1、基本类型**
+==1、基本类型==
 
 使用原子的方式更新基本类型
 
@@ -29,7 +29,7 @@ tag:
 - `AtomicLong`：长整型原子类
 - `AtomicBoolean`：布尔型原子类
 
-**2、数组类型**
+==2、数组类型==
 
 使用原子的方式更新数组里的某个元素
 
@@ -37,15 +37,15 @@ tag:
 - `AtomicLongArray`：长整型数组原子类
 - `AtomicReferenceArray`：引用类型数组原子类
 
-**3、引用类型**
+==3、引用类型==
 
 - `AtomicReference`：引用类型原子类
 - `AtomicMarkableReference`：原子更新带有标记的引用类型。该类将 boolean 标记与引用关联起来，~~也可以解决使用 CAS 进行原子更新时可能出现的 ABA 问题~~。
 - `AtomicStampedReference`：原子更新带有版本号的引用类型。该类将整数值与引用关联起来，可用于解决原子的更新数据和数据的版本号，可以解决使用 CAS 进行原子更新时可能出现的 ABA 问题。
 
-**🐛 修正（参见：[issue#626](https://github.com/Snailclimb/JavaGuide/issues/626)）** : `AtomicMarkableReference` 不能解决 ABA 问题。
+==🐛 修正（参见：[issue#626](https://github.com/Snailclimb/JavaGuide/issues/626)）== : `AtomicMarkableReference` 不能解决 ABA 问题。
 
-**4、对象的属性修改类型**
+==4、对象的属性修改类型==
 
 - `AtomicIntegerFieldUpdater`:原子更新整型字段的更新器
 - `AtomicLongFieldUpdater`：原子更新长整型字段的更新器
@@ -61,7 +61,7 @@ tag:
 
 上面三个类提供的方法几乎相同，所以我们这里以 `AtomicInteger` 为例子来介绍。
 
-**`AtomicInteger` 类常用方法** ：
+==`AtomicInteger` 类常用方法== ：
 
 ```java
 public final int get() //获取当前的值
@@ -73,7 +73,7 @@ boolean compareAndSet(int expect, int update) //如果输入的数值等于预�
 public final void lazySet(int newValue)//最终设置为newValue, lazySet 提供了一种比 set 方法更弱的语义，可能导致其他线程在之后的一小段时间内还是可以读到旧的值，但可能更高效。
 ```
 
-**`AtomicInteger` 类使用示例** :
+==`AtomicInteger` 类使用示例== :
 
 ```java
 // 初始化 AtomicInteger 对象，初始值为 0
@@ -125,7 +125,7 @@ After lazySet, atomicInt: 15
 
 上面三个类提供的方法几乎相同，所以我们这里以 `AtomicIntegerArray` 为例子来介绍。
 
-**`AtomicIntegerArray` 类常用方法**：
+==`AtomicIntegerArray` 类常用方法==：
 
 ```java
 public final int get(int i) //获取 index=i 位置元素的值
@@ -137,7 +137,7 @@ boolean compareAndSet(int i, int expect, int update) //如果输入的数值等�
 public final void lazySet(int i, int newValue)//最终 将index=i 位置的元素设置为newValue,使用 lazySet 设置之后可能导致其他线程在之后的一小段时间内还是可以读到旧的值。
 ```
 
-**`AtomicIntegerArray` 类使用示例** :
+==`AtomicIntegerArray` 类使用示例== :
 
 ```java
 int[] nums = {1, 2, 3, 4, 5, 6};
@@ -201,7 +201,7 @@ Index 0: 8 Index 1: 2 Index 2: 3 Index 3: 4 Index 4: 5 Index 5: 6
 
 上面三个类提供的方法几乎相同，所以我们这里以 `AtomicReference` 为例子来介绍。
 
-**`AtomicReference` 类使用示例** :
+==`AtomicReference` 类使用示例== :
 
 ```java
 // Person 类
@@ -243,7 +243,7 @@ Second Update Success: true
 Final Person: Person{name='John', age=30}
 ```
 
-**`AtomicStampedReference` 类使用示例** :
+==`AtomicStampedReference` 类使用示例== :
 
 ```java
 // 创建一个 AtomicStampedReference 对象，初始值为 "SnailClimb"，初始版本号为 1
@@ -288,7 +288,7 @@ Update with Wrong Stamp Success: false
 Final Reference: Daisy, Final Stamp: 2
 ```
 
-**`AtomicMarkableReference` 类使用示例** :
+==`AtomicMarkableReference` 类使用示例== :
 
 ```java
 // 创建一个 AtomicMarkableReference 对象，初始值为 "SnailClimb"，初始标记为 false
@@ -345,7 +345,7 @@ Final Reference: Daisy, Final Mark: true
 
 上面三个类提供的方法几乎相同，所以我们这里以 `AtomicIntegerFieldUpdater`为例子来介绍。
 
-**`AtomicIntegerFieldUpdater` 类使用示例** :
+==`AtomicIntegerFieldUpdater` 类使用示例== :
 
 ```java
 // Person 类

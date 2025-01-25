@@ -140,7 +140,7 @@ FileOutputStream fileOutputStream = new FileOutputStream("output.txt");
 BufferedOutputStream bos = new BufferedOutputStream(fileOutputStream)
 ```
 
-**`DataOutputStream`** 用于写入指定类型数据，不能单独使用，必须结合其它流，比如 `FileOutputStream` 。
+==`DataOutputStream`== 用于写入指定类型数据，不能单独使用，必须结合其它流，比如 `FileOutputStream` 。
 
 ```java
 // 输出流
@@ -161,7 +161,7 @@ output.writeObject(person);
 
 ## 字符流
 
-不管是文件读写还是网络发送接收，信息的最小存储单元都是字节。 **那为什么 I/O 流操作要分为字节流操作和字符流操作呢？**
+不管是文件读写还是网络发送接收，信息的最小存储单元都是字节。 ==那为什么 I/O 流操作要分为字节流操作和字符流操作呢？==
 
 个人认为主要有两点原因：
 
@@ -426,7 +426,7 @@ class BufferedInputStream extends FilterInputStream {
 }
 ```
 
-缓冲区的大小默认为 **8192** 字节，当然了，你也可以通过 `BufferedInputStream(InputStream in, int size)` 这个构造方法来指定缓冲区的大小。
+缓冲区的大小默认为 ==8192== 字节，当然了，你也可以通过 `BufferedInputStream(InputStream in, int size)` 这个构造方法来指定缓冲区的大小。
 
 ### BufferedOutputStream（字节缓冲输出流）
 
@@ -441,7 +441,7 @@ try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream("o
 }
 ```
 
-类似于 `BufferedInputStream` ，`BufferedOutputStream` 内部也维护了一个缓冲区，并且，这个缓存区的大小也是 **8192** 字节。
+类似于 `BufferedInputStream` ，`BufferedOutputStream` 内部也维护了一个缓冲区，并且，这个缓存区的大小也是 ==8192== 字节。
 
 ## 字符缓冲流
 
@@ -535,7 +535,7 @@ randomAccessFile.write(new byte[]{'H', 'I', 'J', 'K'});
 
 假设运行上面这段程序之前 `input.txt` 文件内容变为 `ABCD` ，运行之后则变为 `HIJK` 。
 
-`RandomAccessFile` 比较常见的一个应用就是实现大文件的 **断点续传** 。何谓断点续传？简单来说就是上传文件中途暂停或失败（比如遇到网络问题）之后，不需要重新上传，只需要上传那些未成功上传的文件分片即可。分片（先将文件切分成多个文件分片）上传是断点续传的基础。
+`RandomAccessFile` 比较常见的一个应用就是实现大文件的 ==断点续传== 。何谓断点续传？简单来说就是上传文件中途暂停或失败（比如遇到网络问题）之后，不需要重新上传，只需要上传那些未成功上传的文件分片即可。分片（先将文件切分成多个文件分片）上传是断点续传的基础。
 
 `RandomAccessFile` 可以帮助我们合并文件分片，示例代码如下：
 

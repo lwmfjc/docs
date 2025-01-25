@@ -10,11 +10,11 @@ tag:
 
 可以毫不夸张地说，这篇文章介绍的 Spring/SpringBoot 常用注解基本已经涵盖你工作中遇到的大部分常用的场景。对于每一个注解我都说了具体用法，掌握搞懂，使用 SpringBoot 来开发项目基本没啥大问题了！
 
-**为什么要写这篇文章？**
+==为什么要写这篇文章？==
 
 最近看到网上有一篇关于 SpringBoot 常用注解的文章被转载的比较多，我看了文章内容之后属实觉得质量有点低，并且有点会误导没有太多实际使用经验的人（这些人又占据了大多数）。所以，自己索性花了大概 两天时间简单总结一下了。
 
-**因为我个人的能力和精力有限，如果有任何不对或者需要完善的地方，请帮忙指出！Guide 感激不尽！**
+==因为我个人的能力和精力有限，如果有任何不对或者需要完善的地方，请帮忙指出！Guide 感激不尽！==
 
 ### 1. `@SpringBootApplication`
 
@@ -116,7 +116,7 @@ public Person personSingleton() {
 }
 ```
 
-**四种常见的 Spring Bean 的作用域：**
+==四种常见的 Spring Bean 的作用域：==
 
 - singleton : 唯一 bean 实例，Spring 中的 bean 默认都是单例的。
 - prototype : 每次请求都会创建一个新的 bean 实例。
@@ -140,13 +140,13 @@ public class AppConfig {
 
 ### 3. 处理常见的 HTTP 请求类型
 
-**5 种常见的请求类型:**
+==5 种常见的请求类型:==
 
-- **GET**：请求从服务器获取特定资源。举个例子：`GET /users`（获取所有学生）
-- **POST**：在服务器上创建一个新的资源。举个例子：`POST /users`（创建学生）
-- **PUT**：更新服务器上的资源（客户端提供更新后的整个资源）。举个例子：`PUT /users/12`（更新编号为 12 的学生）
-- **DELETE**：从服务器删除特定的资源。举个例子：`DELETE /users/12`（删除编号为 12 的学生）
-- **PATCH**：更新服务器上的资源（客户端提供更改的属性，可以看做作是部分更新），使用的比较少，这里就不举例子了。
+- ==GET==：请求从服务器获取特定资源。举个例子：`GET /users`（获取所有学生）
+- ==POST==：在服务器上创建一个新的资源。举个例子：`POST /users`（创建学生）
+- ==PUT==：更新服务器上的资源（客户端提供更新后的整个资源）。举个例子：`PUT /users/12`（更新编号为 12 的学生）
+- ==DELETE==：从服务器删除特定的资源。举个例子：`DELETE /users/12`（删除编号为 12 的学生）
+- ==PATCH==：更新服务器上的资源（客户端提供更改的属性，可以看做作是部分更新），使用的比较少，这里就不举例子了。
 
 #### 3.1. GET 请求
 
@@ -184,7 +184,7 @@ public ResponseEntity<User> updateUser(@PathVariable(value = "userId") Long user
 }
 ```
 
-#### 3.4. **DELETE 请求**
+#### 3.4. ==DELETE 请求==
 
 `@DeleteMapping("/users/{userId}")`等价于`@RequestMapping(value="/users/{userId}",method=RequestMethod.DELETE)`
 
@@ -195,7 +195,7 @@ public ResponseEntity deleteUser(@PathVariable(value = "userId") Long userId){
 }
 ```
 
-#### 3.5. **PATCH 请求**
+#### 3.5. ==PATCH 请求==
 
 一般实际项目中，我们都是 PUT 不够用了之后才用 PATCH 请求去更新数据。
 
@@ -209,7 +209,7 @@ public ResponseEntity deleteUser(@PathVariable(value = "userId") Long userId){
 
 ### 4. 前后端传值
 
-**掌握前后端传值的正确姿势，是你开始 CRUD 的第一步！**
+==掌握前后端传值的正确姿势，是你开始 CRUD 的第一步！==
 
 #### 4.1. `@PathVariable` 和 `@RequestParam`
 
@@ -232,7 +232,7 @@ public List<Teacher> getKlassRelatedTeachers(
 
 #### 4.2. `@RequestBody`
 
-用于读取 Request 请求（可能是 POST,PUT,DELETE,GET 请求）的 body 部分并且**Content-Type 为 application/json** 格式的数据，接收到数据之后会自动将数据绑定到 Java 对象上去。系统会使用`HttpMessageConverter`或者自定义的`HttpMessageConverter`将请求的 body 中的 json 字符串转换为 java 对象。
+用于读取 Request 请求（可能是 POST,PUT,DELETE,GET 请求）的 body 部分并且==Content-Type 为 application/json== 格式的数据，接收到数据之后会自动将数据绑定到 Java 对象上去。系统会使用`HttpMessageConverter`或者自定义的`HttpMessageConverter`将请求的 body 中的 json 字符串转换为 java 对象。
 
 我用一个简单的例子来给演示一下基本使用！
 
@@ -272,13 +272,13 @@ public class UserRegisterRequest {
 
 ![](./images/spring-annotations/@RequestBody.png)
 
-👉 需要注意的是：**一个请求方法只可以有一个`@RequestBody`，但是可以有多个`@RequestParam`和`@PathVariable`**。 如果你的方法必须要用两个 `@RequestBody`来接受数据的话，大概率是你的数据库设计或者系统设计出问题了！
+👉 需要注意的是：==一个请求方法只可以有一个`@RequestBody`，但是可以有多个`@RequestParam`和`@PathVariable`==。 如果你的方法必须要用两个 `@RequestBody`来接受数据的话，大概率是你的数据库设计或者系统设计出问题了！
 
 ### 5. 读取配置信息
 
-**很多时候我们需要将一些常用的配置信息比如阿里云 oss、发送短信、微信认证的相关配置信息等等放到配置文件中。**
+==很多时候我们需要将一些常用的配置信息比如阿里云 oss、发送短信、微信认证的相关配置信息等等放到配置文件中。==
 
-**下面我们来看一下 Spring 为我们提供了哪些方式帮助我们从配置文件中读取这些配置信息。**
+==下面我们来看一下 Spring 为我们提供了哪些方式帮助我们从配置文件中读取这些配置信息。==
 
 我们的数据源`application.yml`内容如下：
 
@@ -356,25 +356,25 @@ class WebSite {
 
 ### 6. 参数校验
 
-**数据的校验的重要性就不用说了，即使在前端对数据进行校验的情况下，我们还是要对传入后端的数据再进行一遍校验，避免用户绕过浏览器直接通过一些 HTTP 工具直接向后端请求一些违法数据。**
+==数据的校验的重要性就不用说了，即使在前端对数据进行校验的情况下，我们还是要对传入后端的数据再进行一遍校验，避免用户绕过浏览器直接通过一些 HTTP 工具直接向后端请求一些违法数据。==
 
 Bean Validation 是一套定义 JavaBean 参数校验标准的规范 (JSR 303, 349, 380)，它提供了一系列注解，可以直接用于 JavaBean 的属性上，从而实现便捷的参数校验。
 
-- **JSR 303 (Bean Validation 1.0):** 奠定了基础，引入了核心校验注解（如 `@NotNull`、`@Size`、`@Min`、`@Max` 等），定义了如何通过注解的方式对 JavaBean 的属性进行校验，并支持嵌套对象校验和自定义校验器。
-- **JSR 349 (Bean Validation 1.1):** 在 1.0 基础上进行扩展，例如引入了对方法参数和返回值校验的支持、增强了对分组校验（Group Validation）的处理。
-- **JSR 380 (Bean Validation 2.0):** 拥抱 Java 8 的新特性，并进行了一些改进，例如支持 `java.time` 包中的日期和时间类型、引入了一些新的校验注解（如 `@NotEmpty`, `@NotBlank`等）。
+- ==JSR 303 (Bean Validation 1.0):== 奠定了基础，引入了核心校验注解（如 `@NotNull`、`@Size`、`@Min`、`@Max` 等），定义了如何通过注解的方式对 JavaBean 的属性进行校验，并支持嵌套对象校验和自定义校验器。
+- ==JSR 349 (Bean Validation 1.1):== 在 1.0 基础上进行扩展，例如引入了对方法参数和返回值校验的支持、增强了对分组校验（Group Validation）的处理。
+- ==JSR 380 (Bean Validation 2.0):== 拥抱 Java 8 的新特性，并进行了一些改进，例如支持 `java.time` 包中的日期和时间类型、引入了一些新的校验注解（如 `@NotEmpty`, `@NotBlank`等）。
 
-校验的时候我们实际用的是 **Hibernate Validator** 框架。Hibernate Validator 是 Hibernate 团队最初的数据校验框架，Hibernate Validator 4.x 是 Bean Validation 1.0（JSR 303）的参考实现，Hibernate Validator 5.x 是 Bean Validation 1.1（JSR 349）的参考实现，目前最新版的 Hibernate Validator 6.x 是 Bean Validation 2.0（JSR 380）的参考实现。
+校验的时候我们实际用的是 ==Hibernate Validator== 框架。Hibernate Validator 是 Hibernate 团队最初的数据校验框架，Hibernate Validator 4.x 是 Bean Validation 1.0（JSR 303）的参考实现，Hibernate Validator 5.x 是 Bean Validation 1.1（JSR 349）的参考实现，目前最新版的 Hibernate Validator 6.x 是 Bean Validation 2.0（JSR 380）的参考实现。
 
 SpringBoot 项目的 spring-boot-starter-web 依赖中已经有 hibernate-validator 包，不需要引用相关依赖。如下图所示（通过 idea 插件—Maven Helper 生成）：
 
-**注**：更新版本的 spring-boot-starter-web 依赖中不再有 hibernate-validator 包（如 2.3.11.RELEASE），需要自己引入 `spring-boot-starter-validation` 依赖。
+==注==：更新版本的 spring-boot-starter-web 依赖中不再有 hibernate-validator 包（如 2.3.11.RELEASE），需要自己引入 `spring-boot-starter-validation` 依赖。
 
 ![](https://oss.javaguide.cn/2021/03/c7bacd12-1c1a-4e41-aaaf-4cad840fc073.png)
 
 非 SpringBoot 项目需要自行引入相关依赖包，这里不多做讲解，具体可以查看我的这篇文章：《[如何在 Spring/Spring Boot 中做参数校验？你需要了解的都在这里！](https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&mid=2247485783&idx=1&sn=a407f3b75efa17c643407daa7fb2acd6&chksm=cea2469cf9d5cf8afbcd0a8a1c9cc4294d6805b8e01bee6f76bb2884c5bc15478e91459def49&token=292197051&lang=zh_CN#rd)》。
 
-👉 需要注意的是：**所有的注解，推荐使用 JSR 注解，即`javax.validation.constraints`，而不是`org.hibernate.validator.constraints`**
+👉 需要注意的是：==所有的注解，推荐使用 JSR 注解，即`javax.validation.constraints`，而不是`org.hibernate.validator.constraints`==
 
 #### 6.1. 一些常用的字段验证的注解
 
@@ -438,7 +438,7 @@ public class PersonController {
 
 #### 6.3. 验证请求参数(Path Variables 和 Request Parameters)
 
-**一定一定不要忘记在类上加上 `@Validated` 注解了，这个参数可以告诉 Spring 去校验方法参数。**
+==一定一定不要忘记在类上加上 `@Validated` 注解了，这个参数可以告诉 Spring 去校验方法参数。==
 
 ```java
 @RestController
@@ -459,7 +459,7 @@ public class PersonController {
 
 介绍一下我们 Spring 项目必备的全局处理 Controller 层异常。
 
-**相关注解：**
+==相关注解：==
 
 1. `@ControllerAdvice` :注解定义全局异常处理类
 2. `@ExceptionHandler` :注解声明异常处理方法
@@ -513,7 +513,7 @@ public class Role {
 
 使用`@Id`声明之后，我们还需要定义主键的生成策略。我们可以使用 `@GeneratedValue` 指定主键生成策略。
 
-**1.通过 `@GeneratedValue`直接使用 JPA 内置提供的四种主键生成策略来指定主键生成策略。**
+==1.通过 `@GeneratedValue`直接使用 JPA 内置提供的四种主键生成策略来指定主键生成策略。==
 
 ```java
 @Id
@@ -565,7 +565,7 @@ public @interface GeneratedValue {
 
 一般使用 MySQL 数据库的话，使用`GenerationType.IDENTITY`策略比较普遍一点（分布式系统的话需要另外考虑使用分布式 ID）。
 
-**2.通过 `@GenericGenerator`声明一个主键策略，然后 `@GeneratedValue`使用这个策略**
+==2.通过 `@GenericGenerator`声明一个主键策略，然后 `@GeneratedValue`使用这个策略==
 
 ```java
 @Id
@@ -621,7 +621,7 @@ public class DefaultIdentifierGeneratorFactory
 
 `@Column` 声明字段。
 
-**示例：**
+==示例：==
 
 设置属性 userName 对应的数据库字段名为 user_name，长度为 32，非空
 
@@ -815,8 +815,8 @@ public void save() {
 
 `@Transactional` 注解一般可以作用在`类`或者`方法`上。
 
-- **作用于类**：当把`@Transactional` 注解放在类上时，表示所有该类的 public 方法都配置相同的事务属性信息。
-- **作用于方法**：当类配置了`@Transactional`，方法也配置了`@Transactional`，方法的事务会覆盖类的事务配置信息。
+- ==作用于类==：当把`@Transactional` 注解放在类上时，表示所有该类的 public 方法都配置相同的事务属性信息。
+- ==作用于方法==：当类配置了`@Transactional`，方法也配置了`@Transactional`，方法的事务会覆盖类的事务配置信息。
 
 更多关于 Spring 事务的内容请查看我的这篇文章：[可能是最漂亮的 Spring 事务管理详解](./spring-transaction.md) 。
 
@@ -824,7 +824,7 @@ public void save() {
 
 #### 10.1. 过滤 json 数据
 
-**`@JsonIgnoreProperties` 作用在类上用于过滤掉特定字段不返回或者不解析。**
+==`@JsonIgnoreProperties` 作用在类上用于过滤掉特定字段不返回或者不解析。==
 
 ```java
 //生成json时将userRoles属性过滤
@@ -838,7 +838,7 @@ public class User {
 }
 ```
 
-**`@JsonIgnore`一般用于类的属性上，作用和上面的`@JsonIgnoreProperties` 一样。**
+==`@JsonIgnore`一般用于类的属性上，作用和上面的`@JsonIgnoreProperties` 一样。==
 
 ```java
 
@@ -933,7 +933,7 @@ public class Account {
 
 ### 11. 测试相关
 
-**`@ActiveProfiles`一般作用于测试类上， 用于声明生效的 Spring 配置文件。**
+==`@ActiveProfiles`一般作用于测试类上， 用于声明生效的 Spring 配置文件。==
 
 ```java
 @SpringBootTest(webEnvironment = RANDOM_PORT)
@@ -944,11 +944,11 @@ public abstract class TestBase {
 }
 ```
 
-**`@Test`声明一个方法为测试方法**
+==`@Test`声明一个方法为测试方法==
 
-**`@Transactional`被声明的测试方法的数据会回滚，避免污染测试数据。**
+==`@Transactional`被声明的测试方法的数据会回滚，避免污染测试数据。==
 
-**`@WithMockUser` Spring Security 提供的，用来模拟一个真实用户，并且可以赋予权限。**
+==`@WithMockUser` Spring Security 提供的，用来模拟一个真实用户，并且可以赋予权限。==
 
 ```java
     @Test

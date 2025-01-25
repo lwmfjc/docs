@@ -15,7 +15,7 @@ tag:
 
 ![Java 7 ConcurrentHashMap 存储结构](https://oss.javaguide.cn/github/javaguide/java/collection/java7_concurrenthashmap.png)
 
-Java 7 中 `ConcurrentHashMap` 的存储结构如上图，`ConcurrnetHashMap` 由很多个 `Segment` 组合，而每一个 `Segment` 是一个类似于 `HashMap` 的结构，所以每一个 `HashMap` 的内部可以进行扩容。但是 `Segment` 的个数一旦**初始化就不能改变**，默认 `Segment` 的个数是 16 个，你也可以认为 `ConcurrentHashMap` 默认支持最多 16 个线程并发。
+Java 7 中 `ConcurrentHashMap` 的存储结构如上图，`ConcurrnetHashMap` 由很多个 `Segment` 组合，而每一个 `Segment` 是一个类似于 `HashMap` 的结构，所以每一个 `HashMap` 的内部可以进行扩容。但是 `Segment` 的个数一旦==初始化就不能改变==，默认 `Segment` 的个数是 16 个，你也可以认为 `ConcurrentHashMap` 默认支持最多 16 个线程并发。
 
 ### 2. 初始化
 
@@ -98,11 +98,11 @@ public ConcurrentHashMap(int initialCapacity,float loadFactor, int concurrencyLe
 总结一下在 Java 7 中 ConcurrentHashMap 的初始化逻辑。
 
 1. 必要参数校验。
-2. 校验并发级别 `concurrencyLevel` 大小，如果大于最大值，重置为最大值。无参构造**默认值是 16.**
-3. 寻找并发级别 `concurrencyLevel` 之上最近的 **2 的幂次方**值，作为初始化容量大小，**默认是 16**。
-4. 记录 `segmentShift` 偏移量，这个值为【容量 = 2 的 N 次方】中的 N，在后面 Put 时计算位置时会用到。**默认是 32 - sshift = 28**.
+2. 校验并发级别 `concurrencyLevel` 大小，如果大于最大值，重置为最大值。无参构造==默认值是 16.==
+3. 寻找并发级别 `concurrencyLevel` 之上最近的 ==2 的幂次方==值，作为初始化容量大小，==默认是 16==。
+4. 记录 `segmentShift` 偏移量，这个值为【容量 = 2 的 N 次方】中的 N，在后面 Put 时计算位置时会用到。==默认是 32 - sshift = 28==.
 5. 记录 `segmentMask`，默认是 ssize - 1 = 16 -1 = 15.
-6. **初始化 `segments[0]`**，**默认大小为 2**，**负载因子 0.75**，**扩容阀值是 2\*0.75=1.5**，插入第二个值时才会进行扩容。
+6. ==初始化 `segments[0]`==，==默认大小为 2==，==负载因子 0.75==，==扩容阀值是 2\*0.75=1.5==，插入第二个值时才会进行扩容。
 
 ### 3. put
 
@@ -182,7 +182,7 @@ private Segment<K,V> ensureSegment(int k) {
 
 2. 如果指定位置的 `Segment` 为空，则初始化这个 `Segment`.
 
-   **初始化 Segment 流程：**
+   ==初始化 Segment 流程：==
 
    1. 检查计算得到的位置的 `Segment` 是否为 null.
    2. 为 null 继续初始化，使用 `Segment[0]` 的容量和负载因子创建一个 `HashEntry` 数组。
@@ -248,22 +248,22 @@ final V put(K key, int hash, V value, boolean onlyIfAbsent) {
 
 由于 `Segment` 继承了 `ReentrantLock`，所以 `Segment` 内部可以很方便的获取锁，put 流程就用到了这个功能。
 
-1. `tryLock()` 获取锁，获取不到使用 **`scanAndLockForPut`** 方法继续获取。
+1. `tryLock()` 获取锁，获取不到使用 ==`scanAndLockForPut`== 方法继续获取。
 
 2. 计算 put 的数据要放入的 index 位置，然后获取这个位置上的 `HashEntry` 。
 
 3. 遍历 put 新元素，为什么要遍历？因为这里获取的 `HashEntry` 可能是一个空元素，也可能是链表已存在，所以要区别对待。
 
-   如果这个位置上的 **`HashEntry` 不存在**：
+   如果这个位置上的 ==`HashEntry` 不存在==：
 
-   1. 如果当前容量大于扩容阀值，小于最大容量，**进行扩容**。
+   1. 如果当前容量大于扩容阀值，小于最大容量，==进行扩容==。
    2. 直接头插法插入。
 
-   如果这个位置上的 **`HashEntry` 存在**：
+   如果这个位置上的 ==`HashEntry` 存在==：
 
    1. 判断链表当前元素 key 和 hash 值是否和要 put 的 key 和 hash 值一致。一致则替换值
    2. 不一致，获取链表下一个节点，直到发现相同进行值替换，或者链表表里完毕没有相同的。
-      1. 如果当前容量大于扩容阀值，小于最大容量，**进行扩容**。
+      1. 如果当前容量大于扩容阀值，小于最大容量，==进行扩容==。
       2. 直接链表头插法插入。
 
 4. 如果要插入的位置之前已经存在，替换后返回旧值，否则返回 null.
@@ -308,7 +308,7 @@ private HashEntry<K,V> scanAndLockForPut(K key, int hash, V value) {
 
 ### 4. 扩容 rehash
 
-`ConcurrentHashMap` 的扩容只会扩容到原来的两倍。老数组里的数据移动到新的数组时，位置要么不变，要么变为 `index+ oldSize`，参数里的 node 会在扩容之后使用链表**头插法**插入到指定位置。
+`ConcurrentHashMap` 的扩容只会扩容到原来的两倍。老数组里的数据移动到新的数组时，位置要么不变，要么变为 `index+ oldSize`，参数里的 node 会在扩容之后使用链表==头插法==插入到指定位置。
 
 ```java
 private void rehash(HashEntry<K,V> node) {
@@ -417,7 +417,7 @@ public V get(Object key) {
 
 ![Java8 ConcurrentHashMap 存储结构（图片来自 javadoop）](https://oss.javaguide.cn/github/javaguide/java/collection/java8_concurrenthashmap.png)
 
-可以发现 Java8 的 ConcurrentHashMap 相对于 Java7 来说变化比较大，不再是之前的 **Segment 数组 + HashEntry 数组 + 链表**，而是 **Node 数组 + 链表 / 红黑树**。当冲突链表达到一定长度时，链表会转换成红黑树。
+可以发现 Java8 的 ConcurrentHashMap 相对于 Java7 来说变化比较大，不再是之前的 ==Segment 数组 + HashEntry 数组 + 链表==，而是 ==Node 数组 + 链表 / 红黑树==。当冲突链表达到一定长度时，链表会转换成红黑树。
 
 ### 2. 初始化 initTable
 
@@ -451,7 +451,7 @@ private final Node<K,V>[] initTable() {
 }
 ```
 
-从源码中可以发现 `ConcurrentHashMap` 的初始化是通过**自旋和 CAS** 操作完成的。里面需要注意的是变量 `sizeCtl` （sizeControl 的缩写），它的值决定着当前的初始化状态。
+从源码中可以发现 `ConcurrentHashMap` 的初始化是通过==自旋和 CAS== 操作完成的。里面需要注意的是变量 `sizeCtl` （sizeControl 的缩写），它的值决定着当前的初始化状态。
 
 1. -1 说明正在初始化，其他线程需要自旋等待
 2. -N 说明 table 正在进行扩容，高 16 位表示扩容的标识戳，低 16 位减 1 为正在进行扩容的线程数
@@ -598,8 +598,8 @@ public V get(Object key) {
 
 Java7 中 `ConcurrentHashMap` 使用的分段锁，也就是每一个 Segment 上同时只有一个线程可以操作，每一个 `Segment` 都是一个类似 `HashMap` 数组的结构，它可以扩容，它的冲突会转化为链表。但是 `Segment` 的个数一但初始化就不能改变。
 
-Java8 中的 `ConcurrentHashMap` 使用的 `Synchronized` 锁加 CAS 的机制。结构也由 Java7 中的 **`Segment` 数组 + `HashEntry` 数组 + 链表** 进化成了 **Node 数组 + 链表 / 红黑树**，Node 是类似于一个 HashEntry 的结构。它的冲突再达到一定大小时会转化成红黑树，在冲突小于一定数量时又退回链表。
+Java8 中的 `ConcurrentHashMap` 使用的 `Synchronized` 锁加 CAS 的机制。结构也由 Java7 中的 ==`Segment` 数组 + `HashEntry` 数组 + 链表== 进化成了 ==Node 数组 + 链表 / 红黑树==，Node 是类似于一个 HashEntry 的结构。它的冲突再达到一定大小时会转化成红黑树，在冲突小于一定数量时又退回链表。
 
-有些同学可能对 `Synchronized` 的性能存在疑问，其实 `Synchronized` 锁自从引入锁升级策略后，性能不再是问题，有兴趣的同学可以自己了解下 `Synchronized` 的**锁升级**。
+有些同学可能对 `Synchronized` 的性能存在疑问，其实 `Synchronized` 锁自从引入锁升级策略后，性能不再是问题，有兴趣的同学可以自己了解下 `Synchronized` 的==锁升级==。
 
 

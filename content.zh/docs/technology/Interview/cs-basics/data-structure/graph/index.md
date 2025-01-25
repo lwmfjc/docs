@@ -5,7 +5,7 @@ tag:
   - 数据结构
 ---
 
-图是一种较为复杂的非线性结构。 **为啥说其较为复杂呢？**
+图是一种较为复杂的非线性结构。 ==为啥说其较为复杂呢？==
 
 根据前面的内容，我们知道：
 
@@ -14,7 +14,7 @@ tag:
 
 但是，图形结构的元素之间的关系是任意的。
 
-**何为图呢？** 简单来说，图就是由顶点的有穷非空集合和顶点之间的边组成的集合。通常表示为：**G(V,E)**，其中，G 表示一个图，V 表示顶点的集合，E 表示边的集合。
+==何为图呢？== 简单来说，图就是由顶点的有穷非空集合和顶点之间的边组成的集合。通常表示为：==G(V,E)==，其中，G 表示一个图，V 表示顶点的集合，E 表示边的集合。
 
 下图所展示的就是图这种数据结构，并且还是一张有向图。
 
@@ -70,7 +70,7 @@ tag:
 
 ![无向图的邻接矩阵存储](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/adjacency-matrix-representation-of-undirected-graph.png)
 
-值得注意的是：**无向图的邻接矩阵是一个对称矩阵，因为在无向图中，顶点 i 和顶点 j 有关系，则顶点 j 和顶点 i 必有关系。**
+值得注意的是：==无向图的邻接矩阵是一个对称矩阵，因为在无向图中，顶点 i 和顶点 j 有关系，则顶点 j 和顶点 i 必有关系。==
 
 ![有向图的邻接矩阵存储](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/adjacency-matrix-representation-of-directed-graph.png)
 
@@ -78,9 +78,9 @@ tag:
 
 ### 邻接表存储
 
-针对上面邻接矩阵比较浪费内存空间的问题，诞生了图的另外一种存储方法—**邻接表** 。
+针对上面邻接矩阵比较浪费内存空间的问题，诞生了图的另外一种存储方法—==邻接表== 。
 
-邻接链表使用一个链表来存储某个顶点的所有后继相邻顶点。对于图中每个顶点 Vi，把所有邻接于 Vi 的顶点 Vj 链成一个单链表，这个单链表称为顶点 Vi 的 **邻接表**。如下图所示：
+邻接链表使用一个链表来存储某个顶点的所有后继相邻顶点。对于图中每个顶点 Vi，把所有邻接于 Vi 的顶点 Vj 链成一个单链表，这个单链表称为顶点 Vi 的 ==邻接表==。如下图所示：
 
 ![无向图的邻接表存储](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/adjacency-list-representation-of-undirected-graph.png)
 
@@ -99,29 +99,29 @@ tag:
 
 ![广度优先搜索图示](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/breadth-first-search.png)
 
-**广度优先搜索的具体实现方式用到了之前所学过的线性数据结构——队列** 。具体过程如下图所示：
+==广度优先搜索的具体实现方式用到了之前所学过的线性数据结构——队列== 。具体过程如下图所示：
 
-**第 1 步：**
+==第 1 步：==
 
 ![广度优先搜索1](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/breadth-first-search1.png)
 
-**第 2 步：**
+==第 2 步：==
 
 ![广度优先搜索2](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/breadth-first-search2.png)
 
-**第 3 步：**
+==第 3 步：==
 
 ![广度优先搜索3](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/breadth-first-search3.png)
 
-**第 4 步：**
+==第 4 步：==
 
 ![广度优先搜索4](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/breadth-first-search4.png)
 
-**第 5 步：**
+==第 5 步：==
 
 ![广度优先搜索5](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/breadth-first-search5.png)
 
-**第 6 步：**
+==第 6 步：==
 
 ![广度优先搜索6](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/breadth-first-search6.png)
 
@@ -131,29 +131,29 @@ tag:
 
 ![深度优先搜索图示](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/depth-first-search.png)
 
-**和广度优先搜索类似，深度优先搜索的具体实现用到了另一种线性数据结构——栈** 。具体过程如下图所示：
+==和广度优先搜索类似，深度优先搜索的具体实现用到了另一种线性数据结构——栈== 。具体过程如下图所示：
 
-**第 1 步：**
+==第 1 步：==
 
 ![深度优先搜索1](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/depth-first-search1.png)
 
-**第 2 步：**
+==第 2 步：==
 
 ![深度优先搜索2](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/depth-first-search2.png)
 
-**第 3 步：**
+==第 3 步：==
 
 ![深度优先搜索3](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/depth-first-search3.png)
 
-**第 4 步：**
+==第 4 步：==
 
 ![深度优先搜索4](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/depth-first-search4.png)
 
-**第 5 步：**
+==第 5 步：==
 
 ![深度优先搜索5](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/depth-first-search5.png)
 
-**第 6 步：**
+==第 6 步：==
 
 ![深度优先搜索6](https://oss.javaguide.cn/github/javaguide/cs-basics/data-structure/depth-first-search6.png)
 

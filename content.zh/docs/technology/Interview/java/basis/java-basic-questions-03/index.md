@@ -1,7 +1,7 @@
 ---
 title: Java基础常见面试题总结(下)
 category: Java
-tag:
+tags:
   - Java基础
 head:
   - - meta
@@ -10,13 +10,15 @@ head:
   - - meta
     - name: description
       content: 全网质量最高的Java基础常见知识点和面试题总结，希望对你有帮助！
+cssclasses:
+  - book01
 ---
 
 
 
 ## 异常
 
-**Java 异常类层次结构图概览**：
+==Java 异常类层次结构图概览==：
 
 ![Java 异常类层次结构图](https://oss.javaguide.cn/github/javaguide/java/basis/types-of-exceptions-in-java.png)
 
@@ -24,12 +26,12 @@ head:
 
 在 Java 中，所有的异常都有一个共同的祖先 `java.lang` 包中的 `Throwable` 类。`Throwable` 类有两个重要的子类:
 
-- **`Exception`** :程序本身可以处理的异常，可以通过 `catch` 来进行捕获。`Exception` 又可以分为 Checked Exception (受检查异常，必须处理) 和 Unchecked Exception (不受检查异常，可以不处理)。
-- **`Error`**：`Error` 属于程序无法处理的错误 ，~~我们没办法通过 `catch` 来进行捕获~~不建议通过`catch`捕获 。例如 Java 虚拟机运行错误（`Virtual MachineError`）、虚拟机内存不够错误(`OutOfMemoryError`)、类定义错误（`NoClassDefFoundError`）等 。这些异常发生时，Java 虚拟机（JVM）一般会选择线程终止。
+- ==`Exception`== :程序本身可以处理的异常，可以通过 `catch` 来进行捕获。`Exception` 又可以分为 Checked Exception (受检查异常，必须处理) 和 Unchecked Exception (不受检查异常，可以不处理)。
+- ==`Error`==：`Error` 属于程序无法处理的错误 ，~~我们没办法通过 `catch` 来进行捕获~~不建议通过`catch`捕获 。例如 Java 虚拟机运行错误（`Virtual MachineError`）、虚拟机内存不够错误(`OutOfMemoryError`)、类定义错误（`NoClassDefFoundError`）等 。这些异常发生时，Java 虚拟机（JVM）一般会选择线程终止。
 
 ### Checked Exception 和 Unchecked Exception 有什么区别？
 
-**Checked Exception** 即 受检查异常 ，Java 代码在编译过程中，如果受检查异常没有被 `catch`或者`throws` 关键字处理的话，就没办法通过编译。
+==Checked Exception== 即 受检查异常 ，Java 代码在编译过程中，如果受检查异常没有被 `catch`或者`throws` 关键字处理的话，就没办法通过编译。
 
 比如下面这段 IO 操作的代码：
 
@@ -37,7 +39,7 @@ head:
 
 除了`RuntimeException`及其子类以外，其他的`Exception`类及其子类都属于受检查异常 。常见的受检查异常有：IO 相关的异常、`ClassNotFoundException`、`SQLException`...。
 
-**Unchecked Exception** 即 **不受检查异常** ，Java 代码在编译过程中 ，我们即使不处理不受检查异常也可以正常通过编译。
+==Unchecked Exception== 即 ==不受检查异常== ，Java 代码在编译过程中 ，我们即使不处理不受检查异常也可以正常通过编译。
 
 `RuntimeException` 及其子类都统称为非受检查异常，常见的有（建议记下来，日常开发中会经常用到）：
 
@@ -87,7 +89,7 @@ Catch Exception -> RuntimeException
 Finally
 ```
 
-**注意：不要在 finally 语句块中使用 return!** 当 try 语句和 finally 语句中都有 return 语句时，try 语句块中的 return 语句会被忽略。这是因为 try 语句中的 return 返回值会先被暂存在一个本地变量中，当执行到 finally 语句中的 return 之后，这个本地变量的值就变为了 finally 语句中的 return 返回值。
+==注意：不要在 finally 语句块中使用 return!== 当 try 语句和 finally 语句中都有 return 语句时，try 语句块中的 return 语句会被忽略。这是因为 try 语句中的 return 返回值会先被暂存在一个本地变量中，当执行到 finally 语句中的 return 之后，这个本地变量的值就变为了 finally 语句中的 return 返回值。
 
 [jvm 官方文档](https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.10.2.5)中有明确提到：
 
@@ -158,8 +160,8 @@ Catch Exception -> RuntimeException
 
 ### 如何使用 `try-with-resources` 代替`try-catch-finally`？
 
-1. **适用范围（资源的定义）：** 任何实现 `java.lang.AutoCloseable`或者 `java.io.Closeable` 的对象
-2. **关闭资源和 finally 块的执行顺序：** 在 `try-with-resources` 语句中，任何 catch 或 finally 块在声明的资源关闭后运行
+1. ==适用范围（资源的定义）：== 任何实现 `java.lang.AutoCloseable`或者 `java.io.Closeable` 的对象
+2. ==关闭资源和 finally 块的执行顺序：== 在 `try-with-resources` 语句中，任何 catch 或 finally 块在声明的资源关闭后运行
 
 《Effective Java》中明确指出：
 
@@ -225,7 +227,7 @@ catch (IOException e) {
 
 ### 什么是泛型？有什么作用？
 
-**Java 泛型（Generics）** 是 JDK 5 中引入的一个新特性。使用泛型参数，可以增强代码的可读性以及稳定性。
+==Java 泛型（Generics）== 是 JDK 5 中引入的一个新特性。使用泛型参数，可以增强代码的可读性以及稳定性。
 
 编译器可以对泛型参数进行检测，并且通过泛型参数可以指定传入的对象类型。比如 `ArrayList<Person> persons = new ArrayList<Person>()` 这行代码就指明了该 `ArrayList` 对象只能传入 `Person` 对象，如果传入其他类型的对象就会报错。
 
@@ -237,9 +239,9 @@ ArrayList<E> extends AbstractList<E>
 
 ### 泛型的使用方式有哪几种？
 
-泛型一般有三种使用方式:**泛型类**、**泛型接口**、**泛型方法**。
+泛型一般有三种使用方式:==泛型类==、==泛型接口==、==泛型方法==。
 
-**1.泛型类**：
+==1.泛型类==：
 
 ```java
 //此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型
@@ -264,7 +266,7 @@ public class Generic<T>{
 Generic<Integer> genericInteger = new Generic<Integer>(123456);
 ```
 
-**2.泛型接口**：
+==2.泛型接口==：
 
 ```java
 public interface Generator<T> {
@@ -294,7 +296,7 @@ class GeneratorImpl implements Generator<String> {
 }
 ```
 
-**3.泛型方法**：
+==3.泛型方法==：
 
 ```java
    public static < E > void printArray( E[] inputArray )
@@ -345,7 +347,7 @@ printArray( stringArray  );
 
 像咱们平时大部分时候都是在写业务代码，很少会接触到直接使用反射机制的场景。但是！这并不代表反射没有用。相反，正是因为反射，你才能这么轻松地使用各种框架。像 Spring/Spring Boot、MyBatis 等等框架中都大量使用了反射机制。
 
-**这些框架中也大量使用了动态代理，而动态代理的实现也依赖反射。**
+==这些框架中也大量使用了动态代理，而动态代理的实现也依赖反射。==
 
 比如下面是通过 JDK 实现动态代理的示例代码，其中就使用了反射类 `Method` 来调用指定的方法。
 
@@ -370,7 +372,7 @@ public class DebugInvocationHandler implements InvocationHandler {
 
 ```
 
-另外，像 Java 中的一大利器 **注解** 的实现也用到了反射。
+另外，像 Java 中的一大利器 ==注解== 的实现也用到了反射。
 
 为什么你使用 Spring 的时候 ，一个`@Component`注解就声明了一个类为 Spring Bean 呢？为什么你通过一个 `@Value`注解就读取到配置文件中的值呢？究竟是怎么起作用的呢？
 
@@ -402,8 +404,8 @@ JDK 提供了很多内置的注解（比如 `@Override`、`@Deprecated`），同
 
 注解只有被解析之后才会生效，常见的解析方法有两种：
 
-- **编译期直接扫描**：编译器在编译 Java 代码的时候扫描对应的注解并处理，比如某个方法使用`@Override` 注解，编译器在编译的时候就会检测当前的方法是否重写了父类对应的方法。
-- **运行期通过反射处理**：像框架中自带的注解(比如 Spring 框架的 `@Value`、`@Component`)都是通过反射来进行处理的。
+- ==编译期直接扫描==：编译器在编译 Java 代码的时候扫描对应的注解并处理，比如某个方法使用`@Override` 注解，编译器在编译的时候就会检测当前的方法是否重写了父类对应的方法。
+- ==运行期通过反射处理==：像框架中自带的注解(比如 Spring 框架的 `@Value`、`@Component`)都是通过反射来进行处理的。
 
 ## SPI
 
@@ -421,7 +423,7 @@ SPI 将服务接口和具体的服务实现分离开来，将服务调用方和�
 
 ### SPI 和 API 有什么区别？
 
-**那 SPI 和 API 有啥区别？**
+==那 SPI 和 API 有啥区别？==
 
 说到 SPI 就不得不说一下 API（Application Programming Interface） 了，从广义上来说它们都属于接口，而且很容易混淆。下面先用一张图说明一下：
 
@@ -429,8 +431,8 @@ SPI 将服务接口和具体的服务实现分离开来，将服务调用方和�
 
 一般模块之间都是通过接口进行通讯，因此我们在服务调用方和服务实现方（也称服务提供者）之间引入一个“接口”。
 
-- 当实现方提供了接口和实现，我们可以通过调用实现方的接口从而拥有实现方给我们提供的能力，这就是 **API**。这种情况下，接口和实现都是放在实现方的包中。调用方通过接口调用实现方的功能，而不需要关心具体的实现细节。
-- 当接口存在于调用方这边时，这就是 **SPI** 。由接口调用方确定接口规则，然后由不同的厂商根据这个规则对这个接口进行实现，从而提供服务。
+- 当实现方提供了接口和实现，我们可以通过调用实现方的接口从而拥有实现方给我们提供的能力，这就是 ==API==。这种情况下，接口和实现都是放在实现方的包中。调用方通过接口调用实现方的功能，而不需要关心具体的实现细节。
+- 当接口存在于调用方这边时，这就是 ==SPI== 。由接口调用方确定接口规则，然后由不同的厂商根据这个规则对这个接口进行实现，从而提供服务。
 
 举个通俗易懂的例子：公司 H 是一家科技公司，新设计了一款芯片，然后现在需要量产了，而市面上有好几家芯片制造业公司，这个时候，只要 H 公司指定好了这芯片生产的标准（定义好了接口标准），那么这些合作的芯片公司（服务提供者）就按照标准交付自家特色的芯片（提供不同方案的实现，但是给出来的结果是一样的）。
 
@@ -451,8 +453,8 @@ SPI 将服务接口和具体的服务实现分离开来，将服务调用方和�
 
 简单来说：
 
-- **序列化**：将数据结构或对象转换成可以存储或传输的形式，通常是二进制字节流，也可以是 JSON, XML 等文本格式
-- **反序列化**：将在序列化过程中所生成的数据转换为原始数据结构或者对象的过程
+- ==序列化==：将数据结构或对象转换成可以存储或传输的形式，通常是二进制字节流，也可以是 JSON, XML 等文本格式
+- ==反序列化==：将在序列化过程中所生成的数据转换为原始数据结构或者对象的过程
 
 对于 Java 这种面向对象编程语言来说，我们序列化的都是对象（Object）也就是实例化后的类(Class)，但是在 C++这种半面向对象的语言中，struct(结构体)定义的是数据结构类型，而 class 对应的是对象类型。
 
@@ -465,15 +467,15 @@ SPI 将服务接口和具体的服务实现分离开来，将服务调用方和�
 
 维基百科是如是介绍序列化的：
 
-> **序列化**（serialization）在计算机科学的数据处理中，是指将数据结构或对象状态转换成可取用格式（例如存成文件，存于缓冲，或经由网络中发送），以留待后续在相同或另一台计算机环境中，能恢复原先状态的过程。依照序列化格式重新获取字节的结果时，可以利用它来产生与原始对象相同语义的副本。对于许多对象，像是使用大量引用的复杂对象，这种序列化重建的过程并不容易。面向对象中的对象序列化，并不概括之前原始对象所关系的函数。这种过程也称为对象编组（marshalling）。从一系列字节提取数据结构的反向操作，是反序列化（也称为解编组、deserialization、unmarshalling）。
+> ==序列化==（serialization）在计算机科学的数据处理中，是指将数据结构或对象状态转换成可取用格式（例如存成文件，存于缓冲，或经由网络中发送），以留待后续在相同或另一台计算机环境中，能恢复原先状态的过程。依照序列化格式重新获取字节的结果时，可以利用它来产生与原始对象相同语义的副本。对于许多对象，像是使用大量引用的复杂对象，这种序列化重建的过程并不容易。面向对象中的对象序列化，并不概括之前原始对象所关系的函数。这种过程也称为对象编组（marshalling）。从一系列字节提取数据结构的反向操作，是反序列化（也称为解编组、deserialization、unmarshalling）。
 
-综上：**序列化的主要目的是通过网络传输对象或者说是将对象存储到文件系统、数据库、内存中。**
+综上：==序列化的主要目的是通过网络传输对象或者说是将对象存储到文件系统、数据库、内存中。==
 
 ![](https://oss.javaguide.cn/github/javaguide/a478c74d-2c48-40ae-9374-87aacf05188c.png)
 
 {{< html >}}<p style="text-align:right;font-size:13px;color:gray">https://www.corejavaguru.com/java/serialization/interview-questions-1</p> {{< /html >}}
 
-**序列化协议对应于 TCP/IP 4 层模型的哪一层？**
+==序列化协议对应于 TCP/IP 4 层模型的哪一层？==
 
 我们知道网络通信的双方必须要采用和遵守相同的协议。TCP/IP 四层模型是下面这样的，序列化协议属于哪一层呢？
 
@@ -510,9 +512,9 @@ JDK 自带的序列化方式一般不会用 ，因为序列化效率低并且存
 
 我们很少或者说几乎不会直接使用 JDK 自带的序列化方式，主要原因有下面这些原因：
 
-- **不支持跨语言调用** : 如果调用的是其他语言开发的服务的时候就不支持了。
-- **性能差**：相比于其他序列化框架性能更低，主要原因是序列化之后的字节数组体积较大，导致传输成本加大。
-- **存在安全问题**：序列化和反序列化本身并不存在问题。但当输入的反序列化的数据可被用户控制，那么攻击者即可通过构造恶意输入，让反序列化产生非预期的对象，在此过程中执行构造的任意代码。相关阅读：[应用安全：JAVA 反序列化漏洞之殇](https://cryin.github.io/blog/secure-development-java-deserialization-vulnerability/) 。
+- ==不支持跨语言调用== : 如果调用的是其他语言开发的服务的时候就不支持了。
+- ==性能差==：相比于其他序列化框架性能更低，主要原因是序列化之后的字节数组体积较大，导致传输成本加大。
+- ==存在安全问题==：序列化和反序列化本身并不存在问题。但当输入的反序列化的数据可被用户控制，那么攻击者即可通过构造恶意输入，让反序列化产生非预期的对象，在此过程中执行构造的任意代码。相关阅读：[应用安全：JAVA 反序列化漏洞之殇](https://cryin.github.io/blog/secure-development-java-deserialization-vulnerability/) 。
 
 ## I/O
 
@@ -533,7 +535,7 @@ Java IO 流的 40 多个类都是从如下 4 个抽象类基类中派生出来�
 
 ### I/O 流为什么要分为字节流和字符流呢?
 
-问题本质想问：**不管是文件读写还是网络发送接收，信息的最小存储单元都是字节，那为什么 I/O 流操作要分为字节流操作和字符流操作呢？**
+问题本质想问：==不管是文件读写还是网络发送接收，信息的最小存储单元都是字节，那为什么 I/O 流操作要分为字节流操作和字符流操作呢？==
 
 个人认为主要有两点原因：
 
@@ -552,7 +554,7 @@ Java IO 流的 40 多个类都是从如下 4 个抽象类基类中派生出来�
 
 ### 什么是语法糖？
 
-**语法糖（Syntactic sugar）** 代指的是编程语言为了方便程序员开发程序而设计的一种特殊语法，这种语法对编程语言的功能并没有影响。实现相同的功能，基于语法糖写出来的代码往往更简单简洁且更易阅读。
+==语法糖（Syntactic sugar）== 代指的是编程语言为了方便程序员开发程序而设计的一种特殊语法，这种语法对编程语言的功能并没有影响。实现相同的功能，基于语法糖写出来的代码往往更简单简洁且更易阅读。
 
 举个例子，Java 中的 `for-each` 就是一个常用的语法糖，其原理其实就是基于普通的 for 循环和迭代器。
 

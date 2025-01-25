@@ -49,7 +49,7 @@ public class Main {
 
 formula 是作为匿名对象实现的。该代码非常容易理解，6 行代码实现了计算 `sqrt(a * 100)`。在下一节中，我们将会看到在 Java 8 中实现单个方法对象有一种更好更方便的方法。
 
-**译者注：** 不管是抽象类还是接口，都可以通过匿名内部类的方式访问。不能通过抽象类或者接口直接创建对象。对于上面通过匿名内部类方式访问接口，我们可以这样理解：一个内部类实现了接口里的抽象方法并且返回一个内部类对象，之后我们让接口的引用来指向这个对象。
+==译者注：== 不管是抽象类还是接口，都可以通过匿名内部类的方式访问。不能通过抽象类或者接口直接创建对象。对于上面通过匿名内部类方式访问接口，我们可以这样理解：一个内部类实现了接口里的抽象方法并且返回一个内部类对象，之后我们让接口的引用来指向这个对象。
 
 ## Lambda 表达式(Lambda expressions)
 
@@ -92,9 +92,9 @@ List 类本身就有一个 `sort` 方法。并且 Java 编译器可以自动推�
 
 ## 函数式接口(Functional Interfaces)
 
-**译者注：** 原文对这部分解释不太清楚，故做了修改！
+==译者注：== 原文对这部分解释不太清楚，故做了修改！
 
-Java 语言设计者们投入了大量精力来思考如何使现有的函数友好地支持 Lambda。最终采取的方法是：增加函数式接口的概念。**“函数式接口”是指仅仅只包含一个抽象方法,但是可以有多个非抽象方法(也就是上面提到的默认方法)的接口。** 像这样的接口，可以被隐式转换为 lambda 表达式。`java.lang.Runnable` 与 `java.util.concurrent.Callable` 是函数式接口最典型的两个例子。Java 8 增加了一种特殊的注解`@FunctionalInterface`,但是这个注解通常不是必须的(某些情况建议使用)，只要接口只包含一个抽象方法，虚拟机会自动判断该接口为函数式接口。一般建议在接口上使用`@FunctionalInterface` 注解进行声明，这样的话，编译器如果发现你标注了这个注解的接口有多于一个抽象方法的时候会报错的，如下图所示
+Java 语言设计者们投入了大量精力来思考如何使现有的函数友好地支持 Lambda。最终采取的方法是：增加函数式接口的概念。==“函数式接口”是指仅仅只包含一个抽象方法,但是可以有多个非抽象方法(也就是上面提到的默认方法)的接口。== 像这样的接口，可以被隐式转换为 lambda 表达式。`java.lang.Runnable` 与 `java.util.concurrent.Callable` 是函数式接口最典型的两个例子。Java 8 增加了一种特殊的注解`@FunctionalInterface`,但是这个注解通常不是必须的(某些情况建议使用)，只要接口只包含一个抽象方法，虚拟机会自动判断该接口为函数式接口。一般建议在接口上使用`@FunctionalInterface` 注解进行声明，这样的话，编译器如果发现你标注了这个注解的接口有多于一个抽象方法的时候会报错的，如下图所示
 
 ![@FunctionalInterface 注解](https://oss.javaguide.cn/github/javaguide/java/@FunctionalInterface.png)
 
@@ -114,7 +114,7 @@ public interface Converter<F, T> {
     System.out.println(converted.getClass()); //class java.lang.Integer
 ```
 
-**译者注：** 大部分函数式接口都不用我们自己写，Java8 都给我们实现好了，这些接口都在 java.util.function 包里。
+==译者注：== 大部分函数式接口都不用我们自己写，Java8 都给我们实现好了，这些接口都在 java.util.function 包里。
 
 ## 方法和构造函数引用(Method and Constructor References)
 
@@ -250,9 +250,9 @@ JDK 1.8 API 包含许多内置函数式接口。 其中一些接口在老版本�
 
 ### Predicate
 
-Predicate 接口是只有一个参数的返回布尔类型值的 **断言型** 接口。该接口包含多种默认方法来将 Predicate 组合成其他复杂的逻辑（比如：与，或，非）：
+Predicate 接口是只有一个参数的返回布尔类型值的 ==断言型== 接口。该接口包含多种默认方法来将 Predicate 组合成其他复杂的逻辑（比如：与，或，非）：
 
-**译者注：** Predicate 接口源码如下
+==译者注：== Predicate 接口源码如下
 
 ```java
 package java.util.function;
@@ -305,7 +305,7 @@ Predicate<String> isNotEmpty = isEmpty.negate();
 
 Function 接口接受一个参数并生成结果。默认方法可用于将多个函数链接在一起（compose, andThen）：
 
-**译者注：** Function 接口源码如下
+==译者注：== Function 接口源码如下
 
 ```java
 
@@ -418,7 +418,7 @@ Java 8 扩展了集合类，可以通过 Collection.stream() 或者 Collection.p
 
 ### Filter(过滤)
 
-过滤通过一个 predicate 接口来过滤并只保留符合条件的元素，该操作属于**中间操作**，所以我们可以在过滤后的结果来应用其他 Stream 操作（比如 forEach）。forEach 需要一个函数来对过滤后的元素依次执行。forEach 是一个最终操作，所以我们不能在 forEach 之后来执行其他 Stream 操作。
+过滤通过一个 predicate 接口来过滤并只保留符合条件的元素，该操作属于==中间操作==，所以我们可以在过滤后的结果来应用其他 Stream 操作（比如 forEach）。forEach 需要一个函数来对过滤后的元素依次执行。forEach 是一个最终操作，所以我们不能在 forEach 之后来执行其他 Stream 操作。
 
 ```java
         // 测试 Filter(过滤)
@@ -432,7 +432,7 @@ forEach 是为 Lambda 而设计的，保持了最紧凑的风格。而且 Lambda
 
 ### Sorted(排序)
 
-排序是一个 **中间操作**，返回的是排序好后的 Stream。**如果你不指定一个自定义的 Comparator 则会使用默认排序。**
+排序是一个 ==中间操作==，返回的是排序好后的 Stream。==如果你不指定一个自定义的 Comparator 则会使用默认排序。==
 
 ```java
         // 测试 Sort (排序)
@@ -466,7 +466,7 @@ forEach 是为 Lambda 而设计的，保持了最紧凑的风格。而且 Lambda
 
 ### Match(匹配)
 
-Stream 提供了多种匹配操作，允许检测指定的 Predicate 是否匹配整个 Stream。所有的匹配操作都是 **最终操作** ，并返回一个 boolean 类型的值。
+Stream 提供了多种匹配操作，允许检测指定的 Predicate 是否匹配整个 Stream。所有的匹配操作都是 ==最终操作== ，并返回一个 boolean 类型的值。
 
 ```java
         // 测试 Match (匹配)操作
@@ -493,7 +493,7 @@ Stream 提供了多种匹配操作，允许检测指定的 Predicate 是否匹�
 
 ### Count(计数)
 
-计数是一个 **最终操作**，返回 Stream 中元素的个数，**返回值类型是 long**。
+计数是一个 ==最终操作==，返回 Stream 中元素的个数，==返回值类型是 long==。
 
 ```java
       //测试 Count (计数)操作
@@ -507,7 +507,7 @@ Stream 提供了多种匹配操作，允许检测指定的 Predicate 是否匹�
 
 ### Reduce(规约)
 
-这是一个 **最终操作** ，允许通过指定的函数来将 stream 中的多个元素规约为一个元素，规约后的结果是通过 Optional 接口表示的：
+这是一个 ==最终操作== ，允许通过指定的函数来将 stream 中的多个元素规约为一个元素，规约后的结果是通过 Optional 接口表示的：
 
 ```java
         //测试 Reduce (规约)操作
@@ -520,7 +520,7 @@ Stream 提供了多种匹配操作，允许检测指定的 Predicate 是否匹�
         reduced.ifPresent(System.out::println);//aaa1#aaa2#bbb1#bbb2#bbb3#ccc#ddd1#ddd2
 ```
 
-**译者注：** 这个方法的主要作用是把 Stream 元素组合起来。它提供一个起始值（种子），然后依照运算规则（BinaryOperator），和前面 Stream 的第一个、第二个、第 n 个元素组合。从这个意义上说，字符串拼接、数值的 sum、min、max、average 都是特殊的 reduce。例如 Stream 的 sum 就相当于`Integer sum = integers.reduce(0, (a, b) -> a+b);`也有没有起始值的情况，这时会把 Stream 的前面两个元素组合起来，返回的是 Optional。
+==译者注：== 这个方法的主要作用是把 Stream 元素组合起来。它提供一个起始值（种子），然后依照运算规则（BinaryOperator），和前面 Stream 的第一个、第二个、第 n 个元素组合。从这个意义上说，字符串拼接、数值的 sum、min、max、average 都是特殊的 reduce。例如 Stream 的 sum 就相当于`Integer sum = integers.reduce(0, (a, b) -> a+b);`也有没有起始值的情况，这时会把 Stream 的前面两个元素组合起来，返回的是 Optional。
 
 ```java
 // 字符串连接，concat = "ABCD"
@@ -664,7 +664,7 @@ Merge 做的事情是如果键名不存在则插入，否则对原键对应的�
 
 Java 8 在 `java.time` 包下包含一个全新的日期和时间 API。新的 Date API 与 Joda-Time 库相似，但它们不一样。以下示例涵盖了此新 API 的最重要部分。译者对这部分内容参考相关书籍做了大部分修改。
 
-**译者注(总结)：**
+==译者注(总结)：==
 
 - Clock 类提供了访问当前日期和时间的方法，Clock 是时区敏感的，可以用来取代 `System.currentTimeMillis()` 来获取当前的微秒数。某一个特定的时间点也可以使用 `Instant` 类来表示，`Instant` 类也可以用来创建旧版本的`java.util.Date` 对象。
 
@@ -775,7 +775,7 @@ DateTimeFormatter formatter=DateTimeFormatter.ofPattern("YYYY-MM-dd HH:mm:ss");
 System.out.println(formatter.format(rightNow));//2019-03-12 16:26:48
 ```
 
-**🐛 修正（参见：[issue#1157](https://github.com/Snailclimb/JavaGuide/issues/1157)）**：使用 `YYYY` 显示年份时，会显示当前时间所在周的年份，在跨年周会有问题。一般情况下都使用 `yyyy`，来显示准确的年份。
+==🐛 修正（参见：[issue#1157](https://github.com/Snailclimb/JavaGuide/issues/1157)）==：使用 `YYYY` 显示年份时，会显示当前时间所在周的年份，在跨年周会有问题。一般情况下都使用 `yyyy`，来显示准确的年份。
 
 跨年导致日期显示错误示例：
 

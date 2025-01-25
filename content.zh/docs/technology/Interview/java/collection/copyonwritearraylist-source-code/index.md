@@ -17,7 +17,7 @@ JDK1.5 引入了 `Java.util.concurrent`（JUC）包，其中提供了很多线�
 
 这种思路与 `ReentrantReadWriteLock` 读写锁的设计思想非常类似，即读读不互斥、读写互斥、写写互斥（只有读读不互斥）。`CopyOnWriteArrayList` 更进一步地实现了这一思想。为了将读操作性能发挥到极致，`CopyOnWriteArrayList` 中的读取操作是完全无需加锁的。更加厉害的是，写入操作也不会阻塞读取操作，只有写写才会互斥。这样一来，读操作的性能就可以大幅度提升。
 
-`CopyOnWriteArrayList` 线程安全的核心在于其采用了 **写时复制（Copy-On-Write）** 的策略，从 `CopyOnWriteArrayList` 的名字就能看出了。
+`CopyOnWriteArrayList` 线程安全的核心在于其采用了 ==写时复制（Copy-On-Write）== 的策略，从 `CopyOnWriteArrayList` 的名字就能看出了。
 
 ### Copy-On-Write 的思想是什么？
 
@@ -56,7 +56,7 @@ implements List<E>, RandomAccess, Cloneable, Serializable
 `CopyOnWriteArrayList` 实现了以下接口：
 
 - `List` : 表明它是一个列表，支持添加、删除、查找等操作，并且可以通过下标进行访问。
-- `RandomAccess` ：这是一个标志接口，表明实现这个接口的 `List` 集合是支持 **快速随机访问** 的。
+- `RandomAccess` ：这是一个标志接口，表明实现这个接口的 `List` 集合是支持 ==快速随机访问== 的。
 - `Cloneable` ：表明它具有拷贝能力，可以进行深拷贝或浅拷贝操作。
 - `Serializable` : 表明它可以进行序列化操作，也就是可以将对象转换为字节流进行持久化存储或网络传输，非常方便。
 
@@ -130,7 +130,7 @@ public boolean add(E e) {
 从上面的源码可以看出：
 
 - `add`方法内部用到了 `ReentrantLock` 加锁，保证了同步，避免了多线程写的时候会复制出多个副本出来。锁被修饰保证了锁的内存地址肯定不会被修改，并且，释放锁的逻辑放在 `finally` 中，可以保证锁能被释放。
-- `CopyOnWriteArrayList` 通过复制底层数组的方式实现写操作，即先创建一个新的数组来容纳新添加的元素，然后在新数组中进行写操作，最后将新数组赋值给底层数组的引用，替换掉旧的数组。这也就证明了我们前面说的：`CopyOnWriteArrayList` 线程安全的核心在于其采用了 **写时复制（Copy-On-Write）** 的策略。
+- `CopyOnWriteArrayList` 通过复制底层数组的方式实现写操作，即先创建一个新的数组来容纳新添加的元素，然后在新数组中进行写操作，最后将新数组赋值给底层数组的引用，替换掉旧的数组。这也就证明了我们前面说的：`CopyOnWriteArrayList` 线程安全的核心在于其采用了 ==写时复制（Copy-On-Write）== 的策略。
 - 每次写操作都需要通过 `Arrays.copyOf` 复制底层数组，时间复杂度是 O(n) 的，且会占用额外的内存空间。因此，`CopyOnWriteArrayList` 适用于读多写少的场景，在写操作不频繁且内存资源充足的情况下，可以提升系统的性能表现。
 - `CopyOnWriteArrayList` 中并没有类似于 `ArrayList` 的 `grow()` 方法扩容的操作。
 

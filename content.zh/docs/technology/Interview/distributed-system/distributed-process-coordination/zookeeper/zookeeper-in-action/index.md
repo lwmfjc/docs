@@ -13,13 +13,13 @@ tag:
 
 ### 使用 Docker 安装 zookeeper
 
-**a.使用 Docker 下载 ZooKeeper**
+==a.使用 Docker 下载 ZooKeeper==
 
 ```shell
 docker pull zookeeper:3.5.8
 ```
 
-**b.运行 ZooKeeper**
+==b.运行 ZooKeeper==
 
 ```shell
 docker run -d --name zookeeper -p 2181:2181 zookeeper:3.5.8
@@ -27,11 +27,11 @@ docker run -d --name zookeeper -p 2181:2181 zookeeper:3.5.8
 
 ### 连接 ZooKeeper 服务
 
-**a.进入 ZooKeeper 容器中**
+==a.进入 ZooKeeper 容器中==
 
 先使用 `docker ps` 查看 ZooKeeper 的 ContainerID，然后使用 `docker exec -it ContainerID /bin/bash` 命令进入容器中。
 
-**b.先进入 bin 目录,然后通过 `./zkCli.sh -server 127.0.0.1:2181`命令连接 ZooKeeper 服务**
+==b.先进入 bin 目录,然后通过 `./zkCli.sh -server 127.0.0.1:2181`命令连接 ZooKeeper 服务==
 
 ```bash
 root@eaf70fc620cb:/apache-zookeeper-3.5.8-bin# cd bin
@@ -216,14 +216,14 @@ zkClient.start();
 
 我们在 [ZooKeeper 常见概念解读](./zookeeper-intro.md) 中介绍到，我们通常是将 znode 分为 4 大类：
 
-- **持久（PERSISTENT）节点**：一旦创建就一直存在即使 ZooKeeper 集群宕机，直到将其删除。
-- **临时（EPHEMERAL）节点**：临时节点的生命周期是与 **客户端会话（session）** 绑定的，**会话消失则节点消失** 。并且，临时节点 **只能做叶子节点** ，不能创建子节点。
-- **持久顺序（PERSISTENT_SEQUENTIAL）节点**：除了具有持久（PERSISTENT）节点的特性之外， 子节点的名称还具有顺序性。比如 `/node1/app0000000001`、`/node1/app0000000002` 。
-- **临时顺序（EPHEMERAL_SEQUENTIAL）节点**：除了具备临时（EPHEMERAL）节点的特性之外，子节点的名称还具有顺序性。
+- ==持久（PERSISTENT）节点==：一旦创建就一直存在即使 ZooKeeper 集群宕机，直到将其删除。
+- ==临时（EPHEMERAL）节点==：临时节点的生命周期是与 ==客户端会话（session）== 绑定的，==会话消失则节点消失== 。并且，临时节点 ==只能做叶子节点== ，不能创建子节点。
+- ==持久顺序（PERSISTENT_SEQUENTIAL）节点==：除了具有持久（PERSISTENT）节点的特性之外， 子节点的名称还具有顺序性。比如 `/node1/app0000000001`、`/node1/app0000000002` 。
+- ==临时顺序（EPHEMERAL_SEQUENTIAL）节点==：除了具备临时（EPHEMERAL）节点的特性之外，子节点的名称还具有顺序性。
 
 你在使用的 ZooKeeper 的时候，会发现 `CreateMode` 类中实际有 7 种 znode 类型 ，但是用的最多的还是上面介绍的 4 种。
 
-**a.创建持久化节点**
+==a.创建持久化节点==
 
 你可以通过下面两种方式创建持久化的节点。
 
@@ -241,26 +241,26 @@ zkClient.create().withMode(CreateMode.PERSISTENT).forPath("/node1/00002");
 zkClient.create().forPath("/node1");
 ```
 
-更推荐的方式是通过下面这行代码， **`creatingParentsIfNeeded()` 可以保证父节点不存在的时候自动创建父节点，这是非常有用的。**
+更推荐的方式是通过下面这行代码， ==`creatingParentsIfNeeded()` 可以保证父节点不存在的时候自动创建父节点，这是非常有用的。==
 
 ```java
 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath("/node1/00001");
 ```
 
-**b.创建临时节点**
+==b.创建临时节点==
 
 ```java
 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/node1/00001");
 ```
 
-**c.创建节点并指定数据内容**
+==c.创建节点并指定数据内容==
 
 ```java
 zkClient.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/node1/00001","java".getBytes());
 zkClient.getData().forPath("/node1/00001");//获取节点的数据内容，获取到的是 byte数组
 ```
 
-**d.检测节点是否创建成功**
+==d.检测节点是否创建成功==
 
 ```java
 zkClient.checkExists().forPath("/node1/00001");//不为null的话，说明节点创建成功
@@ -268,13 +268,13 @@ zkClient.checkExists().forPath("/node1/00001");//不为null的话，说明节点
 
 #### 删除节点
 
-**a.删除一个子节点**
+==a.删除一个子节点==
 
 ```java
 zkClient.delete().forPath("/node1/00001");
 ```
 
-**b.删除一个节点以及其下的所有子节点**
+==b.删除一个节点以及其下的所有子节点==
 
 ```java
 zkClient.delete().deletingChildrenIfNeeded().forPath("/node1");

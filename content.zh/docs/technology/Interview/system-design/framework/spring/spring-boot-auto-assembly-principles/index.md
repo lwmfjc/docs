@@ -74,7 +74,7 @@ public class DemoApplication {
 
 并且，我们通过 Spring Boot 的全局配置文件 `application.properties`或`application.yml`即可对项目进行设置比如更换端口号，配置 JPA 属性等等。
 
-**为什么 Spring Boot 使用起来这么酸爽呢？** 这得益于其自动装配。**自动装配可以说是 Spring Boot 的核心，那究竟什么是自动装配呢？**
+==为什么 Spring Boot 使用起来这么酸爽呢？== 这得益于其自动装配。==自动装配可以说是 Spring Boot 的核心，那究竟什么是自动装配呢？==
 
 ## 什么是 SpringBoot 自动装配？
 
@@ -94,7 +94,7 @@ public class DemoApplication {
 
 引入 starter 之后，我们通过少量注解和一些简单的配置就能使用第三方组件提供的功能了。
 
-在我看来，自动装配可以简单理解为：**通过注解或者一些简单的配置就能在 Spring Boot 的帮助下实现某块功能。**
+在我看来，自动装配可以简单理解为：==通过注解或者一些简单的配置就能在 Spring Boot 的帮助下实现某块功能。==
 
 ## SpringBoot 是如何实现自动装配的？
 
@@ -170,7 +170,7 @@ public interface ImportSelector {
 }
 ```
 
-可以看出，`AutoConfigurationImportSelector` 类实现了 `ImportSelector`接口，也就实现了这个接口中的 `selectImports`方法，该方法主要用于**获取所有符合条件的类的全限定类名，这些类需要被加载到 IoC 容器中**。
+可以看出，`AutoConfigurationImportSelector` 类实现了 `ImportSelector`接口，也就实现了这个接口中的 `selectImports`方法，该方法主要用于==获取所有符合条件的类的全限定类名，这些类需要被加载到 IoC 容器中==。
 
 ```java
 private static final String[] NO_IMPORTS = new String[0];
@@ -220,19 +220,19 @@ AutoConfigurationEntry getAutoConfigurationEntry(AutoConfigurationMetadata autoC
     }
 ```
 
-**第 1 步**:
+==第 1 步==:
 
 判断自动装配开关是否打开。默认`spring.boot.enableautoconfiguration=true`，可在 `application.properties` 或 `application.yml` 中设置
 
 ![](https://oss.javaguide.cn/p3-juejin/77aa6a3727ea4392870f5cccd09844ab~tplv-k3u1fbpfcp-watermark.png)
 
-**第 2 步**：
+==第 2 步==：
 
 用于获取`EnableAutoConfiguration`注解中的 `exclude` 和 `excludeName`。
 
 ![](https://oss.javaguide.cn/p3-juejin/3d6ec93bbda1453aa08c52b49516c05a~tplv-k3u1fbpfcp-zoom-1.png)
 
-**第 3 步**
+==第 3 步==
 
 获取需要自动装配的所有配置类，读取`META-INF/spring.factories`
 
@@ -254,7 +254,7 @@ spring-boot/spring-boot-project/spring-boot-autoconfigure/src/main/resources/MET
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/framework/spring/68fa66aeee474b0385f94d23bcfe1745~tplv-k3u1fbpfcp-watermark.png)
 
-**第 4 步**：
+==第 4 步==：
 
 到这里可能面试官会问你:“`spring.factories`中这么多配置，每次启动都要全部加载么？”。
 

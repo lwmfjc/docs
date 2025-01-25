@@ -11,13 +11,13 @@ tag:
 
 说简单点就是：
 
-- **认证 (Authentication)：** 你是谁。
-- **授权 (Authorization)：** 你有权限干什么。
+- ==认证 (Authentication)：== 你是谁。
+- ==授权 (Authorization)：== 你有权限干什么。
 
 稍微正式点（啰嗦点）的说法就是：
 
-- **Authentication（认证）** 是验证您的身份的凭据（例如用户名/用户 ID 和密码），通过这个凭据，系统得以知道你就是你，也就是说系统存在你这个用户。所以，Authentication 被称为身份/用户验证。
-- **Authorization（授权）** 发生在 **Authentication（认证）** 之后。授权嘛，光看意思大家应该就明白，它主要掌管我们访问系统的权限。比如有些特定资源只能具有特定权限的人才能访问比如 admin，有些对系统资源操作比如删除、添加、更新只能特定人才具有。
+- ==Authentication（认证）== 是验证您的身份的凭据（例如用户名/用户 ID 和密码），通过这个凭据，系统得以知道你就是你，也就是说系统存在你这个用户。所以，Authentication 被称为身份/用户验证。
+- ==Authorization（授权）== 发生在 ==Authentication（认证）== 之后。授权嘛，光看意思大家应该就明白，它主要掌管我们访问系统的权限。比如有些特定资源只能具有特定权限的人才能访问比如 admin，有些对系统资源操作比如删除、添加、更新只能特定人才具有。
 
 认证：
 
@@ -31,9 +31,9 @@ tag:
 
 ## RBAC 模型了解吗？
 
-系统权限控制最常采用的访问控制模型就是 **RBAC 模型** 。
+系统权限控制最常采用的访问控制模型就是 ==RBAC 模型== 。
 
-**什么是 RBAC 呢？** RBAC 即基于角色的权限访问控制（Role-Based Access Control）。这是一种通过角色关联权限，角色同时又关联用户的授权的方式。
+==什么是 RBAC 呢？== RBAC 即基于角色的权限访问控制（Role-Based Access Control）。这是一种通过角色关联权限，角色同时又关联用户的授权的方式。
 
 简单地说：一个用户可以拥有若干角色，每一个角色又可以被分配若干权限，这样就构造成“用户-角色-权限” 的授权模型。在这种模型中，用户与角色、角色与权限之间构成了多对多的关系。
 
@@ -61,7 +61,7 @@ tag:
 
 > `Cookies` 是某些网站为了辨别用户身份而储存在用户本地终端上的数据（通常经过加密）。
 
-简单来说：**`Cookie` 存放在客户端，一般用来保存用户信息**。
+简单来说：==`Cookie` 存放在客户端，一般用来保存用户信息==。
 
 下面是 `Cookie` 的一些应用案例：
 
@@ -74,7 +74,7 @@ tag:
 
 我这里以 Spring Boot 项目为例。
 
-**1)设置 `Cookie` 返回给客户端**
+==1)设置 `Cookie` 返回给客户端==
 
 ```java
 @GetMapping("/change-username")
@@ -90,7 +90,7 @@ public String setCookie(HttpServletResponse response) {
 }
 ```
 
-**2) 使用 Spring 框架提供的 `@CookieValue` 注解获取特定的 cookie 的值**
+==2) 使用 Spring 框架提供的 `@CookieValue` 注解获取特定的 cookie 的值==
 
 ```java
 @GetMapping("/")
@@ -99,7 +99,7 @@ public String readCookie(@CookieValue(value = "username", defaultValue = "Atta")
 }
 ```
 
-**3) 读取所有的 `Cookie` 值**
+==3) 读取所有的 `Cookie` 值==
 
 ```java
 @GetMapping("/all-cookies")
@@ -119,11 +119,11 @@ public String readAllCookies(HttpServletRequest request) {
 
 ## Cookie 和 Session 有什么区别？
 
-**`Session` 的主要作用就是通过服务端记录用户的状态。** 典型的场景是购物车，当你要添加商品到购物车的时候，系统不知道是哪个用户操作的，因为 HTTP 协议是无状态的。服务端给特定的用户创建特定的 `Session` 之后就可以标识这个用户并且跟踪这个用户了。
+==`Session` 的主要作用就是通过服务端记录用户的状态。== 典型的场景是购物车，当你要添加商品到购物车的时候，系统不知道是哪个用户操作的，因为 HTTP 协议是无状态的。服务端给特定的用户创建特定的 `Session` 之后就可以标识这个用户并且跟踪这个用户了。
 
 `Cookie` 数据保存在客户端(浏览器端)，`Session` 数据保存在服务器端。相对来说 `Session` 安全性更高。如果使用 `Cookie` 的一些敏感信息不要写入 `Cookie` 中，最好能将 `Cookie` 信息加密然后使用到的时候再去服务器端解密。
 
-**那么，如何使用 `Session` 进行身份验证？**
+==那么，如何使用 `Session` 进行身份验证？==
 
 ## 如何使用 Session-Cookie 方案进行身份验证？
 
@@ -159,7 +159,7 @@ Session-Cookie 方案在单体环境是一个非常好的身份认证方案。�
 
 举个例子：假如我们部署了两份相同的服务 A，B，用户第一次登陆的时候 ，Nginx 通过负载均衡机制将用户请求转发到 A 服务器，此时用户的 Session 信息保存在 A 服务器。结果，用户第二次访问的时候 Nginx 将请求路由到 B 服务器，由于 B 服务器没有保存 用户的 Session 信息，导致用户需要重新进行登陆。
 
-**我们应该如何避免上面这种情况的出现呢？**
+==我们应该如何避免上面这种情况的出现呢？==
 
 有几个方案可供大家参考：
 
@@ -178,7 +178,7 @@ Session-Cookie 方案在单体环境是一个非常好的身份认证方案。�
 
 ## 为什么 Cookie 无法防止 CSRF 攻击，而 Token 可以？
 
-**CSRF(Cross Site Request Forgery)** 一般被翻译为 **跨站请求伪造** 。那么什么是 **跨站请求伪造** 呢？说简单点，就是用你的身份去发送一些对你不友好的请求。举个简单的例子：
+==CSRF(Cross Site Request Forgery)== 一般被翻译为 ==跨站请求伪造== 。那么什么是 ==跨站请求伪造== 呢？说简单点，就是用你的身份去发送一些对你不友好的请求。举个简单的例子：
 
 小壮登录了某网上银行，他来到了网上银行的帖子区，看到一个帖子下面有一个链接写着“科学理财，年盈利率过万”，小壮好奇的点开了这个链接，结果发现自己的账户少了 10000 元。这是这么回事呢？原来黑客在链接中藏了一个请求，这个请求直接利用小壮的身份给银行发送了一个转账请求,也就是通过你的 Cookie 向银行发出请求。
 
@@ -194,7 +194,7 @@ Session-Cookie 方案在单体环境是一个非常好的身份认证方案。�
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/security/20210615161108272.png)
 
-需要注意的是：不论是 `Cookie` 还是 `Token` 都无法避免 **跨站脚本攻击（Cross Site Scripting）XSS** 。
+需要注意的是：不论是 `Cookie` 还是 `Token` 都无法避免 ==跨站脚本攻击（Cross Site Scripting）XSS== 。
 
 > 跨站脚本攻击（Cross Site Scripting）缩写为 CSS 但这会与层叠样式表（Cascading Style Sheets，CSS）的缩写混淆。因此，有人将跨站脚本攻击缩写为 XSS。
 
@@ -218,9 +218,9 @@ SSO(Single Sign On)即单点登录说的是用户登陆多个子系统的其中�
 
 ## SSO 有什么好处？
 
-- **用户角度** :用户能够做到一次登录多次使用，无需记录多套用户名和密码，省心。
-- **系统管理员角度** : 管理员只需维护好一个统一的账号中心就可以了，方便。
-- **新系统开发角度:** 新系统开发时只需直接对接统一的账号中心即可，简化开发流程，省时。
+- ==用户角度== :用户能够做到一次登录多次使用，无需记录多套用户名和密码，省心。
+- ==系统管理员角度== : 管理员只需维护好一个统一的账号中心就可以了，方便。
+- ==新系统开发角度:== 新系统开发时只需直接对接统一的账号中心即可，简化开发流程，省时。
 
 ## 如何设计实现一个 SSO 系统?
 
@@ -240,7 +240,7 @@ OAuth 2.0 比较常用的场景就是第三方登录，当你的网站接入了�
 
 ![](https://oss.javaguide.cn/github/javaguide/system-design/security/20210615151716340.png)
 
-**推荐阅读：**
+==推荐阅读：==
 
 - [OAuth 2.0 的一个简单解释](http://www.ruanyifeng.com/blog/2019/04/oauth_design.html)
 - [10 分钟理解什么是 OAuth 2.0 协议](https://deepzz.com/post/what-is-oauth2-protocol.html)

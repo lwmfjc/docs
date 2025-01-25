@@ -18,11 +18,11 @@ tag:
 
 这里借用《Java 并发编程的艺术》书中的部分内容来总结一下使用线程池的好处：
 
-- **降低资源消耗**。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
-- **提高响应速度**。当任务到达时，任务可以不需要等到线程创建就能立即执行。
-- **提高线程的可管理性**。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。
+- ==降低资源消耗==。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
+- ==提高响应速度==。当任务到达时，任务可以不需要等到线程创建就能立即执行。
+- ==提高线程的可管理性==。线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。
 
-**线程池一般用于执行多个不相关联的耗时任务，没有多线程的情况下，任务顺序执行，使用了线程池的话可让多个不相关联的任务同时执行。**
+==线程池一般用于执行多个不相关联的耗时任务，没有多线程的情况下，任务顺序执行，使用了线程池的话可让多个不相关联的任务同时执行。==
 
 ## Executor 框架介绍
 
@@ -34,19 +34,19 @@ tag:
 
 `Executor` 框架结构主要由三大部分组成：
 
-**1、任务(`Runnable` /`Callable`)**
+==1、任务(`Runnable` /`Callable`)==
 
-执行任务需要实现的 **`Runnable` 接口** 或 **`Callable`接口**。**`Runnable` 接口**或 **`Callable` 接口** 实现类都可以被 **`ThreadPoolExecutor`** 或 **`ScheduledThreadPoolExecutor`** 执行。
+执行任务需要实现的 ==`Runnable` 接口== 或 ==`Callable`接口==。==`Runnable` 接口==或 ==`Callable` 接口== 实现类都可以被 ==`ThreadPoolExecutor`== 或 ==`ScheduledThreadPoolExecutor`== 执行。
 
-**2、任务的执行(`Executor`)**
+==2、任务的执行(`Executor`)==
 
-如下图所示，包括任务执行机制的核心接口 **`Executor`** ，以及继承自 `Executor` 接口的 **`ExecutorService` 接口。`ThreadPoolExecutor`** 和 **`ScheduledThreadPoolExecutor`** 这两个关键类实现了 **`ExecutorService`** 接口。
+如下图所示，包括任务执行机制的核心接口 ==`Executor`== ，以及继承自 `Executor` 接口的 ==`ExecutorService` 接口。`ThreadPoolExecutor`== 和 ==`ScheduledThreadPoolExecutor`== 这两个关键类实现了 ==`ExecutorService`== 接口。
 
 ![](https://oss.javaguide.cn/github/javaguide/java/concurrent/executor-class-diagram.png)
 
 这里提了很多底层的类关系，但是，实际上我们需要更多关注的是 `ThreadPoolExecutor` 这个类，这个类在我们实际使用线程池的过程中，使用频率还是非常高的。
 
-**注意：** 通过查看 `ScheduledThreadPoolExecutor` 源代码我们发现 `ScheduledThreadPoolExecutor` 实际上是继承了 `ThreadPoolExecutor` 并实现了 `ScheduledExecutorService` ，而 `ScheduledExecutorService` 又实现了 `ExecutorService`，正如我们上面给出的类关系图显示的一样。
+==注意：== 通过查看 `ScheduledThreadPoolExecutor` 源代码我们发现 `ScheduledThreadPoolExecutor` 实际上是继承了 `ThreadPoolExecutor` 并实现了 `ScheduledExecutorService` ，而 `ScheduledExecutorService` 又实现了 `ExecutorService`，正如我们上面给出的类关系图显示的一样。
 
 `ThreadPoolExecutor` 类描述:
 
@@ -64,13 +64,13 @@ public class ScheduledThreadPoolExecutor
         implements ScheduledExecutorService
 ```
 
-**3、异步计算的结果(`Future`)**
+==3、异步计算的结果(`Future`)==
 
-**`Future`** 接口以及 `Future` 接口的实现类 **`FutureTask`** 类都可以代表异步计算的结果。
+==`Future`== 接口以及 `Future` 接口的实现类 ==`FutureTask`== 类都可以代表异步计算的结果。
 
-当我们把 **`Runnable`接口** 或 **`Callable` 接口** 的实现类提交给 **`ThreadPoolExecutor`** 或 **`ScheduledThreadPoolExecutor`** 执行。（调用 `submit()` 方法时会返回一个 **`FutureTask`** 对象）
+当我们把 ==`Runnable`接口== 或 ==`Callable` 接口== 的实现类提交给 ==`ThreadPoolExecutor`== 或 ==`ScheduledThreadPoolExecutor`== 执行。（调用 `submit()` 方法时会返回一个 ==`FutureTask`== 对象）
 
-**`Executor` 框架的使用示意图**：
+==`Executor` 框架的使用示意图==：
 
 ![Executor 框架的使用示意图](./images/java-thread-pool-summary/Executor框架的使用示意图.png)
 
@@ -134,7 +134,7 @@ public class ScheduledThreadPoolExecutor
 
 ![线程池各个参数的关系](https://oss.javaguide.cn/github/javaguide/java/concurrent/relationship-between-thread-pool-parameters.png)
 
-**`ThreadPoolExecutor` 拒绝策略定义:**
+==`ThreadPoolExecutor` 拒绝策略定义:==
 
 如果当前同时运行的线程数量达到最大线程数量并且队列也已经被放满了任务时，`ThreadPoolExecutor` 定义一些策略:
 
@@ -163,11 +163,11 @@ public static class CallerRunsPolicy implements RejectedExecutionHandler {
 
 ### 线程池创建的两种方式
 
-**方式一：通过`ThreadPoolExecutor`构造函数来创建（推荐）。**
+==方式一：通过`ThreadPoolExecutor`构造函数来创建（推荐）。==
 
 ![通过构造方法实现](./images/java-thread-pool-summary/threadpoolexecutor构造函数.png)
 
-**方式二：通过 `Executor` 框架的工具类 `Executors` 来创建。**
+==方式二：通过 `Executor` 框架的工具类 `Executors` 来创建。==
 
 `Executors`工具类提供的创建线程池的方法如下图所示：
 
@@ -330,7 +330,7 @@ public class ThreadPoolExecutorDemo {
 - `workQueue`：任务队列为 `ArrayBlockingQueue`，并且容量为 100;
 - `handler`:拒绝策略为 `CallerRunsPolicy`。
 
-**输出结构**：
+==输出结构==：
 
 ```plain
 pool-1-thread-3 Start. Time = Sun Apr 12 11:14:37 CST 2020
@@ -359,7 +359,7 @@ Finished all threads  // 任务全部执行完了才会跳出来，因为executo
 
 ### 线程池原理分析
 
-我们通过前面的代码输出结果可以看出：**线程池首先会先执行 5 个任务，然后这些任务有任务被执行完的话，就会去拿新的任务执行。** 大家可以先通过上面讲解的内容，分析一下到底是咋回事？（自己独立思考一会）
+我们通过前面的代码输出结果可以看出：==线程池首先会先执行 5 个任务，然后这些任务有任务被执行完的话，就会去拿新的任务执行。== 大家可以先通过上面讲解的内容，分析一下到底是咋回事？（自己独立思考一会）
 
 现在，我们就分析上面的输出内容来简单分析一下线程池原理。
 
@@ -572,8 +572,8 @@ public interface Callable<V> {
 
 `execute()` 和 `submit()`是两种提交任务到线程池的方法，有一些区别：
 
-- **返回值**：`execute()` 方法用于提交不需要返回值的任务。通常用于执行 `Runnable` 任务，无法判断任务是否被线程池成功执行。`submit()` 方法用于提交需要返回值的任务。可以提交 `Runnable` 或 `Callable` 任务。`submit()` 方法返回一个 `Future` 对象，通过这个 `Future` 对象可以判断任务是否执行成功，并获取任务的返回值（`get()`方法会阻塞当前线程直到任务完成， `get（long timeout，TimeUnit unit）`多了一个超时时间，如果在 `timeout` 时间内任务还没有执行完，就会抛出 `java.util.concurrent.TimeoutException`）。
-- **异常处理**：在使用 `submit()` 方法时，可以通过 `Future` 对象处理任务执行过程中抛出的异常；而在使用 `execute()` 方法时，异常处理需要通过自定义的 `ThreadFactory` （在线程工厂创建线程的时候设置`UncaughtExceptionHandler`对象来 处理异常）或 `ThreadPoolExecutor` 的 `afterExecute()` 方法来处理
+- ==返回值==：`execute()` 方法用于提交不需要返回值的任务。通常用于执行 `Runnable` 任务，无法判断任务是否被线程池成功执行。`submit()` 方法用于提交需要返回值的任务。可以提交 `Runnable` 或 `Callable` 任务。`submit()` 方法返回一个 `Future` 对象，通过这个 `Future` 对象可以判断任务是否执行成功，并获取任务的返回值（`get()`方法会阻塞当前线程直到任务完成， `get（long timeout，TimeUnit unit）`多了一个超时时间，如果在 `timeout` 时间内任务还没有执行完，就会抛出 `java.util.concurrent.TimeoutException`）。
+- ==异常处理==：在使用 `submit()` 方法时，可以通过 `Future` 对象处理任务执行过程中抛出的异常；而在使用 `execute()` 方法时，异常处理需要通过自定义的 `ThreadFactory` （在线程工厂创建线程的时候设置`UncaughtExceptionHandler`对象来 处理异常）或 `ThreadPoolExecutor` 的 `afterExecute()` 方法来处理
 
 示例 1：使用 `get()`方法获取返回值。
 
@@ -629,13 +629,13 @@ Exception in thread "main" java.util.concurrent.TimeoutException
 
 #### `shutdown()`VS`shutdownNow()`
 
-- **`shutdown（）`** :关闭线程池，线程池的状态变为 `SHUTDOWN`。线程池不再接受新任务了，但是队列里的任务得执行完毕。
-- **`shutdownNow（）`** :关闭线程池，线程池的状态变为 `STOP`。线程池会终止当前正在运行的任务，并停止处理排队的任务并返回正在等待执行的 List。
+- ==`shutdown（）`== :关闭线程池，线程池的状态变为 `SHUTDOWN`。线程池不再接受新任务了，但是队列里的任务得执行完毕。
+- ==`shutdownNow（）`== :关闭线程池，线程池的状态变为 `STOP`。线程池会终止当前正在运行的任务，并停止处理排队的任务并返回正在等待执行的 List。
 
 #### `isTerminated()` VS `isShutdown()`
 
-- **`isShutDown`** 当调用 `shutdown()` 方法后返回为 true。
-- **`isTerminated`** 当调用 `shutdown()` 方法后，并且所有提交的任务完成后返回为 true
+- ==`isShutDown`== 当调用 `shutdown()` 方法后返回为 true。
+- ==`isTerminated`== 当调用 `shutdown()` 方法后，并且所有提交的任务完成后返回为 true
 
 ## 几种常见的内置线程池
 
@@ -677,7 +677,7 @@ Exception in thread "main" java.util.concurrent.TimeoutException
 
 ![FixedThreadPool的execute()方法运行示意图](./images/java-thread-pool-summary/FixedThreadPool.png)
 
-**上图说明：**
+==上图说明：==
 
 1. 如果当前运行的线程数小于 `corePoolSize`， 如果再来新任务的话，就创建新的线程来执行任务；
 2. 当前运行的线程数等于 `corePoolSize` 后， 如果再来新任务的话，会将任务加入 `LinkedBlockingQueue`；
@@ -696,7 +696,7 @@ Exception in thread "main" java.util.concurrent.TimeoutException
 
 #### 介绍
 
-`SingleThreadExecutor` 是只有一个线程的线程池。下面看看**SingleThreadExecutor 的实现：**
+`SingleThreadExecutor` 是只有一个线程的线程池。下面看看==SingleThreadExecutor 的实现：==
 
 ```java
    /**
@@ -728,7 +728,7 @@ Exception in thread "main" java.util.concurrent.TimeoutException
 
 ![SingleThreadExecutor的运行示意图](./images/java-thread-pool-summary/SingleThreadExecutor.png)
 
-**上图说明** :
+==上图说明== :
 
 1. 如果当前运行的线程数少于 `corePoolSize`，则创建一个新的线程执行任务；
 2. 当前线程池中有一个运行的线程后，将任务加入 `LinkedBlockingQueue`
@@ -773,7 +773,7 @@ Exception in thread "main" java.util.concurrent.TimeoutException
 
 ![CachedThreadPool的execute()方法的执行示意图](./images/java-thread-pool-summary/CachedThreadPool-execute.png)
 
-**上图说明：**
+==上图说明：==
 
 1. 首先执行 `SynchronousQueue.offer(Runnable task)` 提交任务到任务队列。如果当前 `maximumPool` 中有闲线程正在执行 `SynchronousQueue.poll(keepAliveTime,TimeUnit.NANOSECONDS)`，那么主线程执行 offer 操作与空闲线程执行的 `poll` 操作配对成功，主线程把任务交给空闲线程执行，`execute()`方法执行完成，否则执行下面的步骤 2；
 2. 当初始 `maximumPool` 为空，或者 `maximumPool` 中没有空闲线程时，将没有线程执行 `SynchronousQueue.poll(keepAliveTime,TimeUnit.NANOSECONDS)`。这种情况下，步骤 1 将失败，此时 `CachedThreadPool` 会创建新线程执行任务，execute 方法执行完成；

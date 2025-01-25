@@ -43,7 +43,7 @@ String 是一种二进制安全的数据类型，可以用来存储任何类型�
 
 ![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220719124403897.png)
 
-虽然 Redis 是用 C 语言写的，但是 Redis 并没有使用 C 的字符串表示，而是自己构建了一种 **简单动态字符串**（Simple Dynamic String，**SDS**）。相比于 C 的原生字符串，Redis 的 SDS 不光可以保存文本数据还可以保存二进制数据，并且获取字符串长度复杂度为 O(1)（C 字符串为 O(N)）,除此之外，Redis 的 SDS API 是安全的，不会造成缓冲区溢出。
+虽然 Redis 是用 C 语言写的，但是 Redis 并没有使用 C 的字符串表示，而是自己构建了一种 ==简单动态字符串==（Simple Dynamic String，==SDS==）。相比于 C 的原生字符串，Redis 的 SDS 不光可以保存文本数据还可以保存二进制数据，并且获取字符串长度复杂度为 O(1)（C 字符串为 O(N)）,除此之外，Redis 的 SDS API 是安全的，不会造成缓冲区溢出。
 
 ### 常用命令
 
@@ -63,7 +63,7 @@ String 是一种二进制安全的数据类型，可以用来存储任何类型�
 
 更多 Redis String 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<https://redis.io/commands/?group=string> 。
 
-**基本操作**：
+==基本操作==：
 
 ```bash
 > SET key value
@@ -80,7 +80,7 @@ OK
 (nil)
 ```
 
-**批量设置**：
+==批量设置==：
 
 ```bash
 > MSET key1 value1 key2 value2
@@ -90,7 +90,7 @@ OK
 2) "value2"
 ```
 
-**计数器（字符串的内容为整数的时候可以使用）：**
+==计数器（字符串的内容为整数的时候可以使用）：==
 
 ```bash
 > SET number 1
@@ -105,7 +105,7 @@ OK
 "1"
 ```
 
-**设置过期时间（默认为永不过期）**：
+==设置过期时间（默认为永不过期）==：
 
 ```bash
 > EXPIRE key 60
@@ -118,17 +118,17 @@ OK
 
 ### 应用场景
 
-**需要存储常规数据的场景**
+==需要存储常规数据的场景==
 
 - 举例：缓存 Session、Token、图片地址、序列化后的对象(相比较于 Hash 存储更节省内存)。
 - 相关命令：`SET`、`GET`。
 
-**需要计数的场景**
+==需要计数的场景==
 
 - 举例：用户单位时间的请求数（简单限流可以用到）、页面单位时间的访问数。
 - 相关命令：`SET`、`GET`、 `INCR`、`DECR` 。
 
-**分布式锁**
+==分布式锁==
 
 利用 `SETNX key value` 命令可以实现一个最简易的分布式锁（存在一些缺陷，通常不建议这样实现分布式锁）。
 
@@ -138,7 +138,7 @@ OK
 
 Redis 中的 List 其实就是链表数据结构的实现。我在 [线性数据结构 :数组、链表、栈、队列](https://javaguide.cn/cs-basics/data-structure/linear-data-structure.html) 这篇文章中详细介绍了链表这种数据结构，我这里就不多做介绍了。
 
-许多高级编程语言都内置了链表的实现比如 Java 中的 `LinkedList`，但是 C 语言并没有实现链表，所以 Redis 实现了自己的链表数据结构。Redis 的 List 的实现为一个 **双向链表**，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销。
+许多高级编程语言都内置了链表的实现比如 Java 中的 `LinkedList`，但是 C 语言并没有实现链表，所以 Redis 实现了自己的链表数据结构。Redis 的 List 的实现为一个 ==双向链表==，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销。
 
 ![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220719124413287.png)
 
@@ -156,7 +156,7 @@ Redis 中的 List 其实就是链表数据结构的实现。我在 [线性数据
 
 更多 Redis List 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<https://redis.io/commands/?group=list> 。
 
-**通过 `RPUSH/LPOP` 或者 `LPUSH/RPOP`实现队列**：
+==通过 `RPUSH/LPOP` 或者 `LPUSH/RPOP`实现队列==：
 
 ```bash
 > RPUSH myList value1
@@ -173,7 +173,7 @@ Redis 中的 List 其实就是链表数据结构的实现。我在 [线性数据
 2) "value3"
 ```
 
-**通过 `RPUSH/RPOP`或者`LPUSH/LPOP` 实现栈**：
+==通过 `RPUSH/RPOP`或者`LPUSH/LPOP` 实现栈==：
 
 ```bash
 > RPUSH myList2 value1 value2 value3
@@ -186,7 +186,7 @@ Redis 中的 List 其实就是链表数据结构的实现。我在 [线性数据
 
 ![](https://oss.javaguide.cn/github/javaguide/database/redis/redis-list.png)
 
-**通过 `LRANGE` 查看对应下标范围的列表元素**：
+==通过 `LRANGE` 查看对应下标范围的列表元素==：
 
 ```bash
 > RPUSH myList value1 value2 value3
@@ -202,7 +202,7 @@ Redis 中的 List 其实就是链表数据结构的实现。我在 [线性数据
 
 通过 `LRANGE` 命令，你可以基于 List 实现分页查询，性能非常高！
 
-**通过 `LLEN` 查看链表长度**：
+==通过 `LLEN` 查看链表长度==：
 
 ```bash
 > LLEN myList
@@ -211,12 +211,12 @@ Redis 中的 List 其实就是链表数据结构的实现。我在 [线性数据
 
 ### 应用场景
 
-**信息流展示**
+==信息流展示==
 
 - 举例：最新文章、最新动态。
 - 相关命令：`LPUSH`、`LRANGE`。
 
-**消息队列**
+==消息队列==
 
 `List` 可以用来做消息队列，只是功能过于简单且存在很多缺陷，不建议这样做。
 
@@ -249,7 +249,7 @@ Hash 类似于 JDK1.8 前的 `HashMap`，内部实现也差不多(数组 + 链�
 
 更多 Redis Hash 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<https://redis.io/commands/?group=hash> 。
 
-**模拟对象数据存储**：
+==模拟对象数据存储==：
 
 ```bash
 > HMSET userInfoKey name "guide" description "dev" age 24
@@ -276,7 +276,7 @@ OK
 
 ### 应用场景
 
-**对象数据存储场景**
+==对象数据存储场景==
 
 - 举例：用户信息、商品信息、文章信息、购物车信息。
 - 相关命令：`HSET` （设置单个字段的值）、`HMSET`（设置多个字段的值）、`HGET`（获取单个字段的值）、`HMGET`（获取多个字段的值）。
@@ -310,7 +310,7 @@ Redis 中的 Set 类型是一种无序集合，集合中的元素没有先后顺
 
 更多 Redis Set 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<https://redis.io/commands/?group=set> 。
 
-**基本操作**：
+==基本操作==：
 
 ```bash
 > SADD mySet value1 value2
@@ -331,7 +331,7 @@ Redis 中的 Set 类型是一种无序集合，集合中的元素没有先后顺
 - `mySet` : `value1`、`value2` 。
 - `mySet2`：`value2`、`value3` 。
 
-**求交集**：
+==求交集==：
 
 ```bash
 > SINTERSTORE mySet3 mySet mySet2
@@ -340,7 +340,7 @@ Redis 中的 Set 类型是一种无序集合，集合中的元素没有先后顺
 1) "value2"
 ```
 
-**求并集**：
+==求并集==：
 
 ```bash
 > SUNION mySet mySet2
@@ -349,7 +349,7 @@ Redis 中的 Set 类型是一种无序集合，集合中的元素没有先后顺
 3) "value1"
 ```
 
-**求差集**：
+==求差集==：
 
 ```bash
 > SDIFF mySet mySet2 # 差集是由所有属于 mySet 但不属于 A 的元素组成的集合
@@ -358,21 +358,21 @@ Redis 中的 Set 类型是一种无序集合，集合中的元素没有先后顺
 
 ### 应用场景
 
-**需要存放的数据不能重复的场景**
+==需要存放的数据不能重复的场景==
 
 - 举例：网站 UV 统计（数据量巨大的场景还是 `HyperLogLog`更适合一些）、文章点赞、动态点赞等场景。
 - 相关命令：`SCARD`（获取集合数量） 。
 
 ![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220719073733851.png)
 
-**需要获取多个数据源交集、并集和差集的场景**
+==需要获取多个数据源交集、并集和差集的场景==
 
 - 举例：共同好友(交集)、共同粉丝(交集)、共同关注(交集)、好友推荐（差集）、音乐推荐（差集）、订阅号推荐（差集+交集） 等场景。
 - 相关命令：`SINTER`（交集）、`SINTERSTORE` （交集）、`SUNION` （并集）、`SUNIONSTORE`（并集）、`SDIFF`（差集）、`SDIFFSTORE` （差集）。
 
 ![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220719074543513.png)
 
-**需要随机获取数据源中的元素的场景**
+==需要随机获取数据源中的元素的场景==
 
 - 举例：抽奖系统、随机点名等场景。
 - 相关命令：`SPOP`（随机获取集合中的元素并移除，适合不允许重复中奖的场景）、`SRANDMEMBER`（随机获取集合中的元素，适合允许重复中奖的场景）。
@@ -401,7 +401,7 @@ Sorted Set 类似于 Set，但和 Set 相比，Sorted Set 增加了一个权重�
 
 更多 Redis Sorted Set 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<https://redis.io/commands/?group=sorted-set> 。
 
-**基本操作**：
+==基本操作==：
 
 ```bash
 > ZADD myZset 2.0 value1 1.0 value2
@@ -424,7 +424,7 @@ Sorted Set 类似于 Set，但和 Set 相比，Sorted Set 增加了一个权重�
 - `myZset` : `value1`(2.0)、`value2`(1.0) 。
 - `myZset2`：`value2` （4.0）、`value3`(3.0) 。
 
-**获取指定元素的排名**：
+==获取指定元素的排名==：
 
 ```bash
 > ZREVRANK myZset value1
@@ -433,7 +433,7 @@ Sorted Set 类似于 Set，但和 Set 相比，Sorted Set 增加了一个权重�
 1
 ```
 
-**求交集**：
+==求交集==：
 
 ```bash
 > ZINTERSTORE myZset3 2 myZset myZset2
@@ -443,7 +443,7 @@ value2
 5
 ```
 
-**求并集**：
+==求并集==：
 
 ```bash
 > ZUNIONSTORE myZset4 2 myZset myZset2
@@ -457,7 +457,7 @@ value2
 5
 ```
 
-**求差集**：
+==求差集==：
 
 ```bash
 > ZDIFF 2 myZset myZset2 WITHSCORES
@@ -467,7 +467,7 @@ value1
 
 ### 应用场景
 
-**需要随机获取数据源中的元素根据某个权重进行排序的场景**
+==需要随机获取数据源中的元素根据某个权重进行排序的场景==
 
 - 举例：各种排行榜比如直播间送礼物的排行榜、朋友圈的微信步数排行榜、王者荣耀中的段位排行榜、话题热度排行榜等等。
 - 相关命令：`ZRANGE` (从小到大排序)、 `ZREVRANGE` （从大到小排序）、`ZREVRANK` (指定元素排名)。
@@ -478,7 +478,7 @@ value1
 
 ![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220719071115140.png)
 
-**需要存储的数据有优先级或者重要程度的场景** 比如优先级任务队列。
+==需要存储的数据有优先级或者重要程度的场景== 比如优先级任务队列。
 
 - 举例：优先级任务队列。
 - 相关命令：`ZRANGE` (从小到大排序)、 `ZREVRANGE` （从大到小排序）、`ZREVRANK` (指定元素排名)。

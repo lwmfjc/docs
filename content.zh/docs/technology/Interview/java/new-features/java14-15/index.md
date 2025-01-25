@@ -56,7 +56,7 @@ System.out.println(result);
 
 #### record 关键字
 
-`record` 关键字可以简化 **数据类**（一个 Java 类一旦实例化就不能再修改）的定义方式，使用 `record` 代替 `class` 定义的类，只需要声明属性，就可以在获得属性的访问方法，以及 `toString()`，`hashCode()`, `equals()`方法。
+`record` 关键字可以简化 ==数据类==（一个 Java 类一旦实例化就不能再修改）的定义方式，使用 `record` 代替 `class` 定义的类，只需要声明属性，就可以在获得属性的访问方法，以及 `toString()`，`hashCode()`, `equals()`方法。
 
 类似于使用 `class` 定义类，同时使用了 lombok 插件，并打上了`@Getter,@ToString,@EqualsAndHashCode`注解。
 
@@ -113,7 +113,7 @@ c++ php
 
 #### instanceof 增强
 
-依然是**预览特性** ，[Java 12 新特性](./java12-13.md)中介绍过。
+依然是==预览特性== ，[Java 12 新特性](./java12-13.md)中介绍过。
 
 ### 其他
 
@@ -198,7 +198,7 @@ System.out.println(encodedString);
 
 #### 密封类
 
-**密封类（Sealed Classes）** 是 Java 15 中的一个预览新特性。
+==密封类（Sealed Classes）== 是 Java 15 中的一个预览新特性。
 
 没有密封类之前，在 Java 中如果想让一个类不能被继承和修改，我们可以使用`final` 关键字对类进行修饰。不过，这种方式不太灵活，直接把一个类的继承和修改渠道给堵死了。
 
@@ -235,9 +235,9 @@ Java 15 并没有对此特性进行调整，继续预览特性，主要用于接
 
 ### 其他
 
-- **Nashorn JavaScript 引擎彻底移除**：Nashorn 从 Java8 开始引入的 JavaScript 引擎，Java9 对 Nashorn 做了些增强，实现了一些 ES6 的新特性。在 Java 11 中就已经被弃用，到了 Java 15 就彻底被删除了。
-- **DatagramSocket API 重构**
-- **禁用和废弃偏向锁（Biased Locking）**：偏向锁的引入增加了 JVM 的复杂性大于其带来的性能提升。不过，你仍然可以使用 `-XX:+UseBiasedLocking` 启用偏向锁定，但它会提示这是一个已弃用的 API。
+- ==Nashorn JavaScript 引擎彻底移除==：Nashorn 从 Java8 开始引入的 JavaScript 引擎，Java9 对 Nashorn 做了些增强，实现了一些 ES6 的新特性。在 Java 11 中就已经被弃用，到了 Java 15 就彻底被删除了。
+- ==DatagramSocket API 重构==
+- ==禁用和废弃偏向锁（Biased Locking）==：偏向锁的引入增加了 JVM 的复杂性大于其带来的性能提升。不过，你仍然可以使用 `-XX:+UseBiasedLocking` 启用偏向锁定，但它会提示这是一个已弃用的 API。
 - ……
 
 

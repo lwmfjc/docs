@@ -39,7 +39,7 @@ Bitmap 存储的是连续的二进制数字（0 和 1），通过 Bitmap, 只需
 | BITCOUNT key start end                | 获取 start 和 end 之间值为 1 的元素个数                          |
 | BITOP operation destkey key1 key2 ... | 对一个或多个 Bitmap 进行运算，可用运算符有 AND, OR, XOR 以及 NOT |
 
-**Bitmap 基本操作演示**：
+==Bitmap 基本操作演示==：
 
 ```bash
 # SETBIT 会返回之前位的值（默认是 0）这里会生成 7 个位
@@ -60,7 +60,7 @@ Bitmap 存储的是连续的二进制数字（0 和 1），通过 Bitmap, 只需
 
 ### 应用场景
 
-**需要保存状态信息（0/1 即可表示）的场景**
+==需要保存状态信息（0/1 即可表示）的场景==
 
 - 举例：用户签到情况、活跃用户情况、用户行为统计（比如是否点赞过某个视频）。
 - 相关命令：`SETBIT`、`GETBIT`、`BITCOUNT`、`BITOP`。
@@ -73,8 +73,8 @@ HyperLogLog 是一种有名的基数计数概率算法 ，基于 LogLog Counting
 
 Redis 提供的 HyperLogLog 占用空间非常非常小，只需要 12k 的空间就能存储接近`2^64`个不同元素。这是真的厉害，这就是数学的魅力么！并且，Redis 对 HyperLogLog 的存储结构做了优化，采用两种方式计数：
 
-- **稀疏矩阵**：计数较少的时候，占用空间很小。
-- **稠密矩阵**：计数达到某个阈值的时候，占用 12k 的空间。
+- ==稀疏矩阵==：计数较少的时候，占用空间很小。
+- ==稠密矩阵==：计数达到某个阈值的时候，占用 12k 的空间。
 
 Redis 官方文档中有对应的详细说明：
 
@@ -100,7 +100,7 @@ HyperLogLog 相关的命令非常少，最常用的也就 3 个。
 | PFCOUNT key1 key2                         | 获取一个或者多个 HyperLogLog 的唯一计数。                                        |
 | PFMERGE destkey sourcekey1 sourcekey2 ... | 将多个 HyperLogLog 合并到 destkey 中，destkey 会结合多个源，算出对应的唯一计数。 |
 
-**HyperLogLog 基本操作演示**：
+==HyperLogLog 基本操作演示==：
 
 ```bash
 > PFADD hll foo bar zap
@@ -123,7 +123,7 @@ HyperLogLog 相关的命令非常少，最常用的也就 3 个。
 
 ### 应用场景
 
-**数量巨大（百万、千万级别以上）的计数场景**
+==数量巨大（百万、千万级别以上）的计数场景==
 
 - 举例：热门网站每日/每周/每月访问 ip 数统计、热门帖子 uv 统计。
 - 相关命令：`PFADD`、`PFCOUNT` 。
@@ -148,7 +148,7 @@ Geospatial index（地理空间索引，简称 GEO） 主要用于存储地理�
 | GEORADIUS key longitude latitude radius distance | 获取指定位置附近 distance 范围内的其他元素，支持 ASC(由近到远)、DESC（由远到近）、Count(数量) 等参数 |
 | GEORADIUSBYMEMBER key member radius distance     | 类似于 GEORADIUS 命令，只是参照的中心点是 GEO 中的元素                                               |
 
-**基本操作**：
+==基本操作==：
 
 ```bash
 > GEOADD personLocation 116.33 39.89 user1 116.34 39.90 user2 116.35 39.88 user3
@@ -166,7 +166,7 @@ GEO 中存储的地理位置信息的经纬度数据通过 GeoHash 算法转换�
 
 ![](https://oss.javaguide.cn/github/javaguide/database/redis/image-20220721201545147.png)
 
-**获取指定位置范围内的其他元素**：
+==获取指定位置范围内的其他元素==：
 
 ```bash
 > GEORADIUS personLocation 116.33 39.87 3 km
@@ -188,7 +188,7 @@ user2
 
 `GEORADIUS` 命令的底层原理解析可以看看阿里的这篇文章：[Redis 到底是怎么实现“附近的人”这个功能的呢？](https://juejin.cn/post/6844903966061363207) 。
 
-**移除元素**：
+==移除元素==：
 
 GEO 底层是 Sorted Set ，你可以对 GEO 使用 Sorted Set 相关的命令。
 
@@ -204,7 +204,7 @@ user2
 
 ### 应用场景
 
-**需要管理使用地理空间数据的场景**
+==需要管理使用地理空间数据的场景==
 
 - 举例：附近的人。
 - 相关命令: `GEOADD`、`GEORADIUS`、`GEORADIUSBYMEMBER` 。

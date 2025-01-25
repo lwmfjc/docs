@@ -7,13 +7,13 @@ tag:
 
 系统需要对用户输入的文本进行敏感词过滤如色情、政治、暴力相关的词汇。
 
-敏感词过滤用的使用比较多的 **Trie 树算法** 和 **DFA 算法**。
+敏感词过滤用的使用比较多的 ==Trie 树算法== 和 ==DFA 算法==。
 
 ## 算法实现
 
 ### Trie 树
 
-**Trie 树** 也称为字典树、单词查找树，哈希树的一种变种，通常被用于字符串匹配，用来解决在一组字符串集合中快速查找某个字符串的问题。像浏览器搜索的关键词提示就可以基于 Trie 树来做的。
+==Trie 树== 也称为字典树、单词查找树，哈希树的一种变种，通常被用于字符串匹配，用来解决在一组字符串集合中快速查找某个字符串的问题。像浏览器搜索的关键词提示就可以基于 Trie 树来做的。
 
 ![浏览器 Trie 树效果展示](https://oss.javaguide.cn/github/javaguide/system-design/security/brower-trie.png)
 
@@ -30,7 +30,7 @@ tag:
 
 当我们要查找对应的字符串“东京热”的话，我们会把这个字符串切割成单个的字符“东”、“京”、“热”，然后我们从 Trie 树的根节点开始匹配。
 
-可以看出， **Trie 树的核心原理其实很简单，就是通过公共前缀来提高字符串匹配效率。**
+可以看出， ==Trie 树的核心原理其实很简单，就是通过公共前缀来提高字符串匹配效率。==
 
 [Apache Commons Collections](https://mvnrepository.com/artifact/org.apache.commons/commons-collections4) 这个库中就有 Trie 树实现：
 
@@ -62,7 +62,7 @@ AC 自动机算法使用 Trie 树来存放模式串的前缀，通过失败匹�
 
 ### DFA
 
-**DFA**（Deterministic Finite Automata)即确定有穷自动机，与之对应的是 NFA（Non-Deterministic Finite Automata，不确定有穷自动机)。
+==DFA==（Deterministic Finite Automata)即确定有穷自动机，与之对应的是 NFA（Non-Deterministic Finite Automata，不确定有穷自动机)。
 
 关于 DFA 的详细介绍可以看这篇文章：[有穷自动机 DFA&NFA (学习笔记) - 小蜗牛的文章 - 知乎](https://zhuanlan.zhihu.com/p/30009083) 。
 

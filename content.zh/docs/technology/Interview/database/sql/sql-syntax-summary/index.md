@@ -32,17 +32,17 @@ SQL（Structured Query Language)，标准 SQL 由 ANSI 标准委员会管理，�
 
 SQL 语法结构包括：
 
-- **`子句`** - 是语句和查询的组成成分。（在某些情况下，这些都是可选的。）
-- **`表达式`** - 可以产生任何标量值，或由列和行的数据库表
-- **`谓词`** - 给需要评估的 SQL 三值逻辑（3VL）（true/false/unknown）或布尔真值指定条件，并限制语句和查询的效果，或改变程序流程。
-- **`查询`** - 基于特定条件检索数据。这是 SQL 的一个重要组成部分。
-- **`语句`** - 可以持久地影响纲要和数据，也可以控制数据库事务、程序流程、连接、会话或诊断。
+- ==`子句`== - 是语句和查询的组成成分。（在某些情况下，这些都是可选的。）
+- ==`表达式`== - 可以产生任何标量值，或由列和行的数据库表
+- ==`谓词`== - 给需要评估的 SQL 三值逻辑（3VL）（true/false/unknown）或布尔真值指定条件，并限制语句和查询的效果，或改变程序流程。
+- ==`查询`== - 基于特定条件检索数据。这是 SQL 的一个重要组成部分。
+- ==`语句`== - 可以持久地影响纲要和数据，也可以控制数据库事务、程序流程、连接、会话或诊断。
 
 #### SQL 语法要点
 
-- **SQL 语句不区分大小写**，但是数据库表名、列名和值是否区分，依赖于具体的 DBMS 以及配置。例如：`SELECT` 与 `select`、`Select` 是相同的。
-- **多条 SQL 语句必须以分号（`;`）分隔**。
-- 处理 SQL 语句时，**所有空格都被忽略**。
+- ==SQL 语句不区分大小写==，但是数据库表名、列名和值是否区分，依赖于具体的 DBMS 以及配置。例如：`SELECT` 与 `select`、`Select` 是相同的。
+- ==多条 SQL 语句必须以分号（`;`）分隔==。
+- 处理 SQL 语句时，==所有空格都被忽略==。
 
 SQL 语句可以写成一行，也可以分写为多行。
 
@@ -71,7 +71,7 @@ SQL 支持三种注释：
 
 数据定义语言（Data Definition Language，DDL）是 SQL 语言集中负责数据结构定义与数据库对象定义的语言。
 
-DDL 的主要功能是**定义数据库对象**。
+DDL 的主要功能是==定义数据库对象==。
 
 DDL 的核心指令是 `CREATE`、`ALTER`、`DROP`。
 
@@ -79,13 +79,13 @@ DDL 的核心指令是 `CREATE`、`ALTER`、`DROP`。
 
 数据操纵语言（Data Manipulation Language, DML）是用于数据库操作，对数据库其中的对象和数据运行访问工作的编程语句。
 
-DML 的主要功能是 **访问数据**，因此其语法都是以**读写数据库**为主。
+DML 的主要功能是 ==访问数据==，因此其语法都是以==读写数据库==为主。
 
 DML 的核心指令是 `INSERT`、`UPDATE`、`DELETE`、`SELECT`。这四个指令合称 CRUD(Create, Read, Update, Delete)，即增删改查。
 
 #### 事务控制语言（TCL）
 
-事务控制语言 (Transaction Control Language, TCL) 用于**管理数据库中的事务**。这些用于管理由 DML 语句所做的更改。它还允许将语句分组为逻辑事务。
+事务控制语言 (Transaction Control Language, TCL) 用于==管理数据库中的事务==。这些用于管理由 DML 语句所做的更改。它还允许将语句分组为逻辑事务。
 
 TCL 的核心指令是 `COMMIT`、`ROLLBACK`。
 
@@ -95,11 +95,11 @@ TCL 的核心指令是 `COMMIT`、`ROLLBACK`。
 
 DCL 的核心指令是 `GRANT`、`REVOKE`。
 
-DCL 以**控制用户的访问权限**为主，因此其指令作法并不复杂，可利用 DCL 控制的权限有：`CONNECT`、`SELECT`、`INSERT`、`UPDATE`、`DELETE`、`EXECUTE`、`USAGE`、`REFERENCES`。
+DCL 以==控制用户的访问权限==为主，因此其指令作法并不复杂，可利用 DCL 控制的权限有：`CONNECT`、`SELECT`、`INSERT`、`UPDATE`、`DELETE`、`EXECUTE`、`USAGE`、`REFERENCES`。
 
 根据不同的 DBMS 以及不同的安全性实体，其支持的权限控制也有所不同。
 
-**我们先来介绍 DML 语句用法。 DML 的主要功能是读写数据库实现增删改查。**
+==我们先来介绍 DML 语句用法。 DML 的主要功能是读写数据库实现增删改查。==
 
 ## 增删改查
 
@@ -109,7 +109,7 @@ DCL 以**控制用户的访问权限**为主，因此其指令作法并不复杂
 
 `INSERT INTO` 语句用于向表中插入新记录。
 
-**插入完整的行**
+==插入完整的行==
 
 ```sql
 # 插入一行
@@ -120,14 +120,14 @@ INSERT INTO user
 VALUES (10, 'root', 'root', 'xxxx@163.com'), (12, 'user1', 'user1', 'xxxx@163.com'), (18, 'user2', 'user2', 'xxxx@163.com');
 ```
 
-**插入行的一部分**
+==插入行的一部分==
 
 ```sql
 INSERT INTO user(username, password, email)
 VALUES ('admin', 'admin', 'xxxx@163.com');
 ```
 
-**插入查询出来的数据**
+==插入查询出来的数据==
 
 ```sql
 INSERT INTO user(username)
@@ -150,14 +150,14 @@ WHERE username = 'root';
 - `DELETE` 语句用于删除表中的记录。
 - `TRUNCATE TABLE` 可以清空表，也就是删除所有行。说明：`TRUNCATE` 语句不属于 DML 语法而是 DDL 语法。
 
-**删除表中的指定数据**
+==删除表中的指定数据==
 
 ```sql
 DELETE FROM user
 WHERE username = 'robot';
 ```
 
-**清空表中的数据**
+==清空表中的数据==
 
 ```sql
 TRUNCATE TABLE user;
@@ -174,35 +174,35 @@ TRUNCATE TABLE user;
 - `ASC`：升序（默认）
 - `DESC`：降序
 
-**查询单列**
+==查询单列==
 
 ```sql
 SELECT prod_name
 FROM products;
 ```
 
-**查询多列**
+==查询多列==
 
 ```sql
 SELECT prod_id, prod_name, prod_price
 FROM products;
 ```
 
-**查询所有列**
+==查询所有列==
 
 ```sql
 SELECT *
 FROM products;
 ```
 
-**查询不同的值**
+==查询不同的值==
 
 ```sql
 SELECT DISTINCT
 vend_id FROM products;
 ```
 
-**限制查询结果**
+==限制查询结果==
 
 ```sql
 -- 返回前 5 行
@@ -225,7 +225,7 @@ ORDER BY prod_price DESC, prod_name ASC;
 
 ## 分组
 
-**`group by`**：
+==`group by`==：
 
 - `group by` 子句将记录分组到汇总行中。
 - `group by` 为每个组返回一个记录。
@@ -233,14 +233,14 @@ ORDER BY prod_price DESC, prod_name ASC;
 - `group by` 可以按一列或多列进行分组。
 - `group by` 按分组字段进行排序后，`order by` 可以以汇总字段来进行排序。
 
-**分组**
+==分组==
 
 ```sql
 SELECT cust_name, COUNT(cust_address) AS addr_num
 FROM Customers GROUP BY cust_name;
 ```
 
-**分组后排序**
+==分组后排序==
 
 ```sql
 SELECT cust_name, COUNT(cust_address) AS addr_num
@@ -248,13 +248,13 @@ FROM Customers GROUP BY cust_name
 ORDER BY cust_name DESC;
 ```
 
-**`having`**：
+==`having`==：
 
 - `having` 用于对汇总的 `group by` 结果进行过滤。
 - `having` 一般都是和 `group by` 连用。
 - `where` 和 `having` 可以在相同的查询中。
 
-**使用 WHERE 和 HAVING 过滤数据**
+==使用 WHERE 和 HAVING 过滤数据==
 
 ```sql
 SELECT cust_name, COUNT(*) AS NumberOfOrders
@@ -264,7 +264,7 @@ GROUP BY cust_name
 HAVING COUNT(*) > 1;
 ```
 
-**`having` vs `where`**：
+==`having` vs `where`==：
 
 - `where`：过滤过滤指定的行，后面不能加聚合函数（分组函数）。`where` 在`group by` 前。
 - `having`：过滤分组，一般都是和 `group by` 连用，不能单独使用。`having` 在 `group by` 之后。
@@ -308,7 +308,7 @@ where  condition
 
 用于 `FROM` 的子查询返回的结果相当于一张临时表，所以需要使用 AS 关键字为该临时表起一个名字。
 
-**子查询的子查询**
+==子查询的子查询==
 
 ```sql
 SELECT cust_name, cust_contact
@@ -343,14 +343,14 @@ WHERE cust_id IN (SELECT cust_id
 | LIKE    | 搜索某种模式                                           |
 | IN      | 指定针对某个列的多个可能值                             |
 
-**`SELECT` 语句中的 `WHERE` 子句**
+==`SELECT` 语句中的 `WHERE` 子句==
 
 ```ini
 SELECT * FROM Customers
 WHERE cust_name = 'Kids Place';
 ```
 
-**`UPDATE` 语句中的 `WHERE` 子句**
+==`UPDATE` 语句中的 `WHERE` 子句==
 
 ```ini
 UPDATE Customers
@@ -358,7 +358,7 @@ SET cust_name = 'Jack Jones'
 WHERE cust_name = 'Kids Place';
 ```
 
-**`DELETE` 语句中的 `WHERE` 子句**
+==`DELETE` 语句中的 `WHERE` 子句==
 
 ```ini
 DELETE FROM Customers
@@ -370,7 +370,7 @@ WHERE cust_name = 'Kids Place';
 - `IN` 操作符在 `WHERE` 子句中使用，作用是在指定的几个特定值中任选一个值。
 - `BETWEEN` 操作符在 `WHERE` 子句中使用，作用是选取介于某个范围内的值。
 
-**IN 示例**
+==IN 示例==
 
 ```sql
 SELECT *
@@ -378,7 +378,7 @@ FROM products
 WHERE vend_id IN ('DLL01', 'BRS01');
 ```
 
-**BETWEEN 示例**
+==BETWEEN 示例==
 
 ```sql
 SELECT *
@@ -394,7 +394,7 @@ WHERE prod_price BETWEEN 3 AND 5;
 - `OR` 操作符表示左右条件满足任意一个即可。
 - `NOT` 操作符用于否定一个条件。
 
-**AND 示例**
+==AND 示例==
 
 ```sql
 SELECT prod_id, prod_name, prod_price
@@ -402,7 +402,7 @@ FROM products
 WHERE vend_id = 'DLL01' AND prod_price <= 4;
 ```
 
-**OR 示例**
+==OR 示例==
 
 ```ini
 SELECT prod_id, prod_name, prod_price
@@ -410,7 +410,7 @@ FROM products
 WHERE vend_id = 'DLL01' OR vend_id = 'BRS01';
 ```
 
-**NOT 示例**
+==NOT 示例==
 
 ```sql
 SELECT *
@@ -427,7 +427,7 @@ WHERE prod_price NOT BETWEEN 3 AND 5;
 - `%` 表示任何字符出现任意次数。
 - `_` 表示任何字符出现一次。
 
-**% 示例**
+==% 示例==
 
 ```sql
 SELECT prod_id, prod_name, prod_price
@@ -435,7 +435,7 @@ FROM products
 WHERE prod_name LIKE '%bean bag%';
 ```
 
-**\_ 示例**
+==\_ 示例==
 
 ```sql
 SELECT prod_id, prod_name, prod_price
@@ -447,7 +447,7 @@ WHERE prod_name LIKE '__ inch teddy bear';
 
 JOIN 是“连接”的意思，顾名思义，SQL JOIN 子句用于将两个或者多个表联合起来进行查询。
 
-连接表时需要在每个表中选择一个字段，并对这些字段的值进行比较，值相同的两条记录将合并为一条。**连接表的本质就是将不同表的记录合并起来，形成一张新表。当然，这张新表只是临时的，它仅存在于本次查询期间**。
+连接表时需要在每个表中选择一个字段，并对这些字段的值进行比较，值相同的两条记录将合并为一条。==连接表的本质就是将不同表的记录合并起来，形成一张新表。当然，这张新表只是临时的，它仅存在于本次查询期间==。
 
 使用 `JOIN` 连接两个表的基本语法如下：
 
@@ -480,12 +480,12 @@ using(cust_id)
 order by c.cust_name;
 ```
 
-**`ON` 和 `WHERE` 的区别**：
+==`ON` 和 `WHERE` 的区别==：
 
 - 连接表时，SQL 会根据连接条件生成一张新的临时表。`ON` 就是连接条件，它决定临时表的生成。
 - `WHERE` 是在临时表生成以后，再对临时表中的数据进行过滤，生成最终的结果集，这个时候已经没有 JOIN-ON 了。
 
-所以总结来说就是：**SQL 先根据 ON 生成一张临时表，然后再根据 WHERE 对临时表进行筛选**。
+所以总结来说就是：==SQL 先根据 ON 生成一张临时表，然后再根据 WHERE 对临时表进行筛选==。
 
 SQL 允许在 `JOIN` 左边加上一些修饰性的关键词，从而形成不同类型的连接，如下表所示：
 
@@ -504,7 +504,7 @@ SQL 允许在 `JOIN` 左边加上一些修饰性的关键词，从而形成不�
 
 如果不加任何修饰词，只写 `JOIN`，那么默认为 `INNER JOIN`
 
-对于 `INNER JOIN` 来说，还有一种隐式的写法，称为 “**隐式内连接**”，也就是没有 `INNER JOIN` 关键字，使用 `WHERE` 语句实现内连接的功能
+对于 `INNER JOIN` 来说，还有一种隐式的写法，称为 “==隐式内连接==”，也就是没有 `INNER JOIN` 关键字，使用 `WHERE` 语句实现内连接的功能
 
 ```sql
 # 隐式内连接
@@ -559,7 +559,7 @@ SELECT column_name(s) FROM table2;
 | `LENGTH()`           | 长度，以字节为单位     |
 | `SOUNDEX()`          | 转换为语音值           |
 
-其中， **`SOUNDEX()`** 可以将一个字符串转换为描述其语音表示的字母数字模式。
+其中， ==`SOUNDEX()`== 可以将一个字符串转换为描述其语音表示的字母数字模式。
 
 ```sql
 SELECT *
@@ -625,7 +625,7 @@ SELECT AVG(DISTINCT col1) AS avg_col
 FROM mytable
 ```
 
-**接下来，我们来介绍 DDL 语句用法。DDL 的主要功能是定义数据库对象（如：数据库、数据表、视图、索引等）**
+==接下来，我们来介绍 DDL 语句用法。DDL 的主要功能是定义数据库对象（如：数据库、数据表、视图、索引等）==
 
 ## 数据定义
 
@@ -653,7 +653,7 @@ USE test;
 
 #### 创建数据表
 
-**普通创建**
+==普通创建==
 
 ```sql
 CREATE TABLE user (
@@ -664,7 +664,7 @@ CREATE TABLE user (
 ) COMMENT='用户表';
 ```
 
-**根据已有的表创建新表**
+==根据已有的表创建新表==
 
 ```sql
 CREATE TABLE vip_user AS
@@ -679,35 +679,35 @@ DROP TABLE user;
 
 #### 修改数据表
 
-**添加列**
+==添加列==
 
 ```sql
 ALTER TABLE user
 ADD age int(3);
 ```
 
-**删除列**
+==删除列==
 
 ```sql
 ALTER TABLE user
 DROP COLUMN age;
 ```
 
-**修改列**
+==修改列==
 
 ```sql
 ALTER TABLE `user`
 MODIFY COLUMN age tinyint;
 ```
 
-**添加主键**
+==添加主键==
 
 ```sql
 ALTER TABLE user
 ADD PRIMARY KEY (id);
 ```
 
-**删除主键**
+==删除主键==
 
 ```sql
 ALTER TABLE user
@@ -747,21 +747,21 @@ DROP VIEW top_10_user_view;
 
 ### 索引（INDEX）
 
-**索引是一种用于快速查询和检索数据的数据结构，其本质可以看成是一种排序好的数据结构。**
+==索引是一种用于快速查询和检索数据的数据结构，其本质可以看成是一种排序好的数据结构。==
 
 索引的作用就相当于书的目录。打个比方: 我们在查字典的时候，如果没有目录，那我们就只能一页一页的去找我们需要查的那个字，速度很慢。如果有目录了，我们只需要先去目录里查找字的位置，然后直接翻到那一页就行了。
 
-**优点**：
+==优点==：
 
 - 使用索引可以大大加快 数据的检索速度（大大减少检索的数据量）, 这也是创建索引的最主要的原因。
 - 通过创建唯一性索引，可以保证数据库表中每一行数据的唯一性。
 
-**缺点**：
+==缺点==：
 
 - 创建索引和维护索引需要耗费许多时间。当对表中的数据进行增删改的时候，如果数据有索引，那么索引也需要动态的修改，会降低 SQL 执行效率。
 - 索引需要使用物理文件存储，也会耗费一定空间。
 
-但是，**使用索引一定能提高查询性能吗?**
+但是，==使用索引一定能提高查询性能吗?==
 
 大多数情况下，索引查询都是比全表扫描要快的。但是如果数据库的数据量不大，那么使用索引也不一定能够带来很大提升。
 
@@ -824,13 +824,13 @@ CREATE TABLE Users (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 ```
 
-**接下来，我们来介绍 TCL 语句用法。TCL 的主要功能是管理数据库中的事务。**
+==接下来，我们来介绍 TCL 语句用法。TCL 的主要功能是管理数据库中的事务。==
 
 ## 事务处理
 
 不能回退 `SELECT` 语句，回退 `SELECT` 语句也没意义；也不能回退 `CREATE` 和 `DROP` 语句。
 
-**MySQL 默认是隐式提交**，每执行一条语句就把这条语句当成一个事务然后进行提交。当出现 `START TRANSACTION` 语句时，会关闭隐式提交；当 `COMMIT` 或 `ROLLBACK` 语句执行后，事务会自动关闭，重新恢复隐式提交。
+==MySQL 默认是隐式提交==，每执行一条语句就把这条语句当成一个事务然后进行提交。当出现 `START TRANSACTION` 语句时，会关闭隐式提交；当 `COMMIT` 或 `ROLLBACK` 语句执行后，事务会自动关闭，重新恢复隐式提交。
 
 通过 `set autocommit=0` 可以取消自动提交，直到 `set autocommit=1` 才会提交；`autocommit` 标记是针对每个连接而不是针对服务器的。
 
@@ -863,7 +863,7 @@ ROLLBACK TO updateA;
 COMMIT;
 ```
 
-**接下来，我们来介绍 DCL 语句用法。DCL 的主要功能是控制用户的访问权限。**
+==接下来，我们来介绍 DCL 语句用法。DCL 的主要功能是控制用户的访问权限。==
 
 ## 权限控制
 
@@ -918,9 +918,9 @@ SELECT user FROM user;
 
 下表说明了可用于`GRANT`和`REVOKE`语句的所有允许权限：
 
-| **特权**                | **说明**                                                                                                | **级别** |        |          |          |     |     |
+| ==特权==                | ==说明==                                                                                                | ==级别== |        |          |          |     |     |
 | ----------------------- | ------------------------------------------------------------------------------------------------------- | -------- | ------ | -------- | -------- | --- | --- |
-| **全局**                | 数据库                                                                                                  | **表**   | **列** | **程序** | **代理** |     |     |
+| ==全局==                | 数据库                                                                                                  | ==表==   | ==列== | ==程序== | ==代理== |     |     |
 | ALL [PRIVILEGES]        | 授予除 GRANT OPTION 之外的指定访问级别的所有权限                                                        |          |        |          |          |     |     |
 | ALTER                   | 允许用户使用 ALTER TABLE 语句                                                                           | X        | X      | X        |          |     |     |
 | ALTER ROUTINE           | 允许用户更改或删除存储的例程                                                                            | X        | X      |          |          | X   |     |
@@ -1016,7 +1016,7 @@ SET PASSWORD FOR myuser = 'mypass';
 - 给变量赋值都需要用 `select into` 语句。
 - 每次只能给一个变量赋值，不支持集合的操作。
 
-需要注意的是：**阿里巴巴《Java 开发手册》强制禁止使用存储过程。因为存储过程难以调试和扩展，更没有移植性。**
+需要注意的是：==阿里巴巴《Java 开发手册》强制禁止使用存储过程。因为存储过程难以调试和扩展，更没有移植性。==
 
 ![](https://oss.javaguide.cn/p3-juejin/93a5e011ade4450ebfa5d82057532a49~tplv-k3u1fbpfcp-zoom-1.png)
 
@@ -1140,7 +1140,7 @@ MySQL 不允许在触发器中使用 CALL 语句 ，也就是不能调用存储�
 
 但是，从 MySQL 版本 5.7.2+开始，可以为同一触发事件和操作时间定义多个触发器。
 
-**`NEW` 和 `OLD`**：
+==`NEW` 和 `OLD`==：
 
 - MySQL 中定义了 `NEW` 和 `OLD` 关键字，用来表示触发器的所在表中，触发了触发器的那一行数据。
 - 在 `INSERT` 型触发器中，`NEW` 用来表示将要（`BEFORE`）或已经（`AFTER`）插入的新数据；

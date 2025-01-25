@@ -9,8 +9,8 @@ tag:
 
 开始介绍类加载器和双亲委派模型之前，简单回顾一下类加载过程。
 
-- 类加载过程：**加载->连接->初始化**。
-- 连接过程又可分为三步：**验证->准备->解析**。
+- 类加载过程：==加载->连接->初始化==。
+- 连接过程又可分为三步：==验证->准备->解析==。
 
 ![类加载过程](https://oss.javaguide.cn/github/javaguide/java/jvm/class-loading-procedure.png)
 
@@ -58,7 +58,7 @@ class Class<T> {
 }
 ```
 
-简单来说，**类加载器的主要作用就是加载 Java 类的字节码（ `.class` 文件）到 JVM 中（在内存中生成一个代表该类的 `Class` 对象）。** 字节码可以是 Java 源程序（`.java`文件）经过 `javac` 编译得来，也可以是通过工具动态生成或者通过网络下载得来。
+简单来说，==类加载器的主要作用就是加载 Java 类的字节码（ `.class` 文件）到 JVM 中（在内存中生成一个代表该类的 `Class` 对象）。== 字节码可以是 Java 源程序（`.java`文件）经过 `javac` 编译得来，也可以是通过工具动态生成或者通过网络下载得来。
 
 其实除了加载类之外，类加载器还可以加载 Java 应用所需的资源如文本、图像、配置文件、视频等等文件资源。本文只讨论其核心功能：加载类。
 
@@ -86,13 +86,13 @@ public abstract class ClassLoader {
 
 JVM 中内置了三个重要的 `ClassLoader`：
 
-1. **`BootstrapClassLoader`(启动类加载器)**：最顶层的加载类，由 C++实现，通常表示为 null，并且没有父级，主要用来加载 JDK 内部的核心类库（ `%JAVA_HOME%/lib`目录下的 `rt.jar`、`resources.jar`、`charsets.jar`等 jar 包和类）以及被 `-Xbootclasspath`参数指定的路径下的所有类。
-2. **`ExtensionClassLoader`(扩展类加载器)**：主要负责加载 `%JRE_HOME%/lib/ext` 目录下的 jar 包和类以及被 `java.ext.dirs` 系统变量所指定的路径下的所有类。
-3. **`AppClassLoader`(应用程序类加载器)**：面向我们用户的加载器，负责加载当前应用 classpath 下的所有 jar 包和类。
+1. ==`BootstrapClassLoader`(启动类加载器)==：最顶层的加载类，由 C++实现，通常表示为 null，并且没有父级，主要用来加载 JDK 内部的核心类库（ `%JAVA_HOME%/lib`目录下的 `rt.jar`、`resources.jar`、`charsets.jar`等 jar 包和类）以及被 `-Xbootclasspath`参数指定的路径下的所有类。
+2. ==`ExtensionClassLoader`(扩展类加载器)==：主要负责加载 `%JRE_HOME%/lib/ext` 目录下的 jar 包和类以及被 `java.ext.dirs` 系统变量所指定的路径下的所有类。
+3. ==`AppClassLoader`(应用程序类加载器)==：面向我们用户的加载器，负责加载当前应用 classpath 下的所有 jar 包和类。
 
 > 🌈 拓展一下：
 >
-> - **`rt.jar`**：rt 代表“RunTime”，`rt.jar`是 Java 基础类库，包含 Java doc 里面看到的所有的类的类文件。也就是说，我们常用内置库 `java.xxx.*`都在里面，比如`java.util.*`、`java.io.*`、`java.nio.*`、`java.lang.*`、`java.sql.*`、`java.math.*`。
+> - ==`rt.jar`==：rt 代表“RunTime”，`rt.jar`是 Java 基础类库，包含 Java doc 里面看到的所有的类的类文件。也就是说，我们常用内置库 `java.xxx.*`都在里面，比如`java.util.*`、`java.io.*`、`java.nio.*`、`java.lang.*`、`java.sql.*`、`java.math.*`。
 > - Java 9 引入了模块系统，并且略微更改了上述的类加载器。扩展类加载器被改名为平台类加载器（platform class loader）。Java SE 中除了少数几个关键模块，比如说 `java.base` 是由启动类加载器加载之外，其他的模块均由平台类加载器所加载。
 
 除了这三种类加载器之外，用户还可以加入自定义的类加载器来进行拓展，以满足自己的特殊需求。就比如说，我们可以对 Java 类的字节码（ `.class` 文件）进行加密，加载时再利用自定义的类加载器对其解密。
@@ -116,7 +116,7 @@ public abstract class ClassLoader {
 }
 ```
 
-**为什么 获取到 `ClassLoader` 为`null`就是 `BootstrapClassLoader` 加载的呢？** 这是因为`BootstrapClassLoader` 由 C++ 实现，由于这个 C++ 实现的类加载器在 Java 中是没有与之对应的类的，所以拿到的结果是 null。
+==为什么 获取到 `ClassLoader` 为`null`就是 `BootstrapClassLoader` 加载的呢？== 这是因为`BootstrapClassLoader` 由 C++ 实现，由于这个 C++ 实现的类加载器在 Java 中是没有与之对应的类的，所以拿到的结果是 null。
 
 下面我们来看一个获取 `ClassLoader` 的小案例：
 
@@ -195,7 +195,7 @@ public class PrintClassLoaderTree {
 - 双亲委派模型要求除了顶层的启动类加载器外，其余的类加载器都应有自己的父类加载器。
 - `ClassLoader` 实例会在试图亲自查找类或资源之前，将搜索类或资源的任务委托给其父类加载器。
 
-下图展示的各种类加载器之间的层次关系被称为类加载器的“**双亲委派模型(Parents Delegation Model)**”。
+下图展示的各种类加载器之间的层次关系被称为类加载器的“==双亲委派模型(Parents Delegation Model)==”。
 
 ![类加载器层次关系图](https://oss.javaguide.cn/github/javaguide/java/jvm/class-loader-parents-delegation-model.png)
 
@@ -217,7 +217,7 @@ public abstract class ClassLoader {
 }
 ```
 
-在面向对象编程中，有一条非常经典的设计原则：**组合优于继承，多用组合少用继承。**
+在面向对象编程中，有一条非常经典的设计原则：==组合优于继承，多用组合少用继承。==
 
 ### 双亲委派模型的执行流程
 
@@ -277,7 +277,7 @@ protected Class<?> loadClass(String name, boolean resolve)
 
 🌈 拓展一下：
 
-**JVM 判定两个 Java 类是否相同的具体规则**：JVM 不仅要看类的全名是否相同，还要看加载此类的类加载器是否一样。只有两者都相同的情况，才认为两个类是相同的。即使两个类来源于同一个 `Class` 文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相同。
+==JVM 判定两个 Java 类是否相同的具体规则==：JVM 不仅要看类的全名是否相同，还要看加载此类的类加载器是否一样。只有两者都相同的情况，才认为两个类是相同的。即使两个类来源于同一个 `Class` 文件，被同一个虚拟机加载，只要加载它们的类加载器不同，那这两个类就必定不相同。
 
 ### 双亲委派模型的好处
 
@@ -289,7 +289,7 @@ protected Class<?> loadClass(String name, boolean resolve)
 
 ~~为了避免双亲委托机制，我们可以自己定义一个类加载器，然后重写 `loadClass()` 即可。~~
 
-**🐛 修正（参见：[issue871](https://github.com/Snailclimb/JavaGuide/issues/871) ）**：自定义加载器的话，需要继承 `ClassLoader` 。如果我们不想打破双亲委派模型，就重写 `ClassLoader` 类中的 `findClass()` 方法即可，无法被父类加载器加载的类最终会通过这个方法被加载。但是，如果想打破双亲委派模型则需要重写 `loadClass()` 方法。
+==🐛 修正（参见：[issue871](https://github.com/Snailclimb/JavaGuide/issues/871) ）==：自定义加载器的话，需要继承 `ClassLoader` 。如果我们不想打破双亲委派模型，就重写 `ClassLoader` 类中的 `findClass()` 方法即可，无法被父类加载器加载的类最终会通过这个方法被加载。但是，如果想打破双亲委派模型则需要重写 `loadClass()` 方法。
 
 为什么是重写 `loadClass()` 方法打破双亲委派模型呢？双亲委派模型的执行流程已经解释了：
 
@@ -322,7 +322,7 @@ Tomcat 这四个自定义的类加载器对应的目录如下：
 
 再比如，假设我们的项目中有 Spring 的 jar 包，由于其是 Web 应用之间共享的，因此会由 `SharedClassLoader` 加载（Web 服务器是 Tomcat）。我们项目中有一些用到了 Spring 的业务类，比如实现了 Spring 提供的接口、用到了 Spring 提供的注解。所以，加载 Spring 的类加载器（也就是 `SharedClassLoader`）也会用来加载这些业务类。但是业务类在 Web 应用目录下，不在 `SharedClassLoader` 的加载路径下，所以 `SharedClassLoader` 无法找到业务类，也就无法加载它们。
 
-如何解决这个问题呢？ 这个时候就需要用到 **线程上下文类加载器（`ThreadContextClassLoader`）** 了。
+如何解决这个问题呢？ 这个时候就需要用到 ==线程上下文类加载器（`ThreadContextClassLoader`）== 了。
 
 拿 Spring 这个例子来说，当 Spring 需要加载业务类的时候，它不是用自己的类加载器，而是用当前线程的上下文类加载器。还记得我上面说的吗？每个 Web 应用都会创建一个单独的 `WebAppClassLoader`，并在启动 Web 应用的线程里设置线程线程上下文类加载器为 `WebAppClassLoader`。这样就可以让高层的类加载器（`SharedClassLoader`）借助子类加载器（ `WebAppClassLoader`）来加载业务类，破坏了 Java 的类加载委托机制，让应用逆向使用类加载器。
 

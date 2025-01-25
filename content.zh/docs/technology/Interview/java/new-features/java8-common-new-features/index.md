@@ -73,7 +73,7 @@ public class InterfaceNewImpl implements InterfaceNew , InterfaceNew1{
 }
 ```
 
-**在 Java 8 ，接口和抽象类有什么区别的？**
+==在 Java 8 ，接口和抽象类有什么区别的？==
 
 很多小伙伴认为：“既然 interface 也可以有自己的方法实现，似乎和 abstract class 没多大区别了。”
 
@@ -88,11 +88,11 @@ public class InterfaceNewImpl implements InterfaceNew , InterfaceNew1{
 
 开始我们也提到，interface 新增`default`和`static`修饰的方法，为了解决接口的修改与现有的实现不兼容的问题，并不是为了要替代`abstract class`。在使用上，该用 abstract class 的地方还是要用 abstract class，不要因为 interface 的新特性而将之替换。
 
-**记住接口永远和类不一样。**
+==记住接口永远和类不一样。==
 
 ## functional interface 函数式接口
 
-**定义**：也称 SAM 接口，即 Single Abstract Method interfaces，有且只有一个抽象方法，但可以有多个非抽象方法的接口。
+==定义==：也称 SAM 接口，即 Single Abstract Method interfaces，有且只有一个抽象方法，但可以有多个非抽象方法的接口。
 
 在 java 8 中专门有一个包放函数式接口`java.util.function`，该包下的所有接口都有 `@FunctionalInterface` 注解，提供函数式编程。
 
@@ -123,7 +123,7 @@ public class InterfaceNewImpl implements InterfaceNew , InterfaceNew1{
 
 过去给方法传动态参数的唯一方法是使用内部类。比如
 
-**1.`Runnable` 接口**
+==1.`Runnable` 接口==
 
 ```java
 new Thread(new Runnable() {
@@ -136,7 +136,7 @@ new Thread(new Runnable() {
 new Thread(() -> System.out.println("It's a lambda function!")).start();
 ```
 
-**2.`Comparator` 接口**
+==2.`Comparator` 接口==
 
 ```java
 List<Integer> strings = Arrays.asList(1, 2, 3);
@@ -154,7 +154,7 @@ Comparator<Integer> comparator = (Integer o1, Integer o2) -> o1 - o2;
 Collections.sort(strings, comparator);
 ```
 
-**3.`Listener` 接口**
+==3.`Listener` 接口==
 
 ```java
 JButton button = new JButton();
@@ -168,9 +168,9 @@ public void itemStateChanged(ItemEvent e) {
 button.addItemListener(e -> e.getItem());
 ```
 
-**4.自定义接口**
+==4.自定义接口==
 
-上面的 3 个例子是我们在开发过程中最常见的，从中也能体会到 Lambda 带来的便捷与清爽。它只保留实际用到的代码，把无用代码全部省略。那它对接口有没有要求呢？我们发现这些匿名内部类只重写了接口的一个方法，当然也只有一个方法须要重写。这就是我们上文提到的**函数式接口**，也就是说只要方法的参数是函数式接口都可以用 Lambda 表达式。
+上面的 3 个例子是我们在开发过程中最常见的，从中也能体会到 Lambda 带来的便捷与清爽。它只保留实际用到的代码，把无用代码全部省略。那它对接口有没有要求呢？我们发现这些匿名内部类只重写了接口的一个方法，当然也只有一个方法须要重写。这就是我们上文提到的==函数式接口==，也就是说只要方法的参数是函数式接口都可以用 Lambda 表达式。
 
 ```java
 @FunctionalInterface
@@ -610,7 +610,7 @@ public static <T> T requireNonNull(T obj) {
 
 `ofNullable` 方法和`of`方法唯一区别就是当 value 为 null 时，`ofNullable` 返回的是`EMPTY`，of 会抛出 `NullPointerException` 异常。如果需要把 `NullPointerException` 暴漏出来就用 `of`，否则就用 `ofNullable`。
 
-**`map()` 和 `flatMap()` 有什么区别的？**
+==`map()` 和 `flatMap()` 有什么区别的？==
 
 `map` 和 `flatMap` 都是将一个函数应用于集合中的每个元素，但不同的是`map`返回一个新的集合，`flatMap`是将每个元素都映射为一个集合，最后再将这个集合展平。
 
@@ -799,7 +799,7 @@ LocalTime.class //时间 format: HH:mm:ss
 
 ### 格式化
 
-**Java 8 之前:**
+==Java 8 之前:==
 
 ```java
 public void oldFormat(){
@@ -821,7 +821,7 @@ public void oldFormat(){
 }
 ```
 
-**Java 8 之后:**
+==Java 8 之后:==
 
 ```java
 public void newFormat(){
@@ -843,7 +843,7 @@ public void newFormat(){
 
 ### 字符串转日期格式
 
-**Java 8 之前:**
+==Java 8 之前:==
 
 ```java
 //已弃用
@@ -853,7 +853,7 @@ SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 Date date1 = sdf.parse("2021-01-26");
 ```
 
-**Java 8 之后:**
+==Java 8 之后:==
 
 ```java
 LocalDate date = LocalDate.of(2021, 1, 26);
@@ -866,13 +866,13 @@ LocalTime time = LocalTime.of(12, 12, 22);
 LocalTime.parse("12:12:22");
 ```
 
-**Java 8 之前** 转换都需要借助 `SimpleDateFormat` 类，而**Java 8 之后**只需要 `LocalDate`、`LocalTime`、`LocalDateTime`的 `of` 或 `parse` 方法。
+==Java 8 之前== 转换都需要借助 `SimpleDateFormat` 类，而==Java 8 之后==只需要 `LocalDate`、`LocalTime`、`LocalDateTime`的 `of` 或 `parse` 方法。
 
 ### 日期计算
 
-下面仅以**一周后日期**为例，其他单位（年、月、日、1/2 日、时等等）大同小异。另外，这些单位都在 _java.time.temporal.ChronoUnit_ 枚举中定义。
+下面仅以==一周后日期==为例，其他单位（年、月、日、1/2 日、时等等）大同小异。另外，这些单位都在 _java.time.temporal.ChronoUnit_ 枚举中定义。
 
-**Java 8 之前:**
+==Java 8 之前:==
 
 ```java
 public void afterDay(){
@@ -896,7 +896,7 @@ public void afterDay(){
 }
 ```
 
-**Java 8 之后:**
+==Java 8 之后:==
 
 ```java
 public void pushWeek(){
@@ -929,7 +929,7 @@ public void pushWeek(){
 
 除了日期计算繁琐，获取特定一个日期也很麻烦，比如获取本月最后一天，第一天。
 
-**Java 8 之前:**
+==Java 8 之前:==
 
 ```java
 public void getDay() {
@@ -958,7 +958,7 @@ public void getDay() {
 }
 ```
 
-**Java 8 之后:**
+==Java 8 之后:==
 
 ```java
 public void getDayNew() {

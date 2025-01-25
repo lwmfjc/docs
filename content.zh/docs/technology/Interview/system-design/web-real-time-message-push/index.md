@@ -47,7 +47,7 @@ Web 端消息推送示例：
 
 ### 短轮询
 
-**轮询(polling)** 应该是实现消息推送方案中最简单的一种，这里我们暂且将轮询分为短轮询和长轮询。
+==轮询(polling)== 应该是实现消息推送方案中最简单的一种，这里我们暂且将轮询分为短轮询和长轮询。
 
 短轮询很好理解，指定的时间间隔，由浏览器向服务器发出 HTTP 请求，服务器实时返回未读消息数据给客户端，浏览器再做渲染显示。
 
@@ -215,7 +215,7 @@ SSE 与 WebSocket 作用相似，都可以建立服务端与浏览器之间的�
 - SSE 默认支持断线重连；WebSocket 则需要自己实现。
 - SSE 只能传送文本消息，二进制数据需要经过编码后传送；WebSocket 默认支持传送二进制数据。
 
-**SSE 与 WebSocket 该如何选择？**
+==SSE 与 WebSocket 该如何选择？==
 
 > 技术并没有好坏之分，只有哪个更合适
 
@@ -294,7 +294,7 @@ public static void sendMessage(String userId, String message) {
 }
 ```
 
-**注意：** SSE 不支持 IE 浏览器，对其他主流浏览器兼容性做的还不错。
+==注意：== SSE 不支持 IE 浏览器，对其他主流浏览器兼容性做的还不错。
 
 ![SSE 兼容性](https://oss.javaguide.cn/github/javaguide/system-design/web-real-time-message-push/1460000042192393.png)
 
@@ -439,7 +439,7 @@ public class WebSocketConfiguration {
 
 ### MQTT
 
-**什么是 MQTT 协议？**
+==什么是 MQTT 协议？==
 
 MQTT (Message Queue Telemetry Transport)是一种基于发布/订阅（publish/subscribe）模式的轻量级通讯协议，通过订阅相应的主题来获取消息，是物联网（Internet of Thing）中的一个标准传输协议。
 
@@ -449,7 +449,7 @@ MQTT (Message Queue Telemetry Transport)是一种基于发布/订阅（publish/s
 
 TCP 协议位于传输层，MQTT 协议位于应用层，MQTT 协议构建于 TCP/IP 协议上，也就是说只要支持 TCP/IP 协议栈的地方，都可以使用 MQTT 协议。
 
-**为什么要用 MQTT 协议？**
+==为什么要用 MQTT 协议？==
 
 MQTT 协议为什么在物联网（IOT）中如此受偏爱？而不是其它协议，比如我们更为熟悉的 HTTP 协议呢？
 

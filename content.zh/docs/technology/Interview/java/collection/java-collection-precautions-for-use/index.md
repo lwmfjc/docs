@@ -13,7 +13,7 @@ tag:
 
 《阿里巴巴 Java 开发手册》的描述如下：
 
-> **判断所有集合内部的元素是否为空，使用 `isEmpty()` 方法，而不是 `size()==0` 的方式。**
+> ==判断所有集合内部的元素是否为空，使用 `isEmpty()` 方法，而不是 `size()==0` 的方式。==
 
 这是因为 `isEmpty()` 方法的可读性更好，并且时间复杂度为 `O(1)`。
 
@@ -71,7 +71,7 @@ final long sumCount() {
 
 《阿里巴巴 Java 开发手册》的描述如下：
 
-> **在使用 `java.util.stream.Collectors` 类的 `toMap()` 方法转为 `Map` 集合时，一定要注意当 value 为 null 时会抛 NPE 异常。**
+> ==在使用 `java.util.stream.Collectors` 类的 `toMap()` 方法转为 `Map` 集合时，一定要注意当 value 为 null 时会抛 NPE 异常。==
 
 ```java
 class Person {
@@ -139,13 +139,13 @@ public static <T> T requireNonNull(T obj) {
 
 《阿里巴巴 Java 开发手册》的描述如下：
 
-> **不要在 foreach 循环里进行元素的 `remove/add` 操作。remove 元素请使用 `Iterator` 方式，如果并发操作，需要对 `Iterator` 对象加锁。**
+> ==不要在 foreach 循环里进行元素的 `remove/add` 操作。remove 元素请使用 `Iterator` 方式，如果并发操作，需要对 `Iterator` 对象加锁。==
 
 通过反编译你会发现 foreach 语法底层其实还是依赖 `Iterator` 。不过， `remove/add` 操作直接调用的是集合自己的方法，而不是 `Iterator` 的 `remove/add`方法
 
-这就导致 `Iterator` 莫名其妙地发现自己有元素被 `remove/add` ，然后，它就会抛出一个 `ConcurrentModificationException` 来提示用户发生了并发修改异常。这就是单线程状态下产生的 **fail-fast 机制**。
+这就导致 `Iterator` 莫名其妙地发现自己有元素被 `remove/add` ，然后，它就会抛出一个 `ConcurrentModificationException` 来提示用户发生了并发修改异常。这就是单线程状态下产生的 ==fail-fast 机制==。
 
-> **fail-fast 机制**：多个线程对 fail-fast 集合进行修改的时候，可能会抛出`ConcurrentModificationException`。 即使是单线程下也有可能会出现这种情况，上面已经提到过。
+> ==fail-fast 机制==：多个线程对 fail-fast 集合进行修改的时候，可能会抛出`ConcurrentModificationException`。 即使是单线程下也有可能会出现这种情况，上面已经提到过。
 >
 > 相关阅读：[什么是 fail-fast](https://www.cnblogs.com/54chensongxia/p/12470446.html) 。
 
@@ -170,7 +170,7 @@ System.out.println(list); /* [1, 3, 5, 7, 9] */
 
 《阿里巴巴 Java 开发手册》的描述如下：
 
-> **可以利用 `Set` 元素唯一的特性，可以快速对一个集合进行去重操作，避免使用 `List` 的 `contains()` 进行遍历去重或者判断包含操作。**
+> ==可以利用 `Set` 元素唯一的特性，可以快速对一个集合进行去重操作，避免使用 `List` 的 `contains()` 进行遍历去重或者判断包含操作。==
 
 这里我们以 `HashSet` 和 `ArrayList` 为例说明。
 
@@ -240,7 +240,7 @@ public int indexOf(Object o) {
 
 《阿里巴巴 Java 开发手册》的描述如下：
 
-> **使用集合转数组的方法，必须使用集合的 `toArray(T[] array)`，传入的是类型完全一致、长度为 0 的空数组。**
+> ==使用集合转数组的方法，必须使用集合的 `toArray(T[] array)`，传入的是类型完全一致、长度为 0 的空数组。==
 
 `toArray(T[] array)` 方法的参数是一个泛型数组，如果 `toArray` 方法中没有传递任何参数的话返回的是 `Object`类 型数组。
 
@@ -260,7 +260,7 @@ s=list.toArray(new String[0]);
 
 《阿里巴巴 Java 开发手册》的描述如下：
 
-> **使用工具类 `Arrays.asList()` 把数组转换成集合时，不能使用其修改集合相关的方法， 它的 `add/remove/clear` 方法会抛出 `UnsupportedOperationException` 异常。**
+> ==使用工具类 `Arrays.asList()` 把数组转换成集合时，不能使用其修改集合相关的方法， 它的 `add/remove/clear` 方法会抛出 `UnsupportedOperationException` 异常。==
 
 我在之前的一个项目中就遇到一个类似的坑。
 
@@ -287,7 +287,7 @@ public static <T> List<T> asList(T... a) {
 
 下面我们来总结一下使用注意事项。
 
-**1、`Arrays.asList()`是泛型方法，传递的数组必须是对象数组，而不是基本类型。**
+==1、`Arrays.asList()`是泛型方法，传递的数组必须是对象数组，而不是基本类型。==
 
 ```java
 int[] myArray = {1, 2, 3};
@@ -307,7 +307,7 @@ System.out.println(array[0]);//1
 Integer[] myArray = {1, 2, 3};
 ```
 
-**2、使用集合的修改方法: `add()`、`remove()`、`clear()`会抛出异常。**
+==2、使用集合的修改方法: `add()`、`remove()`、`clear()`会抛出异常。==
 
 ```java
 List myList = Arrays.asList(1, 2, 3);
@@ -394,7 +394,7 @@ protected void removeRange(int fromIndex, int toIndex) {
 }
 ```
 
-**那我们如何正确的将数组转换为 `ArrayList` ?**
+==那我们如何正确的将数组转换为 `ArrayList` ?==
 
 1、手动实现工具类
 

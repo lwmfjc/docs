@@ -5,11 +5,11 @@ tag:
   - Spring
 ---
 
-前段时间答应读者的 **Spring 事务** 分析总结终于来了。这部分内容比较重要，不论是对于工作还是面试，但是网上比较好的参考资料比较少。
+前段时间答应读者的 ==Spring 事务== 分析总结终于来了。这部分内容比较重要，不论是对于工作还是面试，但是网上比较好的参考资料比较少。
 
 ## 什么是事务？
 
-**事务是逻辑上的一组操作，要么都执行，要么都不执行。**
+==事务是逻辑上的一组操作，要么都执行，要么都不执行。==
 
 相信大家应该都能背上面这句话了，下面我结合我们日常的真实开发来谈一谈。
 
@@ -22,7 +22,7 @@ tag:
   }
 ```
 
-另外，需要格外注意的是：**事务能否生效数据库引擎是否支持事务是关键。比如常用的 MySQL 数据库默认使用支持事务的 `innodb`引擎。但是，如果把数据库引擎变为 `myisam`，那么程序也就不再支持事务了！**
+另外，需要格外注意的是：==事务能否生效数据库引擎是否支持事务是关键。比如常用的 MySQL 数据库默认使用支持事务的 `innodb`引擎。但是，如果把数据库引擎变为 `myisam`，那么程序也就不再支持事务了！==
 
 事务最经典也经常被拿出来说例子就是转账了。假如小明要给小红转账 1000 元，这个转账会涉及到两个关键操作就是：
 
@@ -59,12 +59,12 @@ public class OrdersService {
 
 ## 事务的特性（ACID）了解么?
 
-1. **原子性**（`Atomicity`）：事务是最小的执行单位，不允许分割。事务的原子性确保动作要么全部完成，要么完全不起作用；
-2. **一致性**（`Consistency`）：执行事务前后，数据保持一致，例如转账业务中，无论事务是否成功，转账者和收款人的总额应该是不变的；
-3. **隔离性**（`Isolation`）：并发访问数据库时，一个用户的事务不被其他事务所干扰，各并发事务之间数据库是独立的；
-4. **持久性**（`Durability`）：一个事务被提交之后。它对数据库中数据的改变是持久的，即使数据库发生故障也不应该对其有任何影响。
+1. ==原子性==（`Atomicity`）：事务是最小的执行单位，不允许分割。事务的原子性确保动作要么全部完成，要么完全不起作用；
+2. ==一致性==（`Consistency`）：执行事务前后，数据保持一致，例如转账业务中，无论事务是否成功，转账者和收款人的总额应该是不变的；
+3. ==隔离性==（`Isolation`）：并发访问数据库时，一个用户的事务不被其他事务所干扰，各并发事务之间数据库是独立的；
+4. ==持久性==（`Durability`）：一个事务被提交之后。它对数据库中数据的改变是持久的，即使数据库发生故障也不应该对其有任何影响。
 
-🌈 这里要额外补充一点：**只有保证了事务的持久性、原子性、隔离性之后，一致性才能得到保障。也就是说 A、I、D 是手段，C 是目的！** 想必大家也和我一样，被 ACID 这个概念被误导了很久! 我也是看周志明老师的公开课[《周志明的软件架构课》](https://time.geekbang.org/opencourse/intro/100064201)才搞清楚的（多看好书！！！）。
+🌈 这里要额外补充一点：==只有保证了事务的持久性、原子性、隔离性之后，一致性才能得到保障。也就是说 A、I、D 是手段，C 是目的！== 想必大家也和我一样，被 ACID 这个概念被误导了很久! 我也是看周志明老师的公开课[《周志明的软件架构课》](https://time.geekbang.org/opencourse/intro/100064201)才搞清楚的（多看好书！！！）。
 
 ![AID->C](https://oss.javaguide.cn/github/javaguide/mysql/AID->C.png)
 
@@ -80,9 +80,9 @@ public class OrdersService {
 
 > ⚠️ 再提醒一次：你的程序是否支持事务首先取决于数据库 ，比如使用 MySQL 的话，如果你选择的是 innodb 引擎，那么恭喜你，是可以支持事务的。但是，如果你的 MySQL 数据库使用的是 myisam 引擎的话，那不好意思，从根上就是不支持事务的。
 
-这里再多提一下一个非常重要的知识点：**MySQL 怎么保证原子性的？**
+这里再多提一下一个非常重要的知识点：==MySQL 怎么保证原子性的？==
 
-我们知道如果想要保证事务的原子性，就需要在异常发生时，对已经执行的操作进行**回滚**，在 MySQL 中，恢复机制是通过 **回滚日志（undo log）** 实现的，所有事务进行的修改都会先记录到这个回滚日志中，然后再执行相关的操作。如果执行过程中遇到异常的话，我们直接利用 **回滚日志** 中的信息将数据回滚到修改之前的样子即可！并且，回滚日志会先于数据持久化到磁盘上。这样就保证了即使遇到数据库突然宕机等情况，当用户再次启动数据库的时候，数据库还能够通过查询回滚日志来回滚之前未完成的事务。
+我们知道如果想要保证事务的原子性，就需要在异常发生时，对已经执行的操作进行==回滚==，在 MySQL 中，恢复机制是通过 ==回滚日志（undo log）== 实现的，所有事务进行的修改都会先记录到这个回滚日志中，然后再执行相关的操作。如果执行过程中遇到异常的话，我们直接利用 ==回滚日志== 中的信息将数据回滚到修改之前的样子即可！并且，回滚日志会先于数据持久化到磁盘上。这样就保证了即使遇到数据库突然宕机等情况，当用户再次启动数据库的时候，数据库还能够通过查询回滚日志来回滚之前未完成的事务。
 
 ### Spring 支持两种方式的事务管理
 
@@ -153,21 +153,21 @@ public void aMethod {
 
 Spring 框架中，事务管理相关最重要的 3 个接口如下：
 
-- **`PlatformTransactionManager`**：（平台）事务管理器，Spring 事务策略的核心。
-- **`TransactionDefinition`**：事务定义信息(事务隔离级别、传播行为、超时、只读、回滚规则)。
-- **`TransactionStatus`**：事务运行状态。
+- ==`PlatformTransactionManager`==：（平台）事务管理器，Spring 事务策略的核心。
+- ==`TransactionDefinition`==：事务定义信息(事务隔离级别、传播行为、超时、只读、回滚规则)。
+- ==`TransactionStatus`==：事务运行状态。
 
-我们可以把 **`PlatformTransactionManager`** 接口可以被看作是事务上层的管理者，而 **`TransactionDefinition`** 和 **`TransactionStatus`** 这两个接口可以看作是事务的描述。
+我们可以把 ==`PlatformTransactionManager`== 接口可以被看作是事务上层的管理者，而 ==`TransactionDefinition`== 和 ==`TransactionStatus`== 这两个接口可以看作是事务的描述。
 
-**`PlatformTransactionManager`** 会根据 **`TransactionDefinition`** 的定义比如事务超时时间、隔离级别、传播行为等来进行事务管理 ，而 **`TransactionStatus`** 接口则提供了一些方法来获取事务相应的状态比如是否新事务、是否可以回滚等等。
+==`PlatformTransactionManager`== 会根据 ==`TransactionDefinition`== 的定义比如事务超时时间、隔离级别、传播行为等来进行事务管理 ，而 ==`TransactionStatus`== 接口则提供了一些方法来获取事务相应的状态比如是否新事务、是否可以回滚等等。
 
 #### PlatformTransactionManager:事务管理接口
 
-**Spring 并不直接管理事务，而是提供了多种事务管理器** 。Spring 事务管理器的接口是：**`PlatformTransactionManager`** 。
+==Spring 并不直接管理事务，而是提供了多种事务管理器== 。Spring 事务管理器的接口是：==`PlatformTransactionManager`== 。
 
 通过这个接口，Spring 为各个平台如：JDBC(`DataSourceTransactionManager`)、Hibernate(`HibernateTransactionManager`)、JPA(`JpaTransactionManager`)等都提供了对应的事务管理器，但是具体的实现就是各个平台自己的事情了。
 
-**`PlatformTransactionManager` 接口的具体实现如下:**
+==`PlatformTransactionManager` 接口的具体实现如下:==
 
 ![](./images/spring-transaction/PlatformTransactionManager.png)
 
@@ -189,11 +189,11 @@ public interface PlatformTransactionManager {
 
 ```
 
-**这里多插一嘴。为什么要定义或者说抽象出来`PlatformTransactionManager`这个接口呢？**
+==这里多插一嘴。为什么要定义或者说抽象出来`PlatformTransactionManager`这个接口呢？==
 
 主要是因为要将事务管理行为抽象出来，然后不同的平台去实现它，这样我们可以保证提供给外部的行为不变，方便我们扩展。
 
-我前段时间在我的[知识星球](https://javaguide.cn/about-the-author/zhishixingqiu-two-years.html)分享过：**“为什么我们要用接口？”** 。
+我前段时间在我的[知识星球](https://javaguide.cn/about-the-author/zhishixingqiu-two-years.html)分享过：==“为什么我们要用接口？”== 。
 
 > 《设计模式》（GOF 那本）这本书在很多年前都提到过说要基于接口而非实现编程，你真的知道为什么要基于接口编程么？
 >
@@ -209,9 +209,9 @@ public interface PlatformTransactionManager {
 
 #### TransactionDefinition:事务属性
 
-事务管理器接口 **`PlatformTransactionManager`** 通过 **`getTransaction(TransactionDefinition definition)`** 方法来得到一个事务，这个方法里面的参数是 **`TransactionDefinition`** 类 ，这个类就定义了一些基本的事务属性。
+事务管理器接口 ==`PlatformTransactionManager`== 通过 ==`getTransaction(TransactionDefinition definition)`== 方法来得到一个事务，这个方法里面的参数是 ==`TransactionDefinition`== 类 ，这个类就定义了一些基本的事务属性。
 
-**什么是事务属性呢？** 事务属性可以理解成事务的一些基本配置，描述了事务策略如何应用到方法上。
+==什么是事务属性呢？== 事务属性可以理解成事务的一些基本配置，描述了事务策略如何应用到方法上。
 
 事务属性包含了 5 个方面：
 
@@ -262,7 +262,7 @@ public interface TransactionDefinition {
 
 `PlatformTransactionManager.getTransaction(…)`方法返回一个 `TransactionStatus` 对象。
 
-**TransactionStatus 接口内容如下：**
+==TransactionStatus 接口内容如下：==
 
 ```java
 public interface TransactionStatus{
@@ -280,7 +280,7 @@ public interface TransactionStatus{
 
 #### 事务传播行为
 
-**事务传播行为是为了解决业务层方法之间互相调用的事务问题**。
+==事务传播行为是为了解决业务层方法之间互相调用的事务问题==。
 
 当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有事务中运行，也可能开启一个新事务，并在自己的事务中运行。
 
@@ -359,9 +359,9 @@ public enum Propagation {
 
 ```
 
-**正确的事务传播行为可能的值如下**：
+==正确的事务传播行为可能的值如下==：
 
-**1.`TransactionDefinition.PROPAGATION_REQUIRED`**
+==1.`TransactionDefinition.PROPAGATION_REQUIRED`==
 
 使用的最多的一个事务传播行为，我们平时经常使用的`@Transactional`注解默认使用就是这个事务传播行为。如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。也就是说：
 
@@ -390,7 +390,7 @@ Class B {
 }
 ```
 
-**`2.TransactionDefinition.PROPAGATION_REQUIRES_NEW`**
+==`2.TransactionDefinition.PROPAGATION_REQUIRES_NEW`==
 
 创建一个新的事务，如果当前存在事务，则把当前事务挂起。也就是说不管外部方法是否开启事务，`Propagation.REQUIRES_NEW`修饰的内部方法会新开启自己的事务，且开启的事务相互独立，互不干扰。
 
@@ -417,7 +417,7 @@ Class B {
 }
 ```
 
-**3.`TransactionDefinition.PROPAGATION_NESTED`**:
+==3.`TransactionDefinition.PROPAGATION_NESTED`==:
 
 如果当前存在事务，就在嵌套事务内执行；如果当前没有事务，就执行与`TransactionDefinition.PROPAGATION_REQUIRED`类似的操作。也就是说：
 
@@ -447,17 +447,17 @@ Class B {
 }
 ```
 
-**4.`TransactionDefinition.PROPAGATION_MANDATORY`**
+==4.`TransactionDefinition.PROPAGATION_MANDATORY`==
 
 如果当前存在事务，则加入该事务；如果当前没有事务，则抛出异常。（mandatory：强制性）
 
 这个使用的很少，就不举例子来说了。
 
-**若是错误的配置以下 3 种事务传播行为，事务将不会发生回滚，这里不对照案例讲解了，使用的很少。**
+==若是错误的配置以下 3 种事务传播行为，事务将不会发生回滚，这里不对照案例讲解了，使用的很少。==
 
-- **`TransactionDefinition.PROPAGATION_SUPPORTS`**: 如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。
-- **`TransactionDefinition.PROPAGATION_NOT_SUPPORTED`**: 以非事务方式运行，如果当前存在事务，则把当前事务挂起。
-- **`TransactionDefinition.PROPAGATION_NEVER`**: 以非事务方式运行，如果当前存在事务，则抛出异常。
+- ==`TransactionDefinition.PROPAGATION_SUPPORTS`==: 如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务的方式继续运行。
+- ==`TransactionDefinition.PROPAGATION_NOT_SUPPORTED`==: 以非事务方式运行，如果当前存在事务，则把当前事务挂起。
+- ==`TransactionDefinition.PROPAGATION_NEVER`==: 以非事务方式运行，如果当前存在事务，则抛出异常。
 
 更多关于事务传播行为的内容请看这篇文章：[《太难了~面试官让我结合案例讲讲自己对 Spring 事务传播行为的理解。》](https://mp.weixin.qq.com/s?__biz=Mzg2OTA0Njk0OA==&mid=2247486668&idx=2&sn=0381e8c836442f46bdc5367170234abb&chksm=cea24307f9d5ca11c96943b3ccfa1fc70dc97dd87d9c540388581f8fe6d805ff548dff5f6b5b&token=1776990505&lang=zh_CN#rd)
 
@@ -507,11 +507,11 @@ public enum Isolation {
 
 下面我依次对每一种事务隔离级别进行介绍：
 
-- **`TransactionDefinition.ISOLATION_DEFAULT`** :使用后端数据库默认的隔离级别，MySQL 默认采用的 `REPEATABLE_READ` 隔离级别 Oracle 默认采用的 `READ_COMMITTED` 隔离级别.
-- **`TransactionDefinition.ISOLATION_READ_UNCOMMITTED`** :最低的隔离级别，使用这个隔离级别很少，因为它允许读取尚未提交的数据变更，**可能会导致脏读、幻读或不可重复读**
-- **`TransactionDefinition.ISOLATION_READ_COMMITTED`** : 允许读取并发事务已经提交的数据，**可以阻止脏读，但是幻读或不可重复读仍有可能发生**
-- **`TransactionDefinition.ISOLATION_REPEATABLE_READ`** : 对同一字段的多次读取结果都是一致的，除非数据是被本身事务自己所修改，**可以阻止脏读和不可重复读，但幻读仍有可能发生。**
-- **`TransactionDefinition.ISOLATION_SERIALIZABLE`** : 最高的隔离级别，完全服从 ACID 的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，**该级别可以防止脏读、不可重复读以及幻读**。但是这将严重影响程序的性能。通常情况下也不会用到该级别。
+- ==`TransactionDefinition.ISOLATION_DEFAULT`== :使用后端数据库默认的隔离级别，MySQL 默认采用的 `REPEATABLE_READ` 隔离级别 Oracle 默认采用的 `READ_COMMITTED` 隔离级别.
+- ==`TransactionDefinition.ISOLATION_READ_UNCOMMITTED`== :最低的隔离级别，使用这个隔离级别很少，因为它允许读取尚未提交的数据变更，==可能会导致脏读、幻读或不可重复读==
+- ==`TransactionDefinition.ISOLATION_READ_COMMITTED`== : 允许读取并发事务已经提交的数据，==可以阻止脏读，但是幻读或不可重复读仍有可能发生==
+- ==`TransactionDefinition.ISOLATION_REPEATABLE_READ`== : 对同一字段的多次读取结果都是一致的，除非数据是被本身事务自己所修改，==可以阻止脏读和不可重复读，但幻读仍有可能发生。==
+- ==`TransactionDefinition.ISOLATION_SERIALIZABLE`== : 最高的隔离级别，完全服从 ACID 的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰，也就是说，==该级别可以防止脏读、不可重复读以及幻读==。但是这将严重影响程序的性能。通常情况下也不会用到该级别。
 
 相关阅读：[MySQL 事务隔离级别详解](https://javaguide.cn/database/mysql/transaction-isolation-level.html)。
 
@@ -567,9 +567,9 @@ public interface TransactionDefinition {
 
 #### `@Transactional` 的作用范围
 
-1. **方法**：推荐将注解使用于方法上，不过需要注意的是：**该注解只能应用到 public 方法上，否则不生效。**
-2. **类**：如果这个注解使用在类上的话，表明该注解对该类中所有的 public 方法都生效。
-3. **接口**：不推荐在接口上使用。
+1. ==方法==：推荐将注解使用于方法上，不过需要注意的是：==该注解只能应用到 public 方法上，否则不生效。==
+2. ==类==：如果这个注解使用在类上的话，表明该注解对该类中所有的 public 方法都生效。
+3. ==接口==：不推荐在接口上使用。
 
 #### `@Transactional` 的常用配置参数
 
@@ -607,7 +607,7 @@ public @interface Transactional {
 }
 ```
 
-**`@Transactional` 的常用配置参数总结（只列出了 5 个我平时比较常用的）：**
+==`@Transactional` 的常用配置参数总结（只列出了 5 个我平时比较常用的）：==
 
 | 属性名      | 说明                                                                                         |
 | :---------- | :------------------------------------------------------------------------------------------- |
@@ -621,7 +621,7 @@ public @interface Transactional {
 
 面试中在问 AOP 的时候可能会被问到的一个问题。简单说下吧！
 
-我们知道，**`@Transactional` 的工作机制是基于 AOP 实现的，AOP 又是使用动态代理实现的。如果目标对象实现了接口，默认情况下会采用 JDK 的动态代理，如果目标对象没有实现了接口,会使用 CGLIB 动态代理。**
+我们知道，==`@Transactional` 的工作机制是基于 AOP 实现的，AOP 又是使用动态代理实现的。如果目标对象实现了接口，默认情况下会采用 JDK 的动态代理，如果目标对象没有实现了接口,会使用 CGLIB 动态代理。==
 
 🤐 多提一嘴：`createAopProxy()` 方法 决定了是使用 JDK 还是 Cglib 来做动态代理，源码如下：
 

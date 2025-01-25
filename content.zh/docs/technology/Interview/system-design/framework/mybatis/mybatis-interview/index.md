@@ -82,20 +82,20 @@ public interface StuMapper {
 
 能正常运行，并能得到相应的结果，这样就实现了在 Dao 接口中写重载方法。
 
-**Mybatis 的 Dao 接口可以有多个重载方法，但是多个接口对应的映射必须只有一个，否则启动会报错。**
+==Mybatis 的 Dao 接口可以有多个重载方法，但是多个接口对应的映射必须只有一个，否则启动会报错。==
 
 相关 issue：[更正：Dao 接口里的方法可以重载，但是 Mybatis 的 xml 里面的 ID 不允许重复！](https://github.com/Snailclimb/JavaGuide/issues/1122)。
 
 Dao 接口的工作原理是 JDK 动态代理，MyBatis 运行时会使用 JDK 动态代理为 Dao 接口生成代理 proxy 对象，代理对象 proxy 会拦截接口方法，转而执行 `MappedStatement` 所代表的 sql，然后将 sql 执行结果返回。
 
-**补充**：
+==补充==：
 
 Dao 接口方法可以重载，但是需要满足以下条件：
 
 1. 仅有一个无参方法和一个有参方法
 2. 多个有参方法时，参数数量必须一致。且使用相同的 `@Param` ，或者使用 `param1` 这种
 
-**测试如下**：
+==测试如下==：
 
 `PersonDao.java`
 
@@ -167,7 +167,7 @@ public V get(Object key) {
 
 注：我出的。
 
-答：**(1)** MyBatis 使用 RowBounds 对象进行分页，它是针对 ResultSet 结果集执行的内存分页，而非物理分页；**(2)** 可以在 sql 内直接书写带有物理分页的参数来完成物理分页功能，**(3)** 也可以使用分页插件来完成物理分页。
+答：==(1)== MyBatis 使用 RowBounds 对象进行分页，它是针对 ResultSet 结果集执行的内存分页，而非物理分页；==(2)== 可以在 sql 内直接书写带有物理分页的参数来完成物理分页功能，==(3)== 也可以使用分页插件来完成物理分页。
 
 分页插件的基本原理是使用 MyBatis 提供的插件接口，实现自定义插件，在插件的拦截方法内拦截待执行的 sql，然后重写 sql，根据 dialect 方言，添加对应的物理分页语句和物理分页参数。
 
@@ -266,9 +266,9 @@ MyBatis 提供了 9 种动态 sql 标签:
 
 答：MyBatis 有三种基本的 `Executor` 执行器：
 
-- **`SimpleExecutor`：** 每执行一次 update 或 select，就开启一个 Statement 对象，用完立刻关闭 Statement 对象。
-- **`ReuseExecutor`：** 执行 update 或 select，以 sql 作为 key 查找 Statement 对象，存在就使用，不存在就创建，用完后，不关闭 Statement 对象，而是放置于 Map<String, Statement>内，供下一次使用。简言之，就是重复使用 Statement 对象。
-- **`BatchExecutor`**：执行 update（没有 select，JDBC 批处理不支持 select），将所有 sql 都添加到批处理中（addBatch()），等待统一执行（executeBatch()），它缓存了多个 Statement 对象，每个 Statement 对象都是 addBatch()完毕后，等待逐一执行 executeBatch()批处理。与 JDBC 批处理相同。
+- ==`SimpleExecutor`：== 每执行一次 update 或 select，就开启一个 Statement 对象，用完立刻关闭 Statement 对象。
+- ==`ReuseExecutor`：== 执行 update 或 select，以 sql 作为 key 查找 Statement 对象，存在就使用，不存在就创建，用完后，不关闭 Statement 对象，而是放置于 Map<String, Statement>内，供下一次使用。简言之，就是重复使用 Statement 对象。
+- ==`BatchExecutor`==：执行 update（没有 select，JDBC 批处理不支持 select），将所有 sql 都添加到批处理中（addBatch()），等待统一执行（executeBatch()），它缓存了多个 Statement 对象，每个 Statement 对象都是 addBatch()完毕后，等待逐一执行 executeBatch()批处理。与 JDBC 批处理相同。
 
 作用范围：`Executor` 的这些特点，都严格限制在 SqlSession 生命周期范围内。
 

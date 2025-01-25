@@ -58,9 +58,9 @@ InnoDB 将 redo log 刷到磁盘上有几种情况：
 
 `innodb_flush_log_at_trx_commit` 的值有 3 种，也就是共有 3 种刷盘策略：
 
-- **0**：设置为 0 的时候，表示每次事务提交时不进行刷盘操作。这种方式性能最高，但是也最不安全，因为如果 MySQL 挂了或宕机了，可能会丢失最近 1 秒内的事务。
-- **1**：设置为 1 的时候，表示每次事务提交时都将进行刷盘操作。这种方式性能最低，但是也最安全，因为只要事务提交成功，redo log 记录就一定在磁盘里，不会有任何数据丢失。
-- **2**：设置为 2 的时候，表示每次事务提交时都只把 log buffer 里的 redo log 内容写入 page cache（文件系统缓存）。page cache 是专门用来缓存文件的，这里被缓存的文件就是 redo log 文件。这种方式的性能和安全性都介于前两者中间。
+- ==0==：设置为 0 的时候，表示每次事务提交时不进行刷盘操作。这种方式性能最高，但是也最不安全，因为如果 MySQL 挂了或宕机了，可能会丢失最近 1 秒内的事务。
+- ==1==：设置为 1 的时候，表示每次事务提交时都将进行刷盘操作。这种方式性能最低，但是也最安全，因为只要事务提交成功，redo log 记录就一定在磁盘里，不会有任何数据丢失。
+- ==2==：设置为 2 的时候，表示每次事务提交时都只把 log buffer 里的 redo log 内容写入 page cache（文件系统缓存）。page cache 是专门用来缓存文件的，这里被缓存的文件就是 redo log 文件。这种方式的性能和安全性都介于前两者中间。
 
 刷盘策略`innodb_flush_log_at_trx_commit` 的默认值为 1，设置为 1 的时候才不会丢失任何数据。为了保证事务的持久性，我们必须将其设置为 1。
 
@@ -70,7 +70,7 @@ InnoDB 将 redo log 刷到磁盘上有几种情况：
 
 也就是说，一个没有提交事务的 redo log 记录，也可能会刷盘。
 
-**为什么呢？**
+==为什么呢？==
 
 因为在事务执行过程 redo log 记录是会写入`redo log buffer` 中，这些 redo log 记录会被后台线程刷盘。
 
@@ -104,7 +104,7 @@ InnoDB 将 redo log 刷到磁盘上有几种情况：
 
 ### 日志文件组
 
-硬盘上存储的 redo log 日志文件不只一个，而是以一个**日志文件组**的形式出现的，每个的`redo`日志文件大小都是一样的。
+硬盘上存储的 redo log 日志文件不只一个，而是以一个==日志文件组==的形式出现的，每个的`redo`日志文件大小都是一样的。
 
 比如可以配置为一组`4`个文件，每个文件的大小是 `1GB`，整个 redo log 日志文件组可以记录`4G`的内容。
 
@@ -112,20 +112,20 @@ InnoDB 将 redo log 刷到磁盘上有几种情况：
 
 ![](https://oss.javaguide.cn/github/javaguide/10.png)
 
-在这个**日志文件组**中还有两个重要的属性，分别是 `write pos、checkpoint`
+在这个==日志文件组==中还有两个重要的属性，分别是 `write pos、checkpoint`
 
-- **write pos** 是当前记录的位置，一边写一边后移
-- **checkpoint** 是当前要擦除的位置，也是往后推移
+- ==write pos== 是当前记录的位置，一边写一边后移
+- ==checkpoint== 是当前要擦除的位置，也是往后推移
 
-每次刷盘 redo log 记录到**日志文件组**中，`write pos` 位置就会后移更新。
+每次刷盘 redo log 记录到==日志文件组==中，`write pos` 位置就会后移更新。
 
-每次 MySQL 加载**日志文件组**恢复数据时，会清空加载过的 redo log 记录，并把 `checkpoint` 后移更新。
+每次 MySQL 加载==日志文件组==恢复数据时，会清空加载过的 redo log 记录，并把 `checkpoint` 后移更新。
 
 `write pos` 和 `checkpoint` 之间的还空着的部分可以用来写入新的 redo log 记录。
 
 ![](https://oss.javaguide.cn/github/javaguide/11.png)
 
-如果 `write pos` 追上 `checkpoint` ，表示**日志文件组**满了，这时候不能再写入新的 redo log 记录，MySQL 得停下来，清空一些记录，把 `checkpoint` 推进一下。
+如果 `write pos` 追上 `checkpoint` ，表示==日志文件组==满了，这时候不能再写入新的 redo log 记录，MySQL 得停下来，清空一些记录，把 `checkpoint` 推进一下。
 
 ![](https://oss.javaguide.cn/github/javaguide/12.png)
 
@@ -174,7 +174,7 @@ MySQL830 mysql:8.0.32
 
 相信大家都知道 redo log 的作用和它的刷盘时机、存储形式。
 
-现在我们来思考一个问题：**只要每次把修改后的数据页直接刷盘不就好了，还有 redo log 什么事？**
+现在我们来思考一个问题：==只要每次把修改后的数据页直接刷盘不就好了，还有 redo log 什么事？==
 
 它们不都是刷盘么？差别在哪里？
 
@@ -207,7 +207,7 @@ redo log 它是物理日志，记录内容是“在某个数据页上做了什�
 
 那 binlog 到底是用来干嘛的？
 
-可以说 MySQL 数据库的**数据备份、主备、主主、主从**都离不开 binlog，需要依靠 binlog 来同步数据，保证数据一致性。
+可以说 MySQL 数据库的==数据备份、主备、主主、主从==都离不开 binlog，需要依靠 binlog 来同步数据，保证数据一致性。
 
 ![](https://oss.javaguide.cn/github/javaguide/01-20220305234724956.png)
 
@@ -217,9 +217,9 @@ binlog 会记录所有涉及更新数据的逻辑操作，并且是顺序写。
 
 binlog 日志有三种格式，可以通过`binlog_format`参数指定。
 
-- **statement**
-- **row**
-- **mixed**
+- ==statement==
+- ==row==
+- ==mixed==
 
 指定`statement`，记录的内容是`SQL`语句原文，比如执行一条`update T set update_time=now() where id=1`，记录的内容如下。
 
@@ -233,7 +233,7 @@ binlog 日志有三种格式，可以通过`binlog_format`参数指定。
 
 `row`格式记录的内容看不到详细信息，要通过`mysqlbinlog`工具解析出来。
 
-`update_time=now()`变成了具体的时间`update_time=1627112756247`，条件后面的@1、@2、@3 都是该行数据第 1 个~3 个字段的原始值（**假设这张表只有 3 个字段**）。
+`update_time=now()`变成了具体的时间`update_time=1627112756247`，条件后面的@1、@2、@3 都是该行数据第 1 个~3 个字段的原始值（==假设这张表只有 3 个字段==）。
 
 这样就能保证同步数据的一致性，通常情况下都是指定为`row`，这样可以为数据库的恢复与同步带来更好的可靠性。
 
@@ -255,8 +255,8 @@ binlog 日志刷盘流程如下
 
 ![](https://oss.javaguide.cn/github/javaguide/04-20220305234747840.png)
 
-- **上图的 write，是指把日志写入到文件系统的 page cache，并没有把数据持久化到磁盘，所以速度比较快**
-- **上图的 fsync，才是将数据持久化到磁盘的操作**
+- ==上图的 write，是指把日志写入到文件系统的 page cache，并没有把数据持久化到磁盘，所以速度比较快==
+- ==上图的 fsync，才是将数据持久化到磁盘的操作==
 
 `write`和`fsync`的时机，可以由参数`sync_binlog`控制，默认是`1`。
 
@@ -266,7 +266,7 @@ binlog 日志刷盘流程如下
 
 虽然性能得到提升，但是机器宕机，`page cache`里面的 binlog 会丢失。
 
-为了安全起见，可以设置为`1`，表示每次提交事务都会执行`fsync`，就如同 **redo log 日志刷盘流程** 一样。
+为了安全起见，可以设置为`1`，表示每次提交事务都会执行`fsync`，就如同 ==redo log 日志刷盘流程== 一样。
 
 最后还有一种折中方式，可以设置为`N(N>1)`，表示每次提交事务都`write`，但累积`N`个事务后才`fsync`。
 
@@ -300,13 +300,13 @@ binlog（归档日志）保证了 MySQL 集群架构的数据一致性。
 
 ![](https://oss.javaguide.cn/github/javaguide/03-20220305235104445.png)
 
-为了解决两份日志之间的逻辑一致问题，InnoDB 存储引擎使用**两阶段提交**方案。
+为了解决两份日志之间的逻辑一致问题，InnoDB 存储引擎使用==两阶段提交==方案。
 
-原理很简单，将 redo log 的写入拆成了两个步骤`prepare`和`commit`，这就是**两阶段提交**。
+原理很简单，将 redo log 的写入拆成了两个步骤`prepare`和`commit`，这就是==两阶段提交==。
 
 ![](https://oss.javaguide.cn/github/javaguide/04-20220305234956774.png)
 
-使用**两阶段提交**后，写入 binlog 时发生异常也不会有影响，因为 MySQL 根据 redo log 日志恢复数据时，发现 redo log 还处于`prepare`阶段，并且没有对应 binlog 日志，就会回滚该事务。
+使用==两阶段提交==后，写入 binlog 时发生异常也不会有影响，因为 MySQL 根据 redo log 日志恢复数据时，发现 redo log 还处于`prepare`阶段，并且没有对应 binlog 日志，就会回滚该事务。
 
 ![](https://oss.javaguide.cn/github/javaguide/05-20220305234937243.png)
 
@@ -324,19 +324,19 @@ binlog（归档日志）保证了 MySQL 集群架构的数据一致性。
 
 undo log 属于逻辑日志，记录的是 SQL 语句，比如说事务执行一条 DELETE 语句，那 undo log 就会记录一条相对应的 INSERT 语句。同时，undo log 的信息也会被记录到 redo log 中，因为 undo log 也要实现持久性保护。并且，undo-log 本身是会被删除清理的，例如 INSERT 操作，在事务提交之后就可以清除掉了；UPDATE/DELETE 操作在事务提交不会立即删除，会加入 history list，由后台线程 purge 进行清理。
 
-undo log 是采用 segment（段）的方式来记录的，每个 undo 操作在记录的时候占用一个 **undo log segment**（undo 日志段），undo log segment 包含在 **rollback segment**（回滚段）中。事务开始时，需要为其分配一个 rollback segment。每个 rollback segment 有 1024 个 undo log segment，这有助于管理多个并发事务的回滚需求。
+undo log 是采用 segment（段）的方式来记录的，每个 undo 操作在记录的时候占用一个 ==undo log segment==（undo 日志段），undo log segment 包含在 ==rollback segment==（回滚段）中。事务开始时，需要为其分配一个 rollback segment。每个 rollback segment 有 1024 个 undo log segment，这有助于管理多个并发事务的回滚需求。
 
-通常情况下， **rollback segment header**（通常在回滚段的第一个页）负责管理 rollback segment。rollback segment header 是 rollback segment 的一部分，通常在回滚段的第一个页。**history list** 是 rollback segment header 的一部分，它的主要作用是记录所有已经提交但还没有被清理（purge）的事务的 undo log。这个列表使得 purge 线程能够找到并清理那些不再需要的 undo log 记录。
+通常情况下， ==rollback segment header==（通常在回滚段的第一个页）负责管理 rollback segment。rollback segment header 是 rollback segment 的一部分，通常在回滚段的第一个页。==history list== 是 rollback segment header 的一部分，它的主要作用是记录所有已经提交但还没有被清理（purge）的事务的 undo log。这个列表使得 purge 线程能够找到并清理那些不再需要的 undo log 记录。
 
-另外，`MVCC` 的实现依赖于：**隐藏字段、Read View、undo log**。在内部实现中，InnoDB 通过数据行的 `DB_TRX_ID` 和 `Read View` 来判断数据的可见性，如不可见，则通过数据行的 `DB_ROLL_PTR` 找到 undo log 中的历史版本。每个事务读到的数据版本可能是不一样的，在同一个事务中，用户只能看到该事务创建 `Read View` 之前已经提交的修改和该事务本身做的修改
+另外，`MVCC` 的实现依赖于：==隐藏字段、Read View、undo log==。在内部实现中，InnoDB 通过数据行的 `DB_TRX_ID` 和 `Read View` 来判断数据的可见性，如不可见，则通过数据行的 `DB_ROLL_PTR` 找到 undo log 中的历史版本。每个事务读到的数据版本可能是不一样的，在同一个事务中，用户只能看到该事务创建 `Read View` 之前已经提交的修改和该事务本身做的修改
 
 ## 总结
 
 > 这部分内容为 JavaGuide 的补充：
 
-MySQL InnoDB 引擎使用 **redo log(重做日志)** 保证事务的**持久性**，使用 **undo log(回滚日志)** 来保证事务的**原子性**。
+MySQL InnoDB 引擎使用 ==redo log(重做日志)== 保证事务的==持久性==，使用 ==undo log(回滚日志)== 来保证事务的==原子性==。
 
-MySQL 数据库的**数据备份、主备、主主、主从**都离不开 binlog，需要依靠 binlog 来同步数据，保证数据一致性。
+MySQL 数据库的==数据备份、主备、主主、主从==都离不开 binlog，需要依靠 binlog 来同步数据，保证数据一致性。
 
 ## 参考
 

@@ -7,7 +7,7 @@ tag:
 
 实际项目中，一个接口可能需要同时获取多种不同的数据，然后再汇总返回，这种场景还是挺常见的。举个例子：用户请求获取订单信息，可能需要同时获取用户信息、商品详情、物流信息、商品推荐等数据。
 
-如果是串行（按顺序依次执行每个任务）执行的话，接口的响应速度会非常慢。考虑到这些任务之间有大部分都是 **无前后顺序关联** 的，可以 **并行执行** ，就比如说调用获取商品详情的时候，可以同时调用获取物流信息。通过并行执行多个任务的方式，接口的响应速度会得到大幅优化。
+如果是串行（按顺序依次执行每个任务）执行的话，接口的响应速度会非常慢。考虑到这些任务之间有大部分都是 ==无前后顺序关联== 的，可以 ==并行执行== ，就比如说调用获取商品详情的时候，可以同时调用获取物流信息。通过并行执行多个任务的方式，接口的响应速度会得到大幅优化。
 
 ![](https://oss.javaguide.cn/github/javaguide/high-performance/serial-to-parallel.png)
 
@@ -32,7 +32,7 @@ tag:
 
 `Future` 类是异步思想的典型运用，主要用在一些需要执行耗时任务的场景，避免程序一直原地等待耗时任务执行完成，执行效率太低。具体来说是这样的：当我们执行某一耗时的任务时，可以将这个耗时任务交给一个子线程去异步执行，同时我们可以干点其他事情，不用傻傻等待耗时任务执行完成。等我们的事情干完后，我们再通过 `Future` 类获取到耗时任务的执行结果。这样一来，程序的执行效率就明显提高了。
 
-这其实就是多线程中经典的 **Future 模式**，你可以将其看作是一种设计模式，核心思想是异步调用，主要用在多线程领域，并非 Java 语言独有。
+这其实就是多线程中经典的 ==Future 模式==，你可以将其看作是一种设计模式，核心思想是异步调用，主要用在多线程领域，并非 Java 语言独有。
 
 在 Java 中，`Future` 类只是一个泛型接口，位于 `java.util.concurrent` 包下，其中定义了 5 个方法，主要包括下面这 4 个功能：
 
@@ -248,7 +248,7 @@ future.thenApply(s -> s + "nice!");
 assertEquals("hello!world!", future.get());
 ```
 
-你还可以进行 **流式调用**：
+你还可以进行 ==流式调用==：
 
 ```java
 CompletableFuture<String> future = CompletableFuture.completedFuture("hello!")
@@ -256,7 +256,7 @@ CompletableFuture<String> future = CompletableFuture.completedFuture("hello!")
 assertEquals("hello!world!nice!", future.get());
 ```
 
-**如果你不需要从回调函数中获取返回结果，可以使用 `thenAccept()` 或者 `thenRun()`。这两个方法的区别在于 `thenRun()` 不能访问异步计算的结果。**
+==如果你不需要从回调函数中获取返回结果，可以使用 `thenAccept()` 或者 `thenRun()`。这两个方法的区别在于 `thenRun()` 不能访问异步计算的结果。==
 
 `thenAccept()` 方法的参数是 `Consumer<? super T>` 。
 
@@ -478,7 +478,7 @@ CompletableFuture<String> completableFuture
 assertEquals("hello!world!nice!", completableFuture.get());
 ```
 
-**那 `thenCompose()` 和 `thenCombine()` 有什么区别呢？**
+==那 `thenCompose()` 和 `thenCombine()` 有什么区别呢？==
 
 - `thenCompose()` 可以链接两个 `CompletableFuture` 对象，并将前一个任务的返回结果作为下一个任务的参数，它们之间存在着先后顺序。
 - `thenCombine()` 会在两个任务都执行完成后，把两个任务的结果合并。两个任务是并行执行的，它们之间并没有先后依赖顺序。
@@ -583,7 +583,7 @@ System.out.println("all done. ");
 
 经常和 `allOf()` 方法拿来对比的是 `anyOf()` 方法。
 
-**`allOf()` 方法会等到所有的 `CompletableFuture` 都运行完成之后再返回**
+==`allOf()` 方法会等到所有的 `CompletableFuture` 都运行完成之后再返回==
 
 ```java
 Random rand = new Random();
@@ -626,7 +626,7 @@ future2 done...
 all futures done...
 ```
 
-**`anyOf()` 方法不会等待所有的 `CompletableFuture` 都运行完成之后再返回，只要有一个执行完成即可！**
+==`anyOf()` 方法不会等待所有的 `CompletableFuture` 都运行完成之后再返回，只要有一个执行完成即可！==
 
 ```java
 CompletableFuture<Object> f = CompletableFuture.anyOf(future1, future2);
@@ -659,9 +659,9 @@ abc
 
 为避免这些问题，建议为 `CompletableFuture` 提供自定义线程池，带来以下优势：
 
-- **隔离性**：为不同任务分配独立的线程池，避免全局线程池资源争夺。
-- **资源控制**：根据任务特性调整线程池大小和队列类型，优化性能表现。
-- **异常处理**：通过自定义 `ThreadFactory` 更好地处理线程中的异常情况。
+- ==隔离性==：为不同任务分配独立的线程池，避免全局线程池资源争夺。
+- ==资源控制==：根据任务特性调整线程池大小和队列类型，优化性能表现。
+- ==异常处理==：通过自定义 `ThreadFactory` 更好地处理线程中的异常情况。
 
 ```java
 private ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 10,

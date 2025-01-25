@@ -75,10 +75,10 @@ AWS 云认证考试是 AWS 云计算服务的官方认证考试，旨在验证 I
 
 AWS 认证分为多个级别，包括基础级、从业者级、助理级、专业级和专家级（Specialty），涵盖多个角色和技能：
 
-- **基础级别**：AWS Certified Cloud Practitioner，适合初学者，验证对 AWS 基础知识的理解，是最简单的入门认证。
-- **助理级别**：包括 AWS Certified Solutions Architect – Associate、AWS Certified Developer – Associate 和 AWS Certified SysOps Administrator – Associate，适合中级专业人士，验证其设计、开发和管理 AWS 应用的能力。
-- **专业级别**：包括 AWS Certified Solutions Architect – Professional 和 AWS Certified DevOps Engineer – Professional，适合高级专业人士，验证其在复杂和大规模 AWS 环境中的能力。
-- **专家级别**：包括 AWS Certified Advanced Networking – Specialty、AWS Certified Big Data – Specialty 等，专注于特定技术领域的深度知识和技能。
+- ==基础级别==：AWS Certified Cloud Practitioner，适合初学者，验证对 AWS 基础知识的理解，是最简单的入门认证。
+- ==助理级别==：包括 AWS Certified Solutions Architect – Associate、AWS Certified Developer – Associate 和 AWS Certified SysOps Administrator – Associate，适合中级专业人士，验证其设计、开发和管理 AWS 应用的能力。
+- ==专业级别==：包括 AWS Certified Solutions Architect – Professional 和 AWS Certified DevOps Engineer – Professional，适合高级专业人士，验证其在复杂和大规模 AWS 环境中的能力。
+- ==专家级别==：包括 AWS Certified Advanced Networking – Specialty、AWS Certified Big Data – Specialty 等，专注于特定技术领域的深度知识和技能。
 
 备考建议：[小白入门云计算的最佳方式，是去考一张 AWS 的证书（附备考经验）](https://mp.weixin.qq.com/s/xAqNOnfZ05GDRuUbAiMHIA)
 
@@ -104,7 +104,7 @@ Elastic 认证是由 Elastic 公司提供的一系列专业认证，旨在验证
 
 目前 Elastic 认证证书分为四类：Elastic Certified Engineer、Elastic Certified Analyst、Elastic Certified Observability Engineer、Elastic Certified SIEM Specialist。
 
-比较建议考 **Elastic Certified Engineer**，这个是 Elastic Stack 的基础认证，考察安装、配置、管理和维护 Elasticsearch 集群等核心技能。
+比较建议考 ==Elastic Certified Engineer==，这个是 Elastic Stack 的基础认证，考察安装、配置、管理和维护 Elasticsearch 集群等核心技能。
 
 ![](https://oss.javaguide.cn/github/javaguide/programmer-life/programmer-certification/elastic-certified-engineer-certification.png)
 

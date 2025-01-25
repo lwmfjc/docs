@@ -12,15 +12,15 @@ tag:
 
 SQL 插入记录的方式汇总：
 
-- **普通插入（全字段）** ：`INSERT INTO table_name VALUES (value1, value2, ...)`
-- **普通插入（限定字段）** ：`INSERT INTO table_name (column1, column2, ...) VALUES (value1, value2, ...)`
-- **多条一次性插入** ：`INSERT INTO table_name (column1, column2, ...) VALUES (value1_1, value1_2, ...), (value2_1, value2_2, ...), ...`
-- **从另一个表导入** ：`INSERT INTO table_name SELECT * FROM table_name2 [WHERE key=value]`
-- **带更新的插入** ：`REPLACE INTO table_name VALUES (value1, value2, ...)`（注意这种原理是检测到主键或唯一性索引键重复就删除原记录后重新插入）
+- ==普通插入（全字段）== ：`INSERT INTO table_name VALUES (value1, value2, ...)`
+- ==普通插入（限定字段）== ：`INSERT INTO table_name (column1, column2, ...) VALUES (value1, value2, ...)`
+- ==多条一次性插入== ：`INSERT INTO table_name (column1, column2, ...) VALUES (value1_1, value1_2, ...), (value2_1, value2_2, ...), ...`
+- ==从另一个表导入== ：`INSERT INTO table_name SELECT * FROM table_name2 [WHERE key=value]`
+- ==带更新的插入== ：`REPLACE INTO table_name VALUES (value1, value2, ...)`（注意这种原理是检测到主键或唯一性索引键重复就删除原记录后重新插入）
 
 ### 插入记录（一）
 
-**描述**：牛客后台会记录每个用户的试卷作答记录到 `exam_record` 表，现在有两个用户的作答记录详情如下：
+==描述==：牛客后台会记录每个用户的试卷作答记录到 `exam_record` 表，现在有两个用户的作答记录详情如下：
 
 - 用户 1001 在 2021 年 9 月 1 日晚上 10 点 11 分 12 秒开始作答试卷 9001，并在 50 分钟后提交，得了 90 分；
 - 用户 1002 在 2021 年 9 月 4 日上午 7 点 1 分 2 秒开始作答试卷 9002，并在 10 分钟后退出了平台。
@@ -36,7 +36,7 @@ SQL 插入记录的方式汇总：
 | submit_time | datetime   | YES  |     |                | (NULL)  | 提交时间 |
 | score       | tinyint(4) | YES  |     |                | (NULL)  | 得分     |
 
-**答案**：
+==答案==：
 
 ```sql
 // 存在自增主键，无需手动赋值
@@ -47,7 +47,7 @@ INSERT INTO exam_record (uid, exam_id, start_time, submit_time, score) VALUES
 
 ### 插入记录（二）
 
-**描述**：现有一张试卷作答记录表`exam_record`，结构如下表，其中包含多年来的用户作答试卷记录，由于数据越来越多，维护难度越来越大，需要对数据表内容做精简，历史数据做备份。
+==描述==：现有一张试卷作答记录表`exam_record`，结构如下表，其中包含多年来的用户作答试卷记录，由于数据越来越多，维护难度越来越大，需要对数据表内容做精简，历史数据做备份。
 
 表`exam_record`：
 
@@ -62,7 +62,7 @@ INSERT INTO exam_record (uid, exam_id, start_time, submit_time, score) VALUES
 
 我们已经创建了一张新表`exam_record_before_2021`用来备份 2021 年之前的试题作答记录，结构和`exam_record`表一致，请将 2021 年之前的已完成了的试题作答纪录导入到该表。
 
-**答案**：
+==答案==：
 
 ```sql
 INSERT INTO exam_record_before_2021 (uid, exam_id, start_time, submit_time, score)
@@ -73,7 +73,7 @@ WHERE YEAR(submit_time) < 2021;
 
 ### 插入记录（三）
 
-**描述**：现在有一套 ID 为 9003 的高难度 SQL 试卷，时长为一个半小时，请你将 2021-01-01 00:00:00 作为发布时间插入到试题信息表`examination_info`，不管该 ID 试卷是否存在，都要插入成功，请尝试插入它。
+==描述==：现在有一套 ID 为 9003 的高难度 SQL 试卷，时长为一个半小时，请你将 2021-01-01 00:00:00 作为发布时间插入到试题信息表`examination_info`，不管该 ID 试卷是否存在，都要插入成功，请尝试插入它。
 
 试题信息表`examination_info`：
 
@@ -86,7 +86,7 @@ WHERE YEAR(submit_time) < 2021;
 | duration     | int(11)     | NO   |     |                | (NULL)  | 时长(分钟数) |
 | release_time | datetime    | YES  |     |                | (NULL)  | 发布时间     |
 
-**答案**：
+==答案==：
 
 ```sql
 REPLACE INTO examination_info VALUES
@@ -95,7 +95,7 @@ REPLACE INTO examination_info VALUES
 
 ### 更新记录（一）
 
-**描述**：现在有一张试卷信息表 `examination_info`, 表结构如下图所示：
+==描述==：现在有一张试卷信息表 `examination_info`, 表结构如下图所示：
 
 | Filed        | Type     | Null | Key | Extra          | Default | Comment  |
 | ------------ | -------- | ---- | --- | -------------- | ------- | -------- |
@@ -106,17 +106,17 @@ REPLACE INTO examination_info VALUES
 | duration     | int(11)  | NO   |     |                | (NULL)  | 时长     |
 | release_time | datetime | YES  |     |                | (NULL)  | 发布时间 |
 
-请把**examination_info**表中`tag`为`PYTHON`的`tag`字段全部修改为`Python`。
+请把==examination_info==表中`tag`为`PYTHON`的`tag`字段全部修改为`Python`。
 
-**思路**：这题有两种解题思路，最容易想到的是直接`update + where`来指定条件更新，第二种就是根据要修改的字段进行查找替换
+==思路==：这题有两种解题思路，最容易想到的是直接`update + where`来指定条件更新，第二种就是根据要修改的字段进行查找替换
 
-**答案一**：
+==答案一==：
 
 ```sql
 UPDATE examination_info SET tag = 'Python' WHERE tag='PYTHON'
 ```
 
-**答案二**：
+==答案二==：
 
 ```sql
 UPDATE examination_info
@@ -127,7 +127,7 @@ SET tag = REPLACE(tag,'PYTHON','Python')
 
 ### 更新记录（二）
 
-**描述**：现有一张试卷作答记录表 exam_record，其中包含多年来的用户作答试卷记录，结构如下表：作答记录表 `exam_record`： **`submit_time`** 为 完成时间 （注意这句话）
+==描述==：现有一张试卷作答记录表 exam_record，其中包含多年来的用户作答试卷记录，结构如下表：作答记录表 `exam_record`： ==`submit_time`== 为 完成时间 （注意这句话）
 
 | Filed       | Type       | Null | Key | Extra          | Default | Comment  |
 | ----------- | ---------- | ---- | --- | -------------- | ------- | -------- |
@@ -138,11 +138,11 @@ SET tag = REPLACE(tag,'PYTHON','Python')
 | submit_time | datetime   | YES  |     |                | (NULL)  | 提交时间 |
 | score       | tinyint(4) | YES  |     |                | (NULL)  | 得分     |
 
-**题目要求**：请把 `exam_record` 表中 2021 年 9 月 1 日==之前==开始作答的==未完成==记录全部改为被动完成，即：将完成时间改为'2099-01-01 00:00:00'，分数改为 0。
+==题目要求==：请把 `exam_record` 表中 2021 年 9 月 1 日==之前==开始作答的==未完成==记录全部改为被动完成，即：将完成时间改为'2099-01-01 00:00:00'，分数改为 0。
 
-**思路**：注意题干中的关键字(已经高亮) `" xxx 时间 "`之前这个条件， 那么这里马上就要想到要进行时间的比较 可以直接 `xxx_time < "2021-09-01 00:00:00",` 也可以采用`date()`函数来进行比较；第二个条件就是 `"未完成"`， 即完成时间为 NULL，也就是题目中的提交时间 ----- `submit_time 为 NULL`。
+==思路==：注意题干中的关键字(已经高亮) `" xxx 时间 "`之前这个条件， 那么这里马上就要想到要进行时间的比较 可以直接 `xxx_time < "2021-09-01 00:00:00",` 也可以采用`date()`函数来进行比较；第二个条件就是 `"未完成"`， 即完成时间为 NULL，也就是题目中的提交时间 ----- `submit_time 为 NULL`。
 
-**答案**：
+==答案==：
 
 ```sql
 UPDATE exam_record SET submit_time = '2099-01-01 00:00:00', score = 0 WHERE DATE(start_time) < "2021-09-01" AND submit_time IS null
@@ -150,9 +150,9 @@ UPDATE exam_record SET submit_time = '2099-01-01 00:00:00', score = 0 WHERE DATE
 
 ### 删除记录（一）
 
-**描述**：现有一张试卷作答记录表 `exam_record`，其中包含多年来的用户作答试卷记录，结构如下表：
+==描述==：现有一张试卷作答记录表 `exam_record`，其中包含多年来的用户作答试卷记录，结构如下表：
 
-作答记录表`exam_record：` **`start_time`** 是试卷开始时间`submit_time` 是交卷，即结束时间。
+作答记录表`exam_record：` ==`start_time`== 是试卷开始时间`submit_time` 是交卷，即结束时间。
 
 | Filed       | Type       | Null | Key | Extra          | Default | Comment  |
 | ----------- | ---------- | ---- | --- | -------------- | ------- | -------- |
@@ -163,9 +163,9 @@ UPDATE exam_record SET submit_time = '2099-01-01 00:00:00', score = 0 WHERE DATE
 | submit_time | datetime   | YES  |     |                | (NULL)  | 提交时间 |
 | score       | tinyint(4) | YES  |     |                | (NULL)  | 得分     |
 
-**要求**：请删除`exam_record`表中作答时间小于 5 分钟整且分数不及格（及格线为 60 分）的记录；
+==要求==：请删除`exam_record`表中作答时间小于 5 分钟整且分数不及格（及格线为 60 分）的记录；
 
-**思路**：这一题虽然是练习删除，仔细看确是考察对时间函数的用法，这里提及的分钟数比较，常用的函数有 **`TIMEDIFF`**和**`TIMESTAMPDIFF`** ，两者用法稍有区别，后者更为灵活，这都是看个人习惯。
+==思路==：这一题虽然是练习删除，仔细看确是考察对时间函数的用法，这里提及的分钟数比较，常用的函数有 ==`TIMEDIFF`==和==`TIMESTAMPDIFF`== ，两者用法稍有区别，后者更为灵活，这都是看个人习惯。
 
 1.　 `TIMEDIFF`：两个时间之间的差值
 
@@ -196,7 +196,7 @@ YEAR：年
 
 这题需要进行分钟的比较，那么就是 TIMESTAMPDIFF(MINUTE, 开始时间， 结束时间) < 5
 
-**答案**：
+==答案==：
 
 ```sql
 DELETE FROM exam_record WHERE MINUTE (TIMEDIFF(submit_time , start_time)) < 5 AND score < 60
@@ -208,7 +208,7 @@ DELETE FROM exam_record WHERE TIMESTAMPDIFF(MINUTE, start_time, submit_time) < 5
 
 ### 删除记录（二）
 
-**描述**：现有一张试卷作答记录表`exam_record`，其中包含多年来的用户作答试卷记录，结构如下表：
+==描述==：现有一张试卷作答记录表`exam_record`，其中包含多年来的用户作答试卷记录，结构如下表：
 
 作答记录表`exam_record`：`start_time` 是试卷开始时间，`submit_time` 是交卷时间，即结束时间，如果未完成的话，则为空。
 
@@ -221,13 +221,13 @@ DELETE FROM exam_record WHERE TIMESTAMPDIFF(MINUTE, start_time, submit_time) < 5
 | submit_time | datetime   | YES  |     |                | (NULL)  | 提交时间 |
 | score       | tinyint(4) | YES  |     |                | (NULL)  | 分数     |
 
-**要求**：请删除`exam_record`表中未完成作答==或==作答时间小于 5 分钟整的记录中，开始作答时间最早的 3 条记录。
+==要求==：请删除`exam_record`表中未完成作答==或==作答时间小于 5 分钟整的记录中，开始作答时间最早的 3 条记录。
 
-**思路**：这题比较简单，但是要注意题干中给出的信息，结束时间，如果未完成的话，则为空，这个其实就是一个条件
+==思路==：这题比较简单，但是要注意题干中给出的信息，结束时间，如果未完成的话，则为空，这个其实就是一个条件
 
-还有一个条件就是小于 5 分钟，跟上题类似，但是这里是**或**，即两个条件满足一个就行；另外就是稍微考察到了排序和 limit 的用法。
+还有一个条件就是小于 5 分钟，跟上题类似，但是这里是==或==，即两个条件满足一个就行；另外就是稍微考察到了排序和 limit 的用法。
 
-**答案**：
+==答案==：
 
 ```sql
 DELETE FROM exam_record WHERE submit_time IS null OR TIMESTAMPDIFF(MINUTE, start_time, submit_time) < 5
@@ -238,7 +238,7 @@ LIMIT 3
 
 ### 删除记录（三）
 
-**描述**：现有一张试卷作答记录表 exam_record，其中包含多年来的用户作答试卷记录，结构如下表：
+==描述==：现有一张试卷作答记录表 exam_record，其中包含多年来的用户作答试卷记录，结构如下表：
 
 | Filed       | Type       | Null | Key | Extra          | Default | Comment  |
 | ----------- | ---------- | :--: | --- | -------------- | ------- | -------- |
@@ -249,9 +249,9 @@ LIMIT 3
 | submit_time | datetime   | YES  |     |                | (NULL)  | 提交时间 |
 | score       | tinyint(4) | YES  |     |                | (NULL)  | 分数     |
 
-**要求**：请删除`exam_record`表中所有记录，==并重置自增主键==
+==要求==：请删除`exam_record`表中所有记录，==并重置自增主键==
 
-**思路**：这题考察对三种删除语句的区别，注意高亮部分，要求重置主键；
+==思路==：这题考察对三种删除语句的区别，注意高亮部分，要求重置主键；
 
 - `DROP`: 清空表，删除表结构，不可逆
 - `TRUNCATE`: 格式化表，不删除表结构，不可逆
@@ -263,7 +263,7 @@ LIMIT 3
 
 同理也可以采用`DROP`来做，直接删除整张表，包括表结构，然后再新建表即可。
 
-**答案**：
+==答案==：
 
 ```sql
 TRUNCATE  exam_record;
@@ -273,7 +273,7 @@ TRUNCATE  exam_record;
 
 ### 创建一张新表
 
-**描述**：现有一张用户信息表，其中包含多年来在平台注册过的用户信息，随着牛客平台的不断壮大，用户量飞速增长，为了高效地为高活跃用户提供服务，现需要将部分用户拆分出一张新表。
+==描述==：现有一张用户信息表，其中包含多年来在平台注册过的用户信息，随着牛客平台的不断壮大，用户量飞速增长，为了高效地为高活跃用户提供服务，现需要将部分用户拆分出一张新表。
 
 原来的用户信息表：
 
@@ -287,7 +287,7 @@ TRUNCATE  exam_record;
 | job           | varchar(32) | YES  |     | (NULL)            |                | 职业方向 |
 | register_time | datetime    | YES  |     | CURRENT_TIMESTAMP |                | 注册时间 |
 
-作为数据分析师，请**创建一张优质用户信息表 user_info_vip**，表结构和用户信息表一致。
+作为数据分析师，请==创建一张优质用户信息表 user_info_vip==，表结构和用户信息表一致。
 
 你应该返回的输出如下表格所示，请写出建表语句将表格中所有限制和说明记录到表里。
 
@@ -301,7 +301,7 @@ TRUNCATE  exam_record;
 | job           | varchar(32) | YES  |     | (NULL)            |                | 职业方向 |
 | register_time | datetime    | YES  |     | CURRENT_TIMESTAMP |                | 注册时间 |
 
-**思路**：如果这题给出了旧表的名称，可直接`create table 新表 as select * from 旧表;` 但是这题并没有给出旧表名称，所以需要自己创建，注意默认值和键的创建即可，比较简单。（注意：如果是在牛客网上面执行，请注意 comment 中要和题目中的 comment 保持一致，包括大小写，否则不通过，还有字符也要设置）
+==思路==：如果这题给出了旧表的名称，可直接`create table 新表 as select * from 旧表;` 但是这题并没有给出旧表名称，所以需要自己创建，注意默认值和键的创建即可，比较简单。（注意：如果是在牛客网上面执行，请注意 comment 中要和题目中的 comment 保持一致，包括大小写，否则不通过，还有字符也要设置）
 
 答案：
 
@@ -319,9 +319,9 @@ CREATE TABLE IF NOT EXISTS user_info_vip(
 
 ### 修改表
 
-**描述**： 现有一张用户信息表`user_info`，其中包含多年来在平台注册过的用户信息。
+==描述==： 现有一张用户信息表`user_info`，其中包含多年来在平台注册过的用户信息。
 
-**用户信息表 `user_info`：**
+==用户信息表 `user_info`：==
 
 | Filed         | Type        | Null | Key | Default           | Extra          | Comment  |
 | ------------- | ----------- | ---- | --- | ----------------- | -------------- | -------- |
@@ -333,9 +333,9 @@ CREATE TABLE IF NOT EXISTS user_info_vip(
 | job           | varchar(32) | YES  |     | (NULL)            |                | 职业方向 |
 | register_time | datetime    | YES  |     | CURRENT_TIMESTAMP |                | 注册时间 |
 
-**要求：**请在用户信息表，字段 `level` 的后面增加一列最多可保存 15 个汉字的字段 `school`；并将表中 `job` 列名改为 `profession`，同时 `varchar` 字段长度变为 10；`achievement` 的默认值设置为 0。
+==要求：==请在用户信息表，字段 `level` 的后面增加一列最多可保存 15 个汉字的字段 `school`；并将表中 `job` 列名改为 `profession`，同时 `varchar` 字段长度变为 10；`achievement` 的默认值设置为 0。
 
-**思路**：首先做这题之前，需要了解 ALTER 语句的基本用法：
+==思路==：首先做这题之前，需要了解 ALTER 语句的基本用法：
 
 - 添加一列：`ALTER TABLE 表名 ADD COLUMN 列名 类型 【first | after 字段名】;`（first ： 在某列之前添加，after 反之）
 - 修改列的类型或约束：`ALTER TABLE 表名 MODIFY COLUMN 列名 新类型 【新约束】;`
@@ -348,7 +348,7 @@ CREATE TABLE IF NOT EXISTS user_info_vip(
 
 在修改时，如果有多个修改项，可以写到一起，但要注意格式
 
-**答案**：
+==答案==：
 
 ```sql
 ALTER TABLE user_info
@@ -359,13 +359,13 @@ ALTER TABLE user_info
 
 ### 删除表
 
-**描述**：现有一张试卷作答记录表 `exam_record`，其中包含多年来的用户作答试卷记录。一般每年都会为 `exam_record` 表建立一张备份表 `exam_record_{YEAR}，{YEAR}` 为对应年份。
+==描述==：现有一张试卷作答记录表 `exam_record`，其中包含多年来的用户作答试卷记录。一般每年都会为 `exam_record` 表建立一张备份表 `exam_record_{YEAR}，{YEAR}` 为对应年份。
 
 现在随着数据越来越多，存储告急，请你把很久前的（2011 到 2014 年）备份表都删掉（如果存在的话）。
 
-**思路**：这题很简单，直接删就行，如果嫌麻烦，可以将要删除的表用逗号隔开，写到一行；这里肯定会有小伙伴问：如果要删除很多张表呢？放心，如果要删除很多张表，可以写脚本来进行删除。
+==思路==：这题很简单，直接删就行，如果嫌麻烦，可以将要删除的表用逗号隔开，写到一行；这里肯定会有小伙伴问：如果要删除很多张表呢？放心，如果要删除很多张表，可以写脚本来进行删除。
 
-**答案**：
+==答案==：
 
 ```sql
 DROP TABLE IF EXISTS exam_record_2011;
@@ -376,7 +376,7 @@ DROP TABLE IF EXISTS exam_record_2014;
 
 ### 创建索引
 
-**描述**：现有一张试卷信息表 `examination_info`，其中包含各种类型试卷的信息。为了对表更方便快捷地查询，需要在 `examination_info` 表创建以下索引，
+==描述==：现有一张试卷信息表 `examination_info`，其中包含各种类型试卷的信息。为了对表更方便快捷地查询，需要在 `examination_info` 表创建以下索引，
 
 规则如下：在 `duration` 列创建普通索引 `idx_duration`、在 `exam_id` 列创建唯一性索引 `uniq_idx_exam_id`、在 `tag` 列创建全文索引 `full_idx_tag`。
 
@@ -390,7 +390,7 @@ DROP TABLE IF EXISTS exam_record_2014;
 
 备注：后台会通过 `SHOW INDEX FROM examination_info` 语句来对比输出结果
 
-**思路**：做这题首先需要了解常见的索引类型：
+==思路==：做这题首先需要了解常见的索引类型：
 
 - B-Tree 索引：B-Tree（或称为平衡树）索引是最常见和默认的索引类型。它适用于各种查询条件，可以快速定位到符合条件的数据。B-Tree 索引适用于普通的查找操作，支持等值查询、范围查询和排序。
 - 唯一索引：唯一索引与普通的 B-Tree 索引类似，不同之处在于它要求被索引的列的值是唯一的。这意味着在插入或更新数据时，MySQL 会验证索引列的唯一性。
@@ -413,7 +413,7 @@ DROP TABLE IF EXISTS exam_record_2014;
 
 有了以上的基础知识之后，该题答案也就浮出水面了。
 
-**答案**：
+==答案==：
 
 ```sql
 ALTER TABLE examination_info
@@ -424,9 +424,9 @@ ALTER TABLE examination_info
 
 ### 删除索引
 
-**描述**：请删除`examination_info`表上的唯一索引 uniq_idx_exam_id 和全文索引 full_idx_tag。
+==描述==：请删除`examination_info`表上的唯一索引 uniq_idx_exam_id 和全文索引 full_idx_tag。
 
-**思路**：该题考察删除索引的基本语法：
+==思路==：该题考察删除索引的基本语法：
 
 ```sql
 -- 使用 DROP INDEX 删除索引
@@ -438,9 +438,9 @@ ALTER TABLE employees DROP INDEX idx_email;
 
 这里需要注意的是：在 MySQL 中，一次删除多个索引的操作是不支持的。每次删除索引时，只能指定一个索引名称进行删除。
 
-而且 **DROP** 命令需要慎用！！！
+而且 ==DROP== 命令需要慎用！！！
 
-**答案**：
+==答案==：
 
 ```sql
 DROP INDEX uniq_idx_exam_id ON examination_info;

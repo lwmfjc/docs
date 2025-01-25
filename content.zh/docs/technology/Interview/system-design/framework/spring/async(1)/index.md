@@ -5,7 +5,7 @@ tag:
   - Spring
 ---
 
-`@Async` 注解由 Spring 框架提供，被该注解标注的类或方法会在 **异步线程** 中执行。这意味着当方法被调用时，调用者将不会等待该方法执行完成，而是可以继续执行后续的代码。
+`@Async` 注解由 Spring 框架提供，被该注解标注的类或方法会在 ==异步线程== 中执行。这意味着当方法被调用时，调用者将不会等待该方法执行完成，而是可以继续执行后续的代码。
 
 `@Async` 注解的使用非常简单，需要两个步骤：
 
@@ -44,7 +44,7 @@ public class MyService {
 
 ## @Async 原理分析
 
-`@Async` 可以异步执行任务，本质上是使用 **动态代理** 来实现的。通过 Spring 中的后置处理器 `BeanPostProcessor` 为使用 `@Async` 注解的类创建动态代理，之后 `@Async` 注解方法的调用会被动态代理拦截，在拦截器中将方法的执行封装为异步任务提交给线程池处理。
+`@Async` 可以异步执行任务，本质上是使用 ==动态代理== 来实现的。通过 Spring 中的后置处理器 `BeanPostProcessor` 为使用 `@Async` 注解的类创建动态代理，之后 `@Async` 注解方法的调用会被动态代理拦截，在拦截器中将方法的执行封装为异步任务提交给线程池处理。
 
 接下来，我们来详细分析一下。
 
@@ -281,7 +281,7 @@ public class AsyncExecutionInterceptor extends AsyncExecutionAspectSupport imple
 
 #### 1、获取异步任务执行器
 
-在 `determineAsyncExecutor()` 方法中，会获取异步任务的执行器（即执行异步任务的 **线程池** ）。代码如下：
+在 `determineAsyncExecutor()` 方法中，会获取异步任务的执行器（即执行异步任务的 ==线程池== ）。代码如下：
 
 ```JAVA
 // 确定异步任务的执行器
@@ -376,9 +376,9 @@ protected void doExecute(Runnable task) {
 }
 ```
 
-**建议：在使用 `@Async` 时需要自己指定线程池，避免 Spring 默认线程池带来的风险。**
+==建议：在使用 `@Async` 时需要自己指定线程池，避免 Spring 默认线程池带来的风险。==
 
-在 `@Async` 注解中的 `value` 指定了线程池的限定符，根据限定符可以获取 **自定义的线程池** 。获取限定符的代码如下：
+在 `@Async` 注解中的 `value` 指定了线程池的限定符，根据限定符可以获取 ==自定义的线程池== 。获取限定符的代码如下：
 
 ```JAVA
 // AnnotationAsyncExecutionInterceptor
@@ -549,7 +549,7 @@ public class AsyncService {
 
 `@Async` 注解会在以下几个场景失效，需要注意：
 
-**1、同一类中调用异步方法**
+==1、同一类中调用异步方法==
 
 如果你在同一个类内部调用一个`@Async`注解的方法，那这个方法将不会异步执行。
 
@@ -569,7 +569,7 @@ public class MyService {
 }
 ```
 
-这是因为 Spring 的异步机制是通过 **代理** 实现的，而在同一个类内部的方法调用会绕过 Spring 的代理机制，也就是绕过了代理对象，直接通过 this 引用调用的。由于没有经过代理，所有的代理相关的处理（即将任务提交线程池异步执行）都不会发生。
+这是因为 Spring 的异步机制是通过 ==代理== 实现的，而在同一个类内部的方法调用会绕过 Spring 的代理机制，也就是绕过了代理对象，直接通过 this 引用调用的。由于没有经过代理，所有的代理相关的处理（即将任务提交线程池异步执行）都不会发生。
 
 为了避免这个问题，比较推荐的做法是将异步方法移至另一个 Spring Bean 中。
 
@@ -593,7 +593,7 @@ public class MyService {
 }
 ```
 
-**2、使用 static 关键字修饰异步方法**
+==2、使用 static 关键字修饰异步方法==
 
 如果`@Async`注解的方法被 `static` 关键字修饰，那这个方法将不会异步执行。
 
@@ -621,7 +621,7 @@ public class SClass {
 }
 ```
 
-**3、忘记开启异步支持**
+==3、忘记开启异步支持==
 
 Spring Boot 默认情况下不启用异步支持，确保在主配置类 `Application` 上添加`@EnableAsync`注解以启用异步功能。
 
@@ -635,7 +635,7 @@ public class Application {
 }
 ```
 
-**4、`@Async` 注解的方法所在的类必须是 Spring Bean**
+==4、`@Async` 注解的方法所在的类必须是 Spring Bean==
 
 `@Async` 注解的方法必须位于 Spring 管理的 Bean 中，只有这样，Spring 才能在创建 Bean 时应用代理，代理能够拦截方法调用并实现异步执行的逻辑。如果该方法不在 Spring 管理的 bean 中，Spring 就无法创建必要的代理，`@Async` 注解就不会产生任何效果。
 
