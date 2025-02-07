@@ -12,5 +12,6 @@
     "book01",
     "book02"
   ],
-  "textFontFamily": "霞鹜文楷等宽"
+  "textFontFamily": "霞鹜文楷等宽",
+  "showRibbon": true
 }

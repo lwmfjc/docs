@@ -37,7 +37,7 @@
   "Appearance-dark@@card-highlight-dark": true,
   "Editor@@line-hover-indicator": true,
   "Editor@@text-align-justify": true,
-  "Editor@@img-center-align": true,
+  "Editor@@img-center-align": false,
   "Editor@@img-darken": true,
   "Mobile@@card-layout-pad-open": true,
   "Mobile@@drawer-phone-full-width": true,
@@ -64,7 +64,7 @@
   "Appearance-light@@border-radius-activated-tab-header-light": "6px",
   "Appearance-light@@shadow-activated-tab-header-light": "0px 3px 0px var(--background-primary),0px 12px 0px -6px var(--color-accent)",
   "Appearance-light@@card-layout-open-light": true,
-  "Components@@tab-autohide": true,
+  "Components@@tab-autohide": false,
   "Components@@status-bar-autohide": true,
   "Components@@Ribbon-autohide": true,
   "Components@@nav-header-autohide": true,
@@ -78,5 +78,6 @@
   "Appearance-dark@@workspace-background-translucent@@dark": "#00000099",
   "Appearance-light@@mod-left-split-background-select-light": "mod-left-split-background-transparent-light",
   "Appearance-light@@mod-right-split-background-select-light": "mod-right-split-background-transparent-light",
-  "Appearance-light@@mod-root-split-background-select-light": "mod-root-split-background-transparent-light"
+  "Appearance-light@@mod-root-split-background-select-light": "mod-root-split-background-transparent-light",
+  "Editor@@zoom-off": false
 }

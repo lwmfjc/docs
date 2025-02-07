@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "a3f25c3df456b5d5",
+        "id": "e26700d897784064",
         "type": "tabs",
         "children": [
           {
-            "id": "b9597a8c2031c7f8",
+            "id": "87cda454e0e6d94b",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-                "mode": "preview",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "index"
+              "title": "新标签页"
             }
           }
         ]
@@ -40,7 +36,8 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "byModifiedTime"
+                "sortOrder": "byModifiedTime",
+                "autoReveal": false
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
@@ -52,10 +49,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md"
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "index 的大纲"
+              "title": "大纲"
             }
           },
           {
@@ -90,7 +89,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 261.50574016571045
   },
   "right": {
     "id": "45804219d09d1da3",
@@ -106,7 +105,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "file": "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -150,20 +149,23 @@
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {},
+              "state": {
+                "file": "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md"
+              },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "index 的大纲"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 261.5,
     "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
+      "obsidian-local-images-plus:Local Images Plus  0.16.1\r\nLocalize attachments (plugin folder)": false,
       "switcher:打开快速切换": true,
       "graph:查看关系图谱": true,
       "canvas:新建白板": true,
@@ -176,54 +178,54 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "366b3151582cceb1",
+  "active": "87cda454e0e6d94b",
   "lastOpenFiles": [
-    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
-    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第0章_万里长征第一步(非常重要)-如何愉快的阅读本小册/index.md",
-    "content.zh/docs/culture/恰同学少年/第1章-第5章/index.md",
     "content.zh/docs/culture/汉字就是这么来的/01走进汉字世界/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000021.jpeg",
+    "content.zh/docs/culture/古代天文历法讲座/第1讲-第3讲/index.md",
     "content.zh/docs/culture/汉字就是这么来的/_index.md",
+    "content.zh/docs/technology/Interview/java/basis/why-there-only-value-passing-in-java/index.md",
+    "content.zh.zip",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/a49554bd895eeadca1e0cfceabce14cc_MD5.ezgVfNUf.jpg",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/linkedlist-algorithm-problems/img/402be10d4d7679eb164cc4695b753def_MD5.ScnptMKE.jpg",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/f3c4a306a44463cd2516088914b44096_MD5.AQCKTVBj.jpg",
+    "content.zh/docs/technology/Interview/java/basis/why-there-only-value-passing-in-java/img/8f68278c4e7855a572ac75b72ec8dfd1_MD5.jpg",
+    "content.zh/docs/technology/Interview/java/basis/why-there-only-value-passing-in-java/img/5a3a1049875f9b94eaa075accf73ebbf_MD5.jpg",
+    "content.zh/docs/technology/Interview/java/basis/why-there-only-value-passing-in-java/img/982de8f94267e05d4d0be1aa128e9ce5_MD5.jpg",
+    "content.zh/docs/technology/Interview/java/basis/java-keyword-summary/index.md",
+    "content.zh/docs/technology/Interview/java/basis/java-keyword-summary/img/4b1a2cbe6fc46c8ffbd73e7da395c059_MD5.jpg",
+    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-03/index.md",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/0a4e3ecbbb5d1096587966f690f6b396_MD5.gif",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/f67de4825091e76671ddda84a782bc26_MD5.gif",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/0ee918a10bb77d62846060b1eb27bbfb_MD5.gif",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/linkedlist-algorithm-problems/img",
+    "content.zh/docs/technology/Interview/cs-basics/algorithms/the-sword-refers-to-offer/img",
+    "content.zh/docs/technology/Interview/cs-basics/data-structure/bloom-filter/img",
+    "content.zh/docs/technology/Interview/cs-basics/data-structure/graph/img",
+    "content.zh/docs/technology/Interview/cs-basics/data-structure/tree/img",
+    "content.zh/docs/technology/Interview/cs-basics/data-structure/linear-data-structure/img",
+    "content.zh/docs/technology/Interview/cs-basics/network/application-layer-protocol/img",
+    "content.zh/docs/technology/Interview/cs-basics/network/computer-network-xiexiren-summary/img",
+    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
     "content.zh/docs/test/test2/index.md",
-    "public/zh/docs/test/test2/index.html",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/index.html",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000220.jpeg",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000219.jpeg",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000218.jpeg",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000217.jpeg",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000216.jpeg",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000215.jpeg",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000214.jpeg",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000213.jpeg",
-    "public/zh/docs/culture/汉字就是这么来的/01走进汉字世界/img/000212.jpeg",
-    "public/zh.search.min.993d3c9a72513f4a1c99db248175bd03604fa685af9afd1e5b5e1e38bf616223.js",
-    "public/zh.search-data.min.647cdb52c18a6edd1ca62253fb4b3f376b7fbd37489f702ee8f3baab78715993.json",
-    "public/zh/tags/走进汉字世界/index.xml",
-    "public/zh/tags/汉字就是这么来的/index.xml",
-    "public/zh/docs/culture/汉字就是这么来的/index.xml",
-    "public/zh/tags/走进汉字世界/page/1/index.html",
-    "public/zh/tags/走进汉字世界/page/1",
-    "public/zh/tags/走进汉字世界/page",
-    "content.zh/docs/culture/汉字就是这么来的/Yi Zi Jiu Shi Zhe Yao Lai De _Zi Li (935)/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/Yi Zi Jiu Shi Zhe Yao Lai De _Zi Li (933)/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/Yi Zi Jiu Shi Zhe Yao Lai De _Zou J (931)/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/Yi Zi Jiu Shi Zhe Yao Lai De _Zi Li (936)/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/Yi Zi Jiu Shi Zhe Yao Lai De _Zi Li (934)/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/Yi Zi Jiu Shi Zhe Yao Lai De _Zi Li (932)/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/Yi Zi Jiu Shi Zhe Yao Lai De (Quan (296)/index.md",
-    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-    "content.zh/docs/culture/天纪/人间道/上经/29坎爲水/index.md",
-    "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
-    "content.zh/docs/culture/论语/论语译注_杨伯峻/02为政篇第二/index.md",
-    "content.zh/docs/culture/天纪/_index.md",
-    "content.zh/docs/culture/天纪/人间道/01乾为天/index.md",
-    "content.zh/docs/culture/天纪/人间道/06天水讼/index.md",
-    "content.zh/docs/culture/天纪/人间道/05水天需/index.md",
-    "content.zh/docs/culture/天纪/人间道/04山水蒙/index.md",
-    "content.zh/docs/culture/天纪/人间道/03水雷屯/index.md",
-    "content.zh/docs/culture/天纪/人间道/02坤爲地/index.md",
-    "content.zh/docs/culture/天纪/人间道/01乾爲天/index.md",
-    "content.zh/docs/culture/天纪/人间道/63Shui Huo Ji Ji (927)/index.md",
+    "content.zh/docs/technology/Interview/_index.md",
+    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-02/index.md",
+    "content.zh/docs/technology/Interview/java/collection/arraylist-source-code/index.md",
+    "content.zh/docs/technology/Interview/java/_index.md",
+    "content.zh/docs/technology/Interview/java/basis/_index.md",
+    "content.zh/docs/technology/MySQL/_index.md",
+    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/视频笔记/05MachineLevelProgramming01Basic/index.md",
+    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第0章_万里长征第一步(非常重要)-如何愉快的阅读本小册/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/_index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第一部分 程序结构和执行 [2-6]/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第三部分 程序间的交互和通信 [10-12]/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第4章 处理器体系结构/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第3章 程序的机器级表示/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第2章 信息的表示和处理/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第1章 计算机系统漫游/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/书籍/附录A-封底/index.md",
+    "content.zh/docs/technology/System/深入理解计算机系统/书籍/封面-目录/index.md",
     "未命名.canvas"
   ]
 }
