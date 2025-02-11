@@ -9,7 +9,9 @@ tags:
 date: 2025-01-03T23:42:32+08:00
 lastmod: 2025-01-03T23:42:32+08:00
 cssAttach:
-  - book
+  - book01
+cssclasses:
+  - book01
 ---
 ![](img/000003.jpeg) 
 
