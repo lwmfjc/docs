@@ -319,7 +319,7 @@ int e = --d;
 static final int hash(Object key) {
     int h;
     // key.hashCode()：返回散列值也就是hashcode
-    // ^：按位异或
+    // ^：按位异或（同为0，异为1）
     // >>>:无符号右移，忽略符号位，空位都以0补齐
     return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
   }
