@@ -1,6 +1,6 @@
 ---
-title: "01"
-description: "01"
+title: 01基础
+description: 01基础
 categories:
   - 学习
 tags:
@@ -17,9 +17,9 @@ cssAttach:
 ![](img/ly-20250315194748427.png)  
 # 部分扩展知识
 MySQL分为服务端和客户端（两进程），SQLite是进程程序，客户端和服务端都在同一个进程操作数据
-# 安装(windows下)
+# 安装(windows)
 安装目录下包括数据目录(Data/)和配置文件(my.ini)
-# 安装(debian下)
+# 安装(debian)
 ## 数据目录
 ```shell
 root@db211:/etc/mysql# ls -l /var/lib/mysql | awk '{print $1,$3,$4,$9}'
