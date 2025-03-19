@@ -42,7 +42,7 @@ span.cm-highlight.cm-inline-code{
 
 
 /*自注--红色缩小字体*/
-p del,mark del, span.cm-strikethrough  {
+p del,mark del, li del, span.cm-strikethrough  {
     text-decoration: unset;
     font-size: 0.8em;
     color: rgba(255, 0, 0, 0.8);
@@ -145,6 +145,12 @@ img[alt^="i-"] {
 pre:has(code) {
     font-size: 0.7em;
 }*/
+
+/*li项目项缩进处理*/
+.HyperMD-list-line.HyperMD-list-line-1.cm-line{
+  padding-inline-start: 0em ;
+  text-indent: 0px ;
+}
 
 
 /*覆盖默认的hr样式*/
