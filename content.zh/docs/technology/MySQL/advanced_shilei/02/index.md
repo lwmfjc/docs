@@ -145,7 +145,7 @@ mysql> select * from t_user limit 1000000,20;
 
 ```
  (Extra: Using filesort，外排序，不一定涉及磁盘io)  
-~~Using filesort仅仅表示没有使用索引的排序，事实上filesort这个名字很糟糕，并不意味着在硬盘上排序，filesort与文件无关。因此消除Using filesort的方法就是让查询sql的排序走索引。它跟文件没有任何关系，实际上是内部的一个快速排序~~
+~~Using filesort仅仅表示没有使用索引的排序，事实上filesort这个名字很糟糕，并不意味着在硬盘上排序，filesort与文件无关。因此消除Using filesort的方法就是让查询sql的排序走索引。它跟文件没有任何关系，实际上是内部(内存中)的一个快速排序(也有可能是外部排序)~~
 
 ```mysql
 mysql> desc user \G;
