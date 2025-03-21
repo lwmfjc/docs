@@ -703,6 +703,7 @@ possible_keys: PRIMARY
         Extra: NULL
 2 rows in set, 1 warning (0.00 sec)
 #之所以b变成了驱动表，是因为sql语句被优化器优化了
+#explain之后使用show warnings ，查看sql语句被优化成什么样
 mysql> show warnings \G
 *************************** 1. row ***************************
   Level: Note

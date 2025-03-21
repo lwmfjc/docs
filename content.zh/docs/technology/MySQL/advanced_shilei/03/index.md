@@ -369,3 +369,100 @@ possible_keys: PRIMARY,idx_age
 ```
 ## 面试切入点
 从什么地方获取运行时间长、耗时的sql，再用explain分析它
+## 慢查询日志
+```mysql
+mysql> show variables like '%slow_query%' \G
+*************************** 1. row ***************************
+Variable_name: slow_query_log
+        Value: OFF
+*************************** 2. row ***************************
+Variable_name: slow_query_log_file
+        Value: /var/lib/mysql/db211-slow.log
+#时间 
+```
+修改：  
+```mysql
+set long_query_time = 0.01;//只对某session有效，但重启mysql后失效(可以设置global让他对新的session有用)
+set global slow_query_log=ON; //全局起作用（只对之后的新session起全局作用）, 但重启mysql后失效。
+#查询是否设置成功
+mysql> show variables like 'slow_query%' \G
+*************************** 1. row ***************************
+Variable_name: slow_query_log
+        Value: ON
+*************************** 2. row ***************************
+Variable_name: slow_query_log_file
+        Value: /var/lib/mysql/db211-slow.log
+```
+慢查询日志：  
+```mysql
+#/var/lib/mysql/db211-slow.log
+/usr/sbin/mysqld, Version: 5.7.33 (MySQL Community Server (GPL)). started with:
+Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+# Time: 2025-03-21T04:49:56.308214Z
+# User@Host: root[root] @ localhost []  Id:    22
+# Query_time: 0.027501  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0
+use test;
+SET timestamp=1742532596;
+set global slow_query_log=ON;
+# Time: 2025-03-21T04:52:55.935025Z
+# User@Host: root[root] @ localhost []  Id:    22
+# Query_time: 0.920988  Lock_time: 0.000147 Rows_sent: 1  Rows_examined: 1000001
+SET timestamp=1742532775;
+select * from t_user limit 1000000,1;
+# Time: 2025-03-21T04:55:30.781012Z
+# User@Host: root[root] @ localhost []  Id:    22
+# Query_time: 1.078875  Lock_time: 0.000248 Rows_sent: 1  Rows_examined: 2000000
+SET timestamp=1742532930;
+select * from t_user where password = 'h4HcxZKBNQ';
+
+```
+上面，时区不对，这里顺便修改
+```mysql
+vim /etc/mysql/mysql.conf.d/mysqld.cnf
+#[mysqld]下添加这句话
+log_timestamps=SYSTEM
+#重启mysql
+sudo systemctl restart mysql
+```
+## profiling-更细致的执行时间
+```mysql
+mysql> show variables like 'profiling';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| profiling     | OFF   |
++---------------+-------+
+mysql> set profiling=on;
+mysql> show variables like 'profiling';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| profiling     | ON    |
++---------------+-------+
+
+
+mysql> select * from t_user where id=1200000;
++---------+-------------------------+------------+
+| id      | email                   | password   |
++---------+-------------------------+------------+
+| 1200000 | wingszekam5@outlook.com | C40nXFlEFi |
++---------+-------------------------+------------+
+1 row in set (0.01 sec)
+
+mysql> select * from t_user where email='1200000';;
+Empty set (0.66 sec)
+
+mysql> show profiles;
++----------+------------+--------------------------------------------+
+| Query_ID | Duration   | Query                                      |
++----------+------------+--------------------------------------------+
+|        1 | 0.00235900 | show variables like 'profiling'            |
+|        2 | 0.00688200 | select * from t_user where tid=1200000     |
+|        3 | 0.00073150 | select * from t_user where uid=1200000     |
+|        4 | 0.01510150 | desc t_user                                |
+|        5 | 0.00238000 | select * from t_user where id=1200000      |
+|        6 | 0.65880625 | select * from t_user where email='1200000' |
++----------+------------+--------------------------------------------+
+6 rows in set, 1 warning (0.00 sec)
+```
