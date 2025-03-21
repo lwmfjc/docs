@@ -194,3 +194,178 @@ Hash table size 34679, node heap has 2 buffer(s)
 ### 补充
 > deepseek说明
 ![](img/ly-20250320235831715.png)
+## 索引相关问题
+### 过滤量少导致失效
+```mysq
+mysql> explain select * from student where sex = 'M' \G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: ALL
+possible_keys: idx_sex
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 6
+     filtered: 50.00
+        Extra: Using where
+```
+## 强制使用索引
+前提：已经为student创建了idx_age和idx_name
+```mysql
+mysql> explain select * from student where name = 'chenwei' and age = 20 \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: ref
+possible_keys: idx_age,idx_name
+          key: idx_name
+      key_len: 152
+          ref: const
+         rows: 1
+     filtered: 33.33
+        Extra: Using where
+1 row in set, 1 warning (0.00 sec)
+
+mysql> explain select * from student force index(idx_age) where name = 'chenwei' and age = 20  \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: ref
+possible_keys: idx_age
+          key: idx_age (强制使用idx_age索引)
+      key_len: 1
+          ref: const
+         rows: 2
+     filtered: 16.67
+        Extra: Using where
+1 row in set, 1 warning (0.00 sec)
+
+```
+## not in相关问题
+```mysql
+mysql> explain select * from student where  age in( 20) \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: ref
+possible_keys: idx_age
+          key: idx_age
+      key_len: 1
+          ref: const
+         rows: 2
+     filtered: 100.00
+        Extra: NULL
+1 row in set, 1 warning (0.00 sec)
+
+mysql> explain select * from student where  age not in( 20) \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: ALL (不走索引)
+possible_keys: idx_age
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 6
+     filtered: 66.67
+        Extra: Using where
+1 row in set, 1 warning (0.00 sec)
+#用索引
+mysql> explain select age from student where  age not in( 20) \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: range
+possible_keys: idx_age
+          key: idx_age
+      key_len: 1
+          ref: NULL
+         rows: 4
+     filtered: 100.00
+        Extra: Using where; Using index
+1 row in set, 1 warning (0.00 sec)
+#数据量少，也会用索引
+mysql> explain select * from student where  age not in( 20) limit 1 \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: range (因为被转换成范围了  age <1 and age > 20)
+possible_keys: idx_age
+          key: idx_age
+      key_len: 1
+          ref: NULL
+         rows: 4
+     filtered: 100.00
+        Extra: Using index condition
+1 row in set, 1 warning (0.00 sec)
+#上面的语句相当于
+mysql> explain  select age from student where  age < 20 or age > 20 \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: range
+possible_keys: idx_age
+          key: idx_age
+      key_len: 1
+          ref: NULL
+         rows: 4
+     filtered: 100.00
+        Extra: Using where; Using index
+
+```
+## or相关问题
+```mysql
+#由于成本太高，不会被转成union all语句
+mysql> explain select * from student where age <18 or name = 'liuxian' \G
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: ALL
+possible_keys: idx_age,idx_name
+          key: NULL
+      key_len: NULL
+          ref: NULL
+         rows: 6
+     filtered: 44.44
+        Extra: Using where
+```
+
+```mysql
+mysql> explain select * from student where age <18 or uid=2 \G;
+*************************** 1. row ***************************
+           id: 1
+  select_type: SIMPLE
+        table: student
+   partitions: NULL
+         type: index_merge
+possible_keys: PRIMARY,idx_age
+          key: idx_age,PRIMARY
+      key_len: 1,4
+          ref: NULL
+         rows: 2
+     filtered: 100.00
+        Extra: Using sort_union(idx_age,PRIMARY); Using where
+1 row in set, 1 warning (0.00 sec)
+#这个语句会被转换成union all : select * from student where age <18 union all select * from student where uid=2
+```
+## 面试切入点
+从什么地方获取运行时间长、耗时的sql，再用explain分析它
