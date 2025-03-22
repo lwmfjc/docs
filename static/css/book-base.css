@@ -147,10 +147,11 @@ pre:has(code) {
 }*/
 
 /*li项目项缩进处理*/
-.HyperMD-list-line.HyperMD-list-line-1.cm-line{
+.HyperMD-list-line.HyperMD-list-line-1.cm-line,.HyperMD-quote.HyperMD-quote-1.cm-line{
   padding-inline-start: 0em ;
   text-indent: 0px ;
 }
+
 
 
 /*覆盖默认的hr样式*/
