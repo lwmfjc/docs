@@ -30,7 +30,7 @@ mysql> select * from user;
 +----+----------+-----+-----+
 4 rows in set (0.00 sec)
 mysql> delete from user where id = 6
-#如果之后重启了mysql，则再插入的数据id为6；如果没有重启，则再插入的数据id为7
+#如果之后重启了mysql（且id最大为5，则再插入的数据id为6），（如果id最大为10，则插入的数据id为11）；如果没有重启，则再插入的数据id为7
 mysql> nsert into user(name,age,sex) values('hah',35,'W');
 ```
 # 新增
