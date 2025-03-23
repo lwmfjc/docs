@@ -324,10 +324,49 @@ mysql> select * from user;
 ```
 # 事务隔离级别的实现原理
 ## 行锁
-行锁加在索引条件上（且用上了索引），如果是非索引条件（或者没用上索引），则是表锁  
+1. 行锁加在索引条件上（且用上了索引），如果是非索引条件（或者没用上索引），则是表锁  
+2. 也就是说使用主键索引(where id=xx)需要加一把锁，使用二级索引(where index2=xx)需要在二级索引和主键索引上各加一把锁。
 ## 串行化
 自动使用共享锁和排他锁  
 如果是其他隔离级别，则需要手动使用`lock in share mode`或者`for update`才会使用共享锁或排他锁  
 ![](img/ly-20250322232233758.png)  
+## 锁
+切记：间隙锁的区间是左开右开的，临键锁的区间是左开右闭的。  
+间隙锁是为了在串行化下解决幻读问题而提出的  
+间隙锁（gap-lock）和临键锁(next-key-lock)  
+### 资料
+![](img/ly-20250323183521782.png)  
+![](img/ly-20250323183528811.png)  
+### 二级索引
+做一个测试。查询age>25的记录（加排他锁）此时会给33和Supresum(页面最大值)加临键锁。此时再插入一条记录(age=25,id=16)则无法插入，如果是(age=25,id=13)，则可以  
+```mysql
+mysql> select * from user;
++----+-----+----------+------+
+| id | age | name     | sex  |
++----+-----+----------+------+
+|  1 |  22 | zhangsan | W    |
+|  3 |  33 | lisi     | M    |
+| 10 |  20 | hah      | W    |
+| 15 |  25 | lix      | M    |
++----+-----+----------+------+
+#=======事务a======
+ysql> begin;
+mysql> select * from user where  age > 25 for update;
++----+-----+------+------+
+| id | age | name | sex  |
++----+-----+------+------+
+|  3 |  33 | lisi | M    |
++----+-----+------+------+
+1 row in set (0.00 sec)
+#=======事务b======
+#会被阻塞
+mysql> insert into user(age,name,sex) values(25,'xx','M');
+erro!!!!
+#会被阻塞
+mysql> insert into user(id,age,name,sex) values(17,25,'xx','M');
+erro!!!! 
+##成功了
+mysql> insert into user(id,age,name,sex) values(14,25,'xx','M'');
+Query OK, 1 row affected (0.00 sec)
 
-
+```
