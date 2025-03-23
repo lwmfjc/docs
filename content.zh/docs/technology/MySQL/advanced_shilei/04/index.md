@@ -325,23 +325,24 @@ mysql> select * from user;
 # 事务隔离级别的实现原理
 ## 行锁
 1. 行锁加在索引条件上（且用上了索引），如果是非索引条件（或者没用上索引），则是表锁  
-2. 也就是说使用主键索引(where id=xx)需要加一把锁，使用二级索引(where index2=xx)需要在二级索引和主键索引上各加一把锁。
+2. 也就是说使用==主键索引(where id=xx)需要加一把锁，只使用二级索引(where index2=xx)需要在二级索引和主键索引上各加一把锁==。
 ## 串行化
 自动使用共享锁和排他锁  
 如果是其他隔离级别，则需要手动使用`lock in share mode`或者`for update`才会使用共享锁或排他锁  
 ![](img/ly-20250322232233758.png)  
 ## 锁
 切记：间隙锁的区间是左开右开的，临键锁的区间是左开右闭的。  
-间隙锁是为了在串行化下解决幻读问题而提出的  
+间隙锁是为了在==串行化==下解决==幻读==问题而提出的  
 间隙锁（gap-lock）和临键锁(next-key-lock)  
 ### 资料
 ![](img/ly-20250323183521782.png)  
 ![](img/ly-20250323183528811.png)  
 ### 二级索引
-做一个测试。  
-查询age>25的记录（加排他锁）此时会给==(33,3)这条记录~~我猜是age>25的第一条记录~~==和 ==age=Supresum(页面最大值)==加临键锁(左开右闭)。此时再插入一条记录(age=25,id=16)则无法插入，如果是(age=25,id=13)，则可以    
-~~原理：插入(25,16)时，会定位到(33,2)这条记录，发现有临建锁，无法插入。而插入(25,14)时定位到(25,15)这条记录并没有临建锁，所以可以插入)~~
-![](img/ly-20250323205112962.png)  
+#### 范围查询
+查询age>20且age<25的记录，且加排他锁  
+此时会给==age>20且age<25的所有记录==及其==下一条记录==加临键锁(左开右闭)  
+	拓展：如果索引上的条件是`age=25`（单点扫描区间，只包含一个值），那么下一条(33,3)加的是gap锁  
+![](img/ly-20250324005611324.png)  
 
 ```mysql
 mysql> select * from user;
@@ -350,27 +351,128 @@ mysql> select * from user;
 +----+-----+----------+------+
 |  1 |  22 | zhangsan | W    |
 |  3 |  33 | lisi     | M    |
+|  5 |  23 | xx       | M    |
+|  6 |  33 | xx       | M    |
 | 10 |  20 | hah      | W    |
 | 15 |  25 | lix      | M    |
 +----+-----+----------+------+
-#=======事务a======
+6 rows in set (0.00 sec)
+#=======事务b======
 ysql> begin;
-mysql> select * from user where  age > 25 for update;
+mysql> select * from user where  age > 20 and age < 25 for update;
++----+-----+----------+------+
+| id | age | name     | sex  |
++----+-----+----------+------+
+|  1 |  22 | zhangsan | W    |
+|  5 |  23 | xx       | M    |
++----+-----+----------+------+
+2 rows in set (0.01 sec)
+#=======事务a======
+mysql> insert into user(id,age,name,sex) values(5,21,'xx','M'));
+erro!!!!
+mysql> insert into user(id,age,name,sex) values(12,20,'xx','M');
+erro!!!!
+#(9,20)下一条记录是(20,10)，无锁
+mysql> insert into user(id,age,name,sex) values(9,20,'xx','M'));
+Query OK, 1 row affected (0.00 sec)
+
+#(14,25)下一条记录是(25,15)，加了临键锁
+mysql> insert into user(id,age,name,sex) values(14,25,'xx','M');
+erro!!!!
+#下一条记录(33,3)无锁
+mysql> insert into user(id,age,name,sex) values(16,25,'xx','M');
+Query OK, 1 row affected (0.00 sec) 
+
+#包含记录(25,15)，加了临键锁  
+mysql> select * from user where age = 25 for update;
+erro!!!!
+mysql> select * from user where age = 25 lock in share mode;
+erro!!!!
+```
+#### 精确匹配
+
+![](img/ly-20250323233502219.png)  
+##### 记录存在
+```mysql
+mysql> select * from user;
++----+-----+----------+------+
+| id | age | name     | sex  |
++----+-----+----------+------+
+|  1 |  22 | zhangsan | W    |
+|  3 |  33 | lisi     | M    |
+|  6 |  33 | xx       | M    |
+| 10 |  20 | hah      | W    |
+| 15 |  25 | lix      | M    |
++----+-----+----------+------+
+#=======事务b======
+mysql> begin;
+mysql> select * from user where  age=33 for update;
 +----+-----+------+------+
 | id | age | name | sex  |
 +----+-----+------+------+
 |  3 |  33 | lisi | M    |
+|  6 |  33 | xx   | M    |
 +----+-----+------+------+
-1 row in set (0.00 sec)
-#=======事务b======
-#会被阻塞
-mysql> insert into user(age,name,sex) values(25,'xx','M');
-erro!!!!
-#会被阻塞
-mysql> insert into user(id,age,name,sex) values(17,25,'xx','M');
+2 rows in set (0.00 sec)
+#我觉得这里为(33,3),(33,6)以及下一条(age=Supresum[页面最大值]，也就是额外为等值后的下一条记录加临键锁)都加了临键锁
+#=======事务a======
+mysql> insert into user(id,age,name,sex) values(2,33,'xx','M');
 erro!!!! 
-##成功了
-mysql> insert into user(id,age,name,sex) values(14,25,'xx','M'');
+mysql> insert into user(id,age,name,sex) values(2,30,'xx','M'));
+erro!!!!
+mysql> insert into user(id,age,name,sex) values(16,25,'xx','M');
+erro!!!!
+#上面三条的下一条都是(33,3)，而这个记录有临键锁，所以无法插入。
+mysql> insert into user(id,age,name,sex) values(5,33,'xx','M'));
+erro!!!!
+#下一条都是(33,6)，而这个记录有临键锁，所以无法插入。
+#下面(25,14)的下一条是(25,15)并没有加锁，所以能正常插入
+mysql> insert into user(id,age,name,sex) values(14,25,'xx','M);
+Query OK, 1 row affected (0.01 sec)
+
+```
+##### 记录不存在
+```mysql
+mysql> select *   from user ;begin;
++----+-----+----------+------+
+| id | age | name     | sex  |
++----+-----+----------+------+
+|  1 |  22 | zhangsan | W    |
+|  3 |  33 | lisi     | M    |
+|  5 |  23 | xx       | M    |
+|  6 |  33 | xx       | M    |
+| 10 |  20 | hah      | W    |
+| 15 |  25 | lix      | M    |
++----+-----+----------+------+
+#=======事务b======
+begin;
+mysql> select * from user where  age=28 for update;
+Empty set (0.00 sec)
+#此时(33,3)加了gap锁（不是临键锁）
+#=======事务a======
+mysql> insert into user(id,age,name,sex) values(13,28,'xx','M');
+^C^C -- query aborted
+ERROR 1317 (70100): Query execution was interrupted
+mysql> insert into user(id,age,name,sex) values(13,27,'xx','M' );
+erro!!!!
+mysql> insert into user(id,age,name,sex) values(13,26,'xx','M' );
+erro!!!!
+mysql> insert into user(id,age,name,sex) values(13,25,'xx','M' );
 Query OK, 1 row affected (0.00 sec)
+mysql> insert into user(id,age,name,sex) values(2,33,'xx','M'));
+erro!!!!
+#(33,3)后面，插入成功
+mysql> insert into user(id,age,name,sex) values(4,33,'xx','M'));
+Query OK, 1 row affected (0.00 sec)
+#因为是gap锁而不是临键锁，所以成功
+mysql> select * from user where age = 33 lock in share mode;
++----+-----+------+------+
+| id | age | name | sex  |
++----+-----+------+------+
+|  3 |  33 | lisi | M    |
+|  4 |  33 | xx   | M    |
+|  6 |  33 | xx   | M    |
++----+-----+------+------+
+3 rows in set (0.00 sec)
 
 ```
