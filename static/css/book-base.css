@@ -130,7 +130,7 @@ hr,.markdown hr {
 pre:has(code) {
       white-space: pre-wrap;
       word-break: break-all;
-      font-size: 0.7em;
+      /*font-size: 0.7em;*/
 }
 /*
 img {
