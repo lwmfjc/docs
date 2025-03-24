@@ -42,7 +42,7 @@ span.cm-highlight.cm-inline-code{
 
 
 /*自注--红色缩小字体*/
-p del,mark del, li del, span.cm-strikethrough  {
+p del,mark del, li del, span.cm-strikethrough, td del  {
     text-decoration: unset;
     font-size: 0.8em;
     color: rgba(255, 0, 0, 0.8);

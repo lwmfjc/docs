@@ -510,3 +510,22 @@ mysql> select * from user where age = 33 lock in share mode;
 要获取一张==表的共享锁或者排他锁==，首先得确定这张表有没有被其他事务获取过行锁X锁，总不能一行一行扫描查看吧?  
 - 意向共享锁(IS锁)：事务计划给记录加==行共享锁==前，必须先取得该表的IS锁
 - 意向排他锁(IX锁)：事务计划给记录加==行排他锁==前，必须先取得该表的IX锁
+# 死锁
+发生死锁时，当前事务会立即抛出错误并回滚
+```mysql
+#=======事务b===
+begin;
+select * from user where id = 3 for update;
+#=======事务a===
+begin;
+select * from user where id = 1 for update;
+#=======事务b===
+begin;
+select * from user where id = 1 for update;
+#=======事务a===
+begin;
+select * from user where id = 3 for update;
+#出错，mysql检测到了死锁，会直接回滚事务
+ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction
+
+```
