@@ -1,12 +1,14 @@
 /*.book01,.book02{cssstart*/
-
+ 
 /*字体统一放大到1.4em*/
-article ,div.cm-line:not(.HyperMD-codeblock), div.el-p{
+article ,div.cm-line:not(.HyperMD-codeblock), div.el-p,
+div.el-ul,div.el-ol,div.el-pre
+{
     font-size: 1.4em ;
 }
 
 /*段落统一设置格式*/
-article p, div.cm-line:not(.HyperMD-header), div.el-p {
+article p, div.cm-line:not(.HyperMD-header,.HyperMD-codeblock), div.el-p  {
     margin-bottom: 0.5em;
     margin-top: 0.5em;
     /*    line-height: 1.8em;*/
@@ -17,7 +19,6 @@ article p, div.cm-line:not(.HyperMD-header), div.el-p {
     --italic-color: initial;
     --text-normal: initial;
 }
-
 
 /*字修饰-----start*/
 
@@ -44,10 +45,10 @@ span.cm-highlight.cm-inline-code{
 /*自注--红色缩小字体*/
 p del,mark del, li del, span.cm-strikethrough, td del  {
     text-decoration: unset;
-    font-size: 0.8em;
+    font-size: 0.9em;
     color: rgba(255, 0, 0, 0.8);
     position: relative;
-    bottom: -0.2em;
+    bottom: -0.15em;
 }
 
 /*正文--黑色加大*/
@@ -127,10 +128,10 @@ hr,.markdown hr {
 }
 
 /*缩小多行代码字体*/
-pre:has(code) {
+pre:has(code),.HyperMD-codeblock {
       white-space: pre-wrap;
       word-break: break-all;
-      /*font-size: 0.7em;*/
+      font-size: 0.9em;
 }
 /*
 img {
@@ -147,11 +148,37 @@ pre:has(code) {
 }*/
 
 /*li项目项缩进处理*/
-.HyperMD-list-line.HyperMD-list-line-1.cm-line,.HyperMD-quote.HyperMD-quote-1.cm-line{
+.HyperMD-list-line.HyperMD-list-line-1.cm-line{
   padding-inline-start: 0em ;
   text-indent: 0px ;
 }
+ 
+/*引用缩进处理*/
+/*内联样式覆盖，要改成其他的只能用important*/
+.HyperMD-quote.HyperMD-quote-1.cm-line{
+    text-indent: 0em;
+    padding-inline-start: 0em; 
+} 
 
+/*引用字体缩小*/
+.HyperMD-quote.HyperMD-quote-1.cm-line,blockquote{
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0.05);  
+    --gray-200: rgba(0,0,0,0.5);
+    --blockquote-background-light: rgba(0, 0, 0, 0.05);
+} 
+
+/*标记*/
+/*div:has(>br:only-child){
+    height: 0.2em;
+    background-color: rgba(0, 0, 0, 0.05); 
+}*/
+
+
+/*div:has(.cm-trailing-space-new-line) + div.cm-line{
+    background-color: red;
+    text-indent: 0em;
+}*/
 
 
 /*覆盖默认的hr样式*/
