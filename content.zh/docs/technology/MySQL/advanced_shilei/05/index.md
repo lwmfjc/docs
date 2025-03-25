@@ -85,20 +85,356 @@ undolog是用来记录数据的旧值的，如果修改buffer pool后再写入un
 # 刷盘时机
 ## redolog
 
-4. [强制]redolog buffer空间(innodb_log_buffer_size参数)不足时(比如超过一半)
-5. innodb_flush_log_at_trx_commit 
+1. [强制]redolog buffer空间(==innodb_log_buffer_size==参数)不足时(比如超过一半)
+2. innodb_flush_log_at_trx_commit 
 	1. =1: 每次事务提交时刷盘，保证持久性，性能偏低
 	2. =0: 事务提交时不刷盘
 	3. =2：事务提交时写入操作系统缓存，依赖系统刷盘
-6. [强制]默认情况下后台线程每秒钟刷盘一次(innodb_flush_log_at_timeout 参数)
+3. [强制]默认情况下后台线程每秒钟刷盘一次(innodb_flush_log_at_timeout 参数)
+
 ## bufferpool
 
-刷盘对象：脏页 
-7. 后台线程==持续监控==脏页比例,超过阈值刷盘
-8. 可以手动触发(`SET GLOBAL innodb_max_dirty_pages_pct = 0; `)
+- 刷盘对象：脏页 
+
+1. 后台线程==持续监控==脏页比例,超过阈值刷盘
+2. 可以手动触发(`SET GLOBAL innodb_max_dirty_pages_pct = 0; `)
+
 ## undolog
 
-9. ==事务提交时==(异步刷到磁盘的Undo表空间，不阻塞事务提交)
+1. ==事务提交时==(异步刷到磁盘的Undo表空间，不阻塞事务提交)
 	1. Undo Log 的修改本身会记录到 Redo Log，因此其持久化由 Redo Log 机制间接保证
-10. 空间不足
-11. 后台线程==定时刷盘==, 期清理已提交事务的UndoLog，并异步刷盘
+2. 空间不足
+3. 后台线程==定时刷盘==, 期清理已提交事务的UndoLog，并异步刷盘
+
+# 优化相关
+- 查询的单位是字节
+1. innodb_buffer_pool_size: InnoDB存储引擎用于缓存数据和索引的内存池大小。 适当设置此值可以减少磁盘I/O，提高读写速度(可以增大它来减少磁盘io(减少buff pool刷盘的几率))。默认128MB~~建议物理内存的 50%~80%~~
+2. innodb_log_buffer_size: redolog的写缓存。 增大它来减少redolog 刷盘的几率。默认16MB~~建议为16MB ~ 64MB~~
+3. 查询缓存：`query_cache`相关参数，把select查询语句的结果缓存下来，下一次查询时直接拿出，如果中间有增删改操作就会清空缓冲区，适合查询频繁的时候用  
+4. thread_cache_size: 线程池大小（线程数量）[配置10左右]
+5. `like %connect%` 或 `like %timeout%`：并发连接数量[2000左右]或超时时间(超时未通信的连接会断开)
+# 日志类型
+1. 错误日志
+	- MySQLD服务运行过程中出现的error exception coredump
+2. 查询日志
+	- 所有SQL，增删改查
+3. 二进制日志
+	- 数据恢复、主从复制
+4. 慢查询日志
+
+- redo log和undo log是由InnoDB存储引擎生成的。而binlog是由MySQL Server生成。
+# 参数
+如果在set设置，只是在当前session设置了  
+
+- log_error= 错误日志
+- log_bin=  二进制日志
+- log= 查询日志(所有sql)
+- log-slow-queries= 慢查询日志
+- log-update  更新日志
+
+
+```mysql
+show variables like 'log%';
+mysql> show variables like 'log%' \G
+*************************** 1. row ***************************
+Variable_name: log_bin  二进制日志
+        Value: OFF
+*************************** 2. row ***************************
+Variable_name: log_bin_basename
+        Value: 
+*************************** 3. row ***************************
+Variable_name: log_bin_index
+        Value: 
+*************************** 4. row ***************************
+Variable_name: log_bin_trust_function_creators
+        Value: OFF
+*************************** 5. row ***************************
+Variable_name: log_bin_use_v1_row_events
+        Value: OFF
+*************************** 6. row ***************************
+Variable_name: log_builtin_as_identified_by_password
+        Value: OFF
+*************************** 7. row ***************************
+Variable_name: log_error 错误日志
+        Value: /var/log/mysql/error.log
+*************************** 8. row ***************************
+Variable_name: log_error_verbosity
+        Value: 3
+*************************** 9. row ***************************
+Variable_name: log_output
+        Value: FILE
+*************************** 10. row ***************************
+Variable_name: log_queries_not_using_indexes
+        Value: OFF
+*************************** 11. row ***************************
+Variable_name: log_slave_updates
+        Value: OFF
+*************************** 12. row ***************************
+Variable_name: log_slow_admin_statements
+        Value: OFF
+*************************** 13. row ***************************
+Variable_name: log_slow_slave_statements
+        Value: OFF
+*************************** 14. row ***************************
+Variable_name: log_statements_unsafe_for_binlog
+        Value: ON
+*************************** 15. row ***************************
+Variable_name: log_syslog
+        Value: OFF
+*************************** 16. row ***************************
+Variable_name: log_syslog_facility
+        Value: daemon
+*************************** 17. row ***************************
+Variable_name: log_syslog_include_pid
+        Value: ON
+*************************** 18. row ***************************
+Variable_name: log_syslog_tag
+        Value: 
+*************************** 19. row ***************************
+Variable_name: log_throttle_queries_not_using_indexes
+        Value: 0
+*************************** 20. row ***************************
+Variable_name: log_timestamps
+        Value: SYSTEM
+*************************** 21. row ***************************
+Variable_name: log_warnings
+        Value: 2
+
+```
+## 配置日志相关
+```shell
+root@db211:/home/ly# cat /etc/mysql/mysql.conf.d/mysqld.cnf 
+# Copyright (c) 2014, 2016, Oracle and/or its affiliates. All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License, version 2.0,
+# as published by the Free Software Foundation.
+#
+# This program is also distributed with certain software (including
+# but not limited to OpenSSL) that is licensed under separate terms,
+# as designated in a particular file or component or in included license
+# documentation.  The authors of MySQL hereby grant you an additional
+# permission to link the program and your derivative works with the
+# separately licensed software that they have included with MySQL.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License, version 2.0, for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA
+
+#
+# The MySQL  Server configuration file.
+#
+# For explanations see
+# http://dev.mysql.com/doc/mysql/en/server-system-variables.html
+
+[mysqld]
+pid-file	= /var/run/mysqld/mysqld.pid
+socket		= /var/run/mysqld/mysqld.sock
+datadir		= /var/lib/mysql
+log-error	= /var/log/mysql/error.log
+# By default we only accept connections from localhost
+#bind-address	= 127.0.0.1
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+#------lyadd-------
+character-set-server=utf8
+default-storage-engine=INNODB
+log_timestamps=SYSTEM
+# 如果没有指定路径，会默认到datadir下
+server-id=1
+expire_logs_days=7
+log-bin=mysql-bin
+binlog_format=MIXED
+
+```
+- 在服务器上直接删除binlog日志，会造成MySQL无法启动`[ERROR] Failed to open log [ERROR] Could not open log file [ERROR] Can’t init tc log [ERROR] Aborting`  ==解决方法==：将已经删除的binlog条目从mysql-bin.index文件中删除，MySQL顺利启动。
+- 安全删除binlog日志 `PURGE BINARY LOGS TO 'mysql-bin.000001';`(无法删除运行中的mysql下的binlog日志)
+### 慢查询日志
+- 明文，可以直接看(binlog不行)
+```mysql
+root@db211:/home/ly# cat /var/lib/mysql/db211-slow.log 
+/usr/sbin/mysqld, Version: 5.7.33 (MySQL Community Server (GPL)). started with:
+Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+# Time: 2025-03-21T04:49:56.308214Z
+# User@Host: root[root] @ localhost []  Id:    22
+# Query_time: 0.027501  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0
+use test;
+SET timestamp=1742532596;
+set global slow_query_log=ON;
+# Time: 2025-03-21T04:52:55.935025Z
+# User@Host: root[root] @ localhost []  Id:    22
+# Query_time: 0.920988  Lock_time: 0.000147 Rows_sent: 1  Rows_examined: 1000001
+SET timestamp=1742532775;
+select * from t_user limit 1000000,1;
+# Time: 2025-03-21T04:55:30.781012Z
+# User@Host: root[root] @ localhost []  Id:    22
+# Query_time: 1.078875  Lock_time: 0.000248 Rows_sent: 1  Rows_examined: 2000000
+SET timestamp=1742532930;
+select * from t_user where password = 'h4HcxZKBNQ';
+/usr/sbin/mysqld, Version: 5.7.33 (MySQL Community Server (GPL)). started with:
+Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+# Time: 2025-03-21T13:15:30.606444+08:00
+# User@Host: root[root] @ localhost []  Id:     5
+# Query_time: 0.653208  Lock_time: 0.000121 Rows_sent: 1  Rows_examined: 2000000
+use test;
+SET timestamp=1742534130;
+select * from t_user where password='MrBmIH6F7l';
+# Time: 2025-03-21T16:25:03.888312+08:00
+# User@Host: root[root] @ localhost []  Id:     5
+# Query_time: 0.658706  Lock_time: 0.000188 Rows_sent: 0  Rows_examined: 2000000
+SET timestamp=1742545503;
+select * from t_user where email='1200000';
+# Time: 2025-03-22T11:33:18.457417+08:00
+# User@Host: root[root] @ localhost []  Id:     7
+# Query_time: 0.012809  Lock_time: 0.001626 Rows_sent: 0  Rows_examined: 1
+SET timestamp=1742614398;
+delete from user where id = 3;
+```
+
+# binlog
+```mysql
+mysql> show binary logs;#或者show master logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000001 |       177 |
+| mysql-bin.000002 |       154 |
++------------------+-----------+
+2 rows in set (0.00 sec)
+mysql> show variables like '%log_bin%';
++---------------------------------+--------------------------------+
+| Variable_name                   | Value                          |
++---------------------------------+--------------------------------+
+| log_bin                         | ON                             |
+| log_bin_basename                | /var/lib/mysql/mysql-bin       |
+| log_bin_index                   | /var/lib/mysql/mysql-bin.index |
+| log_bin_trust_function_creators | OFF                            |
+| log_bin_use_v1_row_events       | OFF                            |
+| sql_log_bin                     | ON                             |
++---------------------------------+--------------------------------+
+root@db211:/var/lib/mysql# ls
+auto.cnf	 mysql-bin.000001
+ca-key.pem	 mysql-bin.000002
+ca.pem		 mysql-bin.index
+client-cert.pem  performance_schema
+client-key.pem	 private_key.pem
+db211-slow.log	 public_key.pem
+ib_buffer_pool	 server-cert.pem
+ibdata1		 server-key.pem
+ib_logfile0	 sys
+ib_logfile1	 test
+ibtmp1		 xx
+mysql
+mysql> flush logs;
+# 对于binlog来说，用来创建新日志文件：关闭当前活动的二进制日志文件（如 mysql-bin.000003），并立即创建一个新文件（如 mysql-bin.000004）。用途：手动触发日志轮转，避免单个文件过大，或在备份前归档当前日志。
+# 实际上当服务器在重启时，也会调用flush logs操作。
+mysql> sudo systemctl restart mysql
+mysql> show binary logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000001 |       177 |
+| mysql-bin.000002 |       177 |
+| mysql-bin.000003 |       154 |
++------------------+-----------+
+#操作一些数据
+mysql> insert into user(age,name,sex) values(30,'er_wang','W');
+mysql> update user set name = 'xxx' where id = 10;
+mysql> select * from user;
++----+-----+----------+------+
+| id | age | name     | sex  |
++----+-----+----------+------+
+|  1 |  22 | zhangsan | W    |
+|  3 |  33 | lisi     | M    |
+| 10 |  20 | xxx      | W    |
+| 15 |  25 | lix      | M    |
+| 16 |  30 | er_wang  | W    |
++----+-----+----------+------+
+mysql> show binary logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000001 |       177 |
+| mysql-bin.000002 |       177 |
+| mysql-bin.000003 |       781 |
++------------------+-----------+
+myysql> system sudo ls -l /var/lib/mysql 
+-rw-r----- 1 mysql mysql       177 Mar 25 23:01 mysql-bin.000001
+-rw-r----- 1 mysql mysql       177 Mar 25 23:08 mysql-bin.000002
+-rw-r----- 1 mysql mysql       781 Mar 25 23:22 mysql-bin.000003 
+```
+通过工具查看binlog日志  
+``` shell
+root@db211:/var/lib/mysql# mysqlbinlog --no-defaults --database=test --base64-output=decode-rows --start-datetime='2025-03-26 00:00:00' --stop-datetime='2025-03-26 23:59:59' mysql-bin.000003 | cat
+WARNING: The option --database has been used. It may filter parts of transactions, but will include the GTIDs in any case. If you want to exclude or include transactions, you should use the options --exclude-gtids or --include-gtids, respectively, instead.
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=1*/;
+/*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/;
+DELIMITER /*!*/;
+# at 4
+#250326  0:15:49 server id 1  end_log_pos 123 CRC32 0x04bed00b 	Start: binlog v 4, server v 5.7.33-log created 250326  0:15:49 at startup
+# Warning: this binlog is either in use or was not closed properly.
+ROLLBACK/*!*/;
+# at 123
+#250326  0:15:49 server id 1  end_log_pos 154 CRC32 0xdfd5febc 	Previous-GTIDs
+# [empty]
+# at 154
+#250326  0:17:01 server id 1  end_log_pos 219 CRC32 0xcf2c541e 	Anonymous_GTID	last_committed=0	sequence_number=1   rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 219
+#250326  0:17:01 server id 1  end_log_pos 298 CRC32 0xbdded0d1 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1742919421/*!*/;
+SET @@session.pseudo_thread_id=2/*!*/;
+SET @@session.foreign_key_checks=1, @@session.sql_auto_is_null=0, @@session.unique_checks=1, @@session.autocommit=1/*!*/;
+SET @@session.sql_mode=1436549152/*!*/;
+SET @@session.auto_increment_increment=1, @@session.auto_increment_offset=1/*!*/;
+/*!\C utf8 *//*!*/;
+SET @@session.character_set_client=33,@@session.collation_connection=33,@@session.collation_server=33/*!*/;
+SET @@session.lc_time_names=0/*!*/;
+SET @@session.collation_database=DEFAULT/*!*/;
+BEGIN
+/*!*/;
+# at 298
+# at 330
+#250326  0:17:01 server id 1  end_log_pos 330 CRC32 0x30d5c44b 	Intvar
+SET INSERT_ID=16/*!*/;
+#250326  0:17:01 server id 1  end_log_pos 459 CRC32 0x5e444be0 	Query	thread_id=2	exec_time=0	error_code=0
+use `test`/*!*/;
+SET TIMESTAMP=1742919421/*!*/;
+#======================ly: 插入了数据=================
+insert into user(age,name,sex) values(30,'er_wang','W')
+/*!*/;
+# at 459
+#250326  0:17:01 server id 1  end_log_pos 490 CRC32 0xab6b62be 	Xid = 17
+COMMIT/*!*/;
+# at 490
+#250326  0:17:14 server id 1  end_log_pos 555 CRC32 0x773bc5e1 	Anonymous_GTID	last_committed=1	sequence_number=2   rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 555
+#250326  0:17:14 server id 1  end_log_pos 634 CRC32 0xd25d946a 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1742919434/*!*/;
+BEGIN
+/*!*/;
+# at 634
+#250326  0:17:14 server id 1  end_log_pos 750 CRC32 0xb0fee72b 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1742919434/*!*/;
+#======================ly: 更新了数据=================
+update user set name = 'xxx' where id = 10
+/*!*/;
+# at 750
+#250326  0:17:14 server id 1  end_log_pos 781 CRC32 0xc41bfc8d 	Xid = 18
+COMMIT/*!*/;
+SET @@SESSION.GTID_NEXT= 'AUTOMATIC' /* added by mysqlbinlog */ /*!*/;
+DELIMITER ;
+# End of log file
+/*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/;
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=0*/;
+
+
+```
