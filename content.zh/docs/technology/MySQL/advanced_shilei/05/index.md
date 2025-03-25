@@ -15,10 +15,12 @@ cssclasses:
 ---
 # undolog
 ## 作用
+
 1. 恢复某条记录原始状态
 2. 记录修改过程，MVCC的原理，结合事务id知道哪些数据可见
 `undo log的修改本身会被记录到redo log中。即使undo log未刷盘，崩溃恢复时也可以通过redo log重建undo log。`
 # redolog
+
 1. `数据持久性`--事务提交后，buffer pool一些脏页没有写入数据库磁盘文件。重启时，利用redolog恢复`(表空间、页号、偏移量、数值)`的数据（磁盘数据）
 2. 由于redolog有几种策略时机刷入磁盘。另有额外线程每隔1s不断刷入redolog buffer pool数据到redolog磁盘日志文件中，如果事务未提交但是刷入了redolog日志文件也无妨。可以根据一些标识，找到哪个事务是未提交的，然后再用undolog恢复原始状态。
 ```shell
@@ -34,15 +36,18 @@ ib_buffer_pool 	 private_key.pem
 ```
 # update语句执行流程
 ## 流程
+
 1. 事务开始
 	1. 写Undo Log到Undo Log Buffer（记录旧值）
 	2. 修改Buffer Pool中的数据页（生成脏页） 
 	3. 写Redo Log到Redo Log Buffer（记录物理变更）
+	   修改BufferPool后，还会MySQL还会生成对应的==Binlog 事件==逻辑操作记录），先写入线程的私有内存缓冲区（==Binlog Cache==）
 2. 事务提交
 	1. Redo Log 标记为 Prepare
 	2. 写Binlog并刷盘
 	3. Redo Log Commit阶段（标记提交）
 ### redolog的刷盘策略
+
 1. Redo Log Buffer 空间不足：当 Redo Log Buffer 的写入速度超过刷盘速度时，InnoDB 会强制刷盘以释放空间。
 2. 后台线程定期刷盘：InnoDB 的后台线程（如 log_writer 和 log_flusher）会周期性刷盘（默认每秒一次，由 innodb_flush_log_at_timeout 控制）。
 3. 参数配置触发
@@ -52,8 +57,20 @@ ib_buffer_pool 	 private_key.pem
 
 ~~这里其实有个疑问，就是redolog并不是事务提交后才刷盘的，而是很有可能事务提交前就刷盘了。如果提交前刷盘了，之后系统宕机了，那么redolog磁盘文件就多出了一些未提交事务的日志。解决办法：可以通过一些属性，在undolog中找到未提交事务的id，然后通过undolog回滚未提交事务。~~
 ### UndoLogBuffer一定要在修改buffer pool前写入吗
+
 undolog是用来记录数据的旧值的，如果修改buffer pool后再写入undolog buffer，如果修改buffer pool后，之后一段时间内如果redo log已经写入并刷盘，且undolog为记录，则此时宕机重启后redo log就多了一次修改，而无法通过undolog恢复了
+### binlog是直接写入磁盘的吗
+
+1. 事务提交前：Binlog事件会暂时存储在BinlogCache中（每个客户端线程有独立的缓存）。
+2. 事务提交时：将BinlogCache中的事件写入Binlog文件（位于文件系统的 Page Cache，即操作系统的内存缓冲区）。根据参数sync_binlog的设置，决定是否立即将 Page Cache 的内容刷到磁盘。
+	1. =0, 操作系统定期刷盘
+	2. =1, 每次事务提交时同步刷盘，保证 Binlog 持久化（安全但性能较低）
+	3. =N, 每N次事务提交后批量刷盘
+3. 对上述三种情况分析
+	1. 当sync_binlog=0或N时，binlog写入Page Cache后立即标记redo log为commit，无需等待磁盘刷盘。很明显，如果刷盘前系统宕机，很容易导致binlog磁盘文件数据缺失
+	2. sync_binlog=1，确保每次提交刷盘Binlog。
 ### RedoLog标记为Prepare的时机
+
 是在事务提交时，redolog的两阶段提交，跟redolog的落盘其实没有很直接的关系，即使事务commit前部分redolog日志可能已经落盘，但是未涉及到binlog日志的落盘。binlog日志落盘是在事务commit时。先把redolog标记为prepare，之后将binlog日志落盘，最后将redolog标记为commit状态。
 
 ~~目的是为了解决redolog和binlog落盘时，因为系统宕机可能出现的数据不一致问题~~
@@ -65,3 +82,23 @@ undolog是用来记录数据的旧值的，如果修改buffer pool后再写入un
 如果在①宕机不会有影响。因为mysql使用redolog恢复数据时，会发现redolog为prepare阶段且==没有对应的binlog日志==，那么恢复后会回滚数据(利用undolog)  
 
 如果在②宕机，mysql使用redolog恢复数据时，会发现redolog为prepare阶段且==有对应的binlog日志==，那么会直接恢复数据并且==不回滚数据(因为binlog日志是完整的)==
+# 刷盘时机
+## redolog
+
+4. [强制]redolog buffer空间(innodb_log_buffer_size参数)不足时(比如超过一半)
+5. innodb_flush_log_at_trx_commit 
+	1. =1: 每次事务提交时刷盘，保证持久性，性能偏低
+	2. =0: 事务提交时不刷盘
+	3. =2：事务提交时写入操作系统缓存，依赖系统刷盘
+6. [强制]默认情况下后台线程每秒钟刷盘一次(innodb_flush_log_at_timeout 参数)
+## bufferpool
+
+刷盘对象：脏页 
+7. 后台线程==持续监控==脏页比例,超过阈值刷盘
+8. 可以手动触发(`SET GLOBAL innodb_max_dirty_pages_pct = 0; `)
+## undolog
+
+9. ==事务提交时==(异步刷到磁盘的Undo表空间，不阻塞事务提交)
+	1. Undo Log 的修改本身会记录到 Redo Log，因此其持久化由 Redo Log 机制间接保证
+10. 空间不足
+11. 后台线程==定时刷盘==, 期清理已提交事务的UndoLog，并异步刷盘
