@@ -1,10 +1,11 @@
 /*.book01,.book02{cssstart*/
  
+
 /*字体统一放大到1.4em*/
 article ,div.cm-line:not(.HyperMD-codeblock), div.el-p,
 div.el-ul,div.el-ol,div.el-pre
 {
-    font-size: 1.4em ;
+    font-size: 1.25em ;
 }
 
 /*段落统一设置格式*/
