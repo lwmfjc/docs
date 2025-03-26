@@ -569,7 +569,7 @@ func
 
 ```
 `full_backup_$DATE.sql`中有一句话`CHANGE MASTER TO MASTER_LOG_FILE='mysql-bin.000002', MASTER_LOG_POS=154;`其中`MASTER_LOG_FILE`表示备份时正在使用的二进制日志文件名(因为全量备份之前，执行`flush logs;`所以这里指的是新的(下一个)binlog日志)，而`MASTER_LOG_POS`表示备份时二进制日志的精确位置(字节偏移量)。增量日志正是根据这个信息，来备份增量数据。154是Binlog 文件头的(常见)固定开销
-## 数据恢复演示
+## binlog数据恢复
 ```mysql
 #建库建表
 drop database lytest;
@@ -891,4 +891,10 @@ mysql> select * from lyuser;
 | 17 |  46 | QianXiuying | W    |
 | 18 |  16 | change-xx   | W    |
 +----+-----+-------------+------+
+```
+## .sql数据恢复
+```mysql
+mysql> source ~/data.sql
+#或者
+shell> cat ~/data.sql | mysql -uroot -p
 ```
