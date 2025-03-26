@@ -252,7 +252,7 @@ log-bin=mysql-bin
 binlog_format=MIXED
 
 ```
-- 在服务器上直接删除binlog日志，会造成MySQL无法启动`[ERROR] Failed to open log [ERROR] Could not open log file [ERROR] Can’t init tc log [ERROR] Aborting`  ==解决方法==：将已经删除的binlog条目从mysql-bin.index文件中删除，MySQL顺利启动。
+- 在服务器上直接删除binlog日志，会造成MySQL无法启动`[ERROR] Failed to open log [ERROR] Could not open log file [ERROR] Can’t init tc log [ERROR] Aborting`，（且正常情况每次重启mysql后新binlog的position都是154）  ==解决方法==：将已经删除的binlog条目从mysql-bin.index文件中删除，MySQL顺利启动。
 - 安全删除binlog日志 `PURGE BINARY LOGS TO 'mysql-bin.000001';`(无法删除运行中的mysql下的binlog日志)
 ### 慢查询日志
 - 明文，可以直接看(binlog不行)
@@ -336,7 +336,7 @@ ibtmp1		 xx
 mysql
 mysql> flush logs;
 # 对于binlog来说，用来创建新日志文件：关闭当前活动的二进制日志文件（如 mysql-bin.000003），并立即创建一个新文件（如 mysql-bin.000004）。用途：手动触发日志轮转，避免单个文件过大，或在备份前归档当前日志。
-# 实际上当服务器在重启时，也会调用flush logs操作。
+# 实际上当服务器在重启时，也会调用flush logs操作,并生成新的binlog日志。
 mysql> sudo systemctl restart mysql
 mysql> show binary logs;
 +------------------+-----------+
@@ -466,6 +466,7 @@ SET INSERT_ID=2/*!*/;
 SET TIMESTAMP=1742960957/*!*/;
 insert into stu(birth,name) values(now(),'hello')
 /*!*/;
+#======ly事件开始于1447，结束于1478======
 # at 1447
 #250326 11:49:17 server id 1  end_log_pos 1478 CRC32 0x2e1f6111 	Xid = 83
 COMMIT/*!*/;
@@ -516,6 +517,58 @@ mysql> show binary logs;
 +------------------+-----------+
 mysqlbinlog --no-defaults  --base64-output=DECODE-ROWS -v mysql-bin.000006 | cat
 ```
+# MySQL数据备份恢复
+## 备份
+全量备份+增量备份  
+```mysql
+#!/bin/bash
+# 文件名:backup.sh
+# 全量备份+Binlog备份脚本
+#.
+#├── backup.sh
+#└── mysql
+#    ├── binlog
+#    │   └── binlog_backup_mysql-bin.000002  (增量日志binlog，即开始执行全量备份后->执行全量备份结束--这段时间内的数据增删改)
+#    ├── full
+#    │   └── full_backup_20250326.sql (mysqldump执行全量备份)
+#    └── mysql_backup.log (备份过程中的日志)
+
+func(){
+
+BACKUP_DIR="/home/ly/backup/mysql"
+DATE=$(date +%Y%m%d)
+LOG_FILE="/home/ly/backup/mysql/mysql_backup.log"
+
+# 创建备份目录
+mkdir -p $BACKUP_DIR/full $BACKUP_DIR/binlog
+echo "" > LOG_FILE
+
+
+# 1. 执行全量备份
+echo "$(date) - 开始全量备份" >> $LOG_FILE
+mysqldump -u root -phello.root --single-transaction --master-data=2 --flush-logs --all-databases > $BACKUP_DIR/full/full_backup_$DATE.sql 2>> $LOG_FILE
+#这行mysqldump命令执行后，会马上执行flush-logs，生成新binlog-new。之后所有的增删改都在binlog-new上，且不会在全量备份中
+
+
+# 2. 备份Binlog(新binlog-new)
+echo "$(date) - 开始Binlog备份" >> $LOG_FILE
+# 获取全量备份时的Binlog位置
+BINLOG_FILE=$(grep "CHANGE MASTER TO MASTER_LOG_FILE=" $BACKUP_DIR/full/full_backup_$DATE.sql | awk -F"'" '{print $2}' )
+BINLOG_POS=$(grep "CHANGE MASTER TO MASTER_LOG_FILE="  $BACKUP_DIR/full/full_backup_$DATE.sql  | awk -F"=" '{print $3}'| tr -d ";") 
+echo $BINLOG_FILE
+echo $BINLOG_POS 
+
+# 备份从该位置之后的所有Binlog
+# --stop-never,备份是实时的，开始备份后binlog可以继续写入
+mysqlbinlog --read-from-remote-server --stop-never --host=192.168.1.211 --user=ly --password=hello.ly --raw --start-position=$BINLOG_POS $BINLOG_FILE --result-file=$BACKUP_DIR/binlog/binlog_backup_  2>> $LOG_FILE #& 
+
+echo "$(date) - 备份完成" >> $LOG_FILE
+
+}
+func
+
+```
+`full_backup_$DATE.sql`中有一句话`CHANGE MASTER TO MASTER_LOG_FILE='mysql-bin.000002', MASTER_LOG_POS=154;`其中`MASTER_LOG_FILE`表示备份时正在使用的二进制日志文件名，而`MASTER_LOG_POS`表示备份时二进制日志的精确位置(字节偏移量)。增量日志正是根据这个信息，来备份增量数据。154是Binlog 文件头的(常见)固定开销
 ## 数据恢复演示
 ```mysql
 #建库建表
@@ -585,7 +638,7 @@ root@db211:/var/lib/mysql# mysqlbinlog mysql-bin.000003 > recover.sql;
 root@db211:/var/lib/mysql# ls -l | grep reco
 -rw-r--r-- 1 root  root      10568 Mar 26 08:10 recover.sql
 ```
-- 利用binlog恢复数据的过程中，这些操作会再次记录到binlog中
+- 利用binlog恢复数据的过程中，这些操作会再次记录到(新)binlog中
 - `delete from yy` 和 `drop database xx` 都会被记录
 - 实际操作中得知道库从何时建立，在哪个binlog文件中
 - 过期问题
@@ -607,5 +660,7 @@ DO FLUSH LOGS;
 2. 结合expire_logs_days 自动清理
 SET GLOBAL expire_logs_days = 7;  -- 保留最近7天的日志
 假设1操作产生了a01,b02,c03,d04；只要在a01七天内备份了日志就行
+#也可以使用shell脚本定时备份,该语句将binlog日志转为sql脚本文件
+mysqlbinlog --base64-output=DECODE-ROWS -v /var/lib/mysql/binlog.000001 > ~/binlog_export.sql
 ```
-- 数据恢复靠数据备份(sql脚本)+
+- 数据恢复主要靠以往备份的数据(sql脚本)+当前binlog文件

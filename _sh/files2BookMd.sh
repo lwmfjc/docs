@@ -126,6 +126,9 @@ handleDir(){
 			#标题降1级(#\s+)\*{2}(.*?)\*{4}
 			#perl -i -pe 's/^##(.*?\s)/$1/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\.\.\/images\//img\//gp' "$newFullPathFile"			
+			#删除文本中空白行
+			#sed -i '/^$/d' filename.txt
+
 			
 			#去除标签
 			#b标签替换成**xx**<b>.*?<\/b>
