@@ -568,11 +568,13 @@ echo "$(date) - 备份完成" >> $LOG_FILE
 func
 
 ```
-`full_backup_$DATE.sql`中有一句话`CHANGE MASTER TO MASTER_LOG_FILE='mysql-bin.000002', MASTER_LOG_POS=154;`其中`MASTER_LOG_FILE`表示备份时正在使用的二进制日志文件名，而`MASTER_LOG_POS`表示备份时二进制日志的精确位置(字节偏移量)。增量日志正是根据这个信息，来备份增量数据。154是Binlog 文件头的(常见)固定开销
+`full_backup_$DATE.sql`中有一句话`CHANGE MASTER TO MASTER_LOG_FILE='mysql-bin.000002', MASTER_LOG_POS=154;`其中`MASTER_LOG_FILE`表示备份时正在使用的二进制日志文件名(因为全量备份之前，执行`flush logs;`所以这里指的是新的(下一个)binlog日志)，而`MASTER_LOG_POS`表示备份时二进制日志的精确位置(字节偏移量)。增量日志正是根据这个信息，来备份增量数据。154是Binlog 文件头的(常见)固定开销
 ## 数据恢复演示
 ```mysql
 #建库建表
+drop database lytest;
 CREATE DATABASE lytest;
+use lytest;
 CREATE TABLE `lyuser` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `age` tinyint(4) NOT NULL,
@@ -587,33 +589,42 @@ delete from lyuser;
 #添加数据
 INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (17, 46, 'QianXiuying', 'W');
 INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (18, 16, 'DuLu', 'W');
+update lyuser set name='change-xx' where id=18;
 INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (19, 39, 'MoJialun', 'W');
 INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (20, 39, 'TianLu', 'W');
 INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (21, 38, 'LiYunxi', 'M');
 #做个update测试
-ysql> update lyuser set name='chenchen' where id = 20;
+update lyuser set name='chenchen' where id = 20;
 mysql> select * from lyuser;
 +----+-----+-------------+------+
 | id | age | name        | sex  |
 +----+-----+-------------+------+
 | 17 |  46 | QianXiuying | W    |
-| 18 |  16 | DuLu        | W    |
+| 18 |  16 | change-xx   | W    |
 | 19 |  39 | MoJialun    | W    |
 | 20 |  39 | chenchen    | W    |
 | 21 |  38 | LiYunxi     | M    |
 +----+-----+-------------+------+
+
 ##查看一下，只要过程中不重启mysql，刚才所有的操作应该都在最后一个日志上
 mysql> show binary logs;
 +------------------+-----------+
 | Log_name         | File_size |
 +------------------+-----------+
-| mysql-bin.000001 |       177 |
-| mysql-bin.000002 |       177 |
-| mysql-bin.000003 |      4477 |
+| mysql-bin.000001 |      1416 |
+| mysql-bin.000002 |      3534 |
 +------------------+-----------+
+mysql> show master status \G
+*************************** 1. row ***************************
+             File: mysql-bin.000002
+         Position: 3534
+     Binlog_Do_DB: 
+ Binlog_Ignore_DB: 
+Executed_Gtid_Set: 
+
 #此时删除数据库
-mysql> drop database lytest;
-mysql> show databases;
+drop database lytest;
+show databases;
 #已经没有lytest库了
 +--------------------+
 | Database           |
@@ -628,9 +639,9 @@ mysql> show databases;
 6 rows in set (0.00 sec)
 #再次确认一下，发现binlog磁盘文件存在，且修改日期正确
 root@db211:/var/lib/mysql# ls -l | grep 00000
--rw-r----- 1 mysql mysql       177 Mar 26 00:15 mysql-bin.000001
--rw-r----- 1 mysql mysql       177 Mar 26 00:15 mysql-bin.000002
--rw-r----- 1 mysql mysql      4640 Mar 26 07:58 mysql-bin.000003
+-rw-r----- 1 mysql mysql      1416 Mar 27 00:39 mysql-bin.000001
+-rw-r----- 1 mysql mysql      3697 Mar 27 01:08 mysql-bin.000002
+
 #=================================================
 #=================================================
 #也可以先导出为sql文件，再查看数据并导出
@@ -663,4 +674,221 @@ SET GLOBAL expire_logs_days = 7;  -- 保留最近7天的日志
 #也可以使用shell脚本定时备份,该语句将binlog日志转为sql脚本文件
 mysqlbinlog --base64-output=DECODE-ROWS -v /var/lib/mysql/binlog.000001 > ~/binlog_export.sql
 ```
-- 数据恢复主要靠以往备份的数据(sql脚本)+当前binlog文件
+数据恢复主要靠以往备份的数据(sql脚本)+当前binlog文件  
+
+查看binlog文件  
+```mysql
+root@db211:/var/lib/mysql# mysqlbinlog --no-defaults --database=lytest --base64-output=decode-rows -v  mysql-bin.000002
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=1*/;
+/*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/;
+DELIMITER /*!*/;
+# at 4
+#250327  0:39:35 server id 1  end_log_pos 123 CRC32 0x350d2528 	Start: binlog v 4, server v 5.7.33-log created 250327  0:39:35
+# Warning: this binlog is either in use or was not closed properly.
+WARNING: The option --database has been used. It may filter parts of transactions, but will include the GTIDs in any case. If you want to exclude or include transactions, you should use the options --exclude-gtids or --include-gtids, respectively, instead.
+# at 123
+#250327  0:39:35 server id 1  end_log_pos 154 CRC32 0x3dce76db 	Previous-GTIDs
+# [empty]
+# at 154
+#250327  0:40:44 server id 1  end_log_pos 219 CRC32 0x4fa5e52b 	Anonymous_GTID	last_committed=0	sequence_number=1   rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 219
+#250327  0:40:44 server id 1  end_log_pos 308 CRC32 0xcb7e3008 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+SET @@session.pseudo_thread_id=2/*!*/;
+SET @@session.foreign_key_checks=1, @@session.sql_auto_is_null=0, @@session.unique_checks=1, @@session.autocommit=1/*!*/;
+SET @@session.sql_mode=1436549152/*!*/;
+SET @@session.auto_increment_increment=1, @@session.auto_increment_offset=1/*!*/;
+/*!\C utf8 *//*!*/;
+SET @@session.character_set_client=33,@@session.collation_connection=33,@@session.collation_server=33/*!*/;
+SET @@session.lc_time_names=0/*!*/;
+SET @@session.collation_database=DEFAULT/*!*/;
+drop database lytest
+/*!*/;
+# at 308
+#250327  0:40:44 server id 1  end_log_pos 373 CRC32 0xbf9cf643 	Anonymous_GTID	last_committed=1	sequence_number=2   rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 373
+#250327  0:40:44 server id 1  end_log_pos 473 CRC32 0x01e386c1 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+CREATE DATABASE lytest
+/*!*/;
+# at 473
+#250327  0:40:44 server id 1  end_log_pos 538 CRC32 0xd0e538f8 	Anonymous_GTID	last_committed=2	sequence_number=3   rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 538
+#250327  0:40:44 server id 1  end_log_pos 916 CRC32 0xef77f78d 	Query	thread_id=2	exec_time=0	error_code=0
+use `lytest`/*!*/;
+SET TIMESTAMP=1743007244/*!*/;
+CREATE TABLE `lyuser` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `age` tinyint(4) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `sex` enum('M','W') DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_name` (`name`),
+  KEY `idx_age` (`age`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8
+/*!*/;
+# at 916
+#250327  0:40:44 server id 1  end_log_pos 981 CRC32 0x2e5c487b 	Anonymous_GTID	last_committed=3	sequence_number=4   rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 981
+#250327  0:40:44 server id 1  end_log_pos 1064 CRC32 0x975178bf 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+BEGIN
+/*!*/;
+# at 1064
+#250327  0:40:44 server id 1  end_log_pos 1160 CRC32 0xa59e2ed9 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+delete from lyuser
+/*!*/;
+# at 1160
+#250327  0:40:44 server id 1  end_log_pos 1191 CRC32 0xe76b0666 	Xid = 40
+COMMIT/*!*/;
+# at 1191
+#250327  0:40:44 server id 1  end_log_pos 1256 CRC32 0x919cfa21 	Anonymous_GTID	last_committed=4	sequence_number=5	rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 1256
+#250327  0:40:44 server id 1  end_log_pos 1339 CRC32 0x883d190e 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+BEGIN
+/*!*/;
+# at 1339
+#250327  0:40:44 server id 1  end_log_pos 1511 CRC32 0xc785a56a 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (17, 46, 'QianXiuying', 'W')
+/*!*/;
+# at 1511
+#250327  0:40:44 server id 1  end_log_pos 1542 CRC32 0x9885c5ff 	Xid = 41
+COMMIT/*!*/;
+# at 1542
+#250327  0:40:44 server id 1  end_log_pos 1607 CRC32 0xe79f183a 	Anonymous_GTID	last_committed=5	sequence_number=6	rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 1607
+#250327  0:40:44 server id 1  end_log_pos 1690 CRC32 0x5097e4e5 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+BEGIN
+/*!*/;
+# at 1690
+#250327  0:40:44 server id 1  end_log_pos 1855 CRC32 0xf4e6babd 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (18, 16, 'DuLu', 'W')
+/*!*/;
+# at 1855
+#250327  0:40:44 server id 1  end_log_pos 1886 CRC32 0xdfcece32 	Xid = 42
+COMMIT/*!*/;
+# at 1886
+#250327  0:40:44 server id 1  end_log_pos 1951 CRC32 0x8500030b 	Anonymous_GTID	last_committed=6	sequence_number=7	rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 1951
+#250327  0:40:44 server id 1  end_log_pos 2034 CRC32 0xb4584b4d 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+BEGIN
+/*!*/;
+# at 2034
+#250327  0:40:44 server id 1  end_log_pos 2158 CRC32 0xd7b5cf0f 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+update lyuser set name='change-xx' where id=18
+/*!*/;
+# at 2158
+#250327  0:40:44 server id 1  end_log_pos 2189 CRC32 0xec0d1a3d 	Xid = 43
+COMMIT/*!*/;
+# at 2189
+#250327  0:40:44 server id 1  end_log_pos 2254 CRC32 0xf6b3cf31 	Anonymous_GTID	last_committed=7	sequence_number=8	rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 2254
+#250327  0:40:44 server id 1  end_log_pos 2337 CRC32 0xcec22690 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+BEGIN
+/*!*/;
+# at 2337
+#250327  0:40:44 server id 1  end_log_pos 2506 CRC32 0xea17cea4 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (19, 39, 'MoJialun', 'W')
+/*!*/;
+# at 2506
+#250327  0:40:44 server id 1  end_log_pos 2537 CRC32 0xae2fca93 	Xid = 44
+COMMIT/*!*/;
+# at 2537
+#250327  0:40:44 server id 1  end_log_pos 2602 CRC32 0xfeb98a70 	Anonymous_GTID	last_committed=8	sequence_number=9	rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 2602
+#250327  0:40:44 server id 1  end_log_pos 2685 CRC32 0xc2bad412 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+BEGIN
+/*!*/;
+# at 2685
+#250327  0:40:44 server id 1  end_log_pos 2852 CRC32 0x28aef0c1 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (20, 39, 'TianLu', 'W')
+/*!*/;
+# at 2852
+#250327  0:40:44 server id 1  end_log_pos 2883 CRC32 0x9ef932e7 	Xid = 45
+COMMIT/*!*/;
+# at 2883
+#250327  0:40:44 server id 1  end_log_pos 2948 CRC32 0x0e809918 	Anonymous_GTID	last_committed=9	sequence_number=10	rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 2948
+#250327  0:40:44 server id 1  end_log_pos 3031 CRC32 0x38511f6e 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+BEGIN
+/*!*/;
+# at 3031
+#250327  0:40:44 server id 1  end_log_pos 3199 CRC32 0xb3b2b276 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007244/*!*/;
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (21, 38, 'LiYunxi', 'M')
+/*!*/;
+# at 3199
+#250327  0:40:44 server id 1  end_log_pos 3230 CRC32 0x7e876778 	Xid = 46
+COMMIT/*!*/;
+# at 3230
+#250327  0:40:45 server id 1  end_log_pos 3295 CRC32 0x2263c1ff 	Anonymous_GTID	last_committed=10	sequence_number=11	rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 3295
+#250327  0:40:45 server id 1  end_log_pos 3378 CRC32 0x748723cd 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007245/*!*/;
+BEGIN
+/*!*/;
+# at 3378
+#250327  0:40:45 server id 1  end_log_pos 3503 CRC32 0x16f1a6ee 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743007245/*!*/;
+update lyuser set name='chenchen' where id = 20
+/*!*/;
+# at 3503
+#250327  0:40:45 server id 1  end_log_pos 3534 CRC32 0x263c6ebf 	Xid = 47
+COMMIT/*!*/;
+# at 3534
+#250327  1:08:05 server id 1  end_log_pos 3599 CRC32 0xc0823649 	Anonymous_GTID	last_committed=11	sequence_number=12	rbr_only=no
+SET @@SESSION.GTID_NEXT= 'ANONYMOUS'/*!*/;
+# at 3599
+#250327  1:08:05 server id 1  end_log_pos 3697 CRC32 0xe3c3438b 	Query	thread_id=2	exec_time=0	error_code=0
+SET TIMESTAMP=1743008885/*!*/;
+drop database lytest
+/*!*/;
+SET @@SESSION.GTID_NEXT= 'AUTOMATIC' /* added by mysqlbinlog */ /*!*/;
+DELIMITER ;
+# End of log file
+/*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/;
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=0*/;
+```
+
+```mysql
+#这里为了演示使用了position
+mysqlbinlog --database=lytest --start-position=308 --stop-position=2337 --start-datetime='2025-03-27 00:00:00' --stop-datetime='2025-03-27 23:59:59'  mysql-bin.000002 | mysql -uroot -p
+
+mysql> show tables;
++------------------+
+| Tables_in_lytest |
++------------------+
+| lyuser           |
++------------------+
+#新增两条数据，修改一次
+mysql> select * from lyuser;
++----+-----+-------------+------+
+| id | age | name        | sex  |
++----+-----+-------------+------+
+| 17 |  46 | QianXiuying | W    |
+| 18 |  16 | change-xx   | W    |
++----+-----+-------------+------+
+```
