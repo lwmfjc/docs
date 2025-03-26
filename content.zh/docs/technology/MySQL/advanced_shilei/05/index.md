@@ -299,6 +299,8 @@ delete from user where id = 3;
 ```
 
 # binlog
+## 开启binlog
+
 ```mysql
 mysql> show binary logs;#或者show master logs;
 +------------------+-----------+
@@ -435,6 +437,175 @@ DELIMITER ;
 # End of log file
 /*!50003 SET COMPLETION_TYPE=@OLD_COMPLETION_TYPE*/;
 /*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=0*/;
-
-
 ```
+## 三种binlog_format
+- row模式---test_row数据库--mysql-bin.000006(数据最大)
+	- 记录每行数据的变化（修改前/后的完整行数据）
+	- mysqlbinlog --base64-output选项就是针对这个模式的
+		- ATTO(默认)。输出内容：原始BASE64字符串。可读性：低。适用场景：数据重放、原始日志保存。
+		- NEVER。输出内容：==过滤BASE64块==，保留元信息。可读性：中。适用场景：快速查看日志结构。
+		- DECODE-ROWS -v。输出内容：==伪SQL注释（带字段详情）==。可读性：高。适用场景：人工分析、审计。
+- statement模式---test_statement数据库--mysql-bin.000007(数据最小)~~如果修改了1000条数据，也许这个模式只要一条sql，而row则需要记录1000行所有数据前后变动~~
+	- 只记录修改数据的 SQL
+- mixed模式---test_mixed数据库--mysql-bin.000008(最终1303字节，中等)
+	- 默认使用 STATEMENT 格式
+	- 对可能引起不一致的语句自动切换为 ROW 格式
+	- 有一些例外的情况，比如now()
+```mysql
+#mix下的binlog日志--部分摘取
+SET TIMESTAMP=1742960957/*!*/;
+SET @@session.time_zone='SYSTEM'/*!*/;
+BEGIN
+/*!*/;
+# at 1272
+# at 1304
+#250326 11:49:17 server id 1  end_log_pos 1304 CRC32 0x53ecd13f 	Intvar
+SET INSERT_ID=2/*!*/;
+#250326 11:49:17 server id 1  end_log_pos 1447 CRC32 0x93409ee9 	Query	thread_id=2	exec_time=0	error_code=0
+##使用了SET TIMESTAMP语句，使得下面的now()都会以这个时间为准，转化后是2025-03-26 11:49:17
+SET TIMESTAMP=1742960957/*!*/;
+insert into stu(birth,name) values(now(),'hello')
+/*!*/;
+# at 1447
+#250326 11:49:17 server id 1  end_log_pos 1478 CRC32 0x2e1f6111 	Xid = 83
+COMMIT/*!*/;
+```
+分别以三种模式记录sql变动到binlog日志中
+```mysql
+#查看当前binlog文件
+mysql> show binary logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000005 |       154 |
++------------------+-----------+
+mysql> flush logs; 
+mysql> show binary logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000005 |       201 |
+| mysql-bin.000006 |       154 |
++------------------+-----------+
+#即将使用 mysql-bin.000006
+set binlog_format=ROW;#set binlog_format=STATEMENT;#set binlog_format=MIXED;
+mysql> select @@binlog_format;
++-----------------+
+| @@binlog_format |
++-----------------+
+| ROW             |
++-----------------+
+
+#数据库测试语句
+create database test_row;#create database test_statement;#create database test_mixed;
+use test_row;#use test_statement;#use test_mixed;
+create table stu(id int auto_increment, birth datetime, name varchar(20), primary key(id));
+#重启mysql或者使用新的binlog日志 
+#sudo systemctl restart mysql; #flush logs;
+#即将使用mysql-bin.000004(随机的，我这里是04)
+#插入两条语句
+insert into stu(birth,name) values('1990-10-02','hello');
+insert into stu(birth,name) values(now(),'hello');
+mysql> show binary logs;
+#binlog文件变大了
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000005 |       201 |
+| mysql-bin.000006 |      1126 |
++------------------+-----------+
+mysqlbinlog --no-defaults  --base64-output=DECODE-ROWS -v mysql-bin.000006 | cat
+```
+## 数据恢复演示
+```mysql
+#建库建表
+CREATE DATABASE lytest;
+CREATE TABLE `lyuser` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `age` tinyint(4) NOT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  `sex` enum('M','W') DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_name` (`name`),
+  KEY `idx_age` (`age`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+##这里用navicat生成了几条默认数据，由于名字带空格，就删除了重新插入
+delete from lyuser;
+#添加数据
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (17, 46, 'QianXiuying', 'W');
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (18, 16, 'DuLu', 'W');
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (19, 39, 'MoJialun', 'W');
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (20, 39, 'TianLu', 'W');
+INSERT INTO `lytest`.`lyuser` (`id`, `age`, `name`, `sex`) VALUES (21, 38, 'LiYunxi', 'M');
+#做个update测试
+ysql> update lyuser set name='chenchen' where id = 20;
+mysql> select * from lyuser;
++----+-----+-------------+------+
+| id | age | name        | sex  |
++----+-----+-------------+------+
+| 17 |  46 | QianXiuying | W    |
+| 18 |  16 | DuLu        | W    |
+| 19 |  39 | MoJialun    | W    |
+| 20 |  39 | chenchen    | W    |
+| 21 |  38 | LiYunxi     | M    |
++----+-----+-------------+------+
+##查看一下，只要过程中不重启mysql，刚才所有的操作应该都在最后一个日志上
+mysql> show binary logs;
++------------------+-----------+
+| Log_name         | File_size |
++------------------+-----------+
+| mysql-bin.000001 |       177 |
+| mysql-bin.000002 |       177 |
+| mysql-bin.000003 |      4477 |
++------------------+-----------+
+#此时删除数据库
+mysql> drop database lytest;
+mysql> show databases;
+#已经没有lytest库了
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| test               |
+| xx                 |
++--------------------+
+6 rows in set (0.00 sec)
+#再次确认一下，发现binlog磁盘文件存在，且修改日期正确
+root@db211:/var/lib/mysql# ls -l | grep 00000
+-rw-r----- 1 mysql mysql       177 Mar 26 00:15 mysql-bin.000001
+-rw-r----- 1 mysql mysql       177 Mar 26 00:15 mysql-bin.000002
+-rw-r----- 1 mysql mysql      4640 Mar 26 07:58 mysql-bin.000003
+#=================================================
+#=================================================
+#也可以先导出为sql文件，再查看数据并导出
+root@db211:/var/lib/mysql# mysqlbinlog mysql-bin.000003 > recover.sql;
+root@db211:/var/lib/mysql# ls -l | grep reco
+-rw-r--r-- 1 root  root      10568 Mar 26 08:10 recover.sql
+```
+- 利用binlog恢复数据的过程中，这些操作会再次记录到binlog中
+- `delete from yy` 和 `drop database xx` 都会被记录
+- 实际操作中得知道库从何时建立，在哪个binlog文件中
+- 过期问题
+	- 关于`expire_logs_days`: 当满足以下条件时，Binlog文件会被自动删除：`当前时间 - 文件最后修改时间 > expire_logs_days`
+	- 当前活动的 Binlog 文件（正在写入的日志）即使因为 expire_logs_days 设置的时间到期且长时间没有写入，也不会被自动清理，除非触发日志轮换`（如执行 FLUSH LOGS 或 Binlog 文件大小达到 max_binlog_size`）或服务重启创建新binlog，而旧的成为了非活动文件，会立即清理，所以该在日志轮换前备份日志文件。
+	- 在执行FLUSH LOGS前备份当前活动的 Binlog 文件，如果备份后有数据写入，是否会导致数据丢失？1. 锁定写入 + 备份(推荐) 2.基于 Binlog 位置增量备份 3. 使用 mysqlbinlog 实时备份  
+```mysql
+# 备份当前 Binlog 并持续跟踪新事件
+mysqlbinlog --read-from-remote-server --host=localhost --user=root --password \
+  --raw --stop-never binlog.000010 --result-file=/backup/backup_
+```
+- 如何备份binglog日志呢
+```mysql
+1. 定时任务调用 FLUSH LOGS
+-- 通过事件调度器每24小时轮换一次
+CREATE EVENT rotate_binlog_hourly
+ON SCHEDULE EVERY 24 HOUR
+DO FLUSH LOGS;
+2. 结合expire_logs_days 自动清理
+SET GLOBAL expire_logs_days = 7;  -- 保留最近7天的日志
+假设1操作产生了a01,b02,c03,d04；只要在a01七天内备份了日志就行
+```
+- 数据恢复靠数据备份(sql脚本)+
