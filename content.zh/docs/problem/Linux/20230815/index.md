@@ -56,6 +56,7 @@ im-config #配置使用fcitx5
 ```
 
 ```shell
+vim /etc/profile
 #环境变量添加
 export XMODIFIERS=@im=fcitx
 export GTK_IM_MODULE=fcitx
@@ -63,6 +64,11 @@ export QT_IM_MODULE=fcitx
 #退出root用户权限，使用普通用户权限再终端
 fcitx5-configtool #配置中文输入法即可
 #附加组件-经典用户界面--这里可以修改字体及大小
+```
+
+```shell
+#fcitx5自动开启
+mkdir -p ~/.config/autostart && cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart
 ```
 
 # 其他

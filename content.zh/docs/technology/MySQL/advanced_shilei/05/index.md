@@ -548,7 +548,16 @@ echo "" > LOG_FILE
 echo "$(date) - 开始全量备份" >> $LOG_FILE
 mysqldump -u root -phello.root --single-transaction --master-data=2 --flush-logs --all-databases > $BACKUP_DIR/full/full_backup_$DATE.sql 2>> $LOG_FILE
 #这行mysqldump命令执行后，会马上执行flush-logs，生成新binlog-new。之后所有的增删改都在binlog-new上，且不会在全量备份中
-
+#====部分表备份====
+#mysqldump -uroot -p test2 mytest > ~/mytest.sql
+#====执行sql并查询数据====
+#mysql -h192.168.1.211 -uly -p -D test -e "select * from user where age > 10 " > hello.txt
+#id	age	name	sex
+#1	22	zhangsan	W
+#3	33	lisi	M
+#10	20	xxx	W
+#15	25	lix	M
+#16	30	er_wang	W
 
 # 2. 备份Binlog(新binlog-new)
 echo "$(date) - 开始Binlog备份" >> $LOG_FILE
