@@ -59,6 +59,7 @@ lrwxrwxrwx. 1 root root   31 Apr  3 15:05 sshd.service -> /lib/systemd/system/ss
 
 #====总的来说，我只要在/etc/systemd/system/下创建自己的服务S，然后systemctl enable S即可
 ```
+
 ## service编写(这里没用上)
 ```shell
 vim /etc/systemd/system/vncser
@@ -83,25 +84,124 @@ WantedBy=multi-user.target   # 定义服务所属的“目标”（开机自启�
 ```shell
 #镜像下载 https://mirrors-i.tuna.tsinghua.edu.cn/lxc-images/images/debian/bookworm/arm64/
 #发行版 [rootfs.tar]
-#源地址 ${EXTERNAL_STORAGE}/linuxdeploy/....tar.xz
-#安装类型[ 目录]
-#安装路径[ ${ENV_DIR}/rootfs/bookworm ] --> [ /data/data/ru.meefik.linuxdeploy/files/rootfs/bookworm ]
+#源地址 ${EXTERNAL_STORAGE}/linuxdeploy/bookworm.tar.xz
+
+#=====!!!!安装类型[ 目录]会有一些问题，比如ssh提示权限过高，不太懂..=======
+#安装路径[ ${ENV_DIR}/rootfs/bookworm ] --> [ /data/data/ru.meefik.linuxdeploy/files/rootfs/bookworm ]----安装类型[ 目录]
+#安装路径[ /data/media/0/linuxdeploy/bookworm ]----安装类型[ 目录] 
+#建议放镜像
+#安装路径{EXTERNAL_STORAGE}/linuxdeploy/bookworm.img----安装类型[ 镜像文件]
+
 #用户名--用户密码--特权用户--本地化--DNS--networktrigger--powertrigger--随便弃用
 #(弃用)初始化-启用-run-parts--路径/etc/rc.local--初始用户root
 #!!!!初始化我这里使用sysv，通过systemctl enable ssh可以让ssh开机自启动，但是systemctl start ssh不能使用，需要用service ssh start替代
+#挂载目录--挂载点--source使用/data/media/0 （data开头的，android14中其他的好像都不行不知道为什么，给ly加了 aid_media_rw  这个组权限） sudo usermod -aG  aid_media_rw username
 #其他都不需要
 
 #设置 telnet守护模式打开
 ```
+## 镜像相关
+扩容和缩容最好都是关了镜像系统再操作，否则需要到`扩容后df未正确显示容量`这步骤再操作一次
+### 镜像扩容(termux上)
+```shell
+#查看当前容量 
+#假设文件实际686M(du -h bookworm.img）
+#文件系统认为的大小
+#dumpe2fs -h bookworm.img | grep -E "Block count|Block size" 
+#786432
+expr 786432 \* 4 / 1024 / 1024 = 3 (G)
+#ls -lh bookworm.img也是3G，容器大小
 
+#1. 现在通过命令扩容容器到5G
+#①.追加2G
+#dd if=/dev/zero bs=1M count=2048 >> bookworm.img #不要用这个，会导致实际容量变大（686->5G）
+#②.覆盖原有
+dd if=/dev/zero of=bookworm.img bs=1M count=5120  # 新建5GB文件（覆盖原有）
+#③.直接扩容到5G
+dd if=/dev/zero of=bookworm.img bs=1M count=0 seek=5120  # （即文件逻辑大小=5120×1MB=5GB），但不占用物理空间
+truncate -s 5G bookworm.img  # 直接设置容器为5GB
+
+#2.强制检查文件系统 bookworm.img 这个 ext2/ext3/ext4 文件系统镜像的完整性
+e2fsck -f bookworm.img
+#e2fsck -fy bookworm.img(自动修复，就不需要步骤3了)
+
+du -h bookworm.img #686M 查看当前文件实际大小
+
+#查看物理设备大小(逻辑大小) (文件系统的底层容器)
+ls -lh bookworm.img #5G 
+#查看文件系统大小(文件系统认为自己可用的空间)
+dumpe2fs -h bookworm.img | grep -E "Block count|Block size"  
+#Block count:              786432 
+#Block size:               4096
+#expr 786432 \* 4 / 1024 / 1024 = 3 (G)
+
+#3.调整文件系统
+# 让文件系统认为是5G（自动填满），
+# 自动填满不能增对dd的两条命令，dd只能用精确填满
+resize2fs bookworm.img 
+#精确填满，这个命令会把dd if=/dev/zero bs=1M count=2048 >> bookworm.img新增的空数据清掉
+#resize2fs bookworm.img 5G 
+#resize2fs 1.47.2 (1-Jan-2025)
+#The filesystem is already 3932160 (4k) blocks long.  Nothing to do!
+
+dumpe2fs -h bookworm.img | grep -E "Block count|Block size" 
+#Block count:              1310720
+#Block size:               4096
+#expr 1310720 \* 4 / 1024 / 1024 = 5 (G)
+#================扩容成功============
+```
+### 镜像缩容(termux上)
+```shell
+# 1. 检查文件系统
+e2fsck -f bookworm.img
+
+# 2. 查看当前已用空间（确保目标值≥已用空间）
+du -h bookworm.img
+
+# 3. 缩小文件系统（例如缩到15GB）
+resize2fs bookworm.img 15G 
+
+# 4. 再次检查
+e2fsck -f bookworm.img
+
+# 5. 缩小镜像文件容器
+truncate -s 15G bookworm.img
+```
+### 错误修复
+```shell
+The filesystem size (according to the superblock) is 10485760 blocks (约 40GB，假设块大小=4KB)
+The physical size of the device is 2621440 blocks
+#===============文件系统40G，但物理大小只有10G
+#只要把文件系统大小和物理大小统一即可(扩容或者缩容都可以)
+e2fsck -f bookworm.img后提示
+e2fsck: Attempt to read block from filesystem resulted in short read while trying to open bookworm.img
+#这个也是一样的原因
+```
+### 系统碎片整理
+```shell
+sudo e4defrag / 
+```
+### 扩容后df未正确显示容量
+```shell
+#针对部分情况导致扩容容量没有直接分进分区的
+df -hT /
+#Filesystem        Type  Size  Used Avail Use% Mounted on
+#/dev/block/loop49 ext4  4.8G  554M  4.3G  12% /
+sudo resize2fs /dev/block/loop49
 
 ```
-
+## 初始
+``` shell
+#rm -rf /data/media/0/linuxdeploy/bookworm 
 telnet 192.168.1.106 5023
 su
 /data/user/0/ru.meefik.linuxdeploy/files/bin/linuxdeploy shell -u root
 #修改默认密码
 passwd
+#修改hostname
+# !!echo 'tabs8-ld' > /proc/sys/kernel/hostname #会直接影响安卓系统，不要用!!! 
+echo 'tabs8' > /etc/hostname
+vim /etc/hosts #在第二行的localhostname后面添加 tabs8
 ```
 安装证书并重启
 ```shell
@@ -113,7 +213,7 @@ touch /etc/resolv.conf && chmod 755 /etc/resolv.conf
 telnet 192.168.1.106 5023
 su
 /data/user/0/ru.meefik.linuxdeploy/files/bin/linuxdeploy shell -u root
-#更新
+#更新证书
 apt update
 apt install -y ca-certificates
 ```
@@ -197,12 +297,14 @@ systemd(systemctl现代化,chroot中不可用)
 #更新
 sudo apt update
 #/data/user/0/ru.meefik.linuxdeploy/files/bin/linuxdeploy shell -u root
+
 #手动安装ssh
 sudo apt install openssh-server -y
 vim /etc/ssh/sshd_config #Port修改为9022
  
-/etc/init.d/ssh restart
- 
+#/etc/init.d/ssh restart
+sudo service ssh restart
+#ssh-keygen -t RSA -C "lwmfjc@gmail.com" 
 
 #不用默认用户，新增一个用户
 useradd -d /home/ly -s /bin/bash -m ly 
@@ -210,6 +312,7 @@ useradd -d /home/ly -s /bin/bash -m ly
 #将ly加入soduer组
 #vim /etc/hosts #localhost后添加 tabs8
 sudo usermod -aG sudo ly
+sudo usermod -aG  aid_media_rw ly (读取挂载目录的权限)
 passwd ly #设置密码
 su - ly -c 'touch /home/ly/.Xauthority'
  ```
