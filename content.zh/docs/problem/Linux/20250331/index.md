@@ -704,7 +704,9 @@ nano ~/.bashrc
 在.bashrc最后添加一行
 export LANG=zh_CN.UTF-8
 #④. 安装中文字体
-sudo apt install fonts-wqy-zenhei  
+#sudo apt install fonts-wqy-zenhei 
+#sudo apt install fonts-noto-cjk
+
 
 2.安装中文输入法
 #sudo apt install fcitx5 fcitx5-chinese-addons fcitx5-frontend-gtk4 fcitx5-frontend-gtk3 fcitx5-frontend-gtk2  fcitx5-frontend-qt5 
