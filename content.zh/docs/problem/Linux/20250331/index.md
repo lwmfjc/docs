@@ -100,7 +100,7 @@ WantedBy=multi-user.target   # 定义服务所属的“目标”（开机自启�
 
 #设置 telnet守护模式打开
 ```
-## 镜像相关
+# 镜像相关
 扩容和缩容最好都是关了镜像系统再操作，否则需要到`扩容后df未正确显示容量`这步骤再操作一次
 ### 镜像扩容(termux上)
 ```shell
@@ -190,7 +190,7 @@ df -hT /
 sudo resize2fs /dev/block/loop49
 
 ```
-## 初始
+# 初始
 ``` shell
 #rm -rf /data/media/0/linuxdeploy/bookworm 
 telnet 192.168.1.106 5023
@@ -203,7 +203,7 @@ passwd
 echo 'tabs8' > /etc/hostname
 vim /etc/hosts #在第二行的localhostname后面添加 tabs8
 ```
-安装证书并重启
+# 安装证书并重启
 ```shell
 #修复dns
 rm /etc/resolv.conf
@@ -218,7 +218,7 @@ apt update
 apt install -y ca-certificates
 ```
 
-修改源（debian-bookworm）
+# 修改源（debian-bookworm）
 ``` shell
 cp -i /etc/apt/sources.list /etc/apt/sources.list.bak
 vim /etc/apt/sources.list
@@ -292,7 +292,7 @@ run-parts(指定/etc/rc.local或目录)
 SysV Init(/etc/init.d中存放服务管理脚本，推荐⭐)  
 
 systemd(systemctl现代化,chroot中不可用)  
-
+# ssh
 ```shell
 #更新
 sudo apt update
@@ -316,14 +316,15 @@ sudo usermod -aG  aid_media_rw ly (读取挂载目录的权限)
 passwd ly #设置密码
 su - ly -c 'touch /home/ly/.Xauthority'
  ```
- 需要手动安装桌面
+ # 手动安装桌面
 ```shell
 #sudo apt install tasksel -y
 #su
 #tasksel #建议xfce
 #sudo apt install task-xfce-desktop 
 sudo apt install dbus-x11 -y
-sudo apt install  xfce4 -y
+sudo apt install  xfce4 -y #最精简
+#sudo apt install xfce4 xfce4-goodies #包括一些组件
 sudo apt install xfce4-terminal -y #终端安装
 #sudo mv /etc/init.d/udev /etc/init.d/.udev #隐藏开机自启动
 #安装后重启
@@ -344,14 +345,28 @@ vncpasswd
 mkdir -p $HOME/.vnc/
 ls /usr/share/xsessions
 
+#推荐geometry=2560x1600
+#best--use 120
+#推荐best--eye 144 最大
+#推荐gui--setting-appearance--fonts--dpi(disable custom)
+#推荐gui--setting-window scaling 2x
+#fontsize--- 
+
 #===========配置1============
 vim ~/.vnc/config
+ly@tabs8:~$ cat ~/.vnc/config 
 #session=xfce  #ls /usr/share/xsessions
 #session=lightdm-xsession
-geometry=1920x1080
+#geometry=1280×720，1920x1080，2560x1440，3840×2160
+geometry=2560x1600
+#dpi=72,96,120(1080),144(2k),192
+#dpi=96
+dpi=144
+#dpi=274
 localhost=no
 #autostart=false	
 alwaysshared
+
 
 #=========配置2-start======
 su ly
@@ -389,7 +404,7 @@ vncserver -list
 ```
 vncserver脚本
 ```shell
-ly@localhost:~$ sudo vim /etc/init.d/vncserver 
+sudo vim /etc/init.d/vncserver 
 sudo chmod +x /etc/init.d/vncserver 
 sudo systemctl enable vncserver
 sudo service vncserver restart
@@ -576,6 +591,10 @@ done
 chmod +x ~/_sh/*.sh
 ```
 # 应用处理
+## 浏览器
+```shell
+apt install firefox-esr -y
+```
 ## 音频
 ```shell
 #sudo apt remove pulseaudio -y
@@ -664,19 +683,20 @@ sudo systemctl enable pashare
 #sudo service pashare start
 
 ```
-
+## vscode
 ```shell
-apt install firefox-esr -y
 #c++开发环境安装
 sudo apt install build-essential gdb -y
-1. vscode
+sudo apt install code_1.81.1 -y
 #这里遇到了个问题，vscode配合leetcode插件0.18.4。 1.81.1< vscode_version <= 1.97.2没法用"code now"自动生成题目代码功能,nodejs_version 18.9
 #目前vscode1.81.1可用
-2. 中文环境 
-
+```
+## 语言
+```shell
+1. 中文环境 
 #xfce4设置中文
 #①. 安装并配置locales
-sudo apt install locales
+sudo apt install locales -y
 sudo dpkg-reconfigure locales
 #②. 选择语言编码 zh相关, 第二个环境选英文
 #!!③.配置当前用户默认语言 #!!这步骤不要
@@ -686,14 +706,14 @@ export LANG=zh_CN.UTF-8
 #④. 安装中文字体
 sudo apt install fonts-wqy-zenhei  
 
-3.安装中文输入法
+2.安装中文输入法
 #sudo apt install fcitx5 fcitx5-chinese-addons fcitx5-frontend-gtk4 fcitx5-frontend-gtk3 fcitx5-frontend-gtk2  fcitx5-frontend-qt5 
 sudo apt install fcitx5 fcitx5-chinese-addons
 #修改XTerm字体大小
 #Ctrl+鼠标Right Click。
 
 
-#环境变量添加
+#环境变量追加
 sudo vim /etc/profile
 #==============
 export XMODIFIERS=@im=fcitx
@@ -704,9 +724,11 @@ im-config #配置使用fcitx5
 #退出root用户权限，使用普通用户权限再终端
 fcitx5-configtool #取消勾选Only show current language配置中文输入法即可
 #附加组件-经典用户界面--这里可以修改字体及大小
-
 #fcitx5自动开启
 mkdir -p ~/.config/autostart && cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart
+```
+## 其他
+``` shell
 #安装火狐
 sudo apt install firefox-esr
 #git安装
