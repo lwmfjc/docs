@@ -200,8 +200,9 @@ su
 passwd
 #修改hostname
 # !!echo 'tabs8-ld' > /proc/sys/kernel/hostname #会直接影响安卓系统，不要用!!! 
-echo 'tabs8' > /etc/hostname
-vim /etc/hosts #在第二行的localhostname后面添加 tabs8
+#不一定需要改hostname，看情况
+#echo 'tabs8' > /etc/hostname 
+#vim /etc/hosts #在第二行的localhostname后面添加 tabs8
 ```
 # 安装证书并重启
 ```shell
@@ -295,7 +296,8 @@ systemd(systemctl现代化,chroot中不可用)
 # ssh
 ```shell
 #更新
-sudo apt update
+sudo apt update 
+sudo apt upgrade -y
 #/data/user/0/ru.meefik.linuxdeploy/files/bin/linuxdeploy shell -u root
 
 #手动安装ssh
@@ -312,7 +314,7 @@ useradd -d /home/ly -s /bin/bash -m ly
 #将ly加入soduer组
 #vim /etc/hosts #localhost后添加 tabs8
 sudo usermod -aG sudo ly
-sudo usermod -aG  aid_media_rw ly (读取挂载目录的权限)
+sudo usermod -aG  aid_media_rw ly #读取挂载目录的权限
 passwd ly #设置密码
 su - ly -c 'touch /home/ly/.Xauthority'
  ```
@@ -320,16 +322,30 @@ su - ly -c 'touch /home/ly/.Xauthority'
 ```shell
 #sudo apt install tasksel -y
 #su
-#tasksel #建议xfce
-#sudo apt install task-xfce-desktop 
-sudo apt install dbus-x11 -y
-sudo apt install  xfce4 -y #最精简
-#sudo apt install xfce4 xfce4-goodies #包括一些组件
+sudo apt install dbus-x11 -y ##必装
 sudo apt install xfce4-terminal -y #终端安装
-#sudo mv /etc/init.d/udev /etc/init.d/.udev #隐藏开机自启动
+#tasksel #建议xfce
+#sudo apt install task-xfce-desktop -y #1. 最完整
+#sudo apt install xfce4 xfce4-goodies #2. 包括一些组件
+sudo apt install  xfce4 -y #3. 最精简
+
+
+#=========配置-start======
+su ly
+mkdir -p ~/.vnc
+vim ~/.vnc/xstartup
+#!/bin/sh
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+startxfce4
+
+#添加权限
+chmod +x ~/.vnc/xstartup
+#=========配置--end======
+
 #安装后重启
-$ systemctl get-default
-graphical.target
+#systemctl get-default
+#graphical.target
 ```
 # tigervnc使用
 ```shell
@@ -342,47 +358,31 @@ vncpasswd
 #vncserver -kill :1
 
 #编写用户独立配置文件
-mkdir -p $HOME/.vnc/
+mkdir -p /home/ly/.vnc/
 ls /usr/share/xsessions
 
 #推荐geometry=2560x1600
 #best--use 120
-#推荐best--eye 144 最大
+#推荐best--eye 136 最大
 #推荐gui--setting-appearance--fonts--dpi(disable custom)
 #推荐gui--setting-window scaling 2x
 #fontsize--- 
 
 #===========配置1============
 vim ~/.vnc/config
-ly@tabs8:~$ cat ~/.vnc/config 
 #session=xfce  #ls /usr/share/xsessions
 #session=lightdm-xsession
 #geometry=1280×720，1920x1080，2560x1440，3840×2160
 geometry=2560x1600
 #dpi=72,96,120(1080),144(2k),192
 #dpi=96
-dpi=144
+dpi=136
 #dpi=274
 localhost=no
 #autostart=false	
 alwaysshared
 
-
-#=========配置2-start======
-su ly
-mkdir -p ~/.vnc
-vim ~/.vnc/xstartup
-#!/bin/sh
-unset SESSION_MANAGER
-unset DBUS_SESSION_BUS_ADDRESS
-startxfce4 #&
-
-#添加权限
-chmod +x ~/.vnc/xstartup
-#=========配置2--end======
-
-# sudo service vncserver restart
-#===================
+#============配置2=======
 sudo vim /etc/tigervnc/vncserver.users
 :1=ly
 #:2=root
@@ -400,9 +400,53 @@ sudo vim /etc/tigervnc/vncserver.users
  #查看vncserver列表
 vncserver -list
 #vncserver -kill :1
-
 ```
-vncserver脚本
+## 配合开机脚本
+### 清理数据脚本
+```shell
+sudo vim /etc/init.d/.vncserver-clean.sh 
+sudo chmod +x /etc/init.d/.vncserver-clean.sh 
+#!/bin/bash
+#
+ids=$(vncserver -list | awk '{if (NR>4)print $1}')
+for id in $ids;
+do
+   #id=${id/:/}
+   #echo $id
+   vncserver -kill :$id
+done
+
+for (( i=0; i<=10; i++ )); do
+    #file1="$HOME/.vnc/localhost:590$i.log"
+    #file2="$HOME/.vnc/localhost:590$i.pid"
+    file1="$HOME/.vnc/localhost:$i.log"
+    file2="$HOME/.vnc/localhost:$i.pid"
+    file3="/tmp/.X$i-lock"
+    file4="/tmp/.X11-unix/X$i"
+    file5="/run/tigervncsession-:$i.pid"
+
+    if [[ -f "$file1" ]]; then
+        rm -rf "$file1"
+    fi
+    
+    if [[ -f "$file2" ]]; then
+        rm -rf "$file2"
+    fi
+    
+    if [[ -f "$file3" ]]; then
+        rm -rf "$file3"
+    fi
+    if [[ -f "$file4" || -S "$file4" ]]; then
+        #echo "$file4"
+        rm -rf "$file4"
+    fi
+    if [[ -f "$file5" ]];then 
+	rm -rf "$file5"
+    fi
+done
+ 
+```
+### 启动服务脚本
 ```shell
 sudo vim /etc/init.d/vncserver 
 sudo chmod +x /etc/init.d/vncserver 
@@ -447,6 +491,7 @@ set_selinux_context() {
 # 启动服务
 start() {
     #sudo bash "$CLEANFILE"
+    sudo bash /etc/init.d/.vncserver-clean.sh 
     check_root
     if [ -e "$PIDFILE" ]; then
         echo "Error: PID file $PIDFILE already exists. Is the server already running?" >&2
@@ -496,6 +541,7 @@ stop() {
     rm -f "$PIDFILE"
     #sudo bash "$CLEANFILE"
     echo "Stopped."
+    sudo bash /etc/init.d/.vncserver-clean.sh 
 }
 
 # 重启服务
@@ -546,54 +592,16 @@ esac
 exit 0
 
 ```
-清理vnc过往连接数据（备用）  
-```shell
-vim /home/bin/vncserver-clean.sh
-#!/bin/bash
-#
-ids=$(vncserver -list | awk '{if (NR>4)print $1}')
-for id in $ids;
-do
-   #id=${id/:/}
-   #echo $id
-   vncserver -kill :$id
-done
 
-for (( i=0; i<=10; i++ )); do
-    #file1="$HOME/.vnc/localhost:590$i.log"
-    #file2="$HOME/.vnc/localhost:590$i.pid"
-    file1="$HOME/.vnc/localhost:$i.log"
-    file2="$HOME/.vnc/localhost:$i.pid"
-    file3="/tmp/.X$i-lock"
-    file4="/tmp/.X11-unix/X$i"
-    file5="/run/tigervncsession-:$i.pid"
-
-    if [[ -f "$file1" ]]; then
-        rm -rf "$file1"
-    fi
-    
-    if [[ -f "$file2" ]]; then
-        rm -rf "$file2"
-    fi
-    
-    if [[ -f "$file3" ]]; then
-        rm -rf "$file3"
-    fi
-    if [[ -f "$file4" || -S "$file4" ]]; then
-        #echo "$file4"
-        rm -rf "$file4"
-    fi
-    if [[ -f "$file5" ]];then 
-	rm -rf "$file5"
-    fi
-done
-
-chmod +x ~/_sh/*.sh
-```
 # 应用处理
+## 内存
+```shell
+free -h
+```
 ## 浏览器
 ```shell
-apt install firefox-esr -y
+#sudo apt install firefox-esr -y
+sudo apt install chromium -y
 ```
 ## 音频
 ```shell
@@ -605,7 +613,7 @@ sudo apt install psmisc -y
 
 vim ~/.vimrc
 set nu
-vim /etc/pulse/default.pa
+sudo vim /etc/pulse/default.pa
 #注释115行 load-module module-console-kit 
 #运行 pactl list | grep 'Name\|Description' 并标识监视系统音频的模块。看看有没有auto_null.monitor
 
@@ -677,7 +685,7 @@ exit 0
 
 sudo chmod +x /etc/init.d/pashare 
 sudo systemctl enable pashare
-
+sudo service pashare start
 #测试
 #sudo service pashare stop
 #sudo service pashare start
@@ -685,8 +693,10 @@ sudo systemctl enable pashare
 ```
 ## vscode
 ```shell
-#c++开发环境安装
 sudo apt install build-essential gdb -y
+#c++开发环境安装
+sudo apt install wget -y
+wget "https://update.code.visualstudio.com/1.81.1/linux-deb-arm64/stable" -O vscode_1.81.1_arm64.deb
 sudo apt install code_1.81.1 -y
 #这里遇到了个问题，vscode配合leetcode插件0.18.4。 1.81.1< vscode_version <= 1.97.2没法用"code now"自动生成题目代码功能,nodejs_version 18.9
 #目前vscode1.81.1可用
@@ -694,19 +704,30 @@ sudo apt install code_1.81.1 -y
 ## 语言
 ```shell
 1. 中文环境 
-#xfce4设置中文
-#①. 安装并配置locales
-sudo apt install locales -y
-sudo dpkg-reconfigure locales
-#②. 选择语言编码 zh相关, 第二个环境选英文
-#!!③.配置当前用户默认语言 #!!这步骤不要
-nano ~/.bashrc
-在.bashrc最后添加一行
-export LANG=zh_CN.UTF-8
-#④. 安装中文字体
-#sudo apt install fonts-wqy-zenhei 
-#sudo apt install fonts-noto-cjk
 
+#安装中文字体
+#sudo apt install fonts-noto-cjk fonts-noto-cjk-extra #google免费字体
+
+#x.1
+#霞鹭文楷
+proxychains wget https://github.com/lxgw/LxgwWenKai/releases/download/v1.511/LXGWWenKaiMono-Medium.ttf
+sudo mkdir -p /usr/share/fonts/LxgwWenKai
+sudo cp LXGWWenKaiMono-*.ttf /usr/share/fonts/LxgwWenKai/
+sudo chmod 644 /usr/share/fonts/LxgwWenKai/*
+sudo fc-cache -fv
+
+#x.2
+#微软雅黑
+#sudo mkdir -p /usr/share/fonts/msyh
+#sudo cp msyh*.ttc /usr/share/fonts/msyh/
+#sudo chmod 644 /usr/share/fonts/msyh/*
+#sudo fc-cache -fv
+
+#========手动安装的字体卸载============
+sudo rm -rf /usr/share/fonts/LxgwWenKai/
+sudo fc-cache -fv
+
+fc-list | grep "LXGW WenKai" 
 
 2.安装中文输入法
 #sudo apt install fcitx5 fcitx5-chinese-addons fcitx5-frontend-gtk4 fcitx5-frontend-gtk3 fcitx5-frontend-gtk2  fcitx5-frontend-qt5 
@@ -717,17 +738,32 @@ sudo apt install fcitx5 fcitx5-chinese-addons
 
 #环境变量追加
 sudo vim /etc/profile
-#==============
 export XMODIFIERS=@im=fcitx
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
-
+#==============
 im-config #配置使用fcitx5 
 #退出root用户权限，使用普通用户权限再终端
 fcitx5-configtool #取消勾选Only show current language配置中文输入法即可
 #附加组件-经典用户界面--这里可以修改字体及大小
 #fcitx5自动开启
 mkdir -p ~/.config/autostart && cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart
+#======让终端显示英文==================
+echo 'export LC_MESSAGES=en_US.UTF-8' >> ~/.bashrc
+#zh_CN.UTF-8 中文
+source ~/.bashrc  # 立即生效
+
+#xfce4设置中文
+#①. 安装并配置locales
+sudo apt remove locales -y && sudo apt purge locales -y && sudo apt autoremove
+sudo apt install locales -y
+sudo dpkg-reconfigure locales
+#②. 选择语言编码 zh相关, 第二个环境选英文
+#!!③.配置当前用户默认语言 #!!这步骤不要
+nano ~/.bashrc
+在.bashrc最后添加一行
+export LANG=zh_CN.UTF-8
+
 ```
 ## 其他
 ``` shell
