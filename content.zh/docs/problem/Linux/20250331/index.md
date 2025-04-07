@@ -215,7 +215,7 @@ telnet 192.168.1.106 5023
 su
 /data/user/0/ru.meefik.linuxdeploy/files/bin/linuxdeploy shell -u root
 #更新证书
-apt update
+#apt update
 apt install -y ca-certificates
 ```
 
@@ -302,23 +302,21 @@ sudo apt upgrade -y
 
 #手动安装ssh
 sudo apt install openssh-server -y
+
 vim /etc/ssh/sshd_config #Port修改为9022
- 
 #/etc/init.d/ssh restart
 sudo service ssh restart
-#ssh-keygen -t RSA -C "lwmfjc@gmail.com" 
 
 #不用默认用户，新增一个用户
 useradd -d /home/ly -s /bin/bash -m ly 
 
 #将ly加入soduer组
-#vim /etc/hosts #localhost后添加 tabs8
-sudo usermod -aG sudo ly
-sudo usermod -aG  aid_media_rw ly #读取挂载目录的权限
-passwd ly #设置密码
+sudo usermod -aG sudo ly && sudo usermod -aG  aid_media_rw ly #读取挂载目录的权限
 su - ly -c 'touch /home/ly/.Xauthority'
+passwd ly #设置密码
+
  ```
- # 手动安装桌面
+ # 桌面
 ```shell
 #sudo apt install tasksel -y
 #su
@@ -329,25 +327,12 @@ sudo apt install xfce4-terminal -y #终端安装
 #sudo apt install xfce4 xfce4-goodies #2. 包括一些组件
 sudo apt install  xfce4 -y #3. 最精简
 
-
-#=========配置-start======
-su ly
-mkdir -p ~/.vnc
-vim ~/.vnc/xstartup
-#!/bin/sh
-unset SESSION_MANAGER
-unset DBUS_SESSION_BUS_ADDRESS
-startxfce4
-
-#添加权限
-chmod +x ~/.vnc/xstartup
-#=========配置--end======
-
 #安装后重启
 #systemctl get-default
 #graphical.target
 ```
-# tigervnc使用
+# tigervnc
+## 安装设置密码
 ```shell
 sudo apt install tigervnc-standalone-server -y
 #tigervnc-common tightvncserver -y
@@ -356,53 +341,79 @@ vncpasswd
 #vncserver -localhost no 
 #vncserver -list
 #vncserver -kill :1
-
-#编写用户独立配置文件
+```
+## 配置启动及环境变量
+```shell
 mkdir -p /home/ly/.vnc/
-ls /usr/share/xsessions
-
-#推荐geometry=2560x1600
-#best--use 120
-#推荐best--eye 136 最大
-#推荐gui--setting-appearance--fonts--dpi(disable custom)
-#推荐gui--setting-window scaling 2x
-#fontsize--- 
-
-#===========配置1============
+su ly
+mkdir -p ~/.vnc
+vim ~/.vnc/xstartup
+#-------------content-start-------
+#!/bin/bash
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources
+source ~/.profile #重新export环境变量
+vncconfig -nowin & #完全后台运行(必须)
+#vncconfig -iconic & #启动后最小化(默认)
+startxfce4
+#-------------content-end-------
+#添加权限
+chmod +x ~/.vnc/xstartup
+```
+## ui相关环境变量添加
+```shell
+vim ~/.profile
+#qt缩放
+export QT_SCALE_FACTOR=2 #应用设置界面缩放,1.5无效
+#export QT_AUTO_SCREEN_SCALE_FACTOR=2 #系统缩放，貌似没用
+#gtk3缩放
+export GDK_SCALE=2 #系统缩放,只能是1,2,4之类.1.5无效
+#export GDK_DPI_SCALE=1.5 #dpi设置,改成直接在~/.vnc/config设置值
+```
+## 配置参数
+``` shell
 vim ~/.vnc/config
-#session=xfce  #ls /usr/share/xsessions
+#ls /usr/share/xsessions
+#session=xfce
 #session=lightdm-xsession
 #geometry=1280×720，1920x1080，2560x1440，3840×2160
 geometry=2560x1600
 #dpi=72,96,120(1080),144(2k),192
-#dpi=96
+#136对眼睛好，120界面和电脑比较匹配
+#建议136，浏览器设置缩放75%
+#gui--setting-appearance--fonts--dpi(去掉勾选后这里才有效)
+#gui--setting-window scaling 1x(默认不改动)
 dpi=136
-#dpi=274
 localhost=no
-#autostart=false	
+#完全静默后台
+#vncconfig=nowin
+#iconic，最小化(任务栏中)
+#vncconfig=iconic 
 alwaysshared
-
-#============配置2=======
+```
+## 配置用户端口
+``` shell
 sudo vim /etc/tigervnc/vncserver.users
 :1=ly
 #:2=root
-
+```
+## 弃用但记录一下
+``` shell
 #sudo systemctl enable tigervncserver@:1.service
 #Created symlink /etc/systemd/system/multi-user.target.wants/tigervncserver@:1.service → /lib/systemd/system/tigervncserver@.service.
 #======1. Sysv模式下，@不能用。所以应该修改连接名
 #======2. 但是在Sysv模式下，/etc/systemd/system没办法触发，改了也没用改为在/etc/init.d/下写脚本hello，然后以脚本名hello作为服务名启动服务 sudo systemctl enable hello
 
-
 #重新建立软连接
 #sudo ln -sf /lib/systemd/system/tigervnc.service /etc/systemd/system/multi-user.target.wants/tigervnc.service
-
 
  #查看vncserver列表
 vncserver -list
 #vncserver -kill :1
 ```
-## 配合开机脚本
-### 清理数据脚本
+## 清理数据脚本
 ```shell
 sudo vim /etc/init.d/.vncserver-clean.sh 
 sudo chmod +x /etc/init.d/.vncserver-clean.sh 
@@ -444,14 +455,10 @@ for (( i=0; i<=10; i++ )); do
 	rm -rf "$file5"
     fi
 done
- 
 ```
-### 启动服务脚本
+## 启动服务脚本
 ```shell
 sudo vim /etc/init.d/vncserver 
-sudo chmod +x /etc/init.d/vncserver 
-sudo systemctl enable vncserver
-sudo service vncserver restart
 #!/bin/bash
 ### BEGIN INIT INFO
 # Provides:          tigervnc
@@ -590,10 +597,80 @@ case "$1" in
 esac
 
 exit 0
-
+sudo chmod +x /etc/init.d/vncserver 
+sudo systemctl enable vncserver
+sudo service vncserver restart
 ```
 
 # 应用处理
+
+## 语言
+### 安装中文字体
+```shell
+#google免费字体
+#sudo apt install fonts-noto-cjk  
+
+sudo apt install proxychains wget -y
+sudo vim /etc/proxychains.conf 
+#添加socks5 127.0.0.1 10808
+#注释socks4所在行
+#注释proxy_dns
+
+#霞鹭文楷
+proxychains wget https://github.com/lxgw/LxgwWenKai/releases/download/v1.511/LXGWWenKaiMono-Medium.ttf
+sudo mkdir -p /usr/share/fonts/LxgwWenKai
+sudo cp LXGWWenKaiMono-*.ttf /usr/share/fonts/LxgwWenKai/
+sudo chmod 644 /usr/share/fonts/LxgwWenKai/*
+sudo fc-cache -fv
+
+#========手动安装的字体卸载============
+sudo rm -rf /usr/share/fonts/LxgwWenKai/
+sudo fc-cache -fv
+
+fc-list | grep "LXGW WenKai" 
+```
+### 配置语言
+```shell
+#sudo apt remove locales -y && sudo apt purge locales -y && sudo apt autoremove
+#sudo apt install locales -y
+sudo dpkg-reconfigure locales
+#②. 选择语言编码 zh相关, 第二个环境选中文
+
+#!!③.配置当前用户默认语言 #!!这步骤不要
+#nano ~/.bashrc
+#在.bashrc最后添加一行
+#export LANG=zh_CN.UTF-8
+```
+### 安装中文输入法
+``` shell
+#sudo apt install fcitx5 fcitx5-chinese-addons fcitx5-frontend-gtk4 fcitx5-frontend-gtk3 fcitx5-frontend-gtk2  fcitx5-frontend-qt5 
+sudo apt install fcitx5 fcitx5-chinese-addons -y
+#sudo apt install fcitx5-pinyin  # Fcitx5 拼音
+
+#修改XTerm字体大小
+#Ctrl+鼠标Right Click。
+
+im-config #配置使用fcitx5 
+fcitx5-configtool #取消勾选Only show current language配置中文输入法即可
+#附加组件-经典用户界面--这里可以修改字体及大小---推荐24
+#fcitx5自动开启
+mkdir -p ~/.config/autostart && cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart
+
+#===============弃用====================
+#======让终端显示英文==================
+echo 'export LC_MESSAGES=en_US.UTF-8' >> ~/.bashrc
+#zh_CN.UTF-8 中文
+source ~/.bashrc  # 立即生效
+
+#环境变量追加
+vim ~/.profile
+#输入法环境变量
+export GTK_IM_MODULE=fcitx5
+export QT_IM_MODULE=fcitx5
+export XMODIFIERS=@im=fcitx5
+
+```
+
 ## 内存
 ```shell
 free -h
@@ -603,6 +680,7 @@ free -h
 #sudo apt install firefox-esr -y
 sudo apt install chromium -y
 ```
+
 ## 音频
 ```shell
 #sudo apt remove pulseaudio -y
@@ -619,7 +697,6 @@ sudo vim /etc/pulse/default.pa
 
 #===========================
 sudo vim /etc/init.d/pashare 
-
 #!/bin/bash
 ### BEGIN INIT INFO
 # Provides:          tigervnc
@@ -686,6 +763,7 @@ exit 0
 sudo chmod +x /etc/init.d/pashare 
 sudo systemctl enable pashare
 sudo service pashare start
+#app：使用SimpleProtocolPlayer，地址127.0.0.1 端口8000
 #测试
 #sudo service pashare stop
 #sudo service pashare start
@@ -701,69 +779,11 @@ sudo apt install code_1.81.1 -y
 #这里遇到了个问题，vscode配合leetcode插件0.18.4。 1.81.1< vscode_version <= 1.97.2没法用"code now"自动生成题目代码功能,nodejs_version 18.9
 #目前vscode1.81.1可用
 ```
-## 语言
+## 内存统计
 ```shell
-1. 中文环境 
-
-#安装中文字体
-#sudo apt install fonts-noto-cjk fonts-noto-cjk-extra #google免费字体
-
-#x.1
-#霞鹭文楷
-proxychains wget https://github.com/lxgw/LxgwWenKai/releases/download/v1.511/LXGWWenKaiMono-Medium.ttf
-sudo mkdir -p /usr/share/fonts/LxgwWenKai
-sudo cp LXGWWenKaiMono-*.ttf /usr/share/fonts/LxgwWenKai/
-sudo chmod 644 /usr/share/fonts/LxgwWenKai/*
-sudo fc-cache -fv
-
-#x.2
-#微软雅黑
-#sudo mkdir -p /usr/share/fonts/msyh
-#sudo cp msyh*.ttc /usr/share/fonts/msyh/
-#sudo chmod 644 /usr/share/fonts/msyh/*
-#sudo fc-cache -fv
-
-#========手动安装的字体卸载============
-sudo rm -rf /usr/share/fonts/LxgwWenKai/
-sudo fc-cache -fv
-
-fc-list | grep "LXGW WenKai" 
-
-2.安装中文输入法
-#sudo apt install fcitx5 fcitx5-chinese-addons fcitx5-frontend-gtk4 fcitx5-frontend-gtk3 fcitx5-frontend-gtk2  fcitx5-frontend-qt5 
-sudo apt install fcitx5 fcitx5-chinese-addons
-#修改XTerm字体大小
-#Ctrl+鼠标Right Click。
-
-
-#环境变量追加
-sudo vim /etc/profile
-export XMODIFIERS=@im=fcitx
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-#==============
-im-config #配置使用fcitx5 
-#退出root用户权限，使用普通用户权限再终端
-fcitx5-configtool #取消勾选Only show current language配置中文输入法即可
-#附加组件-经典用户界面--这里可以修改字体及大小
-#fcitx5自动开启
-mkdir -p ~/.config/autostart && cp /usr/share/applications/org.fcitx.Fcitx5.desktop ~/.config/autostart
-#======让终端显示英文==================
-echo 'export LC_MESSAGES=en_US.UTF-8' >> ~/.bashrc
-#zh_CN.UTF-8 中文
-source ~/.bashrc  # 立即生效
-
-#xfce4设置中文
-#①. 安装并配置locales
-sudo apt remove locales -y && sudo apt purge locales -y && sudo apt autoremove
-sudo apt install locales -y
-sudo dpkg-reconfigure locales
-#②. 选择语言编码 zh相关, 第二个环境选英文
-#!!③.配置当前用户默认语言 #!!这步骤不要
-nano ~/.bashrc
-在.bashrc最后添加一行
-export LANG=zh_CN.UTF-8
-
+sudo apt install smem -y
+smem -t -k -P "smem"
+#t:total k:Kilobytes,千字节。kb,mb,gb  P:Pattern 
 ```
 ## 其他
 ``` shell
