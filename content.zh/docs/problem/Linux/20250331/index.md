@@ -252,25 +252,10 @@ deb https://mirrors.aliyun.com/debian/ bookworm-backports main contrib non-free 
 deb https://mirrors.aliyun.com/debian-security/ bookworm-security main contrib non-free non-free-firmware
 #deb-src https://mirrors.aliyun.com/debian-security/ bookworm-security main contrib non-free non-free-firmware
 ```
-修改源（debian-bullseye）
-```shell
-# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free
-
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free
-
-deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free
-
-# 以下安全更新软件源包含了官方源与镜像站配置，如有需要可自行修改注释切换
-deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free
-# deb-src https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free
-```
-
 修改源（ubuntu）
 ```shell
+cp -i /etc/apt/sources.list /etc/apt/sources.list.bak
+vim /etc/apt/sources.list
 # 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble main restricted universe multiverse
 # deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ noble main restricted universe multiverse
@@ -321,11 +306,14 @@ passwd ly #设置密码
 #sudo apt install tasksel -y
 #su
 sudo apt install dbus-x11 -y ##必装
-sudo apt install xfce4-terminal -y #终端安装
+sudo apt install xfce4-terminal -y #终端安装(debian12)
+
+
 #tasksel #建议xfce
 #sudo apt install task-xfce-desktop -y #1. 最完整
 #sudo apt install xfce4 xfce4-goodies #2. 包括一些组件
-sudo apt install  xfce4 -y #3. 最精简
+sudo apt install  xfce4 -y #3. 最精简 (debian12)
+#sudo apt install ubuntu-desktop -y #桌面（ubuntu24？？？好像会导致系统启动失败，弃用)
 
 #安装后重启
 #systemctl get-default
@@ -336,6 +324,7 @@ sudo apt install  xfce4 -y #3. 最精简
 ```shell
 sudo apt install tigervnc-standalone-server -y
 #tigervnc-common tightvncserver -y
+su - ly
 vncpasswd
 #vncserver连接
 #vncserver -localhost no 
@@ -346,7 +335,6 @@ vncpasswd
 ```shell
 mkdir -p /home/ly/.vnc/
 su ly
-mkdir -p ~/.vnc
 vim ~/.vnc/xstartup
 #-------------content-start-------
 #!/bin/bash
@@ -416,7 +404,6 @@ vncserver -list
 ## 清理数据脚本
 ```shell
 sudo vim /etc/init.d/.vncserver-clean.sh 
-sudo chmod +x /etc/init.d/.vncserver-clean.sh 
 #!/bin/bash
 #
 ids=$(vncserver -list | awk '{if (NR>4)print $1}')
@@ -455,6 +442,7 @@ for (( i=0; i<=10; i++ )); do
 	rm -rf "$file5"
     fi
 done
+sudo chmod +x /etc/init.d/.vncserver-clean.sh 
 ```
 ## 启动服务脚本
 ```shell
