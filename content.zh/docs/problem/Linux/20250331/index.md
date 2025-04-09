@@ -350,7 +350,11 @@ startxfce4
 #添加权限
 chmod +x ~/.vnc/xstartup
 ```
-## ui相关环境变量添加
+## ui相关参数说明
+影响ui的三个要素：分辨率(~/.vnc/config)，dpi(~/.vnc/config)以及缩放(~/.profile)
+- 推荐配置1：`geometry=2560x1600,dpi=136,缩放2x`，字体（24）,播放视频会卡
+- 推荐配置2：`geometry=1280x800,dpi=144,缩放1x`，字体10（不变），解决视频播放问题----知识系统不全，目前不知道什么原因，两个配置cpu都是超了200%的，都是软解
+### 环境变量添加(弃用)
 ```shell
 vim ~/.profile
 #qt缩放
@@ -360,20 +364,22 @@ export QT_SCALE_FACTOR=2 #应用设置界面缩放,1.5无效
 export GDK_SCALE=2 #系统缩放,只能是1,2,4之类.1.5无效
 #export GDK_DPI_SCALE=1.5 #dpi设置,改成直接在~/.vnc/config设置值
 ```
-## 配置参数
+### 配置参数
 ``` shell
 vim ~/.vnc/config
 #ls /usr/share/xsessions
 #session=xfce
 #session=lightdm-xsession
 #geometry=1280×720，1920x1080，2560x1440，3840×2160
-geometry=2560x1600
+#geometry=2560x1600
+geometry=1280x800
 #dpi=72,96,120(1080),144(2k),192
 #136对眼睛好，120界面和电脑比较匹配
 #建议136，浏览器设置缩放75%
 #gui--setting-appearance--fonts--dpi(去掉勾选后这里才有效)
 #gui--setting-window scaling 1x(默认不改动)
-dpi=136
+#dpi=136
+dpi=144
 localhost=no
 #完全静默后台
 #vncconfig=nowin
@@ -591,7 +597,6 @@ sudo service vncserver restart
 ```
 
 # 应用处理
-
 ## 语言
 ### 安装中文字体
 ```shell
@@ -772,6 +777,10 @@ sudo apt install code_1.81.1 -y
 sudo apt install smem -y
 smem -t -k -P "smem"
 #t:total k:Kilobytes,千字节。kb,mb,gb  P:Pattern 
+```
+## 驱动
+```shell
+sudo apt install nvidia-driver nvidia-vdpau-driver  # NVIDIA
 ```
 ## 其他
 ``` shell
