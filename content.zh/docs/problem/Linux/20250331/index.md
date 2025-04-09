@@ -100,6 +100,33 @@ WantedBy=multi-user.target   # 定义服务所属的“目标”（开机自启�
 
 #设置 telnet守护模式打开
 ```
+## 挂载目录说明
+为了统一，可以用`/mnt/pass_through/0/emulated/0/(内置存储卡)` 以及`/mnt/pass_through/0/822C-9525/`(外置存储卡)
+### 外置存储卡
+```shell
+✔ /mnt/pass_through/0/822C-9525/000Ly1-->tabs8-outsd
+
+✔ /mnt/media_rw/822C-9525/000Ly1-->tabs8-2 (这个路径下只有外置存储卡822C-9525)
+
+================以下路径挂载到linuxdeploy系统后，用普通用户没法查看编辑(root可以)========================
+/mnt/androidwritable/0/822C-9525/000Ly1
+/mnt/installer/0/822C-9525/000Ly1
+/mnt/user/0/822C-9525/000Ly1
+```
+### 内置存储卡
+```shell
+:/mnt/pass_through/0 # ls -l
+total 131
+drwxrwx--- root     media_rw   822C-9525(外置存储)
+drwxrwx--- media_rw media_rw  emulated(内置存储)
+drwx--x--- root     media_rw    self(内置存储)
+
+✔ /mnt/pass_through/0/emulated/0/000Ly-->tabs8-insd #这条路径映射后debian系统普通用户可用
+/mnt/pass_through/0/self/primary/000Ly #这条路径映射后debian系统普通用户不可用
+
+#=====================================
+/data/media/0 #这个路径也可以供给普通用户挂载用
+```
 # 镜像相关
 扩容和缩容最好都是关了镜像系统再操作，否则需要到`扩容后df未正确显示容量`这步骤再操作一次
 ### 镜像扩容(termux上)
