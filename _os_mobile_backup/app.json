@@ -9,7 +9,6 @@
   "newFileFolderPath": "./img",
   "autoConvertHtml": false,
   "showInlineTitle": false,
-  "showRibbon": true,
   "readableLineLength": false,
   "strictLineBreaks": true,
   "defaultViewMode": "preview"

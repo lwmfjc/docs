@@ -1,5 +1,5 @@
 {
-  "cssTheme": "",
+  "cssTheme": "Border",
   "baseFontSizeAction": true,
   "baseFontSize": 17,
   "showViewHeader": true,
@@ -9,9 +9,9 @@
     "book-guwen02",
     "book-guwen01",
     "book01",
-    "book02",
-    "bg"
+    "book02"
   ],
   "textFontFamily": "霞鹜文楷等宽",
-  "theme": "moonstone"
+  "theme": "moonstone",
+  "showRibbon": true
 }

@@ -825,5 +825,6 @@ git config --global user.email lwmfjc@gmail.com
 !*.gitignore
 ?*.cpp
 !*.java
+sudo apt install libreoffice libreoffice-l10n-zh-cn # 中文包
 
 ```
