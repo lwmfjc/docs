@@ -4,32 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "1ef3064658c45276",
+        "id": "bc712488153f3cdb",
         "type": "tabs",
         "children": [
           {
-            "id": "b63b8534c0e85bf8",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-                "mode": "preview",
-                "source": false
-              },
-              "pinned": true,
-              "icon": "lucide-file",
-              "title": "index"
-            }
-          },
-          {
-            "id": "18dac6983c6a4579",
+            "id": "3f050555e33d66df",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "file": "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -37,8 +21,7 @@
               "title": "index"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -53,10 +36,11 @@
         "state": {
           "type": "file-explorer",
           "state": {
-            "sortOrder": "alphabetical"
+            "sortOrder": "alphabetical",
+            "autoReveal": false
           },
           "icon": "lucide-folder-closed",
-          "title": "文件列表"
+          "title": "Files"
         }
       },
       {
@@ -145,33 +129,58 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md"
+            "file": "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
+            "followCursor": false,
+            "showSearch": false,
+            "searchQuery": ""
           },
           "icon": "lucide-list",
-          "title": "大纲"
+          "title": "Outline"
         }
       }
     ],
-    "currentTab": 2
+    "currentTab": 2,
+    "pinned": true
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:打开快速切换": false,
-      "graph:查看关系图谱": false,
-      "canvas:新建白板": false,
-      "daily-notes:打开/创建今天的日记": false,
-      "templates:插入模板": false,
-      "command-palette:打开命令面板": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
       "templater-obsidian:Templater": false,
-      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "obsidian-excalidraw-plugin:Create new drawing": false,
       "file-cleaner-redux:Clean files": false
     }
   },
-  "active": "18dac6983c6a4579",
+  "active": "3f050555e33d66df",
   "lastOpenFiles": [
-    "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
-    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
     "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "content.zh/docs/culture/置身事内/上篇/index.md",
+    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
+    "content.zh/docs/culture/中国通史(吕思勉)/封面-版权-读后-自序/index.md",
+    "content.zh/docs/culture/汉字就是这么来的/01走进汉字世界/index.md",
+    "content.zh/docs/technology/Interview/high-performance/data-cold-hot-separation/index.md",
+    "content.zh/docs/technology/Interview/database/elasticsearch/elasticsearch-questions-01/index.md",
+    "content.zh/docs/technology/Interview/database/elasticsearch/_index.md",
+    "content.zh/docs/technology/Interview/database/basis/index.md",
+    "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+    "content.zh/docs/technology/RegExp/base(CoreySchafer)_/base/index.md",
+    "content.zh/docs/technology/RegExp/base(CoreySchafer)_/_index.md",
+    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第10章_条条大路通罗马-单表访问方法/index.md",
+    "content.zh/docs/technology/MySQL/_高性能MySQL_/第1章MySQL架构与历史/index.md",
+    "content.zh/docs/culture/增广贤文/_index.md",
+    "content.zh/docs/culture/天纪/人间道/上经/01乾为天/index.md",
+    "content.zh/docs/culture/论语/论语译注_杨伯峻/01学而篇第一/index.md",
+    "content.zh/docs/culture/论语/论语的生活智慧/01学天第一/index.md",
+    "content.zh/docs/life/20250123.md",
+    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
+    "content.zh/docs/test/test2/index.md",
+    "_sh/zsh/uninstall.sh",
+    "_sh/zsh/install.sh",
+    "_sh/zsh",
     "content.zh/docs/test/mytest/index.md",
     "content.zh/docs/culture/天纪/人间道/上经/29坎爲水/index.md",
     "content.zh/posts/_index.md",

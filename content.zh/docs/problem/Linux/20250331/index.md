@@ -870,8 +870,13 @@ sudo apt install lrzsz
 !*.gitignore
 ?*.cpp
 !*.java
+<<<<<<< HEAD
 sudo apt install  mousepad ristretto #记事本 图片查看器
 #sudo apt install atril #pdf
 sudo apt install libreoffice #office软件
 sudo apt install xournalpp #pdf编辑器
+=======
+sudo apt install libreoffice libreoffice-l10n-zh-cn # 中文包
+
+>>>>>>> c7bb9f0c34881ac1ce1782e4b88b510fef787d02
 ```
