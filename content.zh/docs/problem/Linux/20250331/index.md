@@ -227,9 +227,10 @@ su
 passwd
 #修改hostname
 # !!echo 'tabs8-ld' > /proc/sys/kernel/hostname #会直接影响安卓系统，不要用!!! 
-#不一定需要改hostname，看情况
-#echo 'tabs8' > /etc/hostname 
-#vim /etc/hosts #在第二行的localhostname后面添加 tabs8
+#修改hostname
+hostname tabs8-ld
+echo 'tabs8-ld' > /etc/hostname 
+vim /etc/hosts #在第二行的localhostname后面添加 tabs8-ld
 ```
 # 安装证书并重启
 ```shell
@@ -320,7 +321,7 @@ vim /etc/ssh/sshd_config #Port修改为9022
 sudo service ssh restart
 
 #不用默认用户，新增一个用户
-useradd -d /home/ly -s /bin/bash -m ly 
+sudo useradd -d /home/ly -s /bin/bash -m ly 
 
 #将ly加入soduer组
 sudo usermod -aG sudo ly && sudo usermod -aG  aid_media_rw ly #读取挂载目录的权限
@@ -386,7 +387,7 @@ chmod +x ~/.vnc/xstartup
 vim ~/.profile
 #qt缩放
 export QT_SCALE_FACTOR=2 #应用设置界面缩放,1.5无效
-#export QT_AUTO_SCREEN_SCALE_FACTOR=2 #系统缩放，貌似没用
+#export QT_AUTO_SCREEN_SCALE_FACTOR=2 #系统缩放，貌似没用(弃用)
 #gtk3缩放
 export GDK_SCALE=2 #系统缩放,只能是1,2,4之类.1.5无效
 #export GDK_DPI_SCALE=1.5 #dpi设置,改成直接在~/.vnc/config设置值
@@ -795,7 +796,7 @@ sudo apt install build-essential gdb -y
 #c++开发环境安装
 sudo apt install wget -y
 wget "https://update.code.visualstudio.com/1.81.1/linux-deb-arm64/stable" -O vscode_1.81.1_arm64.deb
-sudo apt install code_1.81.1 -y
+sudo apt install ./vscode_1.81.1_arm64.deb -y
 #这里遇到了个问题，vscode配合leetcode插件0.18.4。 1.81.1< vscode_version <= 1.97.2没法用"code now"自动生成题目代码功能,nodejs_version 18.9
 #目前vscode1.81.1可用
 ```
@@ -807,23 +808,70 @@ smem -t -k -P "smem"
 ```
 ## 驱动
 ```shell
-sudo apt install nvidia-driver nvidia-vdpau-driver  # NVIDIA
+#sudo apt install nvidia-driver nvidia-vdpau-driver  # NVIDIA(貌似没用)
 ```
+## onlyoffice(太大，弃用)
+```
+#==========onlyoffice-start==============
+#-----安装-------
+# 添加 OnlyOffice 的 GPG 密钥
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys CB2DE8E5
+# 添加 OnlyOffice 仓库
+echo "deb https://download.onlyoffice.com/repo/debian squeeze main" | sudo tee /etc/apt/sources.list.d/onlyoffice.list
+# 更新并安装
+sudo apt update
+sudo apt install onlyoffice-documentserver
+
+#-----卸载-----
+#1. 停止并移除 OnlyOffice 服务
+# 停止服务
+sudo systemctl stop onlyoffice-documentserver onlyoffice-documentserver-example
+sudo systemctl disable onlyoffice-documentserver onlyoffice-documentserver-example
+# 移除 systemd 服务（可选）
+sudo rm -f /lib/systemd/system/onlyoffice-documentserver*
+# 卸载主程序
+sudo apt remove --purge onlyoffice-documentserver
+#2. 使用 APT 卸载 OnlyOffice
+# 删除残留配置和数据
+sudo apt autoremove --purge
+#3. 删除 OnlyOffice 数据目录
+# 删除数据目录（包括数据库、缓存等）
+sudo rm -rf /var/www/onlyoffice /var/lib/onlyoffice /etc/onlyoffice
+#4. 移除 OnlyOffice 的 APT 仓库（可选）
+# 删除仓库列表
+sudo rm /etc/apt/sources.list.d/onlyoffice.list
+# 删除 GPG 密钥
+sudo apt-key del CB2DE8E5
+#5. 清理依赖项（可选）
+# 检查是否有残留的依赖
+sudo apt autoremove
+# 清理下载的 deb 缓存
+sudo apt clean
+#==========onlyoffice-end==============
+```
+
 ## 其他
 ``` shell
+#禁用图形化启动服务
+sudo systemctl disable plymouth
 #安装火狐
-sudo apt install firefox-esr
+#sudo apt install firefox-esr
+sudo apt install chromium -y
 #git安装
 sudo apt install git -y
 #生成密钥并添加到github
-ssh-keygen -t RSA -C "lwmfjc@gmail.com"
 git config --global user.name "lwmfjc"
 git config --global user.email lwmfjc@gmail.com
+ssh-keygen -t RSA -C "lwmfjc@gmail.com"
+sudo apt install lrzsz
 #.gitignore
 #只上传cpp、java文件
 *
 !*.gitignore
 ?*.cpp
 !*.java
-
+sudo apt install  mousepad ristretto #记事本 图片查看器
+#sudo apt install atril #pdf
+sudo apt install libreoffice #office软件
+sudo apt install xournalpp #pdf编辑器
 ```
