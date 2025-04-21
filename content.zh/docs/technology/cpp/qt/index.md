@@ -41,9 +41,9 @@ https://mirrors.tuna.tsinghua.edu.cn/qt/official_releases/online_installers/qt-o
 - (弃)修改 `E:\Qt\qtSrc\qtbase\mkspecs\win32-g++\qmake.conf`,修改`QMAKE_LFLAGS = -static -enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc`(仅添加`-static`) 
 ## 目录结构
 ```shell
-mkdir "E:\Qt\qtCustom\buildQtStatic" /p
-mkdir "E:\Qt\qtCustom\qtStatic" /p
-mkdir "E:\Qt\qtCustom\qtSrc" /p
+mkdir "E:\Qt\qtCustom\buildQtStatic" #/p
+mkdir "E:\Qt\qtCustom\qtStatic" 
+mkdir "E:\Qt\qtCustom\qtSrc"  
 #E:\Qt\qtCustom下
 				- buildQtStatic #(新建的)编译时切换到这个目录
 				- qtSrc #源码
@@ -60,10 +60,17 @@ QMAKE_CFLAGS += -static
 QMAKE_CXXFLAGS += -static
 ```
 
+编译时不加上面这几行修改qmake.conf的原因
+![](img/ly-20250421171204816.png)  
+
+
 ```shell
 #(很重要，在src外，不然编译时一堆错误)
 cd "E:\Qt\qtCustom\buildQtStatic" 
-"E:\Qt\qtCustom\qtSrc\configure.bat" -static  -release -platform win32-g++ -prefix "E:\Qt\qtCustom\qtStatic"  -opensource -confirm-license -opengl desktop -nomake  examples -nomake tests -nomake demos 
+"E:\Qt\qtCustom\qtSrc\configure.bat" -static -debug-and-release -platform win32-g++ -prefix "E:\Qt\qtCustom\qtStatic"  -opensource -confirm-license -opengl desktop -nomake  examples -nomake tests -nomake demos 
+#-debug-and-release linux默认
+#-release windows默认
+#-debug
 
 # 编译（-j4 表示 4 线程加速 ）
 mingw32-make  -j4    
