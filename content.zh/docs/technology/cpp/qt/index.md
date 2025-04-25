@@ -13,9 +13,18 @@ cssAttach:
 cssclasses:
   - book01
 ---
+# 建议版本
+- Qt 4.8.7 官方推荐的 MinGW 版本为 4.4.x，但是MinGW4.4没法编译，MinGW4.5才行，然后找不到MinGW4.5，这里使用了MinGW4.8。qtCreator配套推荐3.0.1(也可以用3.5.0)
 # 下载(视频所用版本) 
 
 ```
+- perl-->  https://strawberryperl.com/download/5.16.3.1/strawberry-perl-5.16.3.1-32bit-portable.zip
+- MinGW(4.8.1): https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.8.1/threads-posix/sjlj/i686-4.8.1-release-posix-sjlj-rt_v3-rev2.7z/download (兼容windowsXP)
+- (推荐)https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.8.2/threads-posix/dwarf/ （新版win7以上)
+=====qt 4.8.7========
+- qt库(带MinGW和qtCreator) ：https://download.qt.io/new_archive/qt/4.8/4.8.7/qt-opensource-windows-x86-mingw482-4.8.7.exe
+- qt库(源码)： https://download.qt.io/new_archive/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.zip
+- qtCreator: https://qt.mirror.constant.com/archive/qtcreator/3.0/3.0.1/qt-creator-opensource-windows-x86-3.0.1.exe
 ===弃用===
 - MinGW(4.4): https://www.123912.com/s/u5pSjv-32uAH?提取码:M27Z  
 	- 要记得设置环境变量
@@ -24,7 +33,6 @@ cssclasses:
 ====使用5.0.2====
 qt+mingw--> https://download.qt.io/archive/qt/5.0/5.0.2/qt-windows-opensource-5.0.2-mingw47_32-x86-offline.exe
 源码-->  https://download.qt.io/archive/qt/5.0/5.0.2/single/qt-everywhere-opensource-src-5.0.2.zip
-perl-->  https://strawberryperl.com/download/5.16.3.1/strawberry-perl-5.16.3.1-32bit-portable.zip
 =====在线版5.15======
 https://mirrors.tuna.tsinghua.edu.cn/qt/official_releases/online_installers/qt-online-installer-windows-x64-online.exe
 - .\qt-online-installer-windows-x64-online.exe  --mirror https://mirrors.ustc.edu.cn/qtproject 
@@ -32,7 +40,7 @@ https://mirrors.tuna.tsinghua.edu.cn/qt/official_releases/online_installers/qt-o
 - 安装内容：MinGW,Android,QtCharts,QtMultimedia,QtQuich3D,QtShaderTools
 =====其他=======
 - qt库(带MinGW和qtCreator)： https://download.qt.io/new_archive/qt/5.2/5.2.1/qt-opensource-windows-x86-mingw48_opengl-5.2.1.exe
-- MinGW(4.8,不需要了，qt库自带): https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.8.1/threads-posix/sjlj/i686-4.8.1-release-posix-sjlj-rt_v3-rev2.7z/download  (4.8.1)
+
 ```
 
 # 编译静态编译的qmake
@@ -41,8 +49,11 @@ https://mirrors.tuna.tsinghua.edu.cn/qt/official_releases/online_installers/qt-o
 - (弃)修改 `E:\Qt\qtSrc\qtbase\mkspecs\win32-g++\qmake.conf`,修改`QMAKE_LFLAGS = -static -enable-stdcall-fixup -Wl,-enable-auto-import -Wl,-enable-runtime-pseudo-reloc`(仅添加`-static`) 
 ## 目录结构
 ```shell
+#mkdir "E:\Qt\qtCustom487\buildQtStatic" #/p
 mkdir "E:\Qt\qtCustom\buildQtStatic" #/p
+#mkdir "E:\Qt\qtCustom487\qtStatic" #/p
 mkdir "E:\Qt\qtCustom\qtStatic" 
+#mkdir "E:\Qt\qtCustom487\qtSrc" #/p
 mkdir "E:\Qt\qtCustom\qtSrc"  
 #E:\Qt\qtCustom下
 				- buildQtStatic #(新建的)编译时切换到这个目录
@@ -76,6 +87,19 @@ cd "E:\Qt\qtCustom\buildQtStatic"
 mingw32-make  -j4    
 # 安装到指定目录
 mingw32-make -j4 install 
+#=============4.8.7===========
+cd "E:\Qt\qtCustom487\buildQtStatic"
+#cd "E:\Qt\qtCustom487\buildQtShared"
+"E:\Qt\qtCustom487\qtSrc\configure.exe" -static -debug-and-release -platform win32-g++ -prefix "E:\Qt\qtCustom487\qtStatic"  -opensource -confirm-license -opengl desktop -nomake  examples -nomake tests -nomake demos 
+#"E:\Qt\qtCustom487\qtSrc\configure.exe" -shared -debug-and-release -platform win32-g++ -prefix "E:\Qt\qtCustom487\qtShared"  -opensource -confirm-license -opengl desktop -nomake  examples -nomake tests -nomake demos 
+#-debug-and-release linux默认
+#-release windows默认
+#-debug
+
+# 编译（-j4 表示 4 线程加速 ）
+mingw32-make  -j2    
+# 安装到指定目录
+mingw32-make -j2 install 
 ```
 
 ## 动态编译
