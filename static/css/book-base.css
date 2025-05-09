@@ -128,12 +128,19 @@ hr,.markdown hr {
     margin : 1em 2em ;
 }
 
-/*缩小多行代码字体*/
-pre:has(code),.cm-line.HyperMD-codeblock {
+/*缩小多行代码字体-obsidian*/
+.cm-line.HyperMD-codeblock {
       white-space: pre-wrap;
       word-break: break-all;  
       padding-inline-end: 16px;
       font-size: 0.9em;
+}
+/*缩小多行代码字体-hugo*/
+pre:has(code){
+      white-space: pre-wrap;
+      word-break: break-all;  
+      padding-inline-end: 16px;
+      font-size: 0.75em;
 }
 /*
 img {
