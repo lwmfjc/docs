@@ -14,7 +14,7 @@
 } 
 
 .book-toc { 
-  font-size: $font-size-16;  //增大侧目录字号 原来是12
+  font-size: $font-size-14;  //增大侧目录字号 原来是12
 }
   
 //   body,.book-menu,nav,.book-menu-content,.container {
@@ -34,6 +34,13 @@ h1,h2,h3,h4,h5,h6 {
     scrollbar-color: rgba(0,0,0,0.15) rgba(255,255,255,0.1) ; 
     scrollbar-width: thin !important; 
 } 
+
+.book-toc-content {
+  padding-left: 0px !important; 
+  padding-right: 0px !important; 
+}
+
+
 #book-search-input{
   
    background-color: rgba(240,255,240,0.4) !important;
