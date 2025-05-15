@@ -1,3 +1,20 @@
+---
+title: 154【杂项】算竞常用_C++_STL_用法
+description: 154【杂项】算竞常用_C++_STL_用法
+categories:
+  - 学习
+tags:
+  - cpp
+  - stl
+  - leetcode
+date: 2025-05-15T09:43:53+08:00
+lastmod: 2025-05-15T09:43:53+08:00
+cssAttach:
+  - book01
+cssclasses:
+  - book03
+---
+
 **C++ 标准模板库 (STL, Standard Template Library)**：包含一些常用数据结构与算法的模板的 C++ 软件库。其包含四个组件——算法 (Algorithms)、容器 (Containers)、仿函数 (Functors)、迭代器 (Iterators).
 
 <!--more-->
