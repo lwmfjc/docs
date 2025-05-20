@@ -3,7 +3,7 @@
 @import url("/css/book-base.css");
 
 article p, div.cm-line:not(.HyperMD-header),
- div.el-p { 
+ div.el-p,mark { 
     color: rgba(0, 0, 0, 0.5);  
 } 
 
