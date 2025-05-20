@@ -17,7 +17,7 @@ cssclasses:
 
 **C++ 标准模板库 (STL, Standard Template Library)**：包含一些常用数据结构与算法的模板的 C++ 软件库。其包含四个组件——算法 (Algorithms)、容器 (Containers)、仿函数 (Functors)、迭代器 (Iterators).
 
-<!--more-->
+
 
 示例：
 
@@ -74,7 +74,7 @@ STL 作为一个封装良好，性能合格的 C++ 标准库，在算法竞赛�
   - [ ] flat_multiset
   - [ ] flat_multimap
 - 字符串
-  - [x] **string** (basic_string\<char\>)
+  - [x] **string** (`basic_string<char>`)
 
 - 对与元组
   - [x] **pair**
@@ -804,7 +804,7 @@ for (auto it = a.begin(); it != a.end(); ++it)
         a.erase(it);
 ```
 
-<center><b>建议：如无必要，别用迭代器操作容器。（遍历与访问没关系）</b></center>
+ ** 建议：如无必要，别用迭代器操作容器。（遍历与访问没关系）**
 
 
 
