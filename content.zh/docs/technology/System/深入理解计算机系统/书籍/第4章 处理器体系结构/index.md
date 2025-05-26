@@ -306,23 +306,23 @@ Y86-64 状 态码。在我 们的设 计中， 任何 AOK 以 外的代码都会
 
 x86-64 code Y86-64 code
 
-|    | long sum(long \*s t ar t , long count) |    | long sum(long•start, long count) |
-|----|----------------------------------------|----|----------------------------------|
-|    | start in %rdi, count in %rsi           |    | start in %rdi, count in %rsi     |
-| 1  | sum:                                   | 1  | sum:                             |
-| 2  | movl \$0, %eax sum= 0                  | 2  | irmovq \$8,%r8 Constant 8        |
-| 3  | jmp .L2 Goto test                      | 3  | irmovq \$1,%r9 Constant 1        |
-| 4  | .L3: loop:                             | 4  | xorq %rax,%rax sum= 0            |
-| 5  | addq (%rdi), %rax Add \*start to sum   | 5  | andq %rsi,%rsi Set CC            |
-| 6  | addq \$8, %rdi start++                 | 6  | jmp test Goto test               |
-| 7  | subq \$1, %rsi count--                 | 7  | loop:                            |
-| 8  | .L2: test:                             | 8  | mrmovq (%rdi),壮10 Get \*start   |
-| 9  | testq %rsi, %rsi Test sum              | 9  | addq %r10,%rax Add to sum        |
-| 10 | jne .L3 If 1=0, goto loop              | 10 | addq 壮 8 , %r di start++        |
-| 11 | rep; ret Return                        | 11 | subq %r9,%rsi count--. Set CC    |
-|    |                                        | 12 | test:                            |
-|    |                                        | 13 | jne loop Stop when 0             |
-|    |                                        | 14 | ret Return                       |
+|     | long sum(long \*s t ar t , long count) |     | long sum(long•start, long count) |
+| --- | -------------------------------------- | --- | -------------------------------- |
+|     | start in %rdi, count in %rsi           |     | start in %rdi, count in %rsi     |
+| 1   | sum:                                   | 1   | sum:                             |
+| 2   | movl \$0, %eax sum= 0                  | 2   | irmovq \$8,%r8 Constant 8        |
+| 3   | jmp .L2 Goto test                      | 3   | irmovq \$1,%r9 Constant 1        |
+| 4   | .L3: loop:                             | 4   | xorq %rax,%rax sum= 0            |
+| 5   | addq (%rdi), %rax Add \*start to sum   | 5   | andq %rsi,%rsi Set CC            |
+| 6   | addq \$8, %rdi start++                 | 6   | jmp test Goto test               |
+| 7   | subq \$1, %rsi count--                 | 7   | loop:                            |
+| 8   | .L2: test:                             | 8   | mrmovq (%rdi),壮10 Get \*start    |
+| 9   | testq %rsi, %rsi Test sum              | 9   | addq %r10,%rax Add to sum        |
+| 10  | jne .L3 If 1=0, goto loop              | 10  | addq 壮 8 , %r di start++         |
+| 11  | rep; ret Return                        | 11  | subq %r9,%rsi count--. Set CC    |
+|     |                                        | 12  | test:                            |
+|     |                                        | 13  | jne loop Stop when 0             |
+|     |                                        | 14  | ret Return                       |
 
 图 4-6 Y86-64 汇编程序与 x86-64 汇编程序比较。 Sum 函数计算一个整数 数组的和。
 
