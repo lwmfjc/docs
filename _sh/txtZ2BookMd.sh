@@ -29,12 +29,13 @@ description:
 categories:
   - 学习
 tags: 
-  - 吕氏春秋
+  - 论语的生活智慧
   - 文化
+  - 论语
 cssAttach: 
-  - book01
+  - book02
 cssclasses: 
-  - book01
+  - book02
 date: $time
 lastmod: $time
 ---
@@ -108,7 +109,7 @@ handleDir(){
 			perl -i -pe 's/\\\*/\*/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\\_/_/gp' "$dirBook/index.txt"
 			#标题降1级(#\s+)\*{2}(.*?)\*{4}
-			perl -i -pe 's/^#(.*?\s)/$1/gp' "$dirBook/index.txt" 
+			##perl -i -pe 's/^#(.*?\s)/$1/gp' "$dirBook/index.txt" 
 
 			#去除#号后面4个星号(#\s+)(.*?)\s*\n\*{4}\s*\n\*{2}(.*)
 			#perl -i -0 -pe 's/(#\s+)\*{2}(.*?)\*{4}.*\n\*{4}.*\n\*{2}(.*)\n.*\n/$1$2 $3/gp' "$dirBook/index.txt" 
