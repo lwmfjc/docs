@@ -6,6 +6,8 @@ categories:
 tags:
   - 文化
   - 国学的天空
+  - 傅佩荣
+  - 孟子
 cssAttach:
   - book01
 cssclasses:
