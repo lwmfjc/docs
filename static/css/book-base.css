@@ -1,4 +1,4 @@
-/*.book01,.book02{cssstart*/
+/*.book01,.book02,.book03{cssstart*/
  
 
 /*字体统一放大到1.4em*/
@@ -106,13 +106,18 @@ hr,.markdown hr {
     margin : 1em 2em ;
 }
 
-img {
+/*默认图片缩小*/
+img:not([alt^="i"]) {
     display: block;
+    width: 50%;
+    height: 50%;
 }
 
 p:has(+div[alt^="i-"]),div[alt^="i-"]{
     display: inline ;
 }
+
+/*图片属性alt为i开头时，缩小到行高*/
 img[alt^="i-"] {
     display: inline-block ;
     height: 1em;
