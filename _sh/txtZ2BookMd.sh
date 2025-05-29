@@ -29,7 +29,7 @@ description:
 categories:
   - 学习
 tags: 
-  - 万历十五年
+  - 中国历代政治得失
   - 文化
 cssAttach: 
   - book01
@@ -108,7 +108,7 @@ handleDir(){
 			perl -i -pe 's/\\\*/\*/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\\_/_/gp' "$dirBook/index.txt"
 			#标题降1级(#\s+)\*{2}(.*?)\*{4}
-			perl -i -pe 's/^#(.*?\s)/$1/gp' "$dirBook/index.txt" 
+			# perl -i -pe 's/^#(.*?\s)/$1/gp' "$dirBook/index.txt" 
 
 			#去除#号后面4个星号(#\s+)(.*?)\s*\n\*{4}\s*\n\*{2}(.*)
 			#perl -i -0 -pe 's/(#\s+)\*{2}(.*?)\*{4}.*\n\*{4}.*\n\*{2}(.*)\n.*\n/$1$2 $3/gp' "$dirBook/index.txt" 
