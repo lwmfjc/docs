@@ -29,7 +29,7 @@ description:
 categories:
   - 学习
 tags: 
-  - 中国历代政治得失
+  - 活着
   - 文化
 cssAttach: 
   - book01
