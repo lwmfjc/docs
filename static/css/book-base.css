@@ -34,9 +34,11 @@ em, .cm-em {
 }
 
 /*重点--暗色背景*/
-mark,.cm-highlight {
+mark,.cm-highlight {    
     --text-highlight-bg: rgba(0, 0, 0, 0.1);
     background: rgba(0, 0, 0, 0.1);
+/*   --text-highlight-bg: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.4);*/
 }
 span.cm-highlight.cm-inline-code{    
     --inline-code-background-light: rgba(0, 0, 0, 0.1);
