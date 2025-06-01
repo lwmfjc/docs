@@ -1,5 +1,5 @@
 ---
-bookCollapseSection: true
+bookFlatSection: true
 weight: 20
 title: 文化
 ---
