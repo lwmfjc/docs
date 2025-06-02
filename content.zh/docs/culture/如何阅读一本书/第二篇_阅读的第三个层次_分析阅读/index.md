@@ -7,9 +7,11 @@ tags:
   - 文化
   - 如何阅读一本书
 cssAttach:
-  - book
+  - book01
 date: 2025-01-07T10:48:41+08:00
 lastmod: 2025-01-07T10:48:41+08:00
+cssclasses:
+  - book01
 ---
 
 
