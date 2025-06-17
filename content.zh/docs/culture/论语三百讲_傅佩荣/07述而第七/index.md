@@ -4,7 +4,7 @@ description: 07述而第七
 categories:
   - 学习
 tags:
-  - 论语三百讲_上篇
+  - 论语三百讲
   - 文化
   - 傅佩荣
 cssAttach:
