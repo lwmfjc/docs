@@ -29,9 +29,9 @@ description:
 categories:
   - 学习
 tags: 
-  - 易经的奥秘
+  - 易经的智慧_傅佩荣
   - 文化
-  - 曾仕强
+  - 傅佩荣
 cssAttach: 
   - book01
 cssclasses: 
@@ -113,7 +113,10 @@ handleDir(){
 			#标题后面左边带了星号(这里有点问题，下次遇到再说)
 			# perl -i -pe 's/(#.*?)\*.*\*/$1/gp' "$dirBook/index.txt" 
 			#标题后面左右两边都带了星号
-			perl -i -pe 's/(#.*?)\*{2}(.*)\*{2}/$1$2/gp' "$dirBook/index.txt" 
+			perl -i -pe 's/(#.*?)\*{2}(.*)\*{2}/$1$2/gp' "$dirBook/index.txt"
+			#处理!(images/000002.jpg)
+			perl -i -pe 's/\!\(images\//\![]\(img\//gp' "$dirBook/index.txt"
+
 
 			#去除#号后面4个星号(#\s+)(.*?)\s*\n\*{4}\s*\n\*{2}(.*)
 			#perl -i -0 -pe 's/(#\s+)\*{2}(.*?)\*{4}.*\n\*{4}.*\n\*{2}(.*)\n.*\n/$1$2 $3/gp' "$dirBook/index.txt" 
