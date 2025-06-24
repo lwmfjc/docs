@@ -29,7 +29,7 @@ description:
 categories:
   - 学习
 tags: 
-  - 哲学与人生2_傅佩荣
+  - 哲学与人生1_傅佩荣
   - 文化
   - 傅佩荣
 cssAttach: 
