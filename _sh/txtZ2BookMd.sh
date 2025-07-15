@@ -29,9 +29,9 @@ description:
 categories:
   - 学习
 tags: 
-  - 字里字外的
+  - 解读易经_傅佩荣
   - 文化
-  - 孟琢
+  - 傅佩荣
 cssAttach: 
   - book01
 cssclasses: 
