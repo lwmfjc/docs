@@ -1,6 +1,6 @@
 ---
-title: 12否卦
-description: 12否卦
+title: 12否卦䷋
+description: 12否卦䷋
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:00+08:00
 lastmod: 2025-07-15T12:25:00+08:00
 ---
 
-12否卦 
+12否卦䷋ 
 
 ?
 

@@ -1,6 +1,6 @@
 ---
-title: 62小过卦
-description: 62小过卦
+title: 62小过卦䷽
+description: 62小过卦䷽
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:34+08:00
 lastmod: 2025-07-15T12:26:34+08:00
 ---
 
-62小过卦 
+62小过卦䷽ 
 
 【62 · 1】
 

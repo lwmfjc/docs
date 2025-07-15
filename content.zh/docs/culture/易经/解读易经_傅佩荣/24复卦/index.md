@@ -1,6 +1,6 @@
 ---
-title: 24复卦
-description: 24复卦
+title: 24复卦䷗
+description: 24复卦䷗
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:23+08:00
 lastmod: 2025-07-15T12:25:23+08:00
 ---
 
-24复卦 
+24复卦䷗ 
 
 ? 椃
 

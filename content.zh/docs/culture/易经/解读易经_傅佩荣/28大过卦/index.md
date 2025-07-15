@@ -1,6 +1,6 @@
 ---
-title: 28大过卦
-description: 28大过卦
+title: 28大过卦䷛
+description: 28大过卦䷛
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:30+08:00
 lastmod: 2025-07-15T12:25:30+08:00
 ---
 
-28大过卦 
+28大过卦䷛ 
 
 ? 椈
 

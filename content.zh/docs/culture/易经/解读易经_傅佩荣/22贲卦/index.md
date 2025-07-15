@@ -1,6 +1,6 @@
 ---
-title: 22贲卦
-description: 22贲卦
+title: 22贲卦䷕
+description: 22贲卦䷕
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:19+08:00
 lastmod: 2025-07-15T12:25:19+08:00
 ---
 
-22贲卦 
+22贲卦䷕ 
 
 ? 椀
 

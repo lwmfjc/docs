@@ -1,6 +1,6 @@
 ---
-title: 42益卦
-description: 42益卦
+title: 42益卦䷩
+description: 42益卦䷩
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:56+08:00
 lastmod: 2025-07-15T12:25:56+08:00
 ---
 
-42益卦 
+42益卦䷩ 
 
 ? 椛
 

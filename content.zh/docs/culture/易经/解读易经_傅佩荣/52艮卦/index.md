@@ -1,6 +1,6 @@
 ---
-title: 52艮卦
-description: 52艮卦
+title: 52艮卦䷳
+description: 52艮卦䷳
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:15+08:00
 lastmod: 2025-07-15T12:26:15+08:00
 ---
 
-52艮卦 
+52艮卦䷳ 
 
 【52 · 1】
 

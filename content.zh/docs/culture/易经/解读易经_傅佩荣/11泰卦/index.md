@@ -1,6 +1,6 @@
 ---
-title: 11泰卦
-description: 11泰卦
+title: 11泰卦䷊
+description: 11泰卦䷊
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:24:58+08:00
 lastmod: 2025-07-15T12:24:58+08:00
 ---
 
-11泰卦 
+11泰卦䷊ 
 
 ?
 

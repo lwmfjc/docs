@@ -1,6 +1,6 @@
 ---
-title: 36明夷卦
-description: 36明夷卦
+title: 36明夷卦䷣
+description: 36明夷卦䷣
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:45+08:00
 lastmod: 2025-07-15T12:25:45+08:00
 ---
 
-36明夷卦 
+36明夷卦䷣ 
 
 ? 椕
 

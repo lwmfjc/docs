@@ -1,6 +1,6 @@
 ---
-title: 39蹇卦
-description: 39蹇卦
+title: 39蹇卦䷦
+description: 39蹇卦䷦
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:50+08:00
 lastmod: 2025-07-15T12:25:50+08:00
 ---
 
-39蹇卦
+39蹇卦䷦
 
 ? 椘
 

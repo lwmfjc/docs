@@ -1,6 +1,6 @@
 ---
-title: 15谦卦
-description: 15谦卦
+title: 15谦卦䷎
+description: 15谦卦䷎
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:06+08:00
 lastmod: 2025-07-15T12:25:06+08:00
 ---
 
-15谦卦
+15谦卦䷎
 
 【15 · 1】
 

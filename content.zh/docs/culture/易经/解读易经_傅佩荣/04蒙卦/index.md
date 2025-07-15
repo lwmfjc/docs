@@ -1,6 +1,6 @@
 ---
-title: 04蒙卦
-description: 04蒙卦
+title: 04蒙卦䷃
+description: 04蒙卦䷃
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:24:45+08:00
 lastmod: 2025-07-15T12:24:45+08:00
 ---
 
-04蒙卦 
+04蒙卦䷃ 
 
 ? 棧
 

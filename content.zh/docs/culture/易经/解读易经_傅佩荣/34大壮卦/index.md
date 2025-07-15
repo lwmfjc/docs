@@ -1,6 +1,6 @@
 ---
-title: 34大壮卦
-description: 34大壮卦
+title: 34大壮卦䷡
+description: 34大壮卦䷡
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:41+08:00
 lastmod: 2025-07-15T12:25:41+08:00
 ---
 
-34大壮卦 
+34大壮卦䷡ 
 
 ? 椓
 

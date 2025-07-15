@@ -1,6 +1,6 @@
 ---
-title: 09小畜卦
-description: 09小畜卦
+title: 09小畜卦䷈
+description: 09小畜卦䷈
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:24:55+08:00
 lastmod: 2025-07-15T12:24:55+08:00
 ---
 
-09小畜卦 
+09小畜卦䷈ 
 
 ? 棬
 

@@ -1,6 +1,6 @@
 ---
-title: 02坤卦
-description: 02坤卦
+title: 02坤卦䷁
+description: 02坤卦䷁
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:24:42+08:00
 lastmod: 2025-07-15T12:24:42+08:00
 ---
 
-02坤卦 
+02坤卦䷁ 
 
 【2 · 1】
 

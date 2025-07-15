@@ -1,6 +1,6 @@
 ---
-title: 56旅卦
-description: 56旅卦
+title: 56旅卦䷷
+description: 56旅卦䷷
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:23+08:00
 lastmod: 2025-07-15T12:26:23+08:00
 ---
 
-56旅卦 
+56旅卦䷷ 
 
 【56 · 1】
 

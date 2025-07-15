@@ -1,6 +1,6 @@
 ---
-title: 38睽卦
-description: 38睽卦
+title: 38睽卦䷥
+description: 38睽卦䷥
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:48+08:00
 lastmod: 2025-07-15T12:25:48+08:00
 ---
 
-38睽卦 
+38睽卦䷥ 
 
 ? 椗
 

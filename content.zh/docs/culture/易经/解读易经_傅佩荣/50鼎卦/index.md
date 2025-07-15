@@ -1,6 +1,6 @@
 ---
-title: 50鼎卦
-description: 50鼎卦
+title: 50鼎卦䷱
+description: 50鼎卦䷱
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:11+08:00
 lastmod: 2025-07-15T12:26:11+08:00
 ---
 
-50鼎卦 
+50鼎卦䷱ 
 
 【50 · 1】
 

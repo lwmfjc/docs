@@ -1,6 +1,6 @@
 ---
-title: 51震卦
-description: 51震卦
+title: 51震卦䷲
+description: 51震卦䷲
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:13+08:00
 lastmod: 2025-07-15T12:26:13+08:00
 ---
 
-51震卦 
+51震卦䷲ 
 
 【51 · 1】
 

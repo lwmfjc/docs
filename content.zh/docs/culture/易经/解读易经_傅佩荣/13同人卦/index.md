@@ -1,6 +1,6 @@
 ---
-title: 13同人卦
-description: 13同人卦
+title: 13同人卦䷌
+description: 13同人卦䷌
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:02+08:00
 lastmod: 2025-07-15T12:25:02+08:00
 ---
 
-13同人卦 
+13同人卦䷌ 
 
 ?
 

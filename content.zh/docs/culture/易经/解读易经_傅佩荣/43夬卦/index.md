@@ -1,6 +1,6 @@
 ---
-title: 43夬卦
-description: 43夬卦
+title: 43夬卦䷪
+description: 43夬卦䷪
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:58+08:00
 lastmod: 2025-07-15T12:25:58+08:00
 ---
 
-43夬卦 
+43夬卦䷪ 
 
 ? 検
 

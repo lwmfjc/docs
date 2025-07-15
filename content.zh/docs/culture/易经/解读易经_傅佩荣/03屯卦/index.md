@@ -1,6 +1,6 @@
 ---
-title: 03屯卦
-description: 03屯卦
+title: 03屯卦䷂
+description: 03屯卦䷂
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:24:44+08:00
 lastmod: 2025-07-15T12:24:44+08:00
 ---
 
-03屯卦 
+03屯卦䷂ 
 
 ?
 

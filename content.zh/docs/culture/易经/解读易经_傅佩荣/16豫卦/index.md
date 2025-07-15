@@ -1,6 +1,6 @@
 ---
-title: 16豫卦
-description: 16豫卦
+title: 16豫卦䷏
+description: 16豫卦䷏
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:08+08:00
 lastmod: 2025-07-15T12:25:08+08:00
 ---
 
-16豫卦 
+16豫卦䷏ 
 
 ? 棷
 

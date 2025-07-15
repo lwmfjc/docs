@@ -1,6 +1,6 @@
 ---
-title: 59涣卦
-description: 59涣卦
+title: 59涣卦䷺
+description: 59涣卦䷺
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:29+08:00
 lastmod: 2025-07-15T12:26:29+08:00
 ---
 
-59涣卦 
+59涣卦䷺ 
 
 【59 · 1】
 

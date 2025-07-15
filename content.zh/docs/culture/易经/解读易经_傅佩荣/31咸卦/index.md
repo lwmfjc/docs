@@ -1,6 +1,6 @@
 ---
-title: 31咸卦
-description: 31咸卦
+title: 31咸卦䷞
+description: 31咸卦䷞
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:35+08:00
 lastmod: 2025-07-15T12:25:35+08:00
 ---
 
-31咸卦 
+31咸卦䷞ 
 
 ? 椌
 

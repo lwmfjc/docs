@@ -1,6 +1,6 @@
 ---
-title: 17随卦
-description: 17随卦
+title: 17随卦䷐
+description: 17随卦䷐
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:09+08:00
 lastmod: 2025-07-15T12:25:09+08:00
 ---
 
-17随卦 
+17随卦䷐ 
 
 ? 棸
 

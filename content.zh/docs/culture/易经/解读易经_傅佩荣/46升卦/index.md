@@ -1,6 +1,6 @@
 ---
-title: 46升卦
-description: 46升卦
+title: 46升卦䷭
+description: 46升卦䷭
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:04+08:00
 lastmod: 2025-07-15T12:26:04+08:00
 ---
 
-46升卦 
+46升卦䷭ 
 
 ? 椡
 

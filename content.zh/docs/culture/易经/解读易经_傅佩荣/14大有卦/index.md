@@ -1,6 +1,6 @@
 ---
-title: 14大有卦
-description: 14大有卦
+title: 14大有卦䷍
+description: 14大有卦䷍
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:04+08:00
 lastmod: 2025-07-15T12:25:04+08:00
 ---
 
-14大有卦 
+14大有卦䷍ 
 
 ? 棴
 

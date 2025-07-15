@@ -1,6 +1,6 @@
 ---
-title: 55丰卦
-description: 55丰卦
+title: 55丰卦䷶
+description: 55丰卦䷶
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:21+08:00
 lastmod: 2025-07-15T12:26:21+08:00
 ---
 
-55丰卦 
+55丰卦䷶ 
 
 【55 · 1】
 

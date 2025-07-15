@@ -1,6 +1,6 @@
 ---
-title: 47困卦
-description: 47困卦
+title: 47困卦䷮
+description: 47困卦䷮
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:06+08:00
 lastmod: 2025-07-15T12:26:06+08:00
 ---
 
-47困卦 
+47困卦䷮ 
 
 【47 · 1】
 

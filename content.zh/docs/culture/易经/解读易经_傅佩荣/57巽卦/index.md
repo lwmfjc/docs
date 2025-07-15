@@ -1,6 +1,6 @@
 ---
-title: 57巽卦
-description: 57巽卦
+title: 57巽卦䷸
+description: 57巽卦䷸
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:25+08:00
 lastmod: 2025-07-15T12:26:25+08:00
 ---
 
-57巽卦 
+57巽卦䷸ 
 
 【57 · 1】
 

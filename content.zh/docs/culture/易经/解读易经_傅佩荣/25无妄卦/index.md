@@ -1,6 +1,6 @@
 ---
-title: 25无妄卦
-description: 25无妄卦
+title: 25无妄卦䷘
+description: 25无妄卦䷘
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:24+08:00
 lastmod: 2025-07-15T12:25:24+08:00
 ---
 
-25无妄卦 
+25无妄卦䷘ 
 
 ? 椄
 

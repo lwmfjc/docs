@@ -1,6 +1,6 @@
 ---
-title: 30离卦
-description: 30离卦
+title: 30离卦䷝
+description: 30离卦䷝
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:34+08:00
 lastmod: 2025-07-15T12:25:34+08:00
 ---
 
-30离卦 
+30离卦䷝ 
 
 ? 椊
 

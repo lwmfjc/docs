@@ -1,6 +1,6 @@
 ---
-title: 07师卦
-description: 07师卦
+title: 07师卦䷆
+description: 07师卦䷆
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:24:51+08:00
 lastmod: 2025-07-15T12:24:51+08:00
 ---
 
-07师卦 
+07师卦䷆ 
 
 ?
 

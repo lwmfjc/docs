@@ -1,6 +1,6 @@
 ---
-title: 18蛊卦
-description: 18蛊卦
+title: 18蛊卦䷑
+description: 18蛊卦䷑
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:11+08:00
 lastmod: 2025-07-15T12:25:11+08:00
 ---
 
-18蛊卦 
+18蛊卦䷑ 
 
 ? 棻
 

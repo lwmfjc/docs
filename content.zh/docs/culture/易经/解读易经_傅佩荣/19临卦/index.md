@@ -1,6 +1,6 @@
 ---
-title: 19临卦
-description: 19临卦
+title: 19临卦䷒
+description: 19临卦䷒
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:13+08:00
 lastmod: 2025-07-15T12:25:13+08:00
 ---
 
-19临卦 
+19临卦䷒ 
 
 【19 · 1】
 

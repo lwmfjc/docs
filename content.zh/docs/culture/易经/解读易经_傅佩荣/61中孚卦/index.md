@@ -1,6 +1,6 @@
 ---
-title: 61中孚卦
-description: 61中孚卦
+title: 61中孚卦䷼
+description: 61中孚卦䷼
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:33+08:00
 lastmod: 2025-07-15T12:26:33+08:00
 ---
 
-61中孚卦 
+61中孚卦䷼ 
 
 【61 · 1】
 

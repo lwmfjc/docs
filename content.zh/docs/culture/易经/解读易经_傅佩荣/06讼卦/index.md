@@ -1,6 +1,6 @@
 ---
-title: 06讼卦
-description: 06讼卦
+title: 06讼卦䷅
+description: 06讼卦䷅
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:24:49+08:00
 lastmod: 2025-07-15T12:24:49+08:00
 ---
 
-06讼卦 
+06讼卦䷅ 
 
 ? 棩
 

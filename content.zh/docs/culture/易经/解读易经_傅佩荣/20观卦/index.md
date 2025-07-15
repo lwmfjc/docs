@@ -1,6 +1,6 @@
 ---
-title: 20观卦
-description: 20观卦
+title: 20观卦䷓
+description: 20观卦䷓
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:15+08:00
 lastmod: 2025-07-15T12:25:15+08:00
 ---
 
-20观卦 
+20观卦䷓ 
 
 ?
 

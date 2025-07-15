@@ -1,6 +1,6 @@
 ---
-title: 23剥卦
-description: 23剥卦
+title: 23剥卦䷖
+description: 23剥卦䷖
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:21+08:00
 lastmod: 2025-07-15T12:25:21+08:00
 ---
 
-23剥卦 
+23剥卦䷖ 
 
 ? 椂
 

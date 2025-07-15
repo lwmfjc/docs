@@ -1,6 +1,6 @@
 ---
-title: 32恒卦
-description: 32恒卦
+title: 32恒卦䷟
+description: 32恒卦䷟
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:37+08:00
 lastmod: 2025-07-15T12:25:37+08:00
 ---
 
-32恒卦 
+32恒卦䷟ 
 
 ? 椏
 

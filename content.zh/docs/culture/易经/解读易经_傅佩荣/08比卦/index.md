@@ -1,6 +1,6 @@
 ---
-title: 08比卦
-description: 08比卦
+title: 08比卦䷇
+description: 08比卦䷇
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:24:53+08:00
 lastmod: 2025-07-15T12:24:53+08:00
 ---
 
-08比卦 
+08比卦䷇ 
 
 ?
 

@@ -1,6 +1,6 @@
 ---
-title: 27颐卦
-description: 27颐卦
+title: 27颐卦䷚
+description: 27颐卦䷚
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:25:28+08:00
 lastmod: 2025-07-15T12:25:28+08:00
 ---
 
-27颐卦 
+27颐卦䷚ 
 
 ? 椇
 

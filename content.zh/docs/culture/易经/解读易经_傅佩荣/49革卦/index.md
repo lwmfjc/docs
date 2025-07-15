@@ -1,6 +1,6 @@
 ---
-title: 49革卦
-description: 49革卦
+title: 49革卦䷰
+description: 49革卦䷰
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:09+08:00
 lastmod: 2025-07-15T12:26:09+08:00
 ---
 
-49革卦 
+49革卦䷰ 
 
 【49 · 1】
 

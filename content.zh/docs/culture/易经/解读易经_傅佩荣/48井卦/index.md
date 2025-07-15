@@ -1,6 +1,6 @@
 ---
-title: 48井卦
-description: 48井卦
+title: 48井卦䷯
+description: 48井卦䷯
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ date: 2025-07-15T12:26:07+08:00
 lastmod: 2025-07-15T12:26:07+08:00
 ---
 
-48井卦 
+48井卦䷯ 
 
 【48 · 1】
 
