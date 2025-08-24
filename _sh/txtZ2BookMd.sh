@@ -29,9 +29,8 @@ description:
 categories:
   - 学习
 tags: 
-  - 孫子新注
+  - 史记
   - 文化
-  - 張文儒
 cssAttach: 
   - book01
 cssclasses: 
