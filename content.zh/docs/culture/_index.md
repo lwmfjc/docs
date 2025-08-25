@@ -1,5 +1,5 @@
 ---
 bookFlatSection: true
-weight: 20
 title: 文化
+weight: 10
 ---

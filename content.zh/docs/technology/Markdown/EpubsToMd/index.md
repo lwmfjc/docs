@@ -66,7 +66,6 @@ fileName="$1/_index.md"
 cat >> $fileName <<-_EOF_
 ---
 bookCollapseSection: true
-weight: 20
 title:
 ---
 _EOF_

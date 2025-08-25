@@ -1,6 +1,6 @@
 ---
-weight: 999
 bookFlatSection: true
+weight: 9999
 title: "测试"
 ---
 
