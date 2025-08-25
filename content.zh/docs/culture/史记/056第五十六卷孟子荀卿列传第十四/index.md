@@ -1,6 +1,6 @@
 ---
-title: 
-description: 
+title: 056第五十六卷孟子荀卿列传第十四
+description: 056第五十六卷孟子荀卿列传第十四
 categories:
   - 学习
 tags: 

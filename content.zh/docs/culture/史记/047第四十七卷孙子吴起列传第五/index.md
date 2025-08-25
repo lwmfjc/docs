@@ -1,6 +1,6 @@
 ---
-title: 
-description: 
+title: 047第四十七卷孙子吴起列传第五
+description: 047第四十七卷孙子吴起列传第五
 categories:
   - 学习
 tags: 

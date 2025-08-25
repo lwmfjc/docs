@@ -1,6 +1,6 @@
 ---
-title: 
-description: 
+title: 049第四十九卷仲尼弟子列传第七
+description: 049第四十九卷仲尼弟子列传第七
 categories:
   - 学习
 tags: 

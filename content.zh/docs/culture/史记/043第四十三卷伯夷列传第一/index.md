@@ -1,6 +1,6 @@
 ---
-title: 
-description: 
+title: 043第四十三卷伯夷列传第一
+description: 043第四十三卷伯夷列传第一
 categories:
   - 学习
 tags: 

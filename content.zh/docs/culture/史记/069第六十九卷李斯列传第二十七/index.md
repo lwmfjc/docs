@@ -1,6 +1,6 @@
 ---
-title: 
-description: 
+title: 069第六十九卷李斯列传第二十七
+description: 069第六十九卷李斯列传第二十七
 categories:
   - 学习
 tags: 

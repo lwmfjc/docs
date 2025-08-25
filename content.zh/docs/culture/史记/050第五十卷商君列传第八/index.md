@@ -1,6 +1,6 @@
 ---
-title: 
-description: 
+title: 050第五十卷商君列传第八
+description: 050第五十卷商君列传第八
 categories:
   - 学习
 tags: 

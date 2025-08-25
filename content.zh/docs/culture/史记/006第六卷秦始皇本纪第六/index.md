@@ -1,6 +1,6 @@
 ---
-title: 
-description: 
+title: 006第六卷秦始皇本纪第六
+description: 006第六卷秦始皇本纪第六
 categories:
   - 学习
 tags: 

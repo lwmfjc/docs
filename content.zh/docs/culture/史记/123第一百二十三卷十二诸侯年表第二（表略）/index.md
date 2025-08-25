@@ -1,6 +1,6 @@
 ---
-title: 
-description: 
+title: 123第一百二十三卷十二诸侯年表第二（表略）
+description: 123第一百二十三卷十二诸侯年表第二（表略）
 categories:
   - 学习
 tags: 
