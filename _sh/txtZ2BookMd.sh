@@ -29,7 +29,7 @@ description:
 categories:
   - 学习
 tags: 
-  - 史记
+  - 左传
   - 文化
 cssAttach: 
   - book01
