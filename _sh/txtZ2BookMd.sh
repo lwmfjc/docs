@@ -29,7 +29,7 @@ description:
 categories:
   - 学习
 tags: 
-  - 左传
+  - 南明史
   - 文化
 cssAttach: 
   - book01
@@ -116,6 +116,10 @@ handleDir(){
 			#处理!(images/000002.jpg)
 			perl -i -pe 's/\!\(images\//\![]\(img\//gp' "$dirBook/index.txt"
 
+			#![head1](img/000001.png)
+			#处理标题旁带图片的情况(需要换行)
+ 			# perl -i -0 -pe 's/#.*?\r\n.*?!\[.*?\]\(.*?\)\r\n(第.*?节.*)\r\n/# $1/gp' "$dirBook/index.txt"
+ 			# perl -i -0 -pe 's/#.*?\n.*?!\[.*?\]\(.*?\)\n(第.*?节.*)\n/# $1/gp' "$dirBook/index.txt"
 
 			#去除#号后面4个星号(#\s+)(.*?)\s*\n\*{4}\s*\n\*{2}(.*)
 			#perl -i -0 -pe 's/(#\s+)\*{2}(.*?)\*{4}.*\n\*{4}.*\n\*{2}(.*)\n.*\n/$1$2 $3/gp' "$dirBook/index.txt" 
