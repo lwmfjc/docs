@@ -1,6 +1,6 @@
 ---
-title: 第二章_圣人的足迹
-description: 第二章_圣人的足迹
+title: 02第二章_圣人的足迹
+description: 02第二章_圣人的足迹
 categories:
   - 学习
 tags:

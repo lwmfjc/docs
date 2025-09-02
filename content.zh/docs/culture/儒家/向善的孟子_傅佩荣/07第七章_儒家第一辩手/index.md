@@ -1,6 +1,6 @@
 ---
-title: 第七章_儒家第一辩手
-description: 第七章_儒家第一辩手
+title: 07第七章_儒家第一辩手
+description: 07第七章_儒家第一辩手
 categories:
   - 学习
 tags:

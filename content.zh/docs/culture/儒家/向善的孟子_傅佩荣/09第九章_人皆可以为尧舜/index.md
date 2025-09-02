@@ -1,6 +1,6 @@
 ---
-title: 第九章_人皆可以为尧舜
-description: 第九章_人皆可以为尧舜
+title: 09第九章_人皆可以为尧舜
+description: 09第九章_人皆可以为尧舜
 categories:
   - 学习
 tags:

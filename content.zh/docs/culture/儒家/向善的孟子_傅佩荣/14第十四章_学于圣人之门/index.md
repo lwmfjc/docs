@@ -1,6 +1,6 @@
 ---
-title: 第十四章_学于圣人之门
-description: 第十四章_学于圣人之门
+title: 14第十四章_学于圣人之门
+description: 14第十四章_学于圣人之门
 categories:
   - 学习
 tags:

@@ -1,6 +1,6 @@
 ---
-title: 第十三章_教亦多术，欲其自得
-description: 第十三章_教亦多术，欲其自得
+title: 13第十三章_教亦多术，欲其自得
+description: 13第十三章_教亦多术，欲其自得
 categories:
   - 学习
 tags:

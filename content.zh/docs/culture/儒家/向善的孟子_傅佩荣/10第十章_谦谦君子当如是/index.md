@@ -1,6 +1,6 @@
 ---
-title: 第十章_谦谦君子当如是
-description: 第十章_谦谦君子当如是
+title: 10第十章_谦谦君子当如是
+description: 10第十章_谦谦君子当如是
 categories:
   - 学习
 tags:

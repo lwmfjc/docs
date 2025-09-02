@@ -1,6 +1,6 @@
 ---
-title: 第十七章_千古议亚圣
-description: 第十七章_千古议亚圣
+title: 17第十七章_千古议亚圣
+description: 17第十七章_千古议亚圣
 categories:
   - 学习
 tags:

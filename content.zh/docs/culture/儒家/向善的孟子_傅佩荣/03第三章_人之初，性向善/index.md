@@ -1,6 +1,6 @@
 ---
-title: 第三章_人之初，性向善
-description: 第三章_人之初，性向善
+title: 03第三章_人之初，性向善
+description: 03第三章_人之初，性向善
 categories:
   - 学习
 tags:

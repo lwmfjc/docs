@@ -1,6 +1,6 @@
 ---
-title: 第十五章_君有道，臣有节
-description: 第十五章_君有道，臣有节
+title: 15第十五章_君有道，臣有节
+description: 15第十五章_君有道，臣有节
 categories:
   - 学习
 tags:
