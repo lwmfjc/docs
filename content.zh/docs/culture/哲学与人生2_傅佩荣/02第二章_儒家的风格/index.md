@@ -1,6 +1,6 @@
 ---
-title: 第二章_儒家的风格
-description: 第二章_儒家的风格
+title: 02第二章_儒家的风格
+description: 02第二章_儒家的风格
 categories:
   - 学习
 tags:

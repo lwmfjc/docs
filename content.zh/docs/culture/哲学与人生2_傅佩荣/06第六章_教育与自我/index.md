@@ -1,6 +1,6 @@
 ---
-title: 第六章_教育与自我
-description: 第六章_教育与自我
+title: 06第六章_教育与自我
+description: 06第六章_教育与自我
 categories:
   - 学习
 tags:

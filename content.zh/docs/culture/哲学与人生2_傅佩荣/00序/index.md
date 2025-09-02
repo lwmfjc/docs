@@ -1,6 +1,6 @@
 ---
-title: 序
-description: 序
+title: 00序
+description: 00序
 categories:
   - 学习
 tags:

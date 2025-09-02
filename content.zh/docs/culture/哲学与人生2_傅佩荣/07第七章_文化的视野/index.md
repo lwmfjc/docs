@@ -1,6 +1,6 @@
 ---
-title: 第七章_文化的视野
-description: 第七章_文化的视野
+title: 07第七章_文化的视野
+description: 07第七章_文化的视野
 categories:
   - 学习
 tags:
