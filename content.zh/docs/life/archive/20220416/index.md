@@ -1,10 +1,16 @@
 ---
-title: "《作酒》有感"
-description: '《作酒》有感'
+title: 20220416《作酒》有感
+description: 20220416《作酒》有感
 categories:
-  - 生活 
+  - 生活
+tags: 
+  - 随想
 date: 2022-04-16 17:11:46
 updated: 2022-04-16 17:11:47
+cssclasses:
+  - book03
+cssAttach:
+  - book03
 ---
 
   最近几天吃饭，经常听到一首很嗨的歌。旋律很轻快，其实本来也就一听而过，可能是耳闻目染次数多了，好奇心上来了，查了下歌词。  
@@ -14,4 +20,4 @@ updated: 2022-04-16 17:11:47
   每个人对自己的过往，或多或少都会不甘。如果这种不甘自己没有办法化解，那么就会在某一刻爆发。每个人都应该，也必定会为自己曾经的所作所为负责。不要懵懵懂懂地进入(现代)婚姻，这样对自己和它人都极其不负责。 爆炸式的信息接收会激发你所有的冲动与不甘。  
 
 
-{{< iframe-video src="//player.bilibili.com/player.html?aid=211411097&bvid=BV1aa411y7u9&cid=505755578&page=1" >}}
+{{< iframe-video src="//player.bilibili.com/player.html?aid=211411097&bvid=BV1aa411y7u9&cid=505755578&page=1&danmaku=0" >}}

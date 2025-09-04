@@ -1,16 +1,16 @@
 ---
-title: 无可无不可
-description: 无可无不可
+title: 2025-09-04
+description: 2025-09-04
 categories:
   - 生活
-tags:
+tags: 
   - 随想
-date: 2025-09-04T08:04:57+08:00
-lastmod: 2025-09-04T08:04:57+08:00
-cssAttach:
+cssAttach: 
   - book03
-cssclasses:
+cssclasses: 
   - book03
+date: 2025-09-04T09:06:45+08:00
+lastmod: 2025-09-04T09:06:45+08:00
 ---
 这几天看了b站up主“吃瓜蒙主”部分视频，有所顿悟。一方面是对于其内容，另一方面则是舆论方向放开的思考。  
 

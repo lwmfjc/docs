@@ -1,10 +1,16 @@
 ---
-title: 成就
-description: 成就
+title: 20231026成就
+description: 20231026成就
 categories:
-  - 生活 
+  - 生活
+tags: 
+  - 随想
 date: 2023-10-26 01:45:47
 updated: 2023-10-26 01:45:47
+cssclasses:
+  - book03
+cssAttach:
+  - book03
 ---
 
 - 任何事情的成功，都没有什么可骄傲的，不过是一物降一物，无他尔。

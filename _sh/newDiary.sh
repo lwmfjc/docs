@@ -1,4 +1,5 @@
 time=`date '+%Y-%m-%dT%H:%M:%S%:z'`
+mydate=`date '+%Y-%m-%d'`
 today=$(echo $time | sed -e 's/T.\+//g' -e 's/-//g' )
 
 dir="content.zh/docs/life/$today" 
@@ -16,12 +17,16 @@ if [[  -f $fileName  ]] ;then
 fi
 cat >> $fileName <<-_EOF_
 ---
-title: 
-description: 
+title: $mydate
+description: $mydate
 categories:
   - 生活
 tags: 
   - 随想
+cssAttach: 
+  - book03
+cssclasses: 
+  - book03
 date: $time
 lastmod: $time
 ---

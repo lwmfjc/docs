@@ -1,11 +1,16 @@
 ---
-title: 起床临感
-description: 起床临感
+title: 20231227起床临感
+description: 20231227起床临感
 categories:
-  - 生活 
+  - 生活
+tags:
+  - 随想
 date: 2023-12-27 09:33:42
 updated: 2023-12-27 09:33:42
-
+cssAttach:
+  - book03
+cssclasses:
+  - book03
 ---
 
 所谓贵人，并不是封建迷信，而是指对你成长有帮助的人，不单单是直观的好。  

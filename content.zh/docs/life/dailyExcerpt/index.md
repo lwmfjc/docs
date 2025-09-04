@@ -1,6 +1,6 @@
 ---
-title: 每日摘抄
-description: 每日摘抄
+title: 00每日摘抄
+description: 00每日摘抄
 categories:
   - 生活
 tags:
