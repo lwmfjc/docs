@@ -3,7 +3,8 @@ title: 关于算命的思索
 description: 关于算命的思索
 categories:
   - 生活
-tags: 
+tags:
+  - 随想
 date: 2025-08-31T17:25:50+08:00
 lastmod: 2025-08-31T17:25:50+08:00
 cssclasses:

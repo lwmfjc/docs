@@ -21,6 +21,7 @@ description:
 categories:
   - 生活
 tags: 
+  - 随想
 date: $time
 lastmod: $time
 ---
