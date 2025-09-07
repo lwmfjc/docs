@@ -1,6 +1,6 @@
 ---
-title: 封面-版权
-description: 封面-版权
+title: 00封面-版权
+description: 00封面-版权
 categories:
   - 学习
 tags:

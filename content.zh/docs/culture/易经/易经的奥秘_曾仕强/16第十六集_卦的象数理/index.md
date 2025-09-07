@@ -1,6 +1,6 @@
 ---
-title: 第十六集_卦的象数理
-description: 第十六集_卦的象数理
+title: 16第十六集_卦的象数理
+description: 16第十六集_卦的象数理
 categories:
   - 学习
 tags:

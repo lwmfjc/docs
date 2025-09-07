@@ -1,6 +1,6 @@
 ---
-title: 第十集_易经的思维
-description: 第十集_易经的思维
+title: 10第十集_易经的思维
+description: 10第十集_易经的思维
 categories:
   - 学习
 tags:

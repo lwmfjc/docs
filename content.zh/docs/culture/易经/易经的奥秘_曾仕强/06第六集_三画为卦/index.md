@@ -1,6 +1,6 @@
 ---
-title: 第六集_三画为卦
-description: 第六集_三画为卦
+title: 06第六集_三画为卦
+description: 06第六集_三画为卦
 categories:
   - 学习
 tags:

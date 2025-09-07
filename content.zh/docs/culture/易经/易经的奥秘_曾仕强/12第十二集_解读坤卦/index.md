@@ -1,6 +1,6 @@
 ---
-title: 第十二集_解读坤卦
-description: 第十二集_解读坤卦
+title: 12第十二集_解读坤卦
+description: 12第十二集_解读坤卦
 categories:
   - 学习
 tags:
