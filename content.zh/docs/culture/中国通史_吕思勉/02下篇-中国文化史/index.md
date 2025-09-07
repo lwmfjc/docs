@@ -1,6 +1,6 @@
 ---
-title: " 下编-中国文化史"
-description: " 下编-中国文化史"
+title: 02下篇-中国文化史
+description: 02下篇-中国文化史
 categories:
   - 学习
 tags:
