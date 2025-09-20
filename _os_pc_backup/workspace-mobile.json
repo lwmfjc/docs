@@ -6,6 +6,7 @@
       {
         "id": "f56478b5613c09be",
         "type": "tabs",
+        "dimension": 69.7080291970803,
         "children": [
           {
             "id": "591862b8a0e14adc",
@@ -19,6 +20,28 @@
               },
               "icon": "lucide-file",
               "title": "index"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1b79c3e4a07c4c6b",
+        "type": "tabs",
+        "dimension": 30.29197080291971,
+        "children": [
+          {
+            "id": "b71b213b44354d80",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大纲"
             }
           }
         ]

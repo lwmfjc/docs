@@ -1,7 +1,6 @@
 [
   "obsidian-version-history-diff",
   "templater-obsidian",
-  "obsidian-style-settings",
   "quickadd",
   "global-proxy",
   "obsidian-custom-attachment-location",
@@ -13,5 +12,6 @@
   "obsidian-local-images-plus",
   "obsidian-image-toolkit",
   "mouse-navigation",
-  "zenmode"
+  "zenmode",
+  "obsidian-style-settings"
 ]

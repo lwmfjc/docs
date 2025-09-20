@@ -4,11 +4,12 @@
     "type": "split",
     "children": [
       {
-        "id": "a652f2f63014e354",
+        "id": "5a955e18340efcb3",
         "type": "tabs",
+        "dimension": 77.17601547388782,
         "children": [
           {
-            "id": "ddc120c8bd565c90",
+            "id": "c7170370ac289ff6",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -19,6 +20,28 @@
               },
               "icon": "lucide-file",
               "title": "index"
+            }
+          }
+        ]
+      },
+      {
+        "id": "29c9397d15ba40eb",
+        "type": "tabs",
+        "dimension": 22.823984526112184,
+        "children": [
+          {
+            "id": "29994c75655e319e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "index 的大纲"
             }
           }
         ]
@@ -48,27 +71,12 @@
             }
           },
           {
-            "id": "d17ce847cd7a7216",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-                "followCursor": false,
-                "showSearch": true,
-                "searchQuery": ""
-              },
-              "icon": "lucide-list",
-              "title": "index 的大纲"
-            }
-          },
-          {
             "id": "cb2a18b06e86cbcc",
             "type": "leaf",
             "state": {
               "type": "search",
               "state": {
-                "query": "k's'j'd'f'k ",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -89,12 +97,12 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 248.50173568725586,
+    "collapsed": true
   },
   "right": {
     "id": "8ef25d9ebd1552f4",
@@ -150,6 +158,21 @@
               "icon": "lucide-tags",
               "title": "标签"
             }
+          },
+          {
+            "id": "d17ce847cd7a7216",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "followCursor": false,
+                "showSearch": true,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "index 的大纲"
+            }
           }
         ],
         "currentTab": 2
@@ -161,12 +184,12 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "bases:创建新数据库": false,
-      "switcher:打开快速切换": false,
-      "graph:查看关系图谱": false,
-      "canvas:新建白板": false,
-      "daily-notes:打开/创建今天的日记": false,
-      "templates:插入模板": false,
+      "bases:创建新数据库": true,
+      "switcher:打开快速切换": true,
+      "graph:查看关系图谱": true,
+      "canvas:新建白板": true,
+      "daily-notes:打开/创建今天的日记": true,
+      "templates:插入模板": true,
       "command-palette:打开命令面板": false,
       "templater-obsidian:Templater": false,
       "obsidian-excalidraw-plugin:新建绘图文件": false,
@@ -176,29 +199,36 @@
       "zenmode:Toggle Zen Mode": false
     }
   },
-  "active": "ddc120c8bd565c90",
+  "active": "c7170370ac289ff6",
   "lastOpenFiles": [
-    "static/css/bg.css.bak",
+    "static/css/bg.css",
     "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+    "content.zh/docs/culture/万历十五年/02第二章首辅申时行/index.md",
+    "_os_pc_backup/appearance.json",
+    "_os_pc_backup/daily-notes.json",
+    "_os_pc_backup/app.json",
+    "_os_pc_backup/core-plugins.json",
+    "_os_pc_backup/hotkeys.json",
+    "_os_pc_backup/bookmarks.json",
+    "content.zh/docs/culture/万历十五年/01第一章万历皇帝/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/02坤卦/index.md",
+    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "_os_pc_backup/plugins/obsidian-image-toolkit/styles.css",
+    "_os_pc_backup/plugins/obsidian-image-toolkit/manifest.json",
+    "_os_pc_backup/plugins/obsidian-image-toolkit/main.js",
+    "_os_pc_backup/plugins/obsidian-image-toolkit/data.json",
     "content.zh/docs/test/test2/index.md",
     "content.zh/docs/culture/史记/001第一卷五帝本纪第一/index.md",
     "content.zh/docs/culture/史记/000司马迁的生平和著作/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书/index.md",
     "content.zh/docs/culture/易经/解读易经_傅佩荣/00b前言二_易经的魅力/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/00b前言二_易经的魅力/img",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/00b前言二_易经的魅力",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书/img",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书",
     "content.zh/docs/culture/史记/023第二十三卷越王句践世家第十一/index.md",
     "content.zh/docs/culture/左传/01隐公/index.md",
-    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
     "content.zh/docs/life/20250831/index.md",
     "content.zh/docs/life/20240626/index.md",
     "content.zh/docs/life/archive/20231013/index.md",
     "content.zh/docs/life/archive/20231021/index.md",
     "content.zh/docs/life/archive/20231026/index.md",
-    "public/zh.search.min.64aba0b53cb06c6e6f04e72552fc7f6ccdb5b64c48189786164ffd2f7ef1d936.js",
-    "public/zh.search-data.min.c357aa882dd692a677a2fa0258c55db8221b9c6c7107702731a95983370a81c8.json",
     "content.zh/docs/life/archive/20230913/index.md",
     "content.zh/docs/life/archive/20230912/index.md",
     "content.zh/docs/life/archive/20220724/index.md",
@@ -206,14 +236,7 @@
     "content.zh/docs/life/archive/20121226/index.md",
     "content.zh/docs/life/dailyExcerpt/index.md",
     "content.zh/docs/life/20231101/index.md",
-    "public/zh/tags/随想/page/2/index.html",
-    "public/zh/tags/随想/page/2",
-    "public/zh.search.min.309964251c03c01591b8ce1d890bbdba8413b8ce2075935235fb76322b39ca05.js",
-    "public/zh.search-data.min.825c0af22cedf3fc7656976323431ed8841f1faff7d94465599d3b4ced98a041.json",
     "content.zh/docs/life/20250904/index.md",
-    "content.zh/docs/life/202509041/index.md",
-    "content.zh/docs/life/20231227/index.md",
-    "content.zh/docs/life/20250103/index.md",
     "content.zh/docs/culture/南明史/第二十七章 李定国迎永历帝入云南和孙可望的降清 (2112)/img/000001.png",
     "content.zh/docs/culture/南明史/第二十七章 李定国迎永历帝入云南和孙可望的降清 (2112)/img/000000.png",
     "content.zh/docs/culture/左传/10昭公/img/000087.MSLmXagv.jpg",
