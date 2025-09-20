@@ -4,5 +4,11 @@
     background: linear-gradient(to top, #c1dfc4 100%, #c1dfc4 100%) fixed;
     background-size: cover;
 } 
-
+/*工作区和目录区透明*/
+.workspace, .mod-horizontal {
+    background: transparent;
+    --background-primary: transparent;
+    --background-secondary: transparent;
+    --divider-width: 0px;
+}
 /* ============================================================ */
