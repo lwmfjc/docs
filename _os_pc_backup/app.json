@@ -10,5 +10,6 @@
   "autoConvertHtml": false,
   "showInlineTitle": true,
   "readableLineLength": false,
-  "strictLineBreaks": true
+  "strictLineBreaks": true,
+  "smartIndentList": false
 }

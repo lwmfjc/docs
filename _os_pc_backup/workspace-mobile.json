@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/_index.md",
+                "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "_index"
+              "title": "index"
             }
           }
         ]
@@ -36,7 +36,8 @@
         "state": {
           "type": "file-explorer",
           "state": {
-            "sortOrder": "alphabetical"
+            "sortOrder": "alphabetical",
+            "autoReveal": false
           },
           "icon": "lucide-folder-closed",
           "title": "文件列表"
@@ -139,6 +140,8 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:创建新数据库": false,
+      "zenmode:Toggle Zen Mode": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -152,6 +155,7 @@
   },
   "active": "591862b8a0e14adc",
   "lastOpenFiles": [
+    "content.zh/_index.md",
     "_os_pc_backup/plugins/file-cleaner-redux/manifest.json",
     "_os_pc_backup/plugins/file-cleaner-redux/main.js",
     "_os_pc_backup/plugins/file-cleaner-redux/data.json",
@@ -161,7 +165,6 @@
     "_os_pc_backup/plugins/custom-font-loader/lxgwwenkaimono-medium_ttf.css",
     "_os_pc_backup/plugins/custom-font-loader/data.json",
     "_os_pc_backup/plugins/custom-font-loader",
-    "_os_pc_backup/snippets/book02.css",
-    "_os_pc_backup/snippets/新建文本文档.txt"
+    "_os_pc_backup/snippets/book02.css"
   ]
 }

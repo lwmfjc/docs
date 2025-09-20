@@ -10,5 +10,8 @@
   "obsidian-git",
   "custom-font-loader",
   "obsidian-theme-design-utilities",
-  "obsidian-local-images-plus"
+  "obsidian-local-images-plus",
+  "obsidian-image-toolkit",
+  "mouse-navigation",
+  "zenmode"
 ]

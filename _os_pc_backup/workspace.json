@@ -1,20 +1,24 @@
 {
   "main": {
-    "id": "3c180e98de7a8bd5",
+    "id": "8dff1123f7214e7e",
     "type": "split",
     "children": [
       {
-        "id": "e26700d897784064",
+        "id": "a652f2f63014e354",
         "type": "tabs",
         "children": [
           {
-            "id": "87cda454e0e6d94b",
+            "id": "ddc120c8bd565c90",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "index"
             }
           }
         ]
@@ -23,20 +27,20 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "68ff6c5e6bb3d85b",
+    "id": "384c5fa1f2f8ed1f",
     "type": "split",
     "children": [
       {
-        "id": "4a5851d2c85ca2ab",
+        "id": "bb8bff9663f6a883",
         "type": "tabs",
         "children": [
           {
-            "id": "7e052c6949893df9",
+            "id": "44ac17082a18a706",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "byModifiedTime",
+                "sortOrder": "alphabetical",
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
@@ -44,38 +48,39 @@
             }
           },
           {
-            "id": "366b3151582cceb1",
+            "id": "d17ce847cd7a7216",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
                 "followCursor": false,
-                "showSearch": false,
+                "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "index 的大纲"
             }
           },
           {
-            "id": "e4638ffa3969852a",
+            "id": "cb2a18b06e86cbcc",
             "type": "leaf",
             "state": {
               "type": "search",
               "state": {
-                "query": "20241212142127172",
+                "query": "k's'j'd'f'k ",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
                 "extraContext": false,
-                "sortOrder": "byModifiedTime"
+                "sortOrder": "alphabetical"
               },
               "icon": "lucide-search",
               "title": "搜索"
             }
           },
           {
-            "id": "3bfce6d90c5e9dd7",
+            "id": "3db854650cd25560",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -89,23 +94,23 @@
       }
     ],
     "direction": "horizontal",
-    "width": 261.50574016571045
+    "width": 200
   },
   "right": {
-    "id": "45804219d09d1da3",
+    "id": "8ef25d9ebd1552f4",
     "type": "split",
     "children": [
       {
-        "id": "e70157b080eade96",
+        "id": "43a531549381e715",
         "type": "tabs",
         "children": [
           {
-            "id": "ff710bfc0cfb68d5",
+            "id": "1e63122f5edc53a5",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
+                "file": "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/01第一章_最委屈的圣人/index.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -119,7 +124,7 @@
             }
           },
           {
-            "id": "54f06c63f0cc434e",
+            "id": "d02c12780c540872",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
@@ -132,100 +137,92 @@
             }
           },
           {
-            "id": "68afb1b1c328b14c",
+            "id": "68487316feba03b2",
             "type": "leaf",
             "state": {
               "type": "tag",
               "state": {
                 "sortOrder": "frequency",
-                "useHierarchy": true
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-tags",
               "title": "标签"
             }
-          },
-          {
-            "id": "e9bdfa2f0fd39f8d",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md"
-              },
-              "icon": "lucide-list",
-              "title": "index 的大纲"
-            }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
-    "width": 261.5,
+    "width": 200,
     "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-local-images-plus:Local Images Plus  0.16.1\r\nLocalize attachments (plugin folder)": false,
-      "switcher:打开快速切换": true,
-      "graph:查看关系图谱": true,
-      "canvas:新建白板": true,
-      "daily-notes:打开/创建今天的日记": true,
-      "templates:插入模板": true,
+      "bases:创建新数据库": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
+      "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "obsidian-excalidraw-plugin:新建绘图文件": true,
       "templater-obsidian:Templater": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
       "file-cleaner-redux:Clean files": false,
-      "obsidian-git:Open Git source control": false
+      "obsidian-git:Open Git source control": false,
+      "obsidian-local-images-plus:Local Images Plus  0.16.1\r\nLocalize attachments (plugin folder)": false,
+      "zenmode:Toggle Zen Mode": false
     }
   },
-  "active": "87cda454e0e6d94b",
+  "active": "ddc120c8bd565c90",
   "lastOpenFiles": [
-    "content.zh/docs/culture/汉字就是这么来的/01走进汉字世界/index.md",
-    "content.zh/docs/culture/古代天文历法讲座/第1讲-第3讲/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/_index.md",
-    "content.zh/docs/technology/Interview/java/basis/why-there-only-value-passing-in-java/index.md",
-    "content.zh.zip",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/a49554bd895eeadca1e0cfceabce14cc_MD5.ezgVfNUf.jpg",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/linkedlist-algorithm-problems/img/402be10d4d7679eb164cc4695b753def_MD5.ScnptMKE.jpg",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/f3c4a306a44463cd2516088914b44096_MD5.AQCKTVBj.jpg",
-    "content.zh/docs/technology/Interview/java/basis/why-there-only-value-passing-in-java/img/8f68278c4e7855a572ac75b72ec8dfd1_MD5.jpg",
-    "content.zh/docs/technology/Interview/java/basis/why-there-only-value-passing-in-java/img/5a3a1049875f9b94eaa075accf73ebbf_MD5.jpg",
-    "content.zh/docs/technology/Interview/java/basis/why-there-only-value-passing-in-java/img/982de8f94267e05d4d0be1aa128e9ce5_MD5.jpg",
-    "content.zh/docs/technology/Interview/java/basis/java-keyword-summary/index.md",
-    "content.zh/docs/technology/Interview/java/basis/java-keyword-summary/img/4b1a2cbe6fc46c8ffbd73e7da395c059_MD5.jpg",
-    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-03/index.md",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/0a4e3ecbbb5d1096587966f690f6b396_MD5.gif",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/f67de4825091e76671ddda84a782bc26_MD5.gif",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img/0ee918a10bb77d62846060b1eb27bbfb_MD5.gif",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/10-classical-sorting-algorithms/img",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/linkedlist-algorithm-problems/img",
-    "content.zh/docs/technology/Interview/cs-basics/algorithms/the-sword-refers-to-offer/img",
-    "content.zh/docs/technology/Interview/cs-basics/data-structure/bloom-filter/img",
-    "content.zh/docs/technology/Interview/cs-basics/data-structure/graph/img",
-    "content.zh/docs/technology/Interview/cs-basics/data-structure/tree/img",
-    "content.zh/docs/technology/Interview/cs-basics/data-structure/linear-data-structure/img",
-    "content.zh/docs/technology/Interview/cs-basics/network/application-layer-protocol/img",
-    "content.zh/docs/technology/Interview/cs-basics/network/computer-network-xiexiren-summary/img",
-    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
+    "static/css/bg.css.bak",
+    "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
     "content.zh/docs/test/test2/index.md",
-    "content.zh/docs/technology/Interview/_index.md",
-    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-02/index.md",
-    "content.zh/docs/technology/Interview/java/collection/arraylist-source-code/index.md",
-    "content.zh/docs/technology/Interview/java/_index.md",
-    "content.zh/docs/technology/Interview/java/basis/_index.md",
-    "content.zh/docs/technology/MySQL/_index.md",
-    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/视频笔记/05MachineLevelProgramming01Basic/index.md",
-    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第0章_万里长征第一步(非常重要)-如何愉快的阅读本小册/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/_index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第一部分 程序结构和执行 [2-6]/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第三部分 程序间的交互和通信 [10-12]/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第4章 处理器体系结构/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第3章 程序的机器级表示/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第2章 信息的表示和处理/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/书籍/第1章 计算机系统漫游/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/书籍/附录A-封底/index.md",
-    "content.zh/docs/technology/System/深入理解计算机系统/书籍/封面-目录/index.md",
-    "未命名.canvas"
+    "content.zh/docs/culture/史记/001第一卷五帝本纪第一/index.md",
+    "content.zh/docs/culture/史记/000司马迁的生平和著作/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00b前言二_易经的魅力/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00b前言二_易经的魅力/img",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00b前言二_易经的魅力",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书/img",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书",
+    "content.zh/docs/culture/史记/023第二十三卷越王句践世家第十一/index.md",
+    "content.zh/docs/culture/左传/01隐公/index.md",
+    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "content.zh/docs/life/20250831/index.md",
+    "content.zh/docs/life/20240626/index.md",
+    "content.zh/docs/life/archive/20231013/index.md",
+    "content.zh/docs/life/archive/20231021/index.md",
+    "content.zh/docs/life/archive/20231026/index.md",
+    "public/zh.search.min.64aba0b53cb06c6e6f04e72552fc7f6ccdb5b64c48189786164ffd2f7ef1d936.js",
+    "public/zh.search-data.min.c357aa882dd692a677a2fa0258c55db8221b9c6c7107702731a95983370a81c8.json",
+    "content.zh/docs/life/archive/20230913/index.md",
+    "content.zh/docs/life/archive/20230912/index.md",
+    "content.zh/docs/life/archive/20220724/index.md",
+    "content.zh/docs/life/archive/20220416/index.md",
+    "content.zh/docs/life/archive/20121226/index.md",
+    "content.zh/docs/life/dailyExcerpt/index.md",
+    "content.zh/docs/life/20231101/index.md",
+    "public/zh/tags/随想/page/2/index.html",
+    "public/zh/tags/随想/page/2",
+    "public/zh.search.min.309964251c03c01591b8ce1d890bbdba8413b8ce2075935235fb76322b39ca05.js",
+    "public/zh.search-data.min.825c0af22cedf3fc7656976323431ed8841f1faff7d94465599d3b4ced98a041.json",
+    "content.zh/docs/life/20250904/index.md",
+    "content.zh/docs/life/202509041/index.md",
+    "content.zh/docs/life/20231227/index.md",
+    "content.zh/docs/life/20250103/index.md",
+    "content.zh/docs/culture/南明史/第二十七章 李定国迎永历帝入云南和孙可望的降清 (2112)/img/000001.png",
+    "content.zh/docs/culture/南明史/第二十七章 李定国迎永历帝入云南和孙可望的降清 (2112)/img/000000.png",
+    "content.zh/docs/culture/左传/10昭公/img/000087.MSLmXagv.jpg",
+    "content.zh/docs/culture/左传/10昭公/img/000096.PHpHOZjh.jpg",
+    "content.zh/docs/culture/左传/10昭公/img/000097.leQVZWDS.jpg",
+    "content.zh/docs/culture/左传/10昭公/img/000102.YWuIqRge.jpg",
+    "content.zh/docs/culture/左传/10昭公/img/000103.nLqtIMQz.jpg",
+    "content.zh/docs/culture/左传/03庄公/img/000007.cTmzhIwd.jpg",
+    "content.zh/docs/culture/左传/03庄公/img/000014.bjiQrXpT.jpg",
+    "content.zh/docs/culture/左传/03庄公/img/000015.pHHcFusm.jpg"
   ]
 }
