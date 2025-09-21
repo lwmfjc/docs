@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "7ccf1bad616ac9a1",
+        "id": "119951cbd9e23f21",
         "type": "tabs",
         "children": [
           {
-            "id": "21049e92a34e3ab2",
+            "id": "1df161b306e4bdb0",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/docs/culture/易经/易经的智慧_傅佩荣/01第一章_易经是什么/index.md",
-                "mode": "source",
+                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "mode": "preview",
                 "source": false
               },
               "icon": "lucide-file",
@@ -129,7 +129,6 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "content.zh/docs/culture/易经/易经的智慧_傅佩荣/01第一章_易经是什么/index.md",
             "followCursor": false,
             "showSearch": false,
             "searchQuery": ""
@@ -156,10 +155,11 @@
       "zenmode:Toggle Zen Mode": false
     }
   },
-  "active": "21049e92a34e3ab2",
+  "active": "1df161b306e4bdb0",
   "lastOpenFiles": [
-    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
+    "content.zh/docs/culture/易经/易经的智慧_傅佩荣/01第一章_易经是什么/index.md",
     "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
     "content.zh/docs/culture/置身事内/上篇/index.md",
     "content.zh/docs/culture/中国通史(吕思勉)/封面-版权-读后-自序/index.md",
     "content.zh/docs/culture/汉字就是这么来的/01走进汉字世界/index.md",

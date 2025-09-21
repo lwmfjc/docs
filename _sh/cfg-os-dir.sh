@@ -5,7 +5,7 @@
 #"mbr"--->"手机上恢复配置"
 n=$#
 if [ $n -ne 1 ] ; then
-   echo -e "Please set one params.  \npcb-->pc-backup\npcr-->pc-recover\nmbb-->mobile-backup\nmbr-->mobile-recover\n"
+	echo -e "Please set one params.  \npcb-->pc-backup(beifen)\npcr-->pc-recover(huifu)\nmbb-->mobile-backup(beifen)\nmbr-->mobile-recover(huifu)\n"
     exit 0
 fi
 x=$1
