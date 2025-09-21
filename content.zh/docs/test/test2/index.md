@@ -1,8 +1,8 @@
 ---
 title: test2
 description: test2
-categories: 
-tags: 
+categories:
+tags:
 date: 2025-01-14T09:08:13+08:00
 lastmod: 2025-01-14T09:08:13+08:00
 cssclasses:
