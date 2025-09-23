@@ -11,5 +11,6 @@
   "showInlineTitle": false,
   "readableLineLength": false,
   "strictLineBreaks": true,
-  "defaultViewMode": "preview"
+  "defaultViewMode": "preview",
+  "mobileToolbarCommands": []
 }

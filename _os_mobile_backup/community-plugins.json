@@ -7,5 +7,6 @@
   "file-cleaner-redux",
   "quickadd",
   "custom-font-loader",
-  "zenmode"
+  "zenmode",
+  "editing-toolbar"
 ]

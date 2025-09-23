@@ -64,5 +64,8 @@
   "Appearance-dark@@interactive-normal@@dark": "#363636",
   "Appearance-dark@@interactive-hover@@dark": "#3F3F3F",
   "Appearance-dark@@background-activated-tab-header-dark": "#FFFFFF13",
-  "Appearance-dark@@shadow-activated-tab-header-dark": "none"
+  "Appearance-dark@@shadow-activated-tab-header-dark": "none",
+  "Plugin@@colorful-checkbox": true,
+  "Appearance-light@@card-highlight-light": true,
+  "Appearance-light@@workspace-divider-transparent-light": true
 }

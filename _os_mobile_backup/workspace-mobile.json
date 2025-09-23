@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "119951cbd9e23f21",
+        "id": "28e4f440cffaa279",
         "type": "tabs",
         "children": [
           {
-            "id": "1df161b306e4bdb0",
+            "id": "c1fa54ec653eeb0a",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-                "mode": "preview",
+                "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
@@ -129,6 +129,7 @@
         "state": {
           "type": "outline",
           "state": {
+            "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
             "followCursor": false,
             "showSearch": false,
             "searchQuery": ""
@@ -155,10 +156,12 @@
       "zenmode:Toggle Zen Mode": false
     }
   },
-  "active": "1df161b306e4bdb0",
+  "active": "c1fa54ec653eeb0a",
   "lastOpenFiles": [
-    "content.zh/docs/culture/易经/易经的智慧_傅佩荣/01第一章_易经是什么/index.md",
+    "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+    "content.zh/docs/test/test2/index.md",
     "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "content.zh/docs/culture/易经/易经的智慧_傅佩荣/01第一章_易经是什么/index.md",
     "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
     "content.zh/docs/culture/置身事内/上篇/index.md",
     "content.zh/docs/culture/中国通史(吕思勉)/封面-版权-读后-自序/index.md",
@@ -178,13 +181,11 @@
     "content.zh/docs/culture/论语/论语的生活智慧/01学天第一/index.md",
     "content.zh/docs/life/20250123.md",
     "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
-    "content.zh/docs/test/test2/index.md",
     "_sh/zsh/uninstall.sh",
     "_sh/zsh/install.sh",
     "_sh/zsh",
     "content.zh/docs/test/mytest/index.md",
     "content.zh/docs/culture/天纪/人间道/上经/29坎爲水/index.md",
-    "content.zh/posts/_index.md",
-    "content.zh/docs/culture/中国通史(吕思勉)/_index.md"
+    "content.zh/posts/_index.md"
   ]
 }
