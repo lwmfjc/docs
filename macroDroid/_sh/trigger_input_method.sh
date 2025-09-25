@@ -25,9 +25,9 @@ toGboard(){
     echo "切换到 Gboard"
 }
 
-if [ $1 == "tasker" ] ; then
+if [[ $1 == "tasker" ]]; then
 	toTasker
-elif [ $1 == "gboard" ] ; then
+elif [[ $1 == "gboard" ]]; then
 	toGboard
 else 
  	triggle
