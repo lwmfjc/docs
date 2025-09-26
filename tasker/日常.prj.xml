@@ -1,0 +1,301 @@
+<TaskerData sr="" dvi="1" tv="6.5.11">
+	<dmetric>2560.0,1600.0</dmetric>
+	<Profile sr="prof13" ve="2">
+		<cdate>1758888705917</cdate>
+		<clp>true</clp>
+		<edate>1758889418287</edate>
+		<flags>8</flags>
+		<id>13</id>
+		<limit>true</limit>
+		<mid0>14</mid0>
+		<mid1>15</mid1>
+		<Event sr="con0" ve="2">
+			<code>2085</code>
+			<pri>0</pri>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%lc_text
+文字
+匹配logcat entry的文本&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">[AirCmd]_AirActionOperator</Str>
+			<Str sr="arg2" ve="3">onButtonEvent : SINGLE_CLICKED</Str>
+			<Int sr="arg3" val="0"/>
+		</Event>
+	</Profile>
+	<Profile sr="prof17" ve="2">
+		<cdate>1758889750926</cdate>
+		<clp>true</clp>
+		<edate>1758889806122</edate>
+		<flags>8</flags>
+		<id>17</id>
+		<mid0>15</mid0>
+		<nme>打开静读天下</nme>
+		<App sr="con0" ve="2">
+			<cls0>com.flyersoft.moonreaderp.ActivityMain</cls0>
+			<flags>2</flags>
+			<label0>静读天下专业版</label0>
+			<pkg0>com.flyersoft.moonreaderp</pkg0>
+		</App>
+	</Profile>
+	<Profile sr="prof5" ve="2">
+		<cdate>1758884113674</cdate>
+		<clp>true</clp>
+		<edate>1758889763871</edate>
+		<flags>8</flags>
+		<id>5</id>
+		<mid0>6</mid0>
+		<nme>打开obsidian</nme>
+		<App sr="con0" ve="2">
+			<cls0>md.obsidian.MainActivity</cls0>
+			<flags>2</flags>
+			<label0>Obsidian</label0>
+			<pkg0>md.obsidian</pkg0>
+		</App>
+	</Profile>
+	<Project sr="proj0" ve="2">
+		<cdate>1758890102248</cdate>
+		<name>日常</name>
+		<pids>13,17,5</pids>
+		<scenes>笔记+朗读</scenes>
+		<tids>15,12,7,18,2,11,6,14</tids>
+	</Project>
+	<Scene sr="scene笔记+朗读">
+		<cdate>1758883182588</cdate>
+		<edate>1758890169581</edate>
+		<heightLand>300</heightLand>
+		<heightPort>300</heightPort>
+		<nme>笔记+朗读</nme>
+		<widthLand>50</widthLand>
+		<widthPort>50</widthPort>
+		<ImageElement sr="elements0" ve="2">
+			<clickTask>11</clickTask>
+			<flags>4</flags>
+			<geom>0,0,50,50,0,0,50,50</geom>
+			<Str sr="arg0" ve="3">图像1</Str>
+			<Img sr="arg1" ve="2">
+				<nme>hl_av_download</nme>
+			</Img>
+			<Int sr="arg2" val="255"/>
+			<RectElement sr="background">
+				<flags>4</flags>
+				<geom>-1,-1,-1,-1,-1,-1,-1,-1</geom>
+				<Str sr="arg0" ve="3"/>
+				<Int sr="arg1" val="0"/>
+				<Str sr="arg2" ve="3"/>
+				<Str sr="arg3" ve="3"/>
+				<Int sr="arg4" val="0"/>
+				<Str sr="arg5" ve="3">#FF000000</Str>
+				<Int sr="arg6" val="0"/>
+				<Int sr="arg7" val="0"/>
+			</RectElement>
+		</ImageElement>
+		<ImageElement sr="elements1" ve="2">
+			<clickTask>12</clickTask>
+			<flags>4</flags>
+			<geom>0,100,50,50,0,70,50,50</geom>
+			<Str sr="arg0" ve="3">图像2</Str>
+			<Img sr="arg1" ve="2">
+				<nme>hl_ab_av_play</nme>
+			</Img>
+			<Int sr="arg2" val="255"/>
+			<RectElement sr="background">
+				<flags>4</flags>
+				<geom>-1,-1,-1,-1,-1,-1,-1,-1</geom>
+				<Str sr="arg0" ve="3"/>
+				<Int sr="arg1" val="0"/>
+				<Str sr="arg2" ve="3"/>
+				<Str sr="arg3" ve="3"/>
+				<Int sr="arg4" val="0"/>
+				<Str sr="arg5" ve="3">#FF000000</Str>
+				<Int sr="arg6" val="0"/>
+				<Int sr="arg7" val="0"/>
+			</RectElement>
+		</ImageElement>
+		<PropertiesElement sr="props">
+			<keyTask>7</keyTask>
+			<Int sr="arg0" val="1"/>
+			<Int sr="arg1" val="0"/>
+			<Str sr="arg2" ve="3">#00FFFFFF</Str>
+			<Int sr="arg3" val="0"/>
+			<Str sr="arg4" ve="3">1</Str>
+			<Str sr="arg5" ve="3"/>
+			<Img sr="arg6" ve="2"/>
+			<Str sr="arg7" ve="3"/>
+			<LinkClickFilter sr="filter0">
+				<stopEvent>true</stopEvent>
+			</LinkClickFilter>
+		</PropertiesElement>
+	</Scene>
+	<Task sr="task11">
+		<cdate>1758887441676</cdate>
+		<edate>1758887441676</edate>
+		<id>11</id>
+		<pri>102</pri>
+		<Action sr="act0" ve="7">
+			<code>130</code>
+			<Str sr="arg0" ve="3">切换输入法</Str>
+			<Int sr="arg1">
+				<var>%priority</var>
+			</Int>
+			<Int sr="arg10" val="1"/>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Int sr="arg5" val="0"/>
+			<Int sr="arg6" val="0"/>
+			<Str sr="arg7" ve="3"/>
+			<Int sr="arg8" val="0"/>
+			<Int sr="arg9" val="0"/>
+		</Action>
+	</Task>
+	<Task sr="task12">
+		<cdate>1758887719191</cdate>
+		<edate>1758887719191</edate>
+		<id>12</id>
+		<pri>102</pri>
+		<Action sr="act0" ve="7">
+			<code>130</code>
+			<Str sr="arg0" ve="3">切换朗读状态</Str>
+			<Int sr="arg1">
+				<var>%priority</var>
+			</Int>
+			<Int sr="arg10" val="1"/>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Int sr="arg5" val="0"/>
+			<Int sr="arg6" val="0"/>
+			<Str sr="arg7" ve="3"/>
+			<Int sr="arg8" val="0"/>
+			<Int sr="arg9" val="0"/>
+		</Action>
+	</Task>
+	<Task sr="task14">
+		<cdate>1758888717819</cdate>
+		<edate>1758889374289</edate>
+		<id>14</id>
+		<nme>hello</nme>
+		<pri>6</pri>
+		<Action sr="act0" ve="7">
+			<code>559</code>
+			<Str sr="arg0" ve="3">你好</Str>
+			<Str sr="arg1" ve="3">default:default</Str>
+			<Int sr="arg2" val="3"/>
+			<Int sr="arg3" val="5"/>
+			<Int sr="arg4" val="5"/>
+			<Int sr="arg5" val="1"/>
+			<Int sr="arg6" val="0"/>
+			<Int sr="arg7" val="0"/>
+		</Action>
+	</Task>
+	<Task sr="task15">
+		<cdate>1758889346485</cdate>
+		<edate>1758889763871</edate>
+		<id>15</id>
+		<nme>禁用输入法</nme>
+		<Action sr="act0" ve="7">
+			<code>123</code>
+			<Str sr="arg0" ve="3">su -c 'sh /storage/emulated/0/000Ly/git/docs/macroDroid/_sh/trigger_input_method.sh tasker'</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="1"/>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Int sr="arg7" val="0"/>
+		</Action>
+	</Task>
+	<Task sr="task18">
+		<cdate>1758889999891</cdate>
+		<edate>1758890024084</edate>
+		<id>18</id>
+		<nme>切换输入法</nme>
+		<Action sr="act0" ve="7">
+			<code>123</code>
+			<Str sr="arg0" ve="3">su -c 'sh /storage/emulated/0/000Ly/git/docs/macroDroid/_sh/trigger_input_method.sh'</Str>
+			<Int sr="arg1" val="0"/>
+			<Int sr="arg2" val="1"/>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Str sr="arg5" ve="3"/>
+			<Int sr="arg6" val="1"/>
+			<Int sr="arg7" val="0"/>
+		</Action>
+	</Task>
+	<Task sr="task2">
+		<cdate>1758882950114</cdate>
+		<edate>1758889962300</edate>
+		<id>2</id>
+		<nme>切换朗读状态</nme>
+		<pri>100</pri>
+		<Action sr="act0" ve="7">
+			<code>20</code>
+			<App sr="arg0">
+				<appClass>com.flyersoft.moonreaderp.ActivityMain</appClass>
+				<appPkg>com.flyersoft.moonreaderp</appPkg>
+				<label>静读天下专业版</label>
+			</App>
+			<Str sr="arg1" ve="3"/>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act1" ve="7">
+			<code>328</code>
+			<Bundle sr="arg0">
+				<Vals sr="val">
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES>&lt;StringArray sr=""&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;%kb_text_before_cursor
+光标前的文本
+当前输入光标前的文本(如果存在的话)&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES0&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES1&gt;%kb_text_after_cursor
+光标后的文本
+当前输入光标后的文本(如果存在的话)&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES1&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES2&gt;%kb_text
+文字
+当前输入的文本(如果存在的话）&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES2&gt;&lt;_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES3&gt;%kb_text_selected
+被选择的文本
+当前输入上选择的文本(如果有的话)&lt;/_array_net.dinglisch.android.tasker.RELEVANT_VARIABLES3&gt;&lt;/StringArray&gt;</net.dinglisch.android.tasker.RELEVANT_VARIABLES>
+					<net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>[Ljava.lang.String;</net.dinglisch.android.tasker.RELEVANT_VARIABLES-type>
+				</Vals>
+			</Bundle>
+			<Str sr="arg1" ve="3">Q</Str>
+			<Int sr="arg2" val="50"/>
+			<Int sr="arg3" val="0"/>
+		</Action>
+		<Action sr="act2" ve="7">
+			<code>22</code>
+		</Action>
+	</Task>
+	<Task sr="task6">
+		<cdate>1758884124735</cdate>
+		<edate>1758890079632</edate>
+		<id>6</id>
+		<nme>显示场景</nme>
+		<pri>100</pri>
+		<Action sr="act0" ve="7">
+			<code>47</code>
+			<Str sr="arg0" ve="3">笔记+朗读</Str>
+			<Int sr="arg1" val="1"/>
+			<Int sr="arg10" val="1"/>
+			<Int sr="arg2" val="200"/>
+			<Int sr="arg3" val="181"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="1"/>
+			<Int sr="arg6" val="1"/>
+			<Int sr="arg7" val="1"/>
+			<Int sr="arg8" val="0"/>
+			<Int sr="arg9" val="0"/>
+		</Action>
+	</Task>
+	<Task sr="task7">
+		<cdate>1758884425370</cdate>
+		<edate>1758884425370</edate>
+		<id>7</id>
+		<pri>102</pri>
+		<Action sr="act0" ve="7">
+			<code>48</code>
+			<Str sr="arg0" ve="3">笔记+朗读</Str>
+			<Int sr="arg1" val="0"/>
+		</Action>
+	</Task>
+</TaskerData>
