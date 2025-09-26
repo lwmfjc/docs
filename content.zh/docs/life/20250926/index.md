@@ -1,13 +1,13 @@
 ---
-title: 20250926
-description: 20250926
+title: 20250926-道
+description: 20250926-道
 categories:
   - 生活
-tags: 
+tags:
   - 随想
-cssAttach: 
+cssAttach:
   - book03
-cssclasses: 
+cssclasses:
   - book03
 date: 2025-09-26T10:52:07+08:00
 lastmod: 2025-09-26T10:52:07+08:00

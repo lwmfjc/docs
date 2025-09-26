@@ -1,6 +1,6 @@
 ---
-title: 20231101灭亡
-description: 20231101灭亡
+title: 20231101-灭亡
+description: 20231101-灭亡
 tags:
   - 随想
 categories:

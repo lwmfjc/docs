@@ -1,6 +1,6 @@
 ---
-title: 20250831关于算命的思索
-description: 20250831关于算命的思索
+title: 20250831-关于算命的思索
+description: 20250831-关于算命的思索
 categories:
   - 生活
 tags:

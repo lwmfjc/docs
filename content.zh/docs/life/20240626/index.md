@@ -1,6 +1,6 @@
 ---
-title: 20240626知命不惧  日日自新
-description: 20240626知命不惧  日日自新
+title: 20240626-知命不惧  日日自新
+description: 20240626-知命不惧  日日自新
 tags:
   - 随想
 categories:

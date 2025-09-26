@@ -17,8 +17,8 @@ if [[  -f $fileName  ]] ;then
 fi
 cat >> $fileName <<-_EOF_
 ---
-title: $mydate
-description: $mydate
+title: $mydate-
+description: $mydate-
 categories:
   - 生活
 tags: 

@@ -1,9 +1,9 @@
 ---
-title: 20230912病愈 有感
-description: 2023-09-12病愈 有感
+title: 20230912-病愈 有感
+description: 20230912-病愈 有感
 categories:
   - 生活
-tags: 
+tags:
   - 随想
 date: 2023-09-12 20:11:46
 updated: 2023-09-12 20:21:47
