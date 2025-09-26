@@ -1,5 +1,5 @@
 time=`date '+%Y-%m-%dT%H:%M:%S%:z'`
-mydate=`date '+%Y-%m-%d'`
+mydate=`date '+%Y%m%d'`
 today=$(echo $time | sed -e 's/T.\+//g' -e 's/-//g' )
 
 dir="content.zh/docs/life/$today" 
