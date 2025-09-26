@@ -19,7 +19,7 @@ lrwxrwxrwx. 1 root root 31 Apr  3 14:16 /etc/systemd/system/sshd.service（用�
 但是sudo service hello status，chroot容器中查找的只是/etc/init.d/这个路径下的hello（不查找/etc/systemd和lib/systemd中的），但是如果使用systemctl disable hello，则/etc/init.d中的hello服务不会被运行，并且会删除/etc/systemd/system/multi-user.target.wants文件夹下的软连接。如果systemctl enable hello，则会在/etc/systemd/system/multi-user.target.wants文件夹下生成一个软连接。
 执行完/etc/init.d/hello就不会再操作其他东西了(hello.service没有用)
 ```
-建议linuxdeploy的自动化开启Sysv模式，然后在/etc/init.d/里头编写脚本就可以了，如果要开机启动，使用systemctl enable xxx即可。
+建议linuxdeploy的自动化开启Sysv模式，然后在/etc/init.d/里头编写脚本就可以*了，如果要开机启*动，`使用systemc`tl enable xxx即可。
 
 ## 问题1
 chroot容器中，sudo systemctl enable hello.service后，开机启动时并没有执行。但是如果服务名hello在/etc/init.d/文件中存在对应名的SysV Init 脚本，就会执行，这是为什么呢  

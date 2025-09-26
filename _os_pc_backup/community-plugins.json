@@ -8,10 +8,11 @@
   "file-cleaner-redux",
   "obsidian-git",
   "custom-font-loader",
-  "obsidian-theme-design-utilities",
   "obsidian-local-images-plus",
   "obsidian-image-toolkit",
   "mouse-navigation",
   "zenmode",
-  "obsidian-style-settings"
+  "obsidian-style-settings",
+  "keyboard-formatter",
+  "editing-toolbar"
 ]

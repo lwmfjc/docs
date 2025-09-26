@@ -27,7 +27,7 @@ article p, div.cm-line:not(.HyperMD-header,.HyperMD-codeblock), div.el-p  {
 
 /*人名地名--下划线*/
 em, .cm-em {
-    border: 2px ;
+    border: 1px ;
     border-bottom-style: solid;
     padding-bottom: 0.05em;
     /*  text-decoration: underline  ;  
