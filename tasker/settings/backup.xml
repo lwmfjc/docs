@@ -1,9 +1,9 @@
 <TaskerData sr="" dvi="1" tv="6.5.11">
-	<dmetric>2560.0,1600.0</dmetric>
+	<dmetric>1080.0,2320.0</dmetric>
 	<Profile sr="prof45" ve="2">
 		<cdate>1758899610642</cdate>
-		<edate>1758905276946</edate>
-		<flags>10</flags>
+		<edate>1758909437059</edate>
+		<flags>8</flags>
 		<id>45</id>
 		<mid0>47</mid0>
 		<mid1>50</mid1>
@@ -34,15 +34,15 @@
 	<Scene sr="scene笔记+朗读">
 		<cdate>1758883182588</cdate>
 		<edate>1758903747251</edate>
-		<heightLand>300</heightLand>
-		<heightPort>300</heightPort>
+		<heightLand>202</heightLand>
+		<heightPort>202</heightPort>
 		<nme>笔记+朗读</nme>
-		<widthLand>50</widthLand>
-		<widthPort>50</widthPort>
+		<widthLand>33</widthLand>
+		<widthPort>33</widthPort>
 		<ImageElement sr="elements0" ve="2">
 			<clickTask>40</clickTask>
 			<flags>4</flags>
-			<geom>0,0,50,50,0,0,50,50</geom>
+			<geom>0,0,33,33,0,0,33,33</geom>
 			<Str sr="arg0" ve="3">图像1</Str>
 			<Img sr="arg1" ve="2">
 				<nme>hl_av_download</nme>
@@ -64,7 +64,7 @@
 		<ImageElement sr="elements1" ve="2">
 			<clickTask>41</clickTask>
 			<flags>4</flags>
-			<geom>0,100,50,50,0,70,50,50</geom>
+			<geom>0,67,33,33,0,47,33,33</geom>
 			<Str sr="arg0" ve="3">图像2</Str>
 			<Img sr="arg1" ve="2">
 				<nme>hl_ab_av_play</nme>
@@ -118,7 +118,7 @@
 	</Task>
 	<Task sr="task37">
 		<cdate>1758882950114</cdate>
-		<edate>1758907058997</edate>
+		<edate>1758909713609</edate>
 		<id>37</id>
 		<nme>切换朗读状态</nme>
 		<pri>100</pri>
@@ -158,7 +158,9 @@
 				</Vals>
 			</Bundle>
 			<Str sr="arg1" ve="3">R</Str>
-			<Int sr="arg2" val="500"/>
+			<Int sr="arg2">
+				<var>0</var>
+			</Int>
 			<Int sr="arg3" val="0"/>
 		</Action>
 		<Action sr="act3" ve="7">
@@ -176,7 +178,7 @@
 	</Task>
 	<Task sr="task38">
 		<cdate>1758884124735</cdate>
-		<edate>1758906754898</edate>
+		<edate>1758909237661</edate>
 		<id>38</id>
 		<nme>显示场景</nme>
 		<pri>100</pri>
@@ -252,7 +254,7 @@
 	</Task>
 	<Task sr="task42">
 		<cdate>1758888717819</cdate>
-		<edate>1758905003806</edate>
+		<edate>1758909198656</edate>
 		<id>42</id>
 		<nme>hello</nme>
 		<pri>6</pri>
