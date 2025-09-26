@@ -1,17 +1,17 @@
 {
   "cssTheme": "Border",
   "baseFontSizeAction": true,
-  "baseFontSize": 22,
+  "baseFontSize": 16,
   "showViewHeader": true,
   "enabledCssSnippets": [
     "book",
     "book-guwen02",
     "book-guwen01",
+    "book02",
     "book-base",
     "book01",
-    "book02",
-    "book03",
-    "bg"
+    "bg",
+    "book03"
   ],
   "textFontFamily": "霞鹜文楷等宽",
   "showRibbon": true,
