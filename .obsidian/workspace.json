@@ -191,12 +191,9 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "obsidian-local-images-plus:Local Images Plus  0.16.4\r\nLocalize attachments (plugin folder)": false,
-      "edge-tts:Read note aloud": false,
       "templater-obsidian:Templater": false,
       "obsidian-excalidraw-plugin:新建绘图文件": false,
       "file-cleaner-redux:Clean files": false,
-      "obsidian-git:Open Git source control": false,
       "command-palette:打开命令面板": false,
       "zenmode:Toggle Zen Mode": false,
       "bases:创建新数据库": true,
@@ -210,6 +207,8 @@
   },
   "active": "820467440e8aceff",
   "lastOpenFiles": [
+    "static/fonts1/",
+    "static/fonts1",
     "content.zh/docs/culture/曾国藩的启示_曾仕强/02第二章_处世智慧尽在《挺经》/index.md",
     "content.zh/docs/culture/曾国藩的启示_曾仕强/01第一章_从平庸中崛起的一生/index.md",
     "content.zh/docs/technology/Obsidian/plugin/index.md",
@@ -246,7 +245,6 @@
     "tasker/settings/backup_0930_temp.xml",
     "tasker/settings/backup250930_0137.xml",
     "tasker/settings/backup250929_final.xml",
-    "tasker/settings/backup-no-recusor.xml",
     "content.zh/docs/culture/南明史/01第一章 明朝覆亡后的全国形势/index.md",
     "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
     "content.zh/docs/life/archive/20231026/index.md",
@@ -254,7 +252,6 @@
     "content.zh/docs/life/archive/20231013/index.md",
     "content.zh/docs/life/archive/20230913/index.md",
     "content.zh/docs/life/archive/20230912/index.md",
-    "content.zh/docs/life/archive/20220724/index.md",
-    "content.zh/docs/life/archive/20220416/index.md"
+    "content.zh/docs/life/archive/20220724/index.md"
   ]
 }
