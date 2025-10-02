@@ -1,7 +1,7 @@
 {
   "cssTheme": "Border",
   "baseFontSizeAction": true,
-  "baseFontSize": 22,
+  "baseFontSize": 23,
   "showViewHeader": true,
   "enabledCssSnippets": [
     "book",

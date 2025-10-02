@@ -140,6 +140,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "update-time-updater:Update modified date": false,
       "bases:创建新数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
