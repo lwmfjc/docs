@@ -1,0 +1,19 @@
+{
+  "cssTheme": "Border",
+  "baseFontSizeAction": true,
+  "baseFontSize": 22,
+  "showViewHeader": true,
+  "enabledCssSnippets": [
+    "book",
+    "book-guwen02",
+    "book-guwen01",
+    "book01",
+    "book02",
+    "book-base",
+    "book03",
+    "bg"
+  ],
+  "textFontFamily": "霞鹜文楷等宽",
+  "theme": "moonstone",
+  "showRibbon": true
+}

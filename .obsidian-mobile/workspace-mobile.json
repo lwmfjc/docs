@@ -1,0 +1,191 @@
+{
+  "main": {
+    "id": "702644d311224423",
+    "type": "split",
+    "children": [
+      {
+        "id": "28e4f440cffaa279",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c1fa54ec653eeb0a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "index"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "6221598005ca99db",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "994b077274ff36db",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical",
+            "autoReveal": false
+          },
+          "icon": "lucide-folder-closed",
+          "title": "文件列表"
+        }
+      },
+      {
+        "id": "9868c027337bfea3",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          },
+          "icon": "lucide-search",
+          "title": "搜索"
+        }
+      },
+      {
+        "id": "fee258f68814bdd5",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true
+          },
+          "icon": "lucide-tags",
+          "title": "标签"
+        }
+      },
+      {
+        "id": "dca57d6492142e4b",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {},
+          "icon": "lucide-bookmark",
+          "title": "书签"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "62ab0e60fb75aa8a",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "370094158c586f3f",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "file": "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-coming-in",
+          "title": "反向链接"
+        }
+      },
+      {
+        "id": "ff7191cfb35cdd63",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "file": "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-going-out",
+          "title": "出链"
+        }
+      },
+      {
+        "id": "b3ce52b7ca10097f",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {
+            "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+            "followCursor": false,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-list",
+          "title": "大纲"
+        }
+      }
+    ],
+    "currentTab": 2
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:打开快速切换": true,
+      "graph:查看关系图谱": true,
+      "canvas:新建白板": true,
+      "daily-notes:打开/创建今天的日记": true,
+      "templates:插入模板": false,
+      "command-palette:打开命令面板": false,
+      "bases:创建新数据库": true,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "templater-obsidian:Templater": false,
+      "file-cleaner-redux:Clean files": false,
+      "zenmode:Toggle Zen Mode": false
+    }
+  },
+  "active": "c1fa54ec653eeb0a",
+  "lastOpenFiles": [
+    "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+    "content.zh/docs/test/test2/index.md",
+    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "content.zh/docs/culture/易经/易经的智慧_傅佩荣/01第一章_易经是什么/index.md",
+    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
+    "content.zh/docs/culture/置身事内/上篇/index.md",
+    "content.zh/docs/culture/中国通史(吕思勉)/封面-版权-读后-自序/index.md",
+    "content.zh/docs/culture/汉字就是这么来的/01走进汉字世界/index.md",
+    "content.zh/docs/technology/Interview/high-performance/data-cold-hot-separation/index.md",
+    "content.zh/docs/technology/Interview/database/elasticsearch/elasticsearch-questions-01/index.md",
+    "content.zh/docs/technology/Interview/database/elasticsearch/_index.md",
+    "content.zh/docs/technology/Interview/database/basis/index.md",
+    "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+    "content.zh/docs/technology/RegExp/base(CoreySchafer)_/base/index.md",
+    "content.zh/docs/technology/RegExp/base(CoreySchafer)_/_index.md",
+    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第10章_条条大路通罗马-单表访问方法/index.md",
+    "content.zh/docs/technology/MySQL/_高性能MySQL_/第1章MySQL架构与历史/index.md",
+    "content.zh/docs/culture/增广贤文/_index.md",
+    "content.zh/docs/culture/天纪/人间道/上经/01乾为天/index.md",
+    "content.zh/docs/culture/论语/论语译注_杨伯峻/01学而篇第一/index.md",
+    "content.zh/docs/culture/论语/论语的生活智慧/01学天第一/index.md",
+    "content.zh/docs/life/20250123.md",
+    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
+    "_sh/zsh/uninstall.sh",
+    "_sh/zsh/install.sh",
+    "_sh/zsh",
+    "content.zh/docs/test/mytest/index.md",
+    "content.zh/docs/culture/天纪/人间道/上经/29坎爲水/index.md",
+    "content.zh/posts/_index.md"
+  ]
+}

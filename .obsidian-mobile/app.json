@@ -1,0 +1,16 @@
+{
+  "showLineNumber": false,
+  "alwaysUpdateLinks": true,
+  "newFileLocation": "current",
+  "newLinkFormat": "relative",
+  "useMarkdownLinks": true,
+  "showUnsupportedFiles": true,
+  "attachmentFolderPath": "./img",
+  "newFileFolderPath": "./img",
+  "autoConvertHtml": false,
+  "showInlineTitle": false,
+  "readableLineLength": false,
+  "strictLineBreaks": true,
+  "defaultViewMode": "preview",
+  "mobileToolbarCommands": []
+}
