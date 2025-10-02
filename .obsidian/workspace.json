@@ -53,13 +53,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "content.zh/_index.md",
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "_index 的大纲"
+              "title": "index 的大纲"
             }
           },
           {
@@ -89,7 +89,8 @@
               "title": "书签"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -207,6 +208,7 @@
   },
   "active": "820467440e8aceff",
   "lastOpenFiles": [
+    "content.en.zip",
     "static/fonts1/",
     "static/fonts1",
     "content.zh/docs/culture/曾国藩的启示_曾仕强/02第二章_处世智慧尽在《挺经》/index.md",
@@ -244,7 +246,6 @@
     "tasker/settings/backup_no-recusor_2.xml",
     "tasker/settings/backup_0930_temp.xml",
     "tasker/settings/backup250930_0137.xml",
-    "tasker/settings/backup250929_final.xml",
     "content.zh/docs/culture/南明史/01第一章 明朝覆亡后的全国形势/index.md",
     "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
     "content.zh/docs/life/archive/20231026/index.md",
