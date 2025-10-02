@@ -1,0 +1,28 @@
+{
+  "attachmentFolderPath": "./img",
+  "attachmentRenameMode": "Only pasted images",
+  "collectAttachmentUsedByMultipleNotesMode": "Prompt",
+  "customTokensStr": "",
+  "defaultImageSize": "",
+  "defaultImageSizeDimension": "width",
+  "duplicateNameSeparator": " ",
+  "emptyAttachmentFolderBehavior": "Keep",
+  "excludePaths": [],
+  "excludePathsFromAttachmentCollecting": [],
+  "generatedAttachmentFileName": "ly-${date:YYYYMMDDHHmmssSSS}",
+  "includePaths": [],
+  "jpegQuality": 1,
+  "markdownUrlFormat": "",
+  "shouldConvertPastedImagesToJpeg": false,
+  "shouldDeleteOrphanAttachments": false,
+  "shouldRenameAttachmentFiles": true,
+  "shouldRenameAttachmentFolder": true,
+  "shouldRenameCollectedAttachments": true,
+  "specialCharacters": " ",
+  "specialCharactersReplacement": "-",
+  "timeoutInSeconds": 5,
+  "treatAsAttachmentExtensions": [
+    ".excalidraw.md"
+  ],
+  "version": "9.17.2"
+}

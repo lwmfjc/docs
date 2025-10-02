@@ -1,0 +1,282 @@
+/*默认情况下*/
+.book01,.book02,.book03{
+ 
+
+/*字体统一放大到1.4em*/
+article ,div.cm-line:not(.HyperMD-codeblock), div.el-p,
+div.el-ul,div.el-ol,div.el-pre
+{
+    font-size: 1.15em ;
+}
+
+/*段落统一设置格式*/
+article p, div.cm-line:not(.HyperMD-header,.HyperMD-codeblock), div.el-p  {
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+    /*    line-height: 1.8em;*/
+    /*    letter-spacing: 0.1em;*/
+    text-align: justify;
+    text-indent: 2em;
+    --bold-color: initial;
+    --italic-color: initial;
+    --text-normal: initial;
+    opacity: 0.85;
+}
+
+/*字修饰-----start*/
+
+/*人名地名--下划线*/
+em, .cm-em {
+    border: 1px ;
+    border-bottom-style: solid;
+    padding-bottom: 0.05em;
+    /*  text-decoration: underline  ;  
+        text-underline-offset: 0.2em; */
+    font-style: inherit;
+}
+
+
+
+/*自注--红色缩小字体*/
+p del,mark del, li del, span.cm-strikethrough, td del  {
+    text-decoration: unset;
+    font-size: 0.9em;
+    position: relative;
+    bottom: -0.15em;
+}
+
+/*正文--黑色加大*/
+strong, .cm-strong , .markdown strong,
+.cm-strong.cm-inline-code,.cm-strong.cm-highlight{
+    font-size: 1.2em;
+    font-weight: normal;
+    --font-weight: normal;
+}
+
+
+/*波浪线--书名---start*/
+/*加波浪线*/
+.markdown p code ,span.cm-inline-code,
+.cm-inline-code:not(.cm-formatting),:not(pre)>code{
+    text-decoration:  underline wavy;
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 0.06em;
+}
+
+/*去除code默认样式(obsidian)*/
+span.cm-inline-code,
+.cm-inline-code:not(.cm-formatting),:not(pre)>code ,mark code {
+    /*obsidian里面需要的*/
+    --inline-code-background-light: initial;
+    --inline-code-background-dark: initial;
+    --code-background: initial;
+    --inline-code-normal: initial;
+    --code-size: initial;
+    padding: initial;
+    --code-normal: initial;
+    /*obsidian里面需要的*/
+}
+
+/*去除code默认样式(markdown)*/
+.markdown p code ,.markdown code {
+    font-family: inherit;
+    background: inherit ;
+    font-size: inherit ;
+    padding: inherit;
+    unicode-bidi: inherit;
+}
+/*波浪线--书名---end*/
+
+
+/*字修饰-----end*/
+ 
+
+/*默认图片缩小*/
+img:not([alt^="i"]) {
+    display: block;
+    width: 50%;
+    height: 50%;
+}
+
+p:has(+div[alt^="i-"]),div[alt^="i-"]{
+    display: inline ;
+}
+
+/*图片属性alt为i开头时，缩小到行高*/
+img[alt^="i-"] {
+    display: inline-block ;
+    height: 1em;
+    position: relative;
+    bottom: -0.2em;
+
+}
+/*覆盖默认的hr样式*/
+hr,.markdown hr {
+    border: 1.5px;
+    border-bottom-style: solid; 
+    margin : 1em 2em ;
+}
+
+/*缩小多行代码字体-obsidian*/
+.cm-line.HyperMD-codeblock {
+      white-space: pre-wrap;
+      word-break: break-all;  
+      padding-inline-end: 16px;
+      font-size: 0.9em;
+}
+/*缩小多行代码字体-hugo*/
+pre:has(code){
+      white-space: pre-wrap;
+      word-break: break-all;  
+      padding-inline-end: 16px;
+      font-size: 0.75em;
+}
+/*
+img {
+    display: block;
+}
+
+img[alt^="i-"] {
+    display: inline-block;
+    height: 1em;
+}
+
+pre:has(code) {
+    font-size: 0.7em;
+}*/
+
+/*li项目项缩进处理*/
+.HyperMD-list-line.HyperMD-list-line-1.cm-line,
+.HyperMD-list-line.HyperMD-list-line-2.cm-line,
+.HyperMD-list-line.HyperMD-list-line-3.cm-line,
+.HyperMD-list-line.HyperMD-list-line-4.cm-line,
+.HyperMD-list-line.HyperMD-list-line-5.cm-line{
+  padding-inline-start: 0em ;
+  text-indent: 0px ;
+}
+ 
+/*引用缩进处理*/
+/*内联样式覆盖，要改成其他的只能用important*/
+.HyperMD-quote.HyperMD-quote-1.cm-line{
+    text-indent: 0em;
+    padding-inline-start: 0em; 
+} 
+
+/*引用字体缩小*/
+.HyperMD-quote.HyperMD-quote-1.cm-line,blockquote{
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0.05);  
+    --gray-200: rgba(0,0,0,0.5);
+    --blockquote-background-light: rgba(0, 0, 0, 0.05);
+    --blockquote-background-dark: rgba(0, 0, 0, 0.05);
+} 
+
+/*标记*/
+/*div:has(>br:only-child){
+    height: 0.2em;
+    background-color: rgba(0, 0, 0, 0.05); 
+}*/
+
+
+/*div:has(.cm-trailing-space-new-line) + div.cm-line{
+    background-color: red;
+    text-indent: 0em;
+}*/
+
+
+/*覆盖默认的hr样式*/
+/*hr {
+    border: 1.5px black;
+    border-bottom-style: solid;*/
+/*  background-color: rgba(0,0,0,0.05);  */
+/*margin-left: 2em;
+margin-right: 2em;
+}*/
+}
+
+body.theme-light :is(.book01, .book02, .book03){
+    /*人名地名--下划线*/
+    em, .cm-em {
+        border-color: rgba(0, 0, 0, 0.6); 
+    }
+
+    /*重点--暗色背景*/
+    mark,.cm-highlight {    
+        --text-highlight-bg: rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.1); 
+    }
+    span.cm-highlight.cm-inline-code{    
+        --inline-code-background-light: rgba(0, 0, 0, 0.1);
+    }
+
+
+    /*自注--红色缩小字体*/
+    p del,mark del, li del, span.cm-strikethrough, td del  { 
+        color: rgba(255, 0, 0, 0.8); 
+    }
+
+    /*正文--黑色加大*/
+    strong, .cm-strong , .markdown strong,
+    .cm-strong.cm-inline-code,.cm-strong.cm-highlight{
+        color: initial;
+        /*    --bold-color: rgba(0, 0, 0);*/ 
+    }
+
+
+    /*波浪线--书名---start*/
+    /*加波浪线*/
+    .markdown p code ,span.cm-inline-code,
+    .cm-inline-code:not(.cm-formatting),:not(pre)>code{ 
+        text-decoration-color: rgba(0,0,0,0.4);
+    }
+
+    /*覆盖默认的hr样式*/
+    hr,.markdown hr { 
+        border-color: rgba(0,0,0,0.05); 
+        background-color: rgba(0,0,0,0.05); 
+    }
+}
+
+body.theme-dark :is(.book01, .book02, .book03){
+    /*人名地名--下划线*/
+    em, .cm-em {
+        border-color: rgba(255, 255, 255, 0.6); 
+    }
+
+    /*重点--暗色背景*/
+    mark,.cm-highlight {    
+        --text-highlight-bg: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.2); 
+    }
+    span.cm-highlight.cm-inline-code{    
+        --inline-code-background-dark: rgba(255, 255, 255, 0.2);
+    }
+
+
+    /*自注--红色缩小字体*/
+    p del,mark del, li del, span.cm-strikethrough, td del  { 
+        color: rgba(255, 0, 0, 0.8); 
+    }
+
+    /*正文--白色加大*/
+    strong, .cm-strong , .markdown strong,
+    .cm-strong.cm-inline-code,.cm-strong.cm-highlight{
+        color: initial; 
+        opacity: 0.8;
+        /*    --bold-color: rgba(0, 0, 0);*/ 
+    }
+
+
+    /*波浪线--书名---start*/
+    /*加波浪线*/
+    .markdown p code ,span.cm-inline-code,
+    .cm-inline-code:not(.cm-formatting),:not(pre)>code{ 
+        text-decoration-color: rgba(255,255,255,0.6);
+    }
+
+    /*覆盖默认的hr样式*/
+    hr,.markdown hr { 
+        border-color: rgba(255,255,255,0.05); 
+        background-color: rgba(255,255,255,0.05); 
+    }
+}
