@@ -138,7 +138,7 @@ URI
 	</Project>
 	<Scene sr="scene笔记">
 		<cdate>1758883182588</cdate>
-		<edate>1759506771992</edate>
+		<edate>1759508993239</edate>
 		<heightLand>300</heightLand>
 		<heightPort>300</heightPort>
 		<nme>笔记</nme>
@@ -252,11 +252,11 @@ URI
 		</ImageElement>
 		<PropertiesElement sr="props">
 			<keyTask>39</keyTask>
-			<Int sr="arg0" val="1"/>
+			<Int sr="arg0" val="2"/>
 			<Int sr="arg1" val="0"/>
 			<Str sr="arg2" ve="3">#16000000</Str>
 			<Int sr="arg3" val="0"/>
-			<Str sr="arg4" ve="3">1</Str>
+			<Str sr="arg4" ve="3"/>
 			<Str sr="arg5" ve="3"/>
 			<Img sr="arg6" ve="2"/>
 			<Str sr="arg7" ve="3"/>
@@ -2249,6 +2249,7 @@ URI
 		<pri>102</pri>
 		<Action sr="act0" ve="7">
 			<code>48</code>
+			<on>false</on>
 			<Str sr="arg0" ve="3">笔记</Str>
 			<Int sr="arg1" val="0"/>
 		</Action>
