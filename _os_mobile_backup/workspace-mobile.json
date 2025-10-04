@@ -141,17 +141,18 @@
   "left-ribbon": {
     "hiddenItems": {
       "update-time-updater:Update modified date": false,
-      "bases:创建新数据库": false,
-      "switcher:打开快速切换": false,
-      "graph:查看关系图谱": false,
-      "canvas:新建白板": false,
-      "daily-notes:打开/创建今天的日记": false,
-      "templates:插入模板": false,
+      "bases:创建新数据库": true,
+      "switcher:打开快速切换": true,
+      "graph:查看关系图谱": true,
+      "canvas:新建白板": true,
+      "daily-notes:打开/创建今天的日记": true,
+      "templates:插入模板": true,
       "command-palette:打开命令面板": false,
       "templater-obsidian:Templater": false,
       "obsidian-excalidraw-plugin:新建绘图文件": false,
       "file-cleaner-redux:Clean files": false,
-      "zenmode:Toggle Zen Mode": false
+      "zenmode:Toggle Zen Mode": false,
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "591862b8a0e14adc",
