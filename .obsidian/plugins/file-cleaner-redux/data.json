@@ -1,0 +1,17 @@
+{
+  "deletionDestination": "system",
+  "obsidianTrashCleanupAge": -1,
+  "excludeInclude": 1,
+  "excludedFolders": [
+    "content.zh/docs/technology/System"
+  ],
+  "attachmentsExcludeInclude": 1,
+  "attachmentExtensions": [
+    "jpg",
+    "png"
+  ],
+  "deletionConfirmation": true,
+  "runOnStartup": false,
+  "removeFolders": false,
+  "ignoredFrontmatter": []
+}

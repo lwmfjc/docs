@@ -1,0 +1,7 @@
+{
+  "font_folder": "static/fonts/",
+  "font": "LXGWWenKaiMono-Medium.ttf",
+  "force_mode": false,
+  "custom_css_mode": false,
+  "custom_css": ":root * {\n\t\t--font-default: LXGWWenKaiMono-Medium;\n\t\t--default-font: LXGWWenKaiMono-Medium;\n\t\t--font-family-editor: LXGWWenKaiMono-Medium;\n\t\t--font-monospace-default: LXGWWenKaiMono-Medium,\n\t\t--font-interface-override: LXGWWenKaiMono-Medium,\n\t\t--font-text-override: LXGWWenKaiMono-Medium,\n\t\t--font-monospace-override: LXGWWenKaiMono-Medium,\t\n\t}\n"
+}
