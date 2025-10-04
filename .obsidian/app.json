@@ -15,5 +15,6 @@
   "userIgnoreFilters": [
     "static/",
     "public/"
-  ]
+  ],
+  "mobileToolbarCommands": []
 }
