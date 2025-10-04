@@ -156,6 +156,8 @@
   },
   "active": "591862b8a0e14adc",
   "lastOpenFiles": [
+    "attachments/quickAddScripts/comments.js",
+    "attachments/quickAddScripts",
     "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
     "content.zh/_index.md",
     "_os_pc_backup/plugins/file-cleaner-redux/manifest.json",
@@ -166,7 +168,6 @@
     "_os_pc_backup/plugins/custom-font-loader/main.js",
     "_os_pc_backup/plugins/custom-font-loader/lxgwwenkaimono-medium_ttf.css",
     "_os_pc_backup/plugins/custom-font-loader/data.json",
-    "_os_pc_backup/plugins/custom-font-loader",
-    "_os_pc_backup/snippets/book02.css"
+    "_os_pc_backup/plugins/custom-font-loader"
   ]
 }
