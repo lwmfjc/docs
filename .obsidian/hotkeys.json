@@ -79,15 +79,6 @@
       "key": "6"
     }
   ],
-  "editor:toggle-code": [
-    {
-      "modifiers": [
-        "Mod",
-        "Shift"
-      ],
-      "key": "D"
-    }
-  ],
   "markdown:toggle-preview": [
     {
       "modifiers": [
@@ -120,6 +111,24 @@
         "Mod"
       ],
       "key": "Q"
+    }
+  ],
+  "editor:toggle-code": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "C"
+    }
+  ],
+  "editor:toggle-strikethrough": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "D"
     }
   ],
   "quickadd:choice:5c8d9fba-3ceb-44a0-89cb-f12e51a5a9cc": [
