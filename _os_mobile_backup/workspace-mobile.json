@@ -1,14 +1,14 @@
 {
   "main": {
-    "id": "702644d311224423",
+    "id": "641247647432abd6",
     "type": "split",
     "children": [
       {
-        "id": "28e4f440cffaa279",
+        "id": "f56478b5613c09be",
         "type": "tabs",
         "children": [
           {
-            "id": "c1fa54ec653eeb0a",
+            "id": "591862b8a0e14adc",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -27,11 +27,11 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "6221598005ca99db",
+    "id": "f2abae73d067bdee",
     "type": "mobile-drawer",
     "children": [
       {
-        "id": "994b077274ff36db",
+        "id": "cbe8cf169cf6a588",
         "type": "leaf",
         "state": {
           "type": "file-explorer",
@@ -44,7 +44,7 @@
         }
       },
       {
-        "id": "9868c027337bfea3",
+        "id": "db7ee78188c7d75b",
         "type": "leaf",
         "state": {
           "type": "search",
@@ -61,7 +61,7 @@
         }
       },
       {
-        "id": "fee258f68814bdd5",
+        "id": "477f58a105a5f9c2",
         "type": "leaf",
         "state": {
           "type": "tag",
@@ -74,7 +74,7 @@
         }
       },
       {
-        "id": "dca57d6492142e4b",
+        "id": "381f8578376b5faf",
         "type": "leaf",
         "state": {
           "type": "bookmarks",
@@ -87,16 +87,16 @@
     "currentTab": 0
   },
   "right": {
-    "id": "62ab0e60fb75aa8a",
+    "id": "29b45b8eca139363",
     "type": "mobile-drawer",
     "children": [
       {
-        "id": "370094158c586f3f",
+        "id": "8e4cf7e725989fa3",
         "type": "leaf",
         "state": {
           "type": "backlink",
           "state": {
-            "file": "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+            "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -110,12 +110,12 @@
         }
       },
       {
-        "id": "ff7191cfb35cdd63",
+        "id": "2cc0096014164c0f",
         "type": "leaf",
         "state": {
           "type": "outgoing-link",
           "state": {
-            "file": "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
+            "file": "content.zh/_index.md",
             "linksCollapsed": false,
             "unlinkedCollapsed": true
           },
@@ -124,68 +124,50 @@
         }
       },
       {
-        "id": "b3ce52b7ca10097f",
+        "id": "96ca4157ff0dbb56",
         "type": "leaf",
         "state": {
           "type": "outline",
           "state": {
-            "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
-            "followCursor": false,
-            "showSearch": false,
-            "searchQuery": ""
+            "file": "content.zh/_index.md"
           },
           "icon": "lucide-list",
           "title": "大纲"
         }
       }
     ],
-    "currentTab": 2
+    "currentTab": 0
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:打开快速切换": true,
-      "graph:查看关系图谱": true,
-      "canvas:新建白板": true,
-      "daily-notes:打开/创建今天的日记": true,
+      "update-time-updater:Update modified date": false,
+      "bases:创建新数据库": false,
+      "switcher:打开快速切换": false,
+      "graph:查看关系图谱": false,
+      "canvas:新建白板": false,
+      "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "bases:创建新数据库": true,
-      "obsidian-excalidraw-plugin:新建绘图文件": false,
       "templater-obsidian:Templater": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
       "file-cleaner-redux:Clean files": false,
       "zenmode:Toggle Zen Mode": false
     }
   },
-  "active": "c1fa54ec653eeb0a",
+  "active": "591862b8a0e14adc",
   "lastOpenFiles": [
+    "attachments/quickAddScripts/comments.js",
+    "attachments/quickAddScripts",
     "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
-    "content.zh/docs/test/test2/index.md",
-    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-    "content.zh/docs/culture/易经/易经的智慧_傅佩荣/01第一章_易经是什么/index.md",
-    "content.zh/docs/technology/Interview/java/basis/java-basic-questions-01/index.md",
-    "content.zh/docs/culture/置身事内/上篇/index.md",
-    "content.zh/docs/culture/中国通史(吕思勉)/封面-版权-读后-自序/index.md",
-    "content.zh/docs/culture/汉字就是这么来的/01走进汉字世界/index.md",
-    "content.zh/docs/technology/Interview/high-performance/data-cold-hot-separation/index.md",
-    "content.zh/docs/technology/Interview/database/elasticsearch/elasticsearch-questions-01/index.md",
-    "content.zh/docs/technology/Interview/database/elasticsearch/_index.md",
-    "content.zh/docs/technology/Interview/database/basis/index.md",
-    "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
-    "content.zh/docs/technology/RegExp/base(CoreySchafer)_/base/index.md",
-    "content.zh/docs/technology/RegExp/base(CoreySchafer)_/_index.md",
-    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第10章_条条大路通罗马-单表访问方法/index.md",
-    "content.zh/docs/technology/MySQL/_高性能MySQL_/第1章MySQL架构与历史/index.md",
-    "content.zh/docs/culture/增广贤文/_index.md",
-    "content.zh/docs/culture/天纪/人间道/上经/01乾为天/index.md",
-    "content.zh/docs/culture/论语/论语译注_杨伯峻/01学而篇第一/index.md",
-    "content.zh/docs/culture/论语/论语的生活智慧/01学天第一/index.md",
-    "content.zh/docs/life/20250123.md",
-    "content.zh/docs/technology/MySQL/MySQL是怎样运行的/第1章_装作自己是个小白-重新认识MySQL/index.md",
-    "_sh/zsh/uninstall.sh",
-    "_sh/zsh/install.sh",
-    "_sh/zsh",
-    "content.zh/docs/test/mytest/index.md",
-    "content.zh/docs/culture/天纪/人间道/上经/29坎爲水/index.md",
-    "content.zh/posts/_index.md"
+    "content.zh/_index.md",
+    "_os_pc_backup/plugins/file-cleaner-redux/manifest.json",
+    "_os_pc_backup/plugins/file-cleaner-redux/main.js",
+    "_os_pc_backup/plugins/file-cleaner-redux/data.json",
+    "_os_pc_backup/plugins/file-cleaner-redux",
+    "_os_pc_backup/plugins/custom-font-loader/manifest.json",
+    "_os_pc_backup/plugins/custom-font-loader/main.js",
+    "_os_pc_backup/plugins/custom-font-loader/lxgwwenkaimono-medium_ttf.css",
+    "_os_pc_backup/plugins/custom-font-loader/data.json",
+    "_os_pc_backup/plugins/custom-font-loader"
   ]
 }

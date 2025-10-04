@@ -11,5 +11,10 @@
   "showInlineTitle": true,
   "readableLineLength": false,
   "strictLineBreaks": true,
-  "smartIndentList": false
+  "smartIndentList": false,
+  "userIgnoreFilters": [
+    "static/",
+    "public/"
+  ],
+  "mobileToolbarCommands": []
 }

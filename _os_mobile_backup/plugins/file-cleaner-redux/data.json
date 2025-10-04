@@ -3,8 +3,7 @@
   "obsidianTrashCleanupAge": -1,
   "excludeInclude": 1,
   "excludedFolders": [
-    "content.zh",
-    "content.en"
+    "content.zh/docs/technology/System"
   ],
   "attachmentsExcludeInclude": 1,
   "attachmentExtensions": [

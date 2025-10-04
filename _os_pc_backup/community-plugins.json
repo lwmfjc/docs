@@ -6,13 +6,11 @@
   "obsidian-custom-attachment-location",
   "obsidian-excalidraw-plugin",
   "file-cleaner-redux",
-  "obsidian-git",
   "custom-font-loader",
-  "obsidian-local-images-plus",
   "obsidian-image-toolkit",
-  "mouse-navigation",
   "zenmode",
   "obsidian-style-settings",
-  "keyboard-formatter",
-  "editing-toolbar"
+  "editing-toolbar",
+  "my-sentence-plugin",
+  "update-time-updater"
 ]

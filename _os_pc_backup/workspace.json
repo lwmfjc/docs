@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "32a07273b5e23c10",
+        "id": "fac9a8cc17ffa8cd",
         "type": "tabs",
         "children": [
           {
-            "id": "c34cdcdf581579a6",
+            "id": "820467440e8aceff",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/docs/problem/Linux/20250331/index.md",
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -53,7 +53,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "content.zh/docs/problem/Linux/20250331/index.md",
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -68,7 +68,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "debian",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -89,12 +89,12 @@
               "title": "书签"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 218.50607681274414
+    "width": 218.50607681274414,
+    "collapsed": true
   },
   "right": {
     "id": "8ef25d9ebd1552f4",
@@ -129,11 +129,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "出链"
+              "title": "index 的出链列表"
             }
           },
           {
@@ -157,7 +158,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
@@ -172,7 +173,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "content.zh/docs/test/test2/index.md",
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -182,75 +183,74 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 200,
+    "width": 222.5,
     "collapsed": true
   },
   "left-ribbon": {
     "hiddenItems": {
+      "templater-obsidian:Templater": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "file-cleaner-redux:Clean files": false,
+      "command-palette:打开命令面板": false,
+      "zenmode:Toggle Zen Mode": false,
       "bases:创建新数据库": true,
       "switcher:打开快速切换": true,
       "graph:查看关系图谱": true,
       "canvas:新建白板": true,
       "daily-notes:打开/创建今天的日记": true,
       "templates:插入模板": true,
-      "command-palette:打开命令面板": false,
-      "templater-obsidian:Templater": false,
-      "obsidian-excalidraw-plugin:新建绘图文件": false,
-      "file-cleaner-redux:Clean files": false,
-      "obsidian-git:Open Git source control": false,
-      "obsidian-local-images-plus:Local Images Plus  0.16.1\r\nLocalize attachments (plugin folder)": false,
-      "zenmode:Toggle Zen Mode": false
+      "update-time-updater:Update modified date": false
     }
   },
-  "active": "c34cdcdf581579a6",
+  "active": "820467440e8aceff",
   "lastOpenFiles": [
-    "macroDroid/macro/obsidian_accessibility_bak.mdr",
-    "macroDroid/macro/MacroDroid_25_09_26.mdr",
-    "macroDroid/_sh/trigger_input_method.sh",
-    "macroDroid/macro/obsidian.mdr",
-    "macroDroid/_sh",
-    "macroDroid/macro",
-    "macroDroid",
-    "_sh/2",
-    "content.zh/docs/technology/Linux/SHELL(learnLinuxTV)_/07-10/index.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/index.md",
+    "content.en.zip",
+    "static/fonts1/",
+    "static/fonts1",
+    "content.zh/docs/culture/曾国藩的启示_曾仕强/02第二章_处世智慧尽在《挺经》/index.md",
+    "content.zh/docs/culture/曾国藩的启示_曾仕强/01第一章_从平庸中崛起的一生/index.md",
+    "content.zh/docs/technology/Obsidian/plugin/index.md",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/19相关人员评价/img/000001.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/19相关人员评价/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/18第十八章_孟子高风常在/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/17第十七章_千古议亚圣/img/000001.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/17第十七章_千古议亚圣/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/16第十六章_向上的人生境界/img/000001.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/16第十六章_向上的人生境界/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/15第十五章_君有道，臣有节/img/000001.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/15第十五章_君有道，臣有节/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/14第十四章_学于圣人之门/img/000003.jpg",
+    "content.zh/docs/problem/_index.md",
+    "content.zh/_index.md",
+    "content.zh/docs/culture/道家/道德经_曾仕强/02下篇_道德经与生活/img",
+    "content.zh/docs/culture/道家/道德经_曾仕强/02下篇_道德经与生活/index.md",
     "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
-    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-    "public/js/chrome油猴脚本中辅助hugo网站显示隐藏",
-    "static/js/chrome油猴脚本中辅助hugo网站显示隐藏",
-    "public/js",
-    "content.zh/docs/test/test2/index.md",
-    "public/zh/docs/culture/道家/道德经_曾仕强/00封面-版权/img/000000.jpg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000016.jpeg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000015.jpeg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000014.jpeg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000013.jpeg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000012.jpeg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000011.jpeg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000010.jpeg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000009.jpeg",
-    "public/zh/docs/culture/置身事内/02下篇/img/000008.jpeg",
-    "content.zh/docs/test/_index.md",
-    "content.zh/docs/test/hello2/index.md",
+    "content.zh/docs/culture/_index.md",
     "content.zh/docs/test/mytest/index.md",
-    "content.zh/docs/culture/万历十五年/02第二章首辅申时行/index.md",
-    "content.zh/docs/culture/万历十五年/01第一章万历皇帝/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/02坤卦/index.md",
-    "content.zh/docs/culture/史记/001第一卷五帝本纪第一/index.md",
-    "content.zh/docs/culture/史记/000司马迁的生平和著作/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/00b前言二_易经的魅力/index.md",
-    "content.zh/docs/culture/史记/023第二十三卷越王句践世家第十一/index.md",
-    "content.zh/docs/culture/左传/01隐公/index.md",
-    "content.zh/docs/life/20250831/index.md",
-    "content.zh/docs/life/20240626/index.md",
-    "content.zh/docs/life/archive/20231013/index.md",
-    "content.zh/docs/life/archive/20231021/index.md",
+    "content.zh/docs/test/hello2/index.md",
+    "content.zh/docs/technology/_index.md",
+    "content.zh/docs/technology/Hugo/themes/PaperMod/01/index.md",
+    "content.zh/docs/technology/Hugo/themes/_index.md",
+    "content.zh/docs/problem/Other/01/index.md",
+    "content.zh/docs/problem/Hugo/p1/index.md",
+    "content.zh/docs/problem/Hugo/01a/index.md",
+    "tasker/settings/backup-250930_2251_final.xml",
+    "tasker/project/日常_lineAndBlockGood.prj.xml",
+    "tasker/settings/backup-250929_1054_控制静读天下后台播放.xml",
+    "tasker/settings/backup-分行或整块朗读-均有滑动后bug-final.xml",
+    "content.zh/docs/life/dailyExcerpt/index.md",
+    "tasker/settings/backup_no-recusor_2.xml",
+    "tasker/settings/backup_0930_temp.xml",
+    "tasker/settings/backup250930_0137.xml",
+    "content.zh/docs/culture/南明史/01第一章 明朝覆亡后的全国形势/index.md",
+    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
     "content.zh/docs/life/archive/20231026/index.md",
+    "content.zh/docs/life/archive/20231021/index.md",
+    "content.zh/docs/life/archive/20231013/index.md",
     "content.zh/docs/life/archive/20230913/index.md",
     "content.zh/docs/life/archive/20230912/index.md",
     "content.zh/docs/life/archive/20220724/index.md"

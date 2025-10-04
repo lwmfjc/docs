@@ -1,19 +1,19 @@
 {
   "main": {
-    "id": "3c180e98de7a8bd5",
+    "id": "8dff1123f7214e7e",
     "type": "split",
     "children": [
       {
-        "id": "3414ef546c7eab39",
+        "id": "fac9a8cc17ffa8cd",
         "type": "tabs",
         "children": [
           {
-            "id": "992685a7af26a4ed",
+            "id": "820467440e8aceff",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/docs/problem/Linux/20250331/index.md",
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -27,20 +27,20 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "68ff6c5e6bb3d85b",
+    "id": "384c5fa1f2f8ed1f",
     "type": "split",
     "children": [
       {
-        "id": "4a5851d2c85ca2ab",
+        "id": "bb8bff9663f6a883",
         "type": "tabs",
         "children": [
           {
-            "id": "7e052c6949893df9",
+            "id": "44ac17082a18a706",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "byModifiedTime",
+                "sortOrder": "alphabetical",
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
@@ -48,12 +48,117 @@
             }
           },
           {
-            "id": "366b3151582cceb1",
+            "id": "f49c16d8011c6944",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "content.zh/docs/problem/Linux/20250331/index.md",
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "index 的大纲"
+            }
+          },
+          {
+            "id": "cb2a18b06e86cbcc",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "搜索"
+            }
+          },
+          {
+            "id": "3db854650cd25560",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "书签"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 218.50607681274414,
+    "collapsed": true
+  },
+  "right": {
+    "id": "8ef25d9ebd1552f4",
+    "type": "split",
+    "children": [
+      {
+        "id": "43a531549381e715",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "1e63122f5edc53a5",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/01第一章_最委屈的圣人/index.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "index 的反向链接列表"
+            }
+          },
+          {
+            "id": "d02c12780c540872",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "index 的出链列表"
+            }
+          },
+          {
+            "id": "68487316feba03b2",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "标签"
+            }
+          },
+          {
+            "id": "d17ce847cd7a7216",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
                 "followCursor": false,
                 "showSearch": true,
                 "searchQuery": ""
@@ -63,107 +168,26 @@
             }
           },
           {
-            "id": "e4638ffa3969852a",
-            "type": "leaf",
-            "state": {
-              "type": "search",
-              "state": {
-                "query": "20241212142127172",
-                "matchingCase": false,
-                "explainSearch": false,
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "byModifiedTime"
-              },
-              "icon": "lucide-search",
-              "title": "搜索"
-            }
-          },
-          {
-            "id": "3bfce6d90c5e9dd7",
-            "type": "leaf",
-            "state": {
-              "type": "bookmarks",
-              "state": {},
-              "icon": "lucide-bookmark",
-              "title": "书签"
-            }
-          }
-        ],
-        "currentTab": 1
-      }
-    ],
-    "direction": "horizontal",
-    "width": 200
-  },
-  "right": {
-    "id": "45804219d09d1da3",
-    "type": "split",
-    "children": [
-      {
-        "id": "e70157b080eade96",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "ff710bfc0cfb68d5",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "file": "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": true,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "index 的反向链接列表"
-            }
-          },
-          {
-            "id": "54f06c63f0cc434e",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "出链"
-            }
-          },
-          {
-            "id": "68afb1b1c328b14c",
-            "type": "leaf",
-            "state": {
-              "type": "tag",
-              "state": {
-                "sortOrder": "frequency",
-                "useHierarchy": true
-              },
-              "icon": "lucide-tags",
-              "title": "标签"
-            }
-          },
-          {
-            "id": "e9bdfa2f0fd39f8d",
+            "id": "29994c75655e319e",
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {},
+              "state": {
+                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "index 的大纲"
             }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 300,
+    "width": 222.5,
     "collapsed": true
   },
   "left-ribbon": {
@@ -171,62 +195,64 @@
       "templater-obsidian:Templater": false,
       "obsidian-excalidraw-plugin:新建绘图文件": false,
       "file-cleaner-redux:Clean files": false,
-      "switcher:打开快速切换": false,
-      "graph:查看关系图谱": false,
-      "canvas:新建白板": false,
-      "daily-notes:打开/创建今天的日记": false,
-      "templates:插入模板": false,
-      "command-palette:打开命令面板": false
+      "command-palette:打开命令面板": false,
+      "zenmode:Toggle Zen Mode": false,
+      "bases:创建新数据库": true,
+      "switcher:打开快速切换": true,
+      "graph:查看关系图谱": true,
+      "canvas:新建白板": true,
+      "daily-notes:打开/创建今天的日记": true,
+      "templates:插入模板": true,
+      "update-time-updater:Update modified date": false
     }
   },
-  "active": "366b3151582cceb1",
+  "active": "820467440e8aceff",
   "lastOpenFiles": [
-    "content.zh/docs/problem/Linux/20230919/index.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/02/img/ly-20250317145636919.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/05/img/ly-20250325085107436.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img/ly-20250316165408866.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img/ly-20250316163508033.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img/ly-20250316165052532.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img/ly-20250316163831471.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img/ly-20250316162246207.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img/ly-20250316162239521.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img/ly-20250316140246606.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img/ly-20250316140001950.png",
-    "content.zh/docs/technology/MySQL/advanced_shilei/06/inex.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/05/index.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/05/img",
-    "content.zh/docs/technology/MySQL/advanced_shilei/04/index.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/04/img",
-    "content.zh/docs/technology/MySQL/advanced_shilei/03/index.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/03/img",
-    "content.zh/docs/technology/MySQL/advanced_shilei/02/index.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/02/img",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/index.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/01/img",
-    "content.zh/docs/technology/MySQL/advanced_shilei/_index.md",
-    "content.zh/docs/technology/MySQL/advanced_shilei/06",
-    "content.zh/docs/technology/MySQL/advanced_shilei/05",
-    "content.zh/docs/technology/MySQL/advanced_shilei/04",
-    "content.zh/docs/technology/MySQL/advanced_shilei/03",
-    "content.zh/docs/technology/MySQL/advanced_shilei/02",
-    "content.zh/docs/problem/Linux/20250331/index.md",
-    "content.zh/docs/life/dailyExcerpt/img/154【杂项】算竞常用-C++-STL-用法.md",
-    "content.zh/docs/technology/cpp/leetcode/154【杂项】算竞常用_C++_STL_用法.md",
-    "content.zh/docs/culture/中国通史(吕思勉)/上篇-中国政治史/index.md",
-    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
-    "content.zh/docs/culture/资治通鉴/周纪/基本知识/index.md",
-    "content.zh/docs/technology/Linux/_TheLinuxCommandsHandbook_/index.md",
-    "content.zh/docs/culture/中国通史(吕思勉)/下篇-中国文化史/index.md",
-    "content.zh/docs/culture/古代天文历法讲座/第4讲-第5讲/index.md",
-    "content.zh/docs/technology/Linux/SHELL(learnLinuxTV)_/06ExitCode/index.md",
-    "content.zh/docs/technology/Hugo/GiraffeAcademy_/advanced11-16/index.md",
-    "content.zh/docs/technology/Hugo/_index.md",
-    "content.zh/docs/culture/古代天文历法讲座/第1讲-第3讲/index.md",
-    "content.zh/docs/culture/古代天文历法讲座/版权-序-前言/index.md",
-    "content.zh/docs/culture/中国通史(吕思勉)/封面-版权-读后-自序/index.md",
-    "content.zh/docs/test/hello2/未命名.md",
-    "content.zh/docs/test/keyi/index.md",
+    "content.en.zip",
+    "static/fonts1/",
+    "static/fonts1",
+    "content.zh/docs/culture/曾国藩的启示_曾仕强/02第二章_处世智慧尽在《挺经》/index.md",
+    "content.zh/docs/culture/曾国藩的启示_曾仕强/01第一章_从平庸中崛起的一生/index.md",
+    "content.zh/docs/technology/Obsidian/plugin/index.md",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/19相关人员评价/img/000001.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/19相关人员评价/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/18第十八章_孟子高风常在/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/17第十七章_千古议亚圣/img/000001.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/17第十七章_千古议亚圣/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/16第十六章_向上的人生境界/img/000001.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/16第十六章_向上的人生境界/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/15第十五章_君有道，臣有节/img/000001.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/15第十五章_君有道，臣有节/img/000000.jpg",
+    "content.zh/docs/culture/儒家/向善的孟子_傅佩荣/14第十四章_学于圣人之门/img/000003.jpg",
+    "content.zh/docs/problem/_index.md",
+    "content.zh/_index.md",
+    "content.zh/docs/culture/道家/道德经_曾仕强/02下篇_道德经与生活/img",
+    "content.zh/docs/culture/道家/道德经_曾仕强/02下篇_道德经与生活/index.md",
+    "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+    "content.zh/docs/culture/_index.md",
+    "content.zh/docs/test/mytest/index.md",
     "content.zh/docs/test/hello2/index.md",
-    "未命名.canvas"
+    "content.zh/docs/technology/_index.md",
+    "content.zh/docs/technology/Hugo/themes/PaperMod/01/index.md",
+    "content.zh/docs/technology/Hugo/themes/_index.md",
+    "content.zh/docs/problem/Other/01/index.md",
+    "content.zh/docs/problem/Hugo/p1/index.md",
+    "content.zh/docs/problem/Hugo/01a/index.md",
+    "tasker/settings/backup-250930_2251_final.xml",
+    "tasker/project/日常_lineAndBlockGood.prj.xml",
+    "tasker/settings/backup-250929_1054_控制静读天下后台播放.xml",
+    "tasker/settings/backup-分行或整块朗读-均有滑动后bug-final.xml",
+    "content.zh/docs/life/dailyExcerpt/index.md",
+    "tasker/settings/backup_no-recusor_2.xml",
+    "tasker/settings/backup_0930_temp.xml",
+    "tasker/settings/backup250930_0137.xml",
+    "content.zh/docs/culture/南明史/01第一章 明朝覆亡后的全国形势/index.md",
+    "content.zh/docs/culture/资治通鉴/周纪/001周纪一/index.md",
+    "content.zh/docs/life/archive/20231026/index.md",
+    "content.zh/docs/life/archive/20231021/index.md",
+    "content.zh/docs/life/archive/20231013/index.md",
+    "content.zh/docs/life/archive/20230913/index.md",
+    "content.zh/docs/life/archive/20230912/index.md",
+    "content.zh/docs/life/archive/20220724/index.md"
   ]
 }

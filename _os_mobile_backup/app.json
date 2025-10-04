@@ -8,9 +8,13 @@
   "attachmentFolderPath": "./img",
   "newFileFolderPath": "./img",
   "autoConvertHtml": false,
-  "showInlineTitle": false,
+  "showInlineTitle": true,
   "readableLineLength": false,
   "strictLineBreaks": true,
-  "defaultViewMode": "preview",
+  "smartIndentList": false,
+  "userIgnoreFilters": [
+    "static/",
+    "public/"
+  ],
   "mobileToolbarCommands": []
 }

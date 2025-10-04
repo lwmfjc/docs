@@ -24,6 +24,38 @@
       "icon": "underline"
     },
     {
+      "id": "quickadd:choice:5c8d9fba-3ceb-44a0-89cb-f12e51a5a9cc",
+      "name": "注释",
+      "icon": "strikethrough-glyph"
+    },
+    {
+      "id": "editing-toolbar:toggle-highlight",
+      "name": "高亮",
+      "icon": "highlight-glyph"
+    }
+  ],
+  "followingCommands": [
+    {
+      "id": "zenmode:toggle-zen-mode",
+      "name": "ZenMode_Toggle",
+      "icon": "fullscreen"
+    },
+    {
+      "id": "editing-toolbar:toggle-bold",
+      "name": "加粗加大",
+      "icon": "bold-glyph"
+    },
+    {
+      "id": "editor:toggle-code",
+      "name": "代码块",
+      "icon": "code-2"
+    },
+    {
+      "id": "editing-toolbar:toggle-italics",
+      "name": "下划线",
+      "icon": "underline"
+    },
+    {
       "id": "editing-toolbar:toggle-strikethrough",
       "name": "注释",
       "icon": "strikethrough-glyph"
@@ -34,7 +66,6 @@
       "icon": "highlight-glyph"
     }
   ],
-  "followingCommands": [],
   "topCommands": [
     {
       "id": "editing-toolbar:editor-undo",
@@ -334,5 +365,5 @@
   "viewTypeSettings": {},
   "toolbarBackgroundColor": "#F4F1E8",
   "toolbarIconColor": "var(--text-normal)",
-  "toolbarIconSize": 32
+  "toolbarIconSize": 22
 }

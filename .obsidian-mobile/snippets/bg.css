@@ -1,4 +1,0 @@
-/*去除工作区的外边框*/
-body:not(.is-mobile) .workspace::before{
-    content: unset ;
-}
