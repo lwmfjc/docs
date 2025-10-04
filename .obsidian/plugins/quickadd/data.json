@@ -40,6 +40,26 @@
         "focus": true,
         "mode": "default"
       }
+    },
+    {
+      "id": "5c8d9fba-3ceb-44a0-89cb-f12e51a5a9cc",
+      "name": "添加注释",
+      "type": "Macro",
+      "command": true,
+      "runOnStartup": false,
+      "macro": {
+        "name": "添加注释",
+        "id": "50c4fdb3-34ab-48a5-9293-d53846241ef4",
+        "commands": [
+          {
+            "name": "comments",
+            "type": "UserScript",
+            "id": "64bbcbac-2968-45f6-a3e0-852a59470b92",
+            "path": "attachments/quickAddScripts/comments.js",
+            "settings": {}
+          }
+        ]
+      }
     }
   ],
   "inputPrompt": "single-line",

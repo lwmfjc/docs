@@ -23,14 +23,6 @@
   ],
   "graph:open": [],
   "editor:delete-paragraph": [],
-  "editor:toggle-strikethrough": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "D"
-    }
-  ],
   "editor:set-heading-1": [
     {
       "modifiers": [
@@ -128,6 +120,14 @@
         "Mod"
       ],
       "key": "Q"
+    }
+  ],
+  "quickadd:choice:5c8d9fba-3ceb-44a0-89cb-f12e51a5a9cc": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "D"
     }
   ]
 }
