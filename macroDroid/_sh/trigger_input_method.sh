@@ -4,7 +4,7 @@
 
 LATIN_IME="com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME"
 TASKER_IME="net.dinglisch.android.taskerm/com.joaomgcd.taskerm.keyboard.InputMethodServiceTasker"
-LY_EMPTY_IME="com.ly/.EmptyInputMethodService"
+LY_EMPTY_IME="com.ly.inputmethod/.EmptyInputMethodService"
 
 # triggle(){
 # # 简单的切换逻辑
