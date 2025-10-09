@@ -115,7 +115,7 @@ URI
 	</Profile>
 	<Profile sr="prof60" ve="2">
 		<cdate>1759563745212</cdate>
-		<edate>1759981150114</edate>
+		<edate>1759997645648</edate>
 		<flags>10</flags>
 		<id>60</id>
 		<mid0>61</mid0>
@@ -154,11 +154,11 @@ URI
 	</Project>
 	<Project sr="proj1" ve="2">
 		<cdate>1758890102248</cdate>
-		<mdate>1759986899065</mdate>
+		<mdate>1759997141225</mdate>
 		<name>日常</name>
 		<pids>45,15,18,19,60,51,27,68</pids>
-		<scenes>笔记</scenes>
-		<tids>132,36,14,43,49,8,25,37,26,28,29,38,48,4,13,62,63,65,66,30,31,9,10,2,22,23,24,42,16,17,32,33,20,21,12,34,35,6,44,46,11,7,137,52,50,53,57,55,56,59,61,67,70</tids>
+		<scenes>senceOsd</scenes>
+		<tids>132,36,14,43,49,8,25,37,26,28,29,38,48,4,13,62,63,65,66,30,31,9,10,2,22,23,24,42,16,17,32,33,20,21,12,34,35,6,44,46,11,7,137,52,50,53,57,55,56,59,61,67,70,40,71</tids>
 	</Project>
 	<Project sr="proj2" ve="2">
 		<cdate>1759239474355</cdate>
@@ -166,12 +166,12 @@ URI
 		<name>test</name>
 		<tids>133,54</tids>
 	</Project>
-	<Scene sr="scene笔记">
+	<Scene sr="scenesenceOsd">
 		<cdate>1758883182588</cdate>
-		<edate>1759978969286</edate>
+		<edate>1759997061225</edate>
 		<heightLand>500</heightLand>
 		<heightPort>500</heightPort>
-		<nme>笔记</nme>
+		<nme>senceOsd</nme>
 		<widthLand>48</widthLand>
 		<widthPort>48</widthPort>
 		<ImageElement sr="elements0" ve="2">
@@ -439,7 +439,7 @@ URI
 		<nme>senceInputMethodOff</nme>
 		<Action sr="act0" ve="7">
 			<code>66</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">显示-隐藏输入法</Str>
 			<Img sr="arg2" ve="2">
 				<nme>hl_content_edit</nme>
@@ -448,7 +448,7 @@ URI
 	</Task>
 	<Task sr="task132">
 		<cdate>1759120515235</cdate>
-		<edate>1759505681449</edate>
+		<edate>1759996271010</edate>
 		<id>132</id>
 		<nme>speechFromCurByClipBoard</nme>
 		<pri>6</pri>
@@ -644,11 +644,11 @@ URI
 		<Action sr="act23" ve="7">
 			<code>559</code>
 			<Str sr="arg0" ve="3">%TextMatched</Str>
-			<Str sr="arg1" ve="3">default:default</Str>
+			<Str sr="arg1" ve="3">org.nobody.multitts:zho-CHN</Str>
 			<Int sr="arg2" val="3"/>
 			<Int sr="arg3" val="5"/>
 			<Int sr="arg4" val="5"/>
-			<Int sr="arg5" val="1"/>
+			<Int sr="arg5" val="0"/>
 			<Int sr="arg6" val="0"/>
 			<Int sr="arg7" val="0"/>
 		</Action>
@@ -1233,7 +1233,7 @@ URI
 	</Task>
 	<Task sr="task14">
 		<cdate>1758899959172</cdate>
-		<edate>1759978995619</edate>
+		<edate>1759996999007</edate>
 		<id>14</id>
 		<nme>inputMethodOn</nme>
 		<pri>100</pri>
@@ -1479,7 +1479,7 @@ URI
 	</Task>
 	<Task sr="task25">
 		<cdate>1758889999891</cdate>
-		<edate>1759978999779</edate>
+		<edate>1759996144446</edate>
 		<id>25</id>
 		<nme>speechToggle</nme>
 		<pri>6</pri>
@@ -1574,7 +1574,7 @@ URI
 	</Task>
 	<Task sr="task28">
 		<cdate>1759110944910</cdate>
-		<edate>1759571465833</edate>
+		<edate>1759996149890</edate>
 		<id>28</id>
 		<nme>handleSpeechPlay</nme>
 		<Action sr="act0" ve="7">
@@ -1748,7 +1748,7 @@ URI
 		<nme>senceSpeachPause</nme>
 		<Action sr="act0" ve="7">
 			<code>66</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">播放-暂停</Str>
 			<Img sr="arg2" ve="2">
 				<nme>hl_ab_av_play</nme>
@@ -1762,7 +1762,7 @@ URI
 		<nme>senceSpeachPlay</nme>
 		<Action sr="act0" ve="7">
 			<code>66</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">播放-暂停</Str>
 			<Img sr="arg2" ve="2">
 				<nme>hl_av_pause_over_video</nme>
@@ -2146,7 +2146,7 @@ URI
 	</Task>
 	<Task sr="task36">
 		<cdate>1758889999891</cdate>
-		<edate>1759978984872</edate>
+		<edate>1759997002087</edate>
 		<id>36</id>
 		<nme>inputMethodToggle</nme>
 		<pri>6</pri>
@@ -2202,7 +2202,7 @@ URI
 	</Task>
 	<Task sr="task37">
 		<cdate>1758882950114</cdate>
-		<edate>1759195968637</edate>
+		<edate>1759996147053</edate>
 		<id>37</id>
 		<nme>speechPlay</nme>
 		<pri>100</pri>
@@ -2241,13 +2241,13 @@ URI
 	</Task>
 	<Task sr="task38">
 		<cdate>1758884124735</cdate>
-		<edate>1759978958447</edate>
+		<edate>1759997196571</edate>
 		<id>38</id>
 		<nme>senceShow</nme>
 		<pri>100</pri>
 		<Action sr="act0" ve="7">
 			<code>47</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Int sr="arg1" val="1"/>
 			<Int sr="arg10" val="1"/>
 			<Int sr="arg2" val="200"/>
@@ -2260,16 +2260,25 @@ URI
 			<Int sr="arg9" val="0"/>
 		</Action>
 		<Action sr="act1" ve="7">
-			<code>37</code>
-			<ConditionList sr="if">
-				<Condition sr="c0" ve="3">
-					<lhs>%KeyboardConnected</lhs>
-					<op>1</op>
-					<rhs>1</rhs>
-				</Condition>
-			</ConditionList>
+			<code>130</code>
+			<Str sr="arg0" ve="3">varIsSenceObsShow</Str>
+			<Int sr="arg1">
+				<var>%priority</var>
+			</Int>
+			<Int sr="arg10" val="1"/>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Int sr="arg5" val="0"/>
+			<Int sr="arg6" val="0"/>
+			<Str sr="arg7" ve="3"/>
+			<Int sr="arg8" val="0"/>
+			<Int sr="arg9" val="0"/>
 		</Action>
 		<Action sr="act10" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act11" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">varSpeechPause</Str>
 			<Int sr="arg1">
@@ -2286,6 +2295,16 @@ URI
 			<Int sr="arg9" val="0"/>
 		</Action>
 		<Action sr="act2" ve="7">
+			<code>37</code>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%KeyboardConnected</lhs>
+					<op>1</op>
+					<rhs>1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act3" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">senceInputMethodShow</Str>
 			<Int sr="arg1">
@@ -2301,7 +2320,7 @@ URI
 			<Int sr="arg8" val="0"/>
 			<Int sr="arg9" val="0"/>
 		</Action>
-		<Action sr="act3" ve="7">
+		<Action sr="act4" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">senceCommentShow</Str>
 			<Int sr="arg1">
@@ -2317,7 +2336,7 @@ URI
 			<Int sr="arg8" val="0"/>
 			<Int sr="arg9" val="0"/>
 		</Action>
-		<Action sr="act4" ve="7">
+		<Action sr="act5" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">varInputMethodOff</Str>
 			<Int sr="arg1">
@@ -2333,10 +2352,10 @@ URI
 			<Int sr="arg8" val="0"/>
 			<Int sr="arg9" val="0"/>
 		</Action>
-		<Action sr="act5" ve="7">
+		<Action sr="act6" ve="7">
 			<code>43</code>
 		</Action>
-		<Action sr="act6" ve="7">
+		<Action sr="act7" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">varInputMethodOn</Str>
 			<Int sr="arg1">
@@ -2352,7 +2371,7 @@ URI
 			<Int sr="arg8" val="0"/>
 			<Int sr="arg9" val="0"/>
 		</Action>
-		<Action sr="act7" ve="7">
+		<Action sr="act8" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">senceCommentHide</Str>
 			<Int sr="arg1">
@@ -2368,7 +2387,7 @@ URI
 			<Int sr="arg8" val="0"/>
 			<Int sr="arg9" val="0"/>
 		</Action>
-		<Action sr="act8" ve="7">
+		<Action sr="act9" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">senceInputMethodHide</Str>
 			<Int sr="arg1">
@@ -2384,9 +2403,6 @@ URI
 			<Int sr="arg8" val="0"/>
 			<Int sr="arg9" val="0"/>
 		</Action>
-		<Action sr="act9" ve="7">
-			<code>38</code>
-		</Action>
 	</Task>
 	<Task sr="task39">
 		<cdate>1758884425370</cdate>
@@ -2396,22 +2412,38 @@ URI
 		<Action sr="act0" ve="7">
 			<code>48</code>
 			<on>false</on>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Int sr="arg1" val="0"/>
 		</Action>
 	</Task>
 	<Task sr="task4">
 		<cdate>1758967364496</cdate>
-		<edate>1759573039534</edate>
+		<edate>1759996965387</edate>
 		<id>4</id>
 		<nme>senceInputMethodOn</nme>
 		<Action sr="act0" ve="7">
 			<code>66</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">显示-隐藏输入法</Str>
 			<Img sr="arg2" ve="2">
 				<nme>hl_aaa_nixx_touch</nme>
 			</Img>
+		</Action>
+	</Task>
+	<Task sr="task40">
+		<cdate>1759997107507</cdate>
+		<edate>1759997273888</edate>
+		<id>40</id>
+		<nme>varIsSenceObsShow</nme>
+		<Action sr="act0" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%IsSenceObsShow</Str>
+			<Str sr="arg1" ve="3">1</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<Int sr="arg6" val="1"/>
 		</Action>
 	</Task>
 	<Task sr="task41">
@@ -2792,16 +2824,32 @@ URI
 	</Task>
 	<Task sr="task48">
 		<cdate>1758899873651</cdate>
-		<edate>1759573015946</edate>
+		<edate>1759997253172</edate>
 		<id>48</id>
 		<nme>senceHide</nme>
 		<pri>6</pri>
 		<Action sr="act0" ve="7">
 			<code>48</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Int sr="arg1" val="0"/>
 		</Action>
 		<Action sr="act1" ve="7">
+			<code>130</code>
+			<Str sr="arg0" ve="3">varIsSenceObsHide</Str>
+			<Int sr="arg1">
+				<var>%priority</var>
+			</Int>
+			<Int sr="arg10" val="1"/>
+			<Str sr="arg2" ve="3"/>
+			<Str sr="arg3" ve="3"/>
+			<Str sr="arg4" ve="3"/>
+			<Int sr="arg5" val="0"/>
+			<Int sr="arg6" val="0"/>
+			<Str sr="arg7" ve="3"/>
+			<Int sr="arg8" val="0"/>
+			<Int sr="arg9" val="0"/>
+		</Action>
+		<Action sr="act2" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">varInputMethodOn</Str>
 			<Int sr="arg1">
@@ -2817,7 +2865,7 @@ URI
 			<Int sr="arg8" val="0"/>
 			<Int sr="arg9" val="0"/>
 		</Action>
-		<Action sr="act2" ve="7">
+		<Action sr="act3" ve="7">
 			<code>130</code>
 			<Str sr="arg0" ve="3">varSpeechPause</Str>
 			<Int sr="arg1">
@@ -3008,7 +3056,7 @@ URI
 	</Task>
 	<Task sr="task54">
 		<cdate>1759534941375</cdate>
-		<edate>1759812395769</edate>
+		<edate>1759996725346</edate>
 		<id>54</id>
 		<nme>123</nme>
 		<pri>100</pri>
@@ -3910,11 +3958,22 @@ URI
 	</Task>
 	<Task sr="task61">
 		<cdate>1759563794788</cdate>
-		<edate>1759573384854</edate>
+		<edate>1759997645648</edate>
 		<id>61</id>
 		<nme>KeyboardStatusToggle</nme>
 		<pri>6</pri>
 		<Action sr="act0" ve="7">
+			<code>37</code>
+			<coll>false</coll>
+			<ConditionList sr="if">
+				<Condition sr="c0" ve="3">
+					<lhs>%IsSenceObsShow</lhs>
+					<op>0</op>
+					<rhs>1</rhs>
+				</Condition>
+			</ConditionList>
+		</Action>
+		<Action sr="act1" ve="7">
 			<code>37</code>
 			<coll>false</coll>
 			<ConditionList sr="if">
@@ -3925,7 +3984,7 @@ URI
 				</Condition>
 			</ConditionList>
 		</Action>
-		<Action sr="act1" ve="7">
+		<Action sr="act2" ve="7">
 			<code>547</code>
 			<Str sr="arg0" ve="3">%IsEditing</Str>
 			<Str sr="arg1" ve="3">1</Str>
@@ -3935,42 +3994,45 @@ URI
 			<Int sr="arg5" val="3"/>
 			<Int sr="arg6" val="1"/>
 		</Action>
-		<Action sr="act2" ve="7">
-			<code>65</code>
-			<Str sr="arg0" ve="3">笔记</Str>
-			<Str sr="arg1" ve="3">显示-隐藏输入法</Str>
-			<Int sr="arg2" val="0"/>
-			<Int sr="arg3" val="400"/>
-			<Int sr="arg4" val="0"/>
-		</Action>
 		<Action sr="act3" ve="7">
 			<code>65</code>
-			<Str sr="arg0" ve="3">笔记</Str>
-			<Str sr="arg1" ve="3">添加注释标记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
+			<Str sr="arg1" ve="3">显示-隐藏输入法</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="400"/>
 			<Int sr="arg4" val="0"/>
 		</Action>
 		<Action sr="act4" ve="7">
-			<code>43</code>
+			<code>65</code>
+			<Str sr="arg0" ve="3">senceOsd</Str>
+			<Str sr="arg1" ve="3">添加注释标记</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="400"/>
+			<Int sr="arg4" val="0"/>
 		</Action>
 		<Action sr="act5" ve="7">
+			<code>43</code>
+		</Action>
+		<Action sr="act6" ve="7">
 			<code>65</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">显示-隐藏输入法</Str>
 			<Int sr="arg2" val="1"/>
 			<Int sr="arg3" val="400"/>
 			<Int sr="arg4" val="0"/>
 		</Action>
-		<Action sr="act6" ve="7">
+		<Action sr="act7" ve="7">
 			<code>65</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">添加注释标记</Str>
 			<Int sr="arg2" val="1"/>
 			<Int sr="arg3" val="400"/>
 			<Int sr="arg4" val="0"/>
 		</Action>
-		<Action sr="act7" ve="7">
+		<Action sr="act8" ve="7">
+			<code>38</code>
+		</Action>
+		<Action sr="act9" ve="7">
 			<code>38</code>
 		</Action>
 	</Task>
@@ -3981,7 +4043,7 @@ URI
 		<nme>senceInputMethodHide</nme>
 		<Action sr="act0" ve="7">
 			<code>65</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">显示-隐藏输入法</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="400"/>
@@ -3995,7 +4057,7 @@ URI
 		<nme>senceInputMethodShow</nme>
 		<Action sr="act0" ve="7">
 			<code>65</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">显示-隐藏输入法</Str>
 			<Int sr="arg2" val="1"/>
 			<Int sr="arg3" val="400"/>
@@ -4031,7 +4093,7 @@ URI
 		<nme>senceCommentHide</nme>
 		<Action sr="act0" ve="7">
 			<code>65</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">添加注释标记</Str>
 			<Int sr="arg2" val="0"/>
 			<Int sr="arg3" val="400"/>
@@ -4045,7 +4107,7 @@ URI
 		<nme>senceCommentShow</nme>
 		<Action sr="act0" ve="7">
 			<code>65</code>
-			<Str sr="arg0" ve="3">笔记</Str>
+			<Str sr="arg0" ve="3">senceOsd</Str>
 			<Str sr="arg1" ve="3">添加注释标记</Str>
 			<Int sr="arg2" val="1"/>
 			<Int sr="arg3" val="400"/>
@@ -4180,6 +4242,22 @@ URI
 		</Action>
 		<Action sr="act3" ve="7">
 			<code>38</code>
+		</Action>
+	</Task>
+	<Task sr="task71">
+		<cdate>1759997130914</cdate>
+		<edate>1759997261222</edate>
+		<id>71</id>
+		<nme>varIsSenceObsHide</nme>
+		<Action sr="act0" ve="7">
+			<code>547</code>
+			<Str sr="arg0" ve="3">%IsSenceObsShow</Str>
+			<Str sr="arg1" ve="3">0</Str>
+			<Int sr="arg2" val="0"/>
+			<Int sr="arg3" val="0"/>
+			<Int sr="arg4" val="0"/>
+			<Int sr="arg5" val="3"/>
+			<Int sr="arg6" val="1"/>
 		</Action>
 	</Task>
 	<Task sr="task8">
