@@ -23,7 +23,7 @@ toTasker(){
 
 toLyEmpty(){
     su -c 'settings put secure default_input_method' "$LY_EMPTY_IME"
-    echo "切换到 Tasker 输入法"
+    echo "切换到 空白 输入法"
 }
 
 toGboard(){
