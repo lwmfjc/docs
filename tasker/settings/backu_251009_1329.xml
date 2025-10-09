@@ -115,8 +115,8 @@ URI
 	</Profile>
 	<Profile sr="prof60" ve="2">
 		<cdate>1759563745212</cdate>
-		<edate>1759997645648</edate>
-		<flags>10</flags>
+		<edate>1759998695829</edate>
+		<flags>8</flags>
 		<id>60</id>
 		<mid0>61</mid0>
 		<nme>KeyboardStatusListener</nme>
@@ -448,7 +448,7 @@ URI
 	</Task>
 	<Task sr="task132">
 		<cdate>1759120515235</cdate>
-		<edate>1759996271010</edate>
+		<edate>1759998746287</edate>
 		<id>132</id>
 		<nme>speechFromCurByClipBoard</nme>
 		<pri>6</pri>
@@ -644,11 +644,11 @@ URI
 		<Action sr="act23" ve="7">
 			<code>559</code>
 			<Str sr="arg0" ve="3">%TextMatched</Str>
-			<Str sr="arg1" ve="3">org.nobody.multitts:zho-CHN</Str>
+			<Str sr="arg1" ve="3">default:default</Str>
 			<Int sr="arg2" val="3"/>
 			<Int sr="arg3" val="5"/>
 			<Int sr="arg4" val="5"/>
-			<Int sr="arg5" val="0"/>
+			<Int sr="arg5" val="1"/>
 			<Int sr="arg6" val="0"/>
 			<Int sr="arg7" val="0"/>
 		</Action>
@@ -3958,7 +3958,7 @@ URI
 	</Task>
 	<Task sr="task61">
 		<cdate>1759563794788</cdate>
-		<edate>1759997645648</edate>
+		<edate>1759998695829</edate>
 		<id>61</id>
 		<nme>KeyboardStatusToggle</nme>
 		<pri>6</pri>
