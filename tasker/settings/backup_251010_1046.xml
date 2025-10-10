@@ -239,9 +239,9 @@
 	</Scene>
 	<Scene sr="scenesenceOsd">
 		<cdate>1758883182588</cdate>
-		<edate>1760063404919</edate>
+		<edate>1760065165939</edate>
 		<heightLand>600</heightLand>
-		<heightPort>500</heightPort>
+		<heightPort>600</heightPort>
 		<nme>senceOsd</nme>
 		<widthLand>48</widthLand>
 		<widthPort>48</widthPort>
@@ -268,7 +268,7 @@
 		<ImageElement sr="elements1" ve="2">
 			<clickTask>5</clickTask>
 			<flags>4</flags>
-			<geom>0,420,48,48,0,490,48,48</geom>
+			<geom>0,490,48,48,0,490,48,48</geom>
 			<Str sr="arg0" ve="3">关闭场景</Str>
 			<Img sr="arg1" ve="2">
 				<nme>hl_content_remove</nme>
@@ -398,7 +398,7 @@
 		<ImageElement sr="elements7" ve="2">
 			<clickTask>79</clickTask>
 			<flags>4</flags>
-			<geom>0,552,48,48,0,420,48,48</geom>
+			<geom>0,420,48,48,0,420,48,48</geom>
 			<Str sr="arg0" ve="3">切换鼠标映射策略</Str>
 			<Img sr="arg1" ve="2">
 				<nme>hl_device_access_brightness_high</nme>
