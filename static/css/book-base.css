@@ -20,7 +20,7 @@ article p, div.cm-line:not(.HyperMD-header,.HyperMD-codeblock), div.el-p  {
     --bold-color: initial;
     --italic-color: initial;
     --text-normal: initial;
-    opacity: 0.85;
+    opacity: 1;
 }
 
 /*字修饰-----start*/
@@ -195,7 +195,7 @@ margin-right: 2em;
 /*}cssend*/
 
 /*body.theme-light :is(.book01, .book02, .book03){cssstart*/
-    /*人名地名--下划线*/
+     /*人名地名--下划线*/
     em, .cm-em {
         border-color: rgba(0, 0, 0, 0.6); 
     }
@@ -212,7 +212,8 @@ margin-right: 2em;
 
     /*自注--红色缩小字体*/
     p del,mark del, li del, span.cm-strikethrough, td del  { 
-        color: rgba(255, 0, 0, 0.8); 
+        /*color: rgba(255, 0, 0, 0.8); */
+        color: rgba(0,0,255, 0.6); 
     }
 
     /*正文--黑色加大*/

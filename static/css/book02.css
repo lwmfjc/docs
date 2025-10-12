@@ -13,7 +13,7 @@ body.theme-dark :is(.book02){
    
    article p, div.cm-line:not(.HyperMD-header),
     div.el-p,mark { 
-       color: rgba(255, 255, 255, 0.4);   
+       color: rgba(255, 255, 255, 0.5);   
    } 
 
 }
