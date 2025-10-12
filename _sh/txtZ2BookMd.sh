@@ -29,12 +29,13 @@ description:
 categories:
   - 学习
 tags: 
-  - 南明史
+  - 孟子译注_杨伯峻
   - 文化
+  - 杨伯峻
 cssAttach: 
-  - book01
+  - book02
 cssclasses: 
-  - book01
+  - book02
 date: $time
 lastmod: $time
 ---
