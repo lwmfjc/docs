@@ -60,6 +60,26 @@
           }
         ]
       }
+    },
+    {
+      "id": "6cd097e4-0493-4e3d-b19a-2860b6054cbf",
+      "name": "加粗及下划线",
+      "type": "Macro",
+      "command": true,
+      "runOnStartup": false,
+      "macro": {
+        "name": "加粗及下划线",
+        "id": "8c08a7fb-c8de-4d3f-b325-7a77980dec52",
+        "commands": [
+          {
+            "name": "boldAndUnderline",
+            "type": "UserScript",
+            "id": "d174a1a2-3029-46cf-8219-2fe45df6d2da",
+            "path": "attachments/quickAddScripts/boldAndUnderline.js",
+            "settings": {}
+          }
+        ]
+      }
     }
   ],
   "inputPrompt": "single-line",

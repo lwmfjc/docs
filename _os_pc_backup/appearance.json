@@ -1,7 +1,7 @@
 {
   "cssTheme": "Border",
   "baseFontSizeAction": true,
-  "baseFontSize": 20,
+  "baseFontSize": 22,
   "showViewHeader": true,
   "enabledCssSnippets": [
     "book",
@@ -10,8 +10,8 @@
     "book02",
     "book-base",
     "book01",
-    "bg",
-    "book03"
+    "book03",
+    "bg"
   ],
   "textFontFamily": "霞鹜文楷等宽",
   "showRibbon": true,
