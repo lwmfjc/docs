@@ -212,8 +212,7 @@ margin-right: 2em;
 
     /*自注--红色缩小字体*/
     p del,mark del, li del, span.cm-strikethrough, td del  { 
-        /*color: rgba(255, 0, 0, 0.8); */
-        color: rgba(0,0,255, 0.6); 
+        color: rgba(255, 0, 0, 0.7); 
     }
 
     /*正文--黑色加大*/
