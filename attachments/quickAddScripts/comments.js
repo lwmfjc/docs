@@ -37,13 +37,22 @@ module.exports = async () => {
         }
         
     } else {
-        // 其他情况的代码保持不变
         const cursor = editor.getCursor();
         const lineContent = editor.getLine(cursor.line);
         const beforeCursor = lineContent.slice(0, cursor.ch);
         const afterCursor = lineContent.slice(cursor.ch);
         
-        if (beforeCursor.endsWith(' ~~') && afterCursor.startsWith('~~ ')) {
+        // 新增判断：如果光标位于空行行首
+        if (lineContent.trim() === '' && cursor.ch === 0) {
+            // 在空行行首插入 '~~' 和 '~~  '，光标位于中间
+            editor.replaceSelection('~~');
+            editor.setCursor({ line: cursor.line, ch: cursor.ch + 2 });
+            editor.replaceSelection('~~  ');
+            // 将光标移回两个 ~~ 之间
+            editor.setCursor({ line: cursor.line, ch: cursor.ch - 4 });
+        }
+        // 原有的判断：如果光标位于 ~~ 之间
+        else if (beforeCursor.endsWith(' ~~') && afterCursor.startsWith('~~ ')) {
             const startDeletePos = cursor.ch - 3;
             const endDeletePos = cursor.ch + 3;
             
@@ -54,6 +63,7 @@ module.exports = async () => {
             editor.replaceSelection('');
             editor.setCursor({ line: cursor.line, ch: startDeletePos });
         } else {
+            // 默认情况：插入 ' ~~~~ '
             editor.replaceSelection(' ~~~~ ');
             editor.setCursor({ line: cursor.line, ch: cursor.ch + 3 });
         }
