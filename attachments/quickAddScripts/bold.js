@@ -1,13 +1,13 @@
 // QuickAdd Macro: Toggle Bold Markdown with Smart Replacement
 // 功能：对选中的文本前面和后面各添加**，如果没有选中文本且光标前后各是**（即光标在****正中间时），删除****
-// 新增功能：选中文本时，将[数字]替换为对应的译文内容
+// 新增功能：选中文本时，将[数字]、(数字)或①-㊿替换为对应的译文内容
 
 module.exports = {
     entry: start,
     settings: {
         name: "Toggle Bold Markdown",
         author: "Your Name",
-        description: "为选中文本添加或删除**粗体**标记，或智能替换[数字]为译文内容"
+        description: "为选中文本添加或删除**粗体**标记，或智能替换[数字]、(数字)或①-㊿为译文内容"
     }
 };
 
@@ -29,8 +29,8 @@ async function start(quickAddApi) {
         let processedText = selection;
         let hasTranslationReplacement = false;
         
-        // 新功能：如果包含[数字]模式，尝试从选中文本中查找对应内容
-        if (/\[\d+\]/.test(processedText)) {
+        // 新功能：如果包含[数字]、(数字)或①-㊿模式，尝试从选中文本中查找对应内容
+        if (/\[\d+\]|\(\d+\)|[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/.test(processedText)) {
             // 直接从选中的文本中构建映射表
             const translationMap = buildTranslationMap(selection);
             
@@ -39,9 +39,10 @@ async function start(quickAddApi) {
                 const separated = separateOriginalAndTranslation(selection);
                 
                 if (separated.originalContent) {
-                    // 只对原文内容部分进行处理：替换[数字]并添加**
+                    // 只对原文内容部分进行处理：替换角标并添加**
                     let processedOriginal = separated.originalContent;
-                    const parts = processedOriginal.split(/(\[\d+\])/);
+                    // 修改正则表达式以匹配[数字]、(数字)和①-㊿
+                    const parts = processedOriginal.split(/(\[\d+\]|\(\d+\)|[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF])/);
                     processedOriginal = parts.map((part, index) => {
                         // 如果是[数字]标记，替换为译文内容（不加**）
                         if (part.match(/\[(\d+)\]/)) {
@@ -49,6 +50,22 @@ async function start(quickAddApi) {
                             if (translationMap[number]) {
                                 hasTranslationReplacement = true;
                                 return ` ${translationMap[number]} `;
+                            }
+                        }
+                        // 如果是(数字)标记，替换为译文内容（不加**）
+                        else if (part.match(/\((\d+)\)/)) {
+                            const number = part.match(/\((\d+)\)/)[1];
+                            if (translationMap[number]) {
+                                hasTranslationReplacement = true;
+                                return ` ${translationMap[number]} `;
+                            }
+                        }
+                        // 如果是①-㊿标记，替换为译文内容（不加**）
+                        else if (part.match(/[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/)) {
+                            const symbol = part;
+                            if (translationMap[symbol]) {
+                                hasTranslationReplacement = true;
+                                return ` ${translationMap[symbol]} `;
                             }
                         }
                         // 只有非空且不是译文内容的原文片段才加**
@@ -61,12 +78,12 @@ async function start(quickAddApi) {
                 }
             } else {
                 // 如果没有找到译文映射，使用默认的**  **替换
-                processedText = processedText.replace(/\[\d+\]/g, '**  **');
+                processedText = processedText.replace(/\[\d+\]|\(\d+\)|[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/g, '**  **');
             }
         }
         
         // 如果没有进行译文替换，执行原有的粗体切换逻辑
-        if (!hasTranslationReplacement && !/\[\d+\]/.test(selection)) {
+        if (!hasTranslationReplacement && !/\[\d+\]|\(\d+\)|[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/.test(selection)) {
             if (processedText.startsWith('**') && processedText.endsWith('**')) {
                 // 删除前后的**
                 const newText = processedText.slice(2, -2);
@@ -131,61 +148,48 @@ async function start(quickAddApi) {
 // 分离原文和译文部分，保留标记行
 function separateOriginalAndTranslation(fullText) {
     const lines = fullText.split('\n');
-    let originalStart = '';    // ***【原文】*** 行
-    let originalContent = '';  // 原文内容
-    let originalEnd = '';      // 原文结束后的空行
-    let translationStart = ''; // ***【译文】*** 行
-    let translationContent = ''; // 译文内容
-    let translationEnd = '';   // 译文结束部分
+    let originalContent = '';  // 原文内容（标记行之前的所有内容）
+    let translationContent = ''; // 译文内容（标记行之后的所有内容）
+    let translationMarkerLine = ''; // 标记行
     
-    let currentSection = 'none';
-    let contentLines = [];
+    let foundTranslationMarker = false;
+    const originalLines = [];
+    const translationLines = [];
     
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         
-        if (line.includes('***【原文】***')) {
-            // 在【原文】行后面添加空行
-            originalStart = line + '\n\n';
-            currentSection = 'original';
-            contentLines = [];
-        } else if (line.includes('***【译文】***')) {
-            // 保存原文部分
-            if (currentSection === 'original') {
-                originalContent = contentLines.join('\n');
-                // 确保原文内容前后没有多余的换行
-                originalContent = originalContent.replace(/^\n+/, '').replace(/\n+$/, '');
-                originalEnd = '\n\n';
-            }
-            // 在【译文】行后面添加空行
-            translationStart = line + '\n';
-            currentSection = 'translation';
-            contentLines = [];
-        } else if (currentSection === 'original') {
-            contentLines.push(line);
-        } else if (currentSection === 'translation') {
-            contentLines.push(line);
+        // 检查是否是译文或注释标记行
+        if ((line.includes('***【译文】***') || line.includes('［注释］')|| line.includes('【注释】')) && !foundTranslationMarker) {
+            foundTranslationMarker = true;
+            translationMarkerLine = line;
+            continue;
+        }
+        
+        if (!foundTranslationMarker) {
+            // 标记行之前的所有行都是原文
+            originalLines.push(line);
+        } else {
+            // 标记行之后的所有行都是译文/注释
+            translationLines.push(line);
         }
     }
     
-    // 处理最后一个部分
-    if (currentSection === 'original') {
-        originalContent = contentLines.join('\n');
-        originalContent = originalContent.replace(/^\n+/, '').replace(/\n+$/, '');
-    } else if (currentSection === 'translation') {
-        translationContent = contentLines.join('\n');
-        translationContent = translationContent.replace(/^\n+/, '').replace(/\n+$/, '');
-        // 在译文内容的最后添加一个空行
-        translationEnd = '';
-    }
+    // 处理原文内容
+    originalContent = originalLines.join('\n');
+    originalContent = originalContent.replace(/^\n+/, '').replace(/\n+$/, '');
+    
+    // 处理译文内容  
+    translationContent = translationLines.join('\n');
+    translationContent = translationContent.replace(/^\n+/, '').replace(/\n+$/, '');
     
     return {
-        originalStart,
+        originalStart: '', 
         originalContent,
-        originalEnd,
-        translationStart,
+        originalEnd: foundTranslationMarker ? '\n\n' + translationMarkerLine + '\n' : '',
+        translationStart: '',
         translationContent,
-        translationEnd
+        translationEnd: ''
     };
 }
 
@@ -198,19 +202,29 @@ function buildTranslationMap(selectedText) {
         
         if (!separated.translationContent) return translationMap;
         
-        // 从译文部分匹配格式：[数字]译文内容
-        const translationRegex = /\[(\d+)\]([^\n\r\[\]]*)/g;
+        // 从译文部分匹配格式：[数字]译文内容 或 (数字)译文内容 或 ①-㊿译文内容
+        // 修改正则表达式以匹配[数字]、(数字)和①-㊿
+        const translationRegex = /(?:\[(\d+)\]|\((\d+)\)|([\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]))([^\n\r\[\]]*)/g;
         let match;
         
         while ((match = translationRegex.exec(separated.translationContent)) !== null) {
-            const number = match[1];
-            let content = match[2].trim();
+            const numberBracket = match[1]; // [数字]格式的数字
+            const numberParenthesis = match[2]; // (数字)格式的数字
+            const symbol = match[3]; // ①-㊿格式的符号
+            let content = match[4].trim();
             
             // 清理内容，移除开头的中英文冒号、逗号等
             content = content.replace(/^[：:，,。\.\s]+/, '').replace(/[，,。\.\s]+$/, '');
             
             if (content && content.length > 0) {
-                translationMap[number] = content;
+                // 根据匹配到的类型存储到映射表
+                if (numberBracket) {
+                    translationMap[numberBracket] = content;
+                } else if (numberParenthesis) {
+                    translationMap[numberParenthesis] = content;
+                } else if (symbol) {
+                    translationMap[symbol] = content;
+                }
             }
         }
     } catch (error) {
