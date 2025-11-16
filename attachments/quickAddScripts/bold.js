@@ -39,46 +39,59 @@ async function start(quickAddApi) {
                 const separated = separateOriginalAndTranslation(selection);
                 
                 if (separated.originalContent) {
-                    // 只对原文内容部分进行处理：替换角标并添加**
-                    let processedOriginal = separated.originalContent;
-                    // 修改正则表达式以匹配[数字]、(数字)和①-㊿
-                    const parts = processedOriginal.split(/(\[\d+\]|\(\d+\)|[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF])/);
-                    processedOriginal = parts.map((part, index) => {
-                        // 如果是[数字]标记，替换为译文内容（不加**）
-                        if (part.match(/\[(\d+)\]/)) {
-                            const number = part.match(/\[(\d+)\]/)[1];
-                            if (translationMap[number]) {
-                                hasTranslationReplacement = true;
-                                return ` ${translationMap[number]} `;
+                    // 处理原文内容：对每一行单独处理
+                    const originalLines = separated.originalContent.split('\n');
+                    const processedLines = originalLines.map(line => {
+                        if (line.trim() === '') return line; // 空行保持不变
+                        
+                        // 对每一行单独处理角标替换和加粗
+                        const parts = line.split(/(\[\d+\]|\(\d+\)|[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF])/);
+                        let processedLine = parts.map((part, index) => {
+                            // 如果是[数字]标记，替换为译文内容（不加**）
+                            if (part.match(/\[(\d+)\]/)) {
+                                const number = part.match(/\[(\d+)\]/)[1];
+                                if (translationMap[number]) {
+                                    hasTranslationReplacement = true;
+                                    return ` ${translationMap[number]} `;
+                                }
                             }
-                        }
-                        // 如果是(数字)标记，替换为译文内容（不加**）
-                        else if (part.match(/\((\d+)\)/)) {
-                            const number = part.match(/\((\d+)\)/)[1];
-                            if (translationMap[number]) {
-                                hasTranslationReplacement = true;
-                                return ` ${translationMap[number]} `;
+                            // 如果是(数字)标记，替换为译文内容（不加**）
+                            else if (part.match(/\((\d+)\)/)) {
+                                const number = part.match(/\((\d+)\)/)[1];
+                                if (translationMap[number]) {
+                                    hasTranslationReplacement = true;
+                                    return ` ${translationMap[number]} `;
+                                }
                             }
-                        }
-                        // 如果是①-㊿标记，替换为译文内容（不加**）
-                        else if (part.match(/[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/)) {
-                            const symbol = part;
-                            if (translationMap[symbol]) {
-                                hasTranslationReplacement = true;
-                                return ` ${translationMap[symbol]} `;
+                            // 如果是①-㊿标记，替换为译文内容（不加**）
+                            else if (part.match(/[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/)) {
+                                const symbol = part;
+                                if (translationMap[symbol]) {
+                                    hasTranslationReplacement = true;
+                                    return ` ${translationMap[symbol]} `;
+                                }
                             }
-                        }
-                        // 只有非空且不是译文内容的原文片段才加**
-                        return part.trim() ? `**${part}**` : part;
-                    }).join('');
+                            // 只有非空且不是译文内容的原文片段才加**
+                            return part.trim() ? `**${part}**` : part;
+                        }).join('');
+                        
+                        return processedLine;
+                    });
+                    
+                    const processedOriginal = processedLines.join('\n');
                     
                     // 重新组合所有部分，保留标记行，但删除译文内容
                     processedText = separated.originalStart + processedOriginal + separated.originalEnd +
                                    separated.translationStart + '\n\n'; // 只保留译文标记和两个空行，删除译文内容
                 }
             } else {
-                // 如果没有找到译文映射，使用默认的**  **替换
-                processedText = processedText.replace(/\[\d+\]|\(\d+\)|[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/g, '**  **');
+                // 如果没有找到译文映射，对每一行单独使用**  **替换角标
+                const lines = processedText.split('\n');
+                const processedLines = lines.map(line => {
+                    if (line.trim() === '') return line;
+                    return line.replace(/\[\d+\]|\(\d+\)|[\u2460-\u2473\u3251-\u325F\u32B1-\u32BF]/g, '**  **');
+                });
+                processedText = processedLines.join('\n');
             }
         }
         
@@ -96,8 +109,14 @@ async function start(quickAddApi) {
                     { line: selectionStart.line, ch: selectionStart.ch + newLength }
                 );
             } else {
-                // 在选中文本前后添加**
-                const newText = `**${processedText}**`;
+                // 对多行文本：每一行单独添加**
+                const lines = processedText.split('\n');
+                const processedLines = lines.map(line => {
+                    if (line.trim() === '') return line; // 空行保持不变
+                    return `**${line}**`;
+                });
+                const newText = processedLines.join('\n');
+                
                 editor.replaceSelection(newText);
                 
                 // 重新选中文本（包含**）
@@ -160,7 +179,7 @@ function separateOriginalAndTranslation(fullText) {
         const line = lines[i];
         
         // 检查是否是译文或注释标记行
-        if ((line.includes('***【译文】***') || line.includes('［注释］')|| line.includes('【注释】')) && !foundTranslationMarker) {
+        if ((line.includes('【译文】') || line.includes('［注释］')|| line.includes('【注释】')) && !foundTranslationMarker) {
             foundTranslationMarker = true;
             translationMarkerLine = line;
             continue;
