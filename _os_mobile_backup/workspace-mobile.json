@@ -4,16 +4,16 @@
     "type": "split",
     "children": [
       {
-        "id": "f56478b5613c09be",
+        "id": "07ed7d3fd90fad25",
         "type": "tabs",
         "children": [
           {
-            "id": "591862b8a0e14adc",
+            "id": "43b1caf0e71b96c4",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
+                "file": "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -84,7 +84,8 @@
         }
       }
     ],
-    "currentTab": 0
+    "currentTab": 0,
+    "pinned": true
   },
   "right": {
     "id": "29b45b8eca139363",
@@ -129,18 +130,20 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "content.zh/_index.md"
+            "file": "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/index.md",
+            "followCursor": false,
+            "showSearch": false,
+            "searchQuery": ""
           },
           "icon": "lucide-list",
           "title": "大纲"
         }
       }
     ],
-    "currentTab": 0
+    "currentTab": 2
   },
   "left-ribbon": {
     "hiddenItems": {
-      "update-time-updater:Update modified date": false,
       "bases:创建新数据库": true,
       "switcher:打开快速切换": true,
       "graph:查看关系图谱": true,
@@ -152,23 +155,47 @@
       "obsidian-excalidraw-plugin:新建绘图文件": false,
       "file-cleaner-redux:Clean files": false,
       "zenmode:Toggle Zen Mode": false,
-      "obsidian-git:Open Git source control": false
+      "update-time-updater:Update modified date": false
     }
   },
-  "active": "591862b8a0e14adc",
+  "active": "43b1caf0e71b96c4",
   "lastOpenFiles": [
-    "attachments/quickAddScripts/comments.js",
-    "attachments/quickAddScripts",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/ly-20251126162715552.png",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/capture_temp 4",
+    "img/ly-20251126162550352.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/ly-20251126162606172.png",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/ly-20251126162550352",
+    "img/ly-20251126162503719.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/ly-20251126162503719",
+    "img/capture_temp 3.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/capture_temp 3",
+    "img/capture_temp 1.md",
+    "img/capture_temp 2.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/capture_temp 2",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/capture_temp 1",
+    "img/capture_temp.md",
+    "img",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img/capture_temp",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/img",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/04蒙卦/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/03屯卦/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/02坤卦/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/10履卦/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/33遁卦/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/25无妄卦/index.md",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00a前言一_易经这本书/index.md",
+    "attachments/quickAddScripts/boldAndUnderline.js",
+    "content.zh/docs/culture/易经/解读易经_傅佩荣/00b前言二_易经的魅力/index.md",
+    "content.zh/docs/culture/史记/001第一卷五帝本纪第一/index.md",
+    "content.zh/docs/culture/史记/053第五十三卷樗里子甘茂列传第十一/index.md",
+    "content.zh/docs/culture/活着/index.md",
+    "content.zh/docs/culture/恰同学少年/01第1章-第5章/index.md",
+    "content.zh/docs/culture/孫子新注/02作戰篇/index.md",
+    "content.zh/docs/culture/孫子新注/01計篇/index.md",
     "content.zh/docs/culture/道家/道德经_曾仕强/01上篇_道德经的奥秘/index.md",
-    "content.zh/_index.md",
-    "_os_pc_backup/plugins/file-cleaner-redux/manifest.json",
-    "_os_pc_backup/plugins/file-cleaner-redux/main.js",
-    "_os_pc_backup/plugins/file-cleaner-redux/data.json",
-    "_os_pc_backup/plugins/file-cleaner-redux",
-    "_os_pc_backup/plugins/custom-font-loader/manifest.json",
-    "_os_pc_backup/plugins/custom-font-loader/main.js",
-    "_os_pc_backup/plugins/custom-font-loader/lxgwwenkaimono-medium_ttf.css",
-    "_os_pc_backup/plugins/custom-font-loader/data.json",
-    "_os_pc_backup/plugins/custom-font-loader"
+    "content.zh/docs/culture/恰同学少年/02第6章-第10章/index.md",
+    "content.zh/docs/culture/南明史/01第一章 明朝覆亡后的全国形势/index.md",
+    "content.zh/docs/life/dailyExcerpt/index.md"
   ]
 }
