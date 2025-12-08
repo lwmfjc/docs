@@ -110,7 +110,8 @@ fi
 
 if [[ $(hostname) == 'tabs8' ]]; then
    #切换输入法
-   sudo settings put secure default_input_method com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
+   #sudo settings put secure default_input_method com.google.android.inputmethod.latin/com.android.inputmethod.latin.LatinIME
+   bash "/storage/emulated/0/000Ly/git/docs/_sh/trigger_input_method.sh" weixin
 fi
 cd $docsDir
 #git status 

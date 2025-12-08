@@ -11,7 +11,7 @@
   "showInlineTitle": true,
   "readableLineLength": false,
   "strictLineBreaks": true,
-  "smartIndentList": false,
+  "smartIndentList": true,
   "userIgnoreFilters": [
     "static/",
     "public/"
