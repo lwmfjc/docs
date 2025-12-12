@@ -36,7 +36,9 @@ cssclasses:
 4. 新建项目 
    ![](img/ly-20251211003119486.png)
    ![](img/ly-20251211003146818.png)  
-   ![](img/ly-20251211003426171.png)  
+   ![](img/ly-20251213002433105.png)      
+   *不要勾选 Place solution and project in the same directory*  
+   
    解决方案，solution，是一组相互关联的项目，他们有各种项目类型，解决方案就像工作台，每个项目本质上是一组文件，会编译成目标二进制文件（无论是库还是实际的可执行文件）
 
 5. 添加新项
@@ -51,6 +53,20 @@ int main() {
 	std::cin.get();
 }
 ```
+
+### 配置文件修改
+
+下载ChernoVS.vssettings文件，并放到下面的位置  
+*C:\Users\ly\AppData\Local\Microsoft\VisualStudio\17.0_f89cedea\Settings*  
+
+在vs工具栏中-tools-ImportAndExportSettings-  
+
+ImportSelectedEnvironmentSettings  
+
+选择no,just Import new，选择 ChernoVS.vssetings即可
+
+
+
 
 ### 运行
 
