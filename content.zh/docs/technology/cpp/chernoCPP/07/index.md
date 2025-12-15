@@ -263,3 +263,194 @@ int Log(const char* message) {
 
 # 重复相同签名的符号链接  
 
+## 重复定义1
+
+```c++
+//Math.cpp
+#include <iostream>
+void Log(const char* message);
+//注意，此处多了一个Log的重复定义(Log.cpp中有)
+void Log(const char* message) {
+	std::cout << message << std::endl;
+}
+
+static int Multiply(int a, int b) {
+	Log("Multiply");
+	return a * b;
+
+}
+
+int main() {
+	std::cout << Multiply(5, 8) << std::endl;
+	std::cin.get();
+}
+```
+
+```c++
+//Log.cpp
+#include <iostream>
+void Log(const char* message) {
+	std::cout << message << std::endl;
+}
+```
+
+这两文件，分别单独编译，都是成功的。但是如果build项目，则提示`error LNK1169: one or more multiply defined symbols found`  ~~链接错误~~   
+```shell
+1>LINK : E:\cppStudyTemp\ChernoCpp\HelloWorld01\x64\Debug\HelloWorld01.exe not found or not built by the last incremental link; performing full link
+1>Math.obj : error LNK2005: "void __cdecl Log(char const *)" (?Log@@YAXPEBD@Z) already defined in Log.obj
+1>E:\cppStudyTemp\ChernoCpp\HelloWorld01\x64\Debug\HelloWorld01.exe : fatal error LNK1169: one or more multiply defined symbols found
+1>Done building project "HelloWorld01.vcxproj" -- FAILED.
+```
+
+## 重复定义2
+
+```c++
+//Log.h
+
+#pragma once
+//当在同一个源文件中被多次包含时，使用 #pragma once 可以确保该头文件的内容只被编译一次。
+
+void Log(const char* message) {
+	std::cout << message << std::endl;
+}
+```
+
+```c++
+//Log.cpp
+
+#include <iostream>
+#include "Log.h"
+
+void InitLog() {
+	Log("initialized");
+}
+```
+
+```c++
+//Math.cpp
+#include <iostream>
+#include "Log.h"
+
+static int Multiply(int a, int b) {
+	Log("Multiply");
+	return a * b;
+
+}
+
+int main() {
+	std::cout << Multiply(5, 8) << std::endl;
+	std::cin.get();
+}
+```
+
+代码中没有显示的出现两次Log函数的定义，但是为什么提示下面这种==链接==错误 ~~重复定义~~   
+
+```shell
+1>E:\cppStudyTemp\ChernoCpp\HelloWorld01\x64\Debug\HelloWorld01.exe : fatal error LNK1169: one or more multiply defined symbols found
+
+```
+
+这是因为头文件被重复包含了两次，预编译期间会把头文件的内容拿来替换`#include "Log.h"`，所以其实Log.cpp和Math.cpp都包含了Log的定义 ~~(不是声明，是定义)~~ 
+
+### 解决方案-static
+
+将Log.h中的Log函数定义设置为static，那么被include之后发生在这个对数函数上的链接只是内部的，只在该文件中有效，对其他目标文件是不可见的(消除了链接的必要性)  
+```c++
+//Log.h
+
+#pragma once
+//当在同一个源文件中被多次包含时，使用 #pragma once 可以确保该头文件的内容只被编译一次。
+
+static void Log(const char* message) {
+	std::cout << message << std::endl;
+}
+```
+
+### 解决方案-inline
+
+inline，内联，将采用我们的实际函数==体==并用它替换调用  
+
+```c++
+//Log.cpp
+
+#pragma once
+//当在同一个源文件中被多次包含时，使用 #pragma once 可以确保该头文件的内容只被编译一次。
+
+inline void Log(const char* message) {
+	std::cout << message << std::endl;
+}
+
+```
+
+即Log.cpp  
+
+```c++
+#include <iostream>
+#include "Log.h"
+
+void InitLog() {
+	Log("initialized");
+}
+```
+
+编译后会变成  
+
+```c++
+#include <iostream>
+#include "Log.h"
+
+void InitLog() {
+	std::cout << “initialized” << std::endl;
+}
+```
+
+### 解决方案-定义独立
+
+Log.h中只有对Log函数的声明  
+
+```cpp
+//Log.h
+#pragma once
+//当在同一个源文件中被多次包含时，使用 #pragma once 可以确保该头文件的内容只被编译一次。
+void Log(const char* message);
+```
+
+Log.cpp中有对Log函数的定义  
+
+```cpp
+//Log.cpp
+
+#include <iostream>
+#include "Log.h"
+
+void InitLog() {
+	Log("initialized");
+}
+
+//实际要链接的函数
+void Log(const char* message) {
+	std::cout << message << std::endl;
+}
+```
+
+Math.cpp不变  
+
+```cpp
+#include <iostream>
+#include "Log.h"
+
+static int Multiply(int a, int b) {
+	Log("Multiply");
+	return a * b;
+
+}
+
+int main() {
+	std::cout << Multiply(5, 8) << std::endl;
+	std::cin.get();
+}
+```
+
+# 总结
+
+链接器需要获取编译器件生成的所有目标文件，并将它们全部链接在一起，还会引入我们可能正在使用的任何其他库，例如C运行时库，C++标准库，以及平台api和其他很多东西。从许多不同的地方进行链接是常见的，还有不同类型的链接，还有==静态链接和动态链接(后面会讲到)==  
