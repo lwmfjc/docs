@@ -1,6 +1,6 @@
 ---
-title: "14"
-description: "14"
+title: 14-15
+description: 14-15
 categories:
   - 学习
 tags:
@@ -96,36 +96,46 @@ do
 ```
 
 # 控制流
+
+  
+
+continue，break（如果有多重循环，不会影响到外部的循环）  
+
+return  
+
+
+- continue，跳过当前循环的剩余部分，并继续循环的下一次迭代（下图中红色部分剔除） 
 ```cpp
-for (int i = 0; i < 2; i++)
-{
-
-	std::cout << "i" << i << "-start" << std::endl; 
-	for (int j = 0; j < 2; j++) {
-		 
-		std::cout << "j" << j << "-start" << std::endl;
-		continue; //break;//;
-
-		std::cout << "j" << j << "-end" << std::endl;
+	for (int i = 0; i < 5; i++)
+	{
+		if ((i+1) % 2 == 0)
+			continue;
+		std::cout << i;
+		Log("Hello world!");
 	}
-
-	std::cout << "i" << i << "-end" << std::endl; 
-}
+	/*
+0Hello world!
+2Hello world!
+4Hello world!
+	*/
 ```
-
-![](img/ly-20251222222743448.png)  
-
-continue，break，return  
-
-
-- continue，跳过当前循环的剩余部分，并继续循环（下图中红色部分剔除）  
   
-  ![](img/ly-20251222223036735.png)    
+- break，跳过当前循环的剩余部分，并结束当前循环的后续迭代  （下图中红色部分剔除）  
+  ```cpp
+  	for (int i = 0; i < 5; i++)
+	{
+		if ((i + 1) % 2 == 0)
+			break;
+		std::cout << i;
+		Log("Hello world!");
+	}
+	/*
+	0Hello world!
+	*/
+  ```
   
-- break，跳过当前循环的剩余部分，并结束当前循环  （下图中红色部分剔除）  
-  
-  ![](img/ly-20251222223415111.png)  
 - return ，直接退出函数  
+
 
 
 
