@@ -1,6 +1,6 @@
 ---
-title: 01-04
-description: 01-04
+title: 01-04设置cpp
+description: 01-04设置cpp
 categories:
   - 学习
 tags:
