@@ -1,6 +1,6 @@
 ---
-title: 继承
-description: 继承
+title: 继承_虚函数_接口_可见性
+description: 继承_虚函数_接口_可见性
 categories:
   - 学习
 tags:
@@ -213,4 +213,231 @@ int main()
 	- 实际创建的对象类型
 	- 决定 vptr 指向哪个虚函数表
 	- 决定虚函数调用哪个实现
+
+# 接口
+
+- 有时候想强制子类自己实现关于某个函数的定义  
+- 接口：仅包含类中未实现的方法充当模版
+- 接口的定义，仅包含纯虚函数(无实现)的抽象类，不能有构造函数，没有数据成员。【C++11后可以有默认实现】
+
+## 初步认识
+
+```cpp
+#include <iostream>
+#include <string>
+
+class Entity
+{
+public:
+	//如果main()中使用 Entity* e = new Entity();，报错
+	//'Entity': cannot instantiate abstract class ，这是
+	//一个抽象类
+	virtual std::string GetName() = 0;
+};
+
+class Player :public Entity
+{
+private:
+	std::string m_Name;
+public:
+	Player(const std::string& name)
+		:m_Name(name) {
+	}
+	//这里override增加了代码的可读性，可以省略
+	std::string GetName() override { return m_Name; }
+};
+
+void PrintName(Entity* entity)
+{
+	std::cout << entity->GetName() << std::endl;
+}
+
+int main()
+{
+	Entity* e = new Player("");
+	PrintName(e);//""
+
+	Player* p = new Player("Cherno");
+	PrintName(p); //"Cherno"
+	
+	std::cin.get();
+}
+```
+
+## 增强
+
+```cpp
+#include <iostream>
+#include <string>
+class Printable
+{
+public:
+	virtual std::string GetClassName() = 0;
+};
+
+
+class Entity :public Printable
+{
+public:
+	virtual std::string GetName()
+	{
+		return "Entity";
+	}
+
+	std::string GetClassName() override
+	{
+		return "Entity";
+	}
+};
+
+class Player :public Entity
+{
+private:
+	std::string m_Name;
+public:
+	Player(const std::string& name)
+		:m_Name(name) {
+	}
+	//这里override增加了代码的可读性，可以省略
+	std::string GetName() override { return m_Name; }
+	std::string GetClassName() override
+	{
+		return "Player";
+	}
+};
+
+void PrintName(Entity* entity)
+{
+	std::cout << entity->GetName() << std::endl;
+}
+
+//================================
+class A : public Printable
+{
+public:
+	std::string GetClassName() override { return "A"; }
+};
+//================================
+
+
+void Print(Printable* obj)
+{
+	std::cout << obj->GetClassName() << std::endl;
+}
+
+
+int main()
+{
+	Entity* e = new Entity();
+
+	Player* p = new Player("Cherno");
+
+	Print(e);//"Entity"
+	Print(p);//"Player"
+	Print(new A());//"A" 这里直接new会导致内存泄露
+
+	std::cin.get();
+}
+```
+
+# 可见性
+
+- 可见性指谁可以看见、调用、使用它们(成员变量、成员方法)
+- 对性能没影响
+- 三个关键字，private，protected，public
+
+## private
+
+```cpp
+#include <iostream>
+#include <string> 
+
+class Entity 
+{ 
+//private意味着只有Entity类里面可以直接读取它们，
+//(子类不行，其他外部的类[比如main()]也不行)
+//例外：友元函数可以读取一个类的private成员
+//[友元函数是普通函数，不是类的成员]
+private :
+	int X, Y;
+	void Print() {}
+public :
+	Entity()
+	{
+		X = 0;
+		Print();
+	}
+};
+
+class Player :public Entity
+{ 
+public:
+	Player()
+	{
+		//Print();//报错
+	}
+}; 
+ 
+
+int main()
+{
+	Entity e;
+	//e.X=2;//报错
+	std::cin.get();
+}
+```
+
+## protected
+
+```cpp
+#include <iostream>
+#include <string> 
+
+class Entity 
+{ 
+//private意味着只有Entity类及其子类里面可以直接读取它们，
+//(其他外部的类[比如main()]也不行)
+//例外：友元函数可以读取一个类的protected成
+// 员[友元函数是普通函数，不是类的成员]
+protected :
+	int X, Y;
+	void Print() {}
+public :
+	Entity()
+	{
+		X = 0;
+		Print();
+	}
+};
+
+class Player :public Entity
+{ 
+public:
+	Player()
+	{
+		Print();
+
+	}
+}; 
+ 
+
+int main()
+{
+
+	Entity e;
+	//e.Print();//报错
+	std::cin.get();
+
+	std::cin.get();
+}
+```
+## public 
+
+所有地方都可以访问
+
+## 用法
+
+当使用private时，帮助自己/团队其他人员，禁止使用这个数据/方法，说明某些数据仅支持在类内部使用
+
+> 这里举了个例子，假设有个ui功能，里面有数据x,y表示坐标，正常情况下需要使用类方法才能移动该图形。如果x,y不是私有，就有导致坐标被单独修改而图形未移动的奇怪现象
 
