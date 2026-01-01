@@ -1,6 +1,6 @@
 ---
-title: 构造函数和析构函数
-description: 构造函数和析构函数
+title: 24-25构造函数和析构函数
+description: 24-25构造函数和析构函数
 categories:
   - 学习
 tags:

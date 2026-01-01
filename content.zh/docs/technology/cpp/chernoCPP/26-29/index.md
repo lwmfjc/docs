@@ -1,6 +1,6 @@
 ---
-title: 继承_虚函数_接口_可见性
-description: 继承_虚函数_接口_可见性
+title: 26-29继承_虚函数_接口_可见性
+description: 26-29继承_虚函数_接口_可见性
 categories:
   - 学习
 tags:

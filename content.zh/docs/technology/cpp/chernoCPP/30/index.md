@@ -1,6 +1,6 @@
 ---
-title: 数组
-description: 数组
+title: 30数组
+description: 30数组
 categories:
   - 学习
 tags:
