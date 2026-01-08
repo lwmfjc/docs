@@ -49,6 +49,8 @@ int main()
 
 # const的修饰位置
 
+## 变量中
+
 ```cpp
 #include <iostream>
 
@@ -86,4 +88,106 @@ int main()
 	std::cin.get();
 }
 ```
+
+## class中
+
+
+```cpp
+#include <iostream>
+
+class Entity
+{
+private:
+	int m_X, m_Y;
+	static int s_X;
+	int* m_XP;
+public:
+
+	//const: 在该方法中不允许修改成员变量
+	//禁止修改成员变量： 在该函数内部，你不能对任何非 static 成员变量进行赋值操作。
+	//禁止调用非 const 函数
+	int GetX() const
+	{
+		//m_X = 3;
+		s_X = 5;
+		//test();//会报错
+		return m_X;
+	}
+
+	//返回一个int指针，且该指针不能改变所存地址
+	//指向的值，也不能指向其他地址
+	const int* const GetXP() const
+	{
+
+		return m_XP;
+	}
+
+	void test() //const
+	{
+
+	}
+};
+int main()
+{
+
+	std::cin.get();
+}
+```
+
+## 形参中
+
+```cpp
+#include <iostream>
+
+class Entity
+{
+private:
+	int m_X, m_Y;
+	int m_X1;
+	mutable int var;
+public:
+
+	int GetX1()  
+	{
+		return m_X1;
+	}
+
+	int GetX() const
+	{
+		//var是一个mutable变量,在const方法中可以修改它
+		var = 3;
+		return m_X;
+	}
+
+	void SetX(int x)
+	{
+		m_X = x;
+	}
+};
+
+void PrintEntity1(const Entity* e)
+{
+	e = nullptr;//允许编译，允许指向其他
+	//(*e).SetX(2);//报错，不允许修改值
+	std::cout << (*e).GetX() << std::endl;
+}
+
+void PrintEntity2(const Entity& e)
+{
+	//e = nullptr;//不允许编译，因为是引用，不允许重新指向其他
+	//e.SetX(2);//报错，不允许修改值
+	std::cout << e.GetX() << std::endl;
+	//不允许调用非const修饰的函数，下面会报错,
+	//因为无法保证GetX1()是否修改了e，而e是const修饰的
+	//std::cout << e.GetX1() << std::endl;
+}
+
+int main()
+{
+
+	std::cin.get();
+}
+```
+
+# mutable
 
