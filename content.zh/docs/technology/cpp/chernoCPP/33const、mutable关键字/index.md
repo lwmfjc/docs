@@ -1,6 +1,6 @@
 ---
-title: 33const关键字
-description: 33const关键字
+title: 33-34const、mutable关键字
+description: 33-34const、mutable关键字
 categories:
   - 学习
 tags:
@@ -23,7 +23,7 @@ int main()
 {
 	//当你定义 const int MAX_AGE = 90; 时，编译器通常会进行常量折叠（Constant Folding）。这意味着在编译阶段，代码中所有出现 MAX_AGE 的地方都会被直接替换为数字 90;
 	//所以最下面的 std::cout << MAX_AGE << std::endl; 打印90
-	const int MAX_AGE = 90;
+	const  int MAX_AGE = 90;
 	std::cout << MAX_AGE << std::endl;//90
 
 	int* a = new int;
@@ -39,6 +39,9 @@ int main()
 	a = (int*)&MAX_AGE;
 	std::cout << *a << std::endl;//90
 	*a = 5;
+
+	//如果MAX_AGE加了volatile关键字修饰，即	const volatile int MAX_AGE = 90;那
+	//么不会发生常量折叠，这里应该打印的是5
 	std::cout << MAX_AGE << std::endl;//90
 	//MAX_AGE 对应的内存空间，通过指针非法修改成了 5
 	std::cout << *a << std::endl;//5
@@ -191,3 +194,109 @@ int main()
 
 # mutable
 
+## class成员变量
+
+```cpp
+#include <iostream>
+#include <string>
+
+class Entity
+{
+private:
+	std::string m_Name;
+
+	//允许标记为const的方法修改该变量
+	mutable int m_DebugCount = 0;
+
+public:
+
+	//1.如果是 const std::string，则返回的是一个副本
+	//返回一个引用
+	//2.最后的const表示该函数内部不允许修改类的非static成员变量
+	const std::string& GetName() const
+	{
+		//m_Name = "a";//非法
+		m_DebugCount++;//编译通过
+
+		//由于返回的是引用，所以这里返回了成员变
+		//量 m_Name 的一个“地址”或“别名”
+		return m_Name;
+	}
+
+	void MyTest()
+	{
+
+	}
+};
+
+int main()
+{
+	const Entity e;
+	e.GetName();//调用const方法
+	//e.MyTest();//不允许调用非const方法
+
+
+	Entity e1;
+	e1.GetName();//调用const方法
+	e1.MyTest();//调用非const方法 
+
+	std::cin.get();
+}
+```
+
+## lambda表达式中
+
+```cpp
+#include <iostream> 
+
+int main()
+{
+	//lamda表达式
+
+	int x = 1;
+	int y = 8;
+	const int z = 5;
+
+	//按引用捕获所有变量
+	auto f1 = [&]()
+		{
+			y = 3;//合法,和原变量一样
+			//z = 5;//不合法,和原变量一样是const
+			std::cout << "Hello" << std::endl;
+		};
+
+	//mutable 不能直接修饰普通的局部变量或全局变量,只能
+	//是类成员变量
+	//mutable int m2 = 0;//没这种写法，会报错
+
+	//按值捕获所有变量
+	auto f2 = [=]()
+		{
+			//y = 3;//不合法,默认是const
+			std::cout << "Hello" << std::endl;
+		};
+
+	//按值捕获所有变量
+	//默认情况下，Lambda 内部的 operator() 是 const 的，不允
+	//许修改捕获的副本。加上 mutable 后，Lambda 内部就可以修改这些副本了。
+	auto f2_1 = [=]() mutable
+		{
+			y = 3;
+			std::cout << "Lambda 内部 y = " << y << std::endl;//3
+		};
+
+	std::cout << "外部原变量 y = " << y << std::endl;//8
+
+	//按值捕获x变量
+	auto f3 = [x]()
+		{
+			//y = 3;//不合法,默认是const
+			std::cout << "Hello" << std::endl;
+		};
+
+	f1();
+	f2();
+	f3();
+	std::cin.get();
+}
+```
