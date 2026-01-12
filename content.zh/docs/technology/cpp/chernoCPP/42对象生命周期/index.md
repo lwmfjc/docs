@@ -167,5 +167,66 @@ int main()
 
 # 智能指针
 
-这是一个包装类，构造在栈中使用指针，分配内存；在包装类销毁时删除指针  
+这是一个包装类，构造在栈中使用指针，分配堆内存；在包装类销毁时删除指针  
 
+自己编写的简单版智能指针  
+
+```cpp
+#include <iostream>  
+#include <string>
+
+class Entity
+{
+public:
+
+	//constructor-构造函数
+	Entity()
+	{
+		std::cout << "Created Entity!" << std::endl;
+	}
+
+
+	//destructor-析构函数
+	~Entity()
+	{
+		std::cout << "Destroyed Entity!" << std::endl;
+	}
+
+};
+
+class ScopedPtr
+{
+private:
+	Entity* m_Ptr;
+public:
+	ScopedPtr(Entity* ptr)
+		:m_Ptr(ptr)
+	{
+
+	}
+
+	~ScopedPtr()
+	{
+		delete m_Ptr;
+	}
+};
+
+int main()
+{
+	std::cout << "start--" << std::endl;
+	{
+		//调用有参构造函数,隐式转换
+		ScopedPtr e = new Entity();
+		//Entity* e = new Entity();
+
+	}
+	std::cout << "end--" << std::endl;
+	std::cin.get();
+}
+/*
+start--
+Created Entity!
+Destroyed Entity!
+end--
+*/
+```
