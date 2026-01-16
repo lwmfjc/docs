@@ -28,10 +28,9 @@ title:
 description: 
 categories:
   - 学习
-tags: 
-  - 孟子译注_杨伯峻
+tags:
+  - 资治通鉴
   - 文化
-  - 杨伯峻
 cssAttach: 
   - book02
 cssclasses: 
@@ -109,7 +108,7 @@ handleDir(){
 			perl -i -pe 's/\\\*/\*/gp' "$dirBook/index.txt"
 			perl -i -pe 's/\\_/_/gp' "$dirBook/index.txt"
 			#标题降1级(#\s+)\*{2}(.*?)\*{4}
-			perl -i -pe 's/^#(.*?\s)/$1/gp' "$dirBook/index.txt" 
+			perl -i -pe 's/^##(.*?\s)/$1/gp' "$dirBook/index.txt" 
 			#标题后面左边带了星号(这里有点问题，下次遇到再说)
 			# perl -i -pe 's/(#.*?)\*.*\*/$1/gp' "$dirBook/index.txt" 
 			#标题后面左右两边都带了星号
