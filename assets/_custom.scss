@@ -4,7 +4,11 @@
 //@import "plugins/scrollbars";
 :root {
  //--body-background: url("img/bg.png") fixed ;  
-   --body-background: linear-gradient(to top,#c1dfc4 100%, #c1dfc4 100%) fixed;
+
+   //渐变色的话，得直接在下面新起一个块 body { background: xxxxx; }
+   --body-background:  #c1dfc4 !important; 
+   --font-size: 22px;
+
   //--body-background: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%) fixed;
   //--body-background: linear-gradient(to top, #9795f0 0%, #fbc8d4 100%)  fixed;   
   /*========================================================================*/
@@ -14,7 +18,8 @@
 } 
 
 .book-toc { 
-  font-size: $font-size-14;  //增大侧目录字号 原来是12
+  //font-size: $font-size-14;  //增大侧目录字号 原来是12
+  font-size: 0.9rem;  //增大侧目录字号 原来是12
 }
   
 //   body,.book-menu,nav,.book-menu-content,.container {

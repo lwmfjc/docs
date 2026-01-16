@@ -1,4 +1,4 @@
-{{ $bookSection := default "docs" .Site.Params.BookSection  }}
+{{ $bookSection := default "docs" .Site.Params.BookSection }}
 {{ if eq $bookSection "*" }}
   {{ $bookSection = "/" }}{{/* Backward compatibility */}}
 {{ end }}
@@ -7,31 +7,35 @@
   {{ template "book-section-children" (dict "Section" . "CurrentPage" $) }}
 {{ end }}
 
-{{ define "book-section-children" }}{{/* (dict "Section" .Section "CurrentPage" .CurrentPage) */}}
-<ul>    
-    {{ $pagesWithSortKey := slice }}
+{{ define "book-section-children" }}
+  <ul>
+    {{/* 1. 构建带有自定义排序 Key 的页面集合 */}}
+    {{ $sortedPages := slice }}
     {{ range .Section.Pages }}
-        {{ $weight := default 0 .Weight }}
-        {{ $sortKey := printf "%03d%s" $weight .Title }}
-        {{ $pagesWithSortKey = $pagesWithSortKey | append (dict "Page" . "SortKey" $sortKey) }}
+      {{ if ne .Params.bookHidden true }}
+        {{/* 格式化 Weight 为三位补零字符串，如果没有则默认为 999（排在最后）或 000（排在最前） */}}
+        {{ $w := printf "%03d" (default 999 .Weight) }}
+        {{/* 将 Weight 和 Title 拼接，例如 "010-09子罕" */}}
+        {{ $sortKey := printf "%s-%s" $w .Title }}
+        {{ $sortedPages = $sortedPages | append (dict "Page" . "SortKey" $sortKey) }}
+      {{ end }}
     {{ end }}
-    
-    {{ $sortedPages := sort $pagesWithSortKey "SortKey" }}
-    
-    {{ range where $sortedPages "Page.Params.bookHidden" "ne" true }}
-        {{ $page := .Page }}
-        {{ if $page.IsSection }}
-            <li {{- if $page.Params.BookFlatSection }} class="book-section-flat" {{ end -}}>
-                {{ template "book-page-link" (dict "Page" $page "CurrentPage" $.CurrentPage) }}
-                {{ template "book-section-children" (dict "Section" $page "CurrentPage" $.CurrentPage) }}
-            </li>
-        {{ else if and $page.IsPage $page.Content }}
-            <li>
-                {{ template "book-page-link" (dict "Page" $page "CurrentPage" $.CurrentPage) }}
-            </li>
-        {{ end }}
+
+    {{/* 2. 按照构建的 SortKey 进行排序并循环 */}}
+    {{ range sort $sortedPages "SortKey" "asc" }}
+      {{ $p := .Page }}
+      {{ if $p.IsSection }}
+        <li {{- if $p.Params.BookFlatSection }} class="book-section-flat" {{ end -}}>
+          {{ template "book-page-link" (dict "Page" $p "CurrentPage" $.CurrentPage) }}
+          {{ template "book-section-children" (dict "Section" $p "CurrentPage" $.CurrentPage) }}
+        </li>
+      {{ else if and $p.IsPage $p.Content }}
+        <li>
+          {{ template "book-page-link" (dict "Page" $p "CurrentPage" $.CurrentPage) }}
+        </li>
+      {{ end }}
     {{ end }}
-</ul>
+  </ul>
 {{ end }}
 
 {{ define "book-page-link" }}{{/* (dict "Page" .Page "CurrentPage" .CurrentPage) */}}
@@ -40,20 +44,30 @@
 
   {{ if .Page.Params.BookCollapseSection }}
     <input type="checkbox" id="section-{{ md5 .Page }}" class="toggle" {{ if or $current $ancestor }}checked{{ end }} />
-    <label for="section-{{ md5 .Page }}" class="flex justify-between">
+    <label for="section-{{ md5 .Page }}" class="flex">
       <a {{ if .Page.Content }}href="{{ .Page.RelPermalink }}"{{ else }}role="button"{{ end }} class="{{ if $current }}active{{ end }}">
-        {{- partial "docs/title" .Page -}}
+        {{ template "book-icon-title" .Page -}}
       </a>
+      <img src="{{ partial "docs/icon" "chevron-right" }}" class="book-icon" alt="{{ partial "docs/text/i18n" "Expand" }}" />
     </label>
   {{ else if .Page.Params.BookHref }}
     <a href="{{ .Page.Params.BookHref }}" class="{{ if $current }}active{{ end }}" target="_blank" rel="noopener">
-      {{- partial "docs/title" .Page -}}
+      {{ template "book-icon-title" .Page -}}
     </a>
   {{ else if .Page.Content }}
     <a href="{{ .Page.RelPermalink }}" class="{{ if $current }}active{{ end }}">
-      {{- partial "docs/title" .Page -}}
+      {{ template "book-icon-title" .Page -}}
     </a>
   {{ else }}
-    <span>{{- partial "docs/title" .Page -}}</span>
+    <a>
+      {{ template "book-icon-title" .Page -}}
+    </a>
   {{ end }}
+{{ end }}
+
+{{ define "book-icon-title" }}
+{{- with .Page.Params.BookIcon -}}
+  <img src="{{ partial "docs/icon" . }}" class="book-icon" alt="{{ partial "docs/text/i18n" . }}" />
+{{- end -}}
+{{- partial "docs/title" .Page -}}
 {{ end }}

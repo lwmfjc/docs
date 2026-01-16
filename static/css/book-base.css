@@ -74,6 +74,7 @@ span.cm-inline-code,
     --code-size: initial;
     padding: initial;
     --code-normal: initial;
+    border: initial;
     /*obsidian里面需要的*/
 }
 
@@ -84,6 +85,7 @@ span.cm-inline-code,
     font-size: inherit ;
     padding: inherit;
     unicode-bidi: inherit;
+    border: initial;
 }
 /*波浪线--书名---end*/
 

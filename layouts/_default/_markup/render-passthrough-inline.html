@@ -1,21 +1,24 @@
 {{ $myContent := .Inner }}
-  {{ $myContent = ( strings.ReplaceRE `.*\[.*\]\(.+\.md\).*` "" $myContent ) }}  
-  {{ if eq "" $myContent }}
-      {{/* 如果匹配到的是要注释的，那就置空 */}}
-      {{ "" }}
-  {{ else }}
-      {{ $opts2 := dict "throwOnError" false }}
-      {{/* throwOnError为false好像也没法抑制错误 */}}
-      {{/* 用with处理的话不管throwOnError是true还是false都是会捕捉错误且不抛出错误的 */}}
-      {{ with transform.ToMath .Inner $opts2 }}
-          {{ with .Err }}
-          {{/* 遇到错误则进行警告 */}}
-              {{  warnf "Failed to render KaTeX: %q. See %s" . $.Position  }}   
-              {{/* 下面的errorf主动抛出错误 */}}
-              {{/* errorf "Failed to render KaTeX: %q. See %s" . $.Position */}} 
-          {{ else }}
-            {{ . }}
-          {{ end }}
-      {{ end }}
-      {{- /* chomp trailing newline */ -}}         
-  {{ end }} 
+{{ $myContent = ( strings.ReplaceRE `.*\[.*\]\(.+\.md\).*` "" $myContent ) }}  
+{{ if eq "" $myContent }}
+    {{/* 如果匹配到的是要注释的，那就置空 */}}
+    {{ "" }}
+{{ else }}
+    {{/* 移除了 .IsBlock，因为这是 inline 模板，默认就是 false */}}
+    {{ $opts := dict "displayMode" false "throwOnError" false }}
+    {{ $result := transform.ToMath .Inner $opts }}
+    
+    {{/* 检查结果类型 */}}
+    {{ if reflect.IsMap $result }} 
+        {{ with $result.Err }}
+            {{ warnf "Failed to render KaTeX: %q. See %s" . $.Position }}
+            {{ $.Inner }}
+        {{ else }}
+            {{ $result.Value }}
+        {{ end }}
+    {{ else }}
+        {{ $result }}
+    {{ end }}
+    
+    {{- /* chomp trailing newline */ -}}         
+{{ end }}
