@@ -389,8 +389,9 @@ charno
 ## 避免复制
 
 ```cpp
-void PrintString(String& string)// 可以避免复制
+void PrintString(const String& string)// 可以避免复制
 {
+	//String strCopy=string;//如果真的需要复制的话
 	std::cout << string << std::endl;
 }
 
