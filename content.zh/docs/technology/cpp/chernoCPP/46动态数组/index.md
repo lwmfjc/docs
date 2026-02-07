@@ -1,8 +1,11 @@
 ---
-title:
-description:
+title: 46动态数组
+description: 46动态数组
 categories:
+  - 学习
 tags:
+  - cherno
+  - cpp
 date: 2026-02-06T14:21:51+08:00
 lastmod: 2026-02-06T14:21:51+08:00
 cssAttach:
@@ -25,7 +28,7 @@ cssclasses:
 
 当超出实际的分配大小时。当创建一个向量，可能会先分配10个元素大小的空间，当超出这个大小时，会在内存中创建一个比原来更大的数组，并把所有内容复制过去，然后删除旧数组。这样就有了一个更大存储空间的新数组  
 
-# cpp中的聚合初始化
+# 46动态数组
 
 ```cpp
 struct Test
@@ -298,7 +301,8 @@ void Function(const std::vector<Vertex>& vertices)
 int main()
 { 
 	std::vector<Vertex> vertices;
-	vertices.push_back({ 1,2,3 });
+	vertices.push_back({ 1,2,3 });	
+	std::cout << "==0===" << std::endl;
 	vertices.push_back({ 4,5,6 });
 	std::cout << "==1===" << std::endl;
 	Function(vertices);
@@ -310,12 +314,13 @@ int main()
 	std::cin.get();
 }
 /*
-copied constructor handled
+copied constructor handled //第一个临时对象复制到vector中之后，马上又销毁了
 destructor handled
+==0===
+copied constructor handled //空间不够了，需要把第一个元素复制到新数组中。第二个元素创建临时对象，并复制到新数组中
 copied constructor handled
-copied constructor handled
-destructor handled
-destructor handled
+destructor handled  //旧的数组中的第一个元素被销毁了
+destructor handled  //第二个元素的临时对象被销毁了
 ==1===
 ==2===
 destructor handled
