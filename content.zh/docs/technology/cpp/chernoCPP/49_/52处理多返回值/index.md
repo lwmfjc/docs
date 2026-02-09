@@ -503,3 +503,129 @@ def
 
 */
 ```
+
+# 方法7：结构
+
+```cpp
+#include <iostream>
+#include <utility> 
+
+#include "String.h"
+
+struct ShaderProgramSource
+{
+	String VertexSource;
+	String FragmentSource;
+};
+
+ShaderProgramSource ParseShader()
+{
+	//假设vs，fs最终计算值是abc、def 
+	String vs = "abc";
+	String fs = "def";
+	std::cout << "===1===" << std::endl;
+	 
+	return  { vs,fs };
+}
+
+int main()
+{
+
+	ShaderProgramSource sps = ParseShader();
+	std::cout << "==2====" << std::endl;
+	std::cout << sps.VertexSource << std::endl;
+	std::cout << sps.FragmentSource << std::endl;
+	std::cin.get();
+}
+/*
+===1===
+Copied String!abc
+Copied String!def
+==2====
+abc
+def
+
+*/
+```
+
+## 深拷贝
+
+- 过程：当你写 { vs, fs } 时，你实际上是在请求编译器构造一个临时的 ShaderProgramSource 结构体。
+- 触发拷贝：因为 vs 和 fs 是左值（有名字的局部变量），编译器必须保证它们在 return 语句执行时保持完整。
+- 动作：编译器调用了 String 的拷贝构造函数，将 vs 的内容克隆到结构体的 VertexSource 中，将 fs 的内容克隆到 FragmentSource 中。
+
+为什么没有其他拷贝了：
+
+既然 { vs, fs } 构造了一个临时结构体，那么从这个“临时结构体”到 main 函数里的 sps，难道不需要再拷贝一次吗？
+
+不需要。 这里正是 RVO（返回值优化） 发挥作用的地方：
+
+原地构造：编译器并没有真的先在函数里建一个临时结构体再搬走。
+
+- 逻辑合并：它直接在 main 函数为 sps 预留的内存空间里，执行了那两次 String 的拷贝构造。
+- 结果：你只看到了进入结构体时的那两次拷贝，而没有看到结构体本身被搬运的拷贝。
+
+## 将左值转为右值，避免拷贝：  
+
+在String.h新增声明  
+
+```cpp
+    // 1. 移动构造函数 (String a = std::move(b);)
+    // 这里的 && 表示右值引用
+    String(String&& other) noexcept;
+
+    // 2. 移动赋值运算符 (a = std::move(b);)--（这个例子中非必要）
+    String& operator=(String&& other) noexcept;
+```
+
+String.app新增定义  
+
+```cpp
+
+//定义移动构造函数
+String::String(String&& other) noexcept
+	: m_Buffer(other.m_Buffer), m_Size(other.m_Size) // 1. 直接接管对方的指针地址
+{
+	std::cout << "Moved String!" << m_Buffer << std::endl;
+
+	// 2. 非常关键：将原对象的指针置空
+	// 如果不置空，当 other 析构时，会 delete 掉我们刚刚偷过来的内存！
+	other.m_Buffer = nullptr;
+	other.m_Size = 0;
+}
+
+//定义移动赋值函数--（这个例子中非必要）
+String& String::operator=(String&& other) noexcept {
+	if (this != &other) { // 防止自己移动给自己
+		delete[] m_Buffer; // 先释放自己原有的内存
+
+		m_Buffer = other.m_Buffer; // 偷走对方的
+		m_Size = other.m_Size;
+
+		other.m_Buffer = nullptr;  // 令对方失效
+		other.m_Size = 0;
+	}
+	return *this;
+}
+```
+
+Main.cpp修改返回值
+
+```cpp
+ShaderProgramSource ParseShader()
+{
+  //....
+  //...
+  //...
+  return { std::move(vs), std::move(fs) };
+}
+```
+
+## 解释
+
+ShaderProgramSource 这个结构体是在 return 这一刻才开始在内存里“出生”的。
+
+- 既然结构体刚出生，它==内部的成员变量 VertexSource 和 FragmentSource 也是第一次被创建==。
+- 从无到有的过程，必然调用构造函数。
+- 只有当对象已经完成了初始化，你再去修改它的值，才会触发赋值函数。
+
