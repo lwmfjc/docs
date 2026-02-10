@@ -142,6 +142,24 @@ char* GetName()
 	return "Cherno";
 }
 
+//普通返回类型
+auto GetName1()
+{
+	return "Cherno";
+}
+
+//后置返回类型1
+auto GetName2() -> const char* {
+	return "Cherno";
+}
+
+//后置返回类型2
+//编译器要先看到a，b的类型，才能推断返回类型
+template <typename T, typename U>
+auto Multiply(T a, U b) -> decltype(a* b) {
+	return a * b;
+}
+
 int main()
 {
 	std::vector<std::string> strings;
@@ -186,8 +204,27 @@ int main()
 	{
 		std::cout << *it << std::endl;
 	}
+	std::cout << "======4=====" << std::endl;
+	std::vector<std::string> vectors;
+	vectors.push_back("hello");
+	vectors.push_back("world");
+
+	//s--->const std::string& s
+	for (const auto& s : vectors) {
+		std::cout << s << std::endl;
+	}
+	
 
 
 	std::cin.get();
 }
 ```
+
+常见的使用场景：  
+
+- 类型名比较长
+- 模板
+- auto还用于函数返回类型，或者后置返回类型  
+
+*建议：尽量不用*  
+
