@@ -44,4 +44,25 @@ int main()
 
 ==转换后内存中的数值变了==
 
-# 
+# 类型双关-不同方式读取同一内存
+
+```cpp
+#ifdef LY_EP66
+#include <iostream>
+
+int main()
+{
+	int a = 50;
+	//把a(内存处）的内存以double类型的方式进行访问
+	//将整型进行类型双关变成双精度型
+	//* 操作符会尝试从该地址开始，一口气往后读 8 个字节
+	double  value = *(double*)&a;
+	std::cin.get();
+}
+#endif
+```
+
+![](img/ly-20260219190354038.png)  
+
+
+
