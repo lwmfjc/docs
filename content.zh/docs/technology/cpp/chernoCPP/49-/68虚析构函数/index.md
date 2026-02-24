@@ -66,5 +66,137 @@ void makeItSpeak(Animal* a) {
 
 ```
 
-# 例子
+# 类继承时构造与析构的顺序
+```cpp
+#ifdef LY_EP68
+#include <iostream>
+
+class Base
+{
+public:
+	Base() { std::cout << "Base constructor\n"; }
+	~Base() { std::cout << "Base destructor\n"; }
+};
+
+class Derived : public Base
+{
+public:
+	Derived() { std::cout << "Derived constructor\n"; }
+	~Derived() { std::cout << "Derived destructor\n"; }
+};
+
+int main()
+{
+	Base* base = new Base();
+	delete base;
+	std::cout << "------------------\n";
+	Derived* derived = new Derived();
+	delete derived;
+	std::cout << "------------------\n";
+	Base* poly = new Derived();
+	delete poly;
+
+	std::cin.get();
+}
+#endif
+/*输出
+Base constructor
+Base destructor
+------------------
+Base constructor
+Base destructor
+------------------
+Base constructor
+Derived constructor
+Derived destructor
+Base destructor
+------------------
+Base constructor
+Derived constructor
+====================> 输出没有这行：Derived destructor，没有调用子类析构函数，即内存泄露，没有释放m_array
+Base destructor
+*/
+```
+
+
+第一部分：new Base()
+这是最基础的情况：
+
+- 构造：调用 Base 的构造函数。
+- 析构：delete 时调用 Base 的析构函数。
+
+第二部分：new Derived()（核心重点）
+当你创建一个子类（Derived）对象时，内存中其实是“套娃”结构：子类包裹着父类。
+
+- 构造顺序（由内而外）：
+	- Base constructor：必须==先初始化父类==，因为子类可能依赖父类的成员。
+	- Derived constructor：==父类准备好后，才执行子类==自己的初始化逻辑。
+
+- 析构顺序（由外而内）：
+	- Derived destructor：==先拆掉子类特有的==部分。
+	- Base destructor：==最后拆掉父类==部分。
+
+生活化比喻：
+构造就像盖楼，必须先打地基（Base），再盖楼层（Derived）；
+析构就像拆楼，必须先拆楼层（Derived），最后才能拆地基（Base）。
+
+# 虚析构函数
+
+- 如果将基类的析构函数，设为虚函数，实际上会调用两者，会先调用派生类的析构函数，然后再向上调用继承体系中的析构函数（基类的析构函数）  
+- 主要跟`虚函数/虚函数表`有关，详见 [26-29继承_虚函数_接口_可见性](../../01-48/26-29继承_虚函数_接口_可见性/index.md)
+- 以下代码仅添加了virtual
+
+```cpp
+#ifdef LY_EP68
+#include <iostream>
+
+class Base
+{
+public:
+	Base() { std::cout << "Base constructor\n"; }
+	
+	//析构函数加virtual，表示这个类可能被拓展（继承），可能会有一个析构函数
+	//需要被调用
+	virtual ~Base()  { std::cout << "Base destructor\n"; }
+};
+
+class Derived : public Base
+{
+public:
+	Derived() { m_array = new int[5];  std::cout << "Derived constructor\n"; }
+	~Derived() { delete[] m_array; std::cout << "Derived destructor\n"; }
+private:
+	int* m_array;
+};
+
+int main()
+{
+	Base* base = new Base();
+	delete base;
+	std::cout << "------------------\n";
+	Derived* derived = new Derived();
+	delete derived;
+	std::cout << "------------------\n";
+	Base* poly = new Derived();
+	delete poly;
+
+	std::cin.get();
+}
+#endif
+
+/*
+Base constructor
+Base destructor
+------------------
+Base constructor
+Derived constructor
+Derived destructor
+Base destructor
+------------------
+Base constructor
+Derived constructor
+Derived destructor
+Base destructor
+*/
+```
 
