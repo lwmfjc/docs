@@ -13,50 +13,189 @@ cssAttach:
 cssclasses:
   - book03
 ---
-这是一个非常真实且有意思的冲突：**理性的哲学高度（易经）与生理/心理的本能恐惧（老鼠）之间的对撞。**
+- 类型转换（Type Casting）是在 C++ 强类型系统中进行类型间转换的过程。
+- cpp作为一种强类型语言，意味着有一个类型系统，且类型是强制规定的
+	- 如果一个东西是整型，不能突然把它拿来当双精度数，除非有简单的==隐式转换 ~~意味着cpp知道如何在这两种类型之间转换且不丢失数据~~ ==
+	- 可以使用显示转换
+- 类型转换包括==C风格转换==和==C++风格转换==
 
-其实，你大可不必因为“读了《易经》还怕老鼠”而感到挫败。从《易经》的角度看，你的这种恐惧和讨厌，恰恰是自然规律的一部分。
+# 基本的显示/隐式转换
 
----
+```cpp
+#ifdef LY_EP69
+#include <iostream>
 
-### 1. 这种恐惧不违法“易理”
+int main()
+{
+	int a = 5;
+	double value = a;//隐式转换
 
-《易经》讲的是**“天人合一”**，但人毕竟有肉身。
+	double value1 = 5.25;
+	int a1 = value1;//隐式转换
 
-* **震卦 (The Arousing)：** 象征雷。卦辞说：“震惊百里，不丧匕鬯（bì chàng）。”
-* 意思是：雷声大作，让人惊恐，但真正有定力的人，手里的祭祀酒杯都不会洒。
-* **启示：** 害怕老鼠是你的“震”（生理本能反应），这是自然的。真正的“看开”不是消灭恐惧，而是在恐惧发生时，你的内心（主轴）不被这种厌恶彻底带跑，依然能冷静处理。
+	int a2 = (int)value1;//显示转换
+
+	std::cout << "a:" << a << std::endl;//5
+	std::cout << "value:" << value << std::endl;//5
+	std::cout << "value1:" << value1 << std::endl;//5.25
+	std::cout << "a1:" << a1 << std::endl;//5
+	std::cout << "a2:" << a2 << std::endl;//5
 
 
+	std::cin.get();
+	//成功的情况只有一种（0），而失败的原因
+	//可以有成千上万种（1, 2, 3...）。
+	return 0;
+}
+#endif
+```
 
-### 2. 关于“门封不住”的现状
 
-你提到的“历史原因、人际原因”，在《易经》中属于**“艮” (Keeping Still)** 与 **“坎” (The Abysmal)** 的交织。
+# 类型转换例子
 
-* **艮卦：** 象征山、阻碍。那些人际关系和历史遗留问题，就像大山一样挡在那里。
-* **坎卦：** 象征水、险陷，也象征老鼠（子鼠在五行中属水）。
-* **现状分析：** 外部的阻碍（山）导致了隐患（水/老鼠）的潜入。这其实就是**“蹇”卦 (Obstruction)**：面前有险，后面有山，进退两难。
+```cpp
+#ifdef LY_EP69
+#include <iostream>
 
-### 3. 如何运用“易经”思想处理？
+class Base
+{
+public:
+	Base() {}
 
-既然“事已至此”（门封不住），我们可以尝试以下几种策略：
+	//这里应该把析构函数设为vitual，我只是为了演示
+	//只要有虚函数就能用动态转换转换成功，而这个虚函数
+	//不一定非得是析构函数
+	~Base() {} 
 
-| 易经策略 | 英文释义 | 具体做法 |
-| --- | --- | --- |
-| **损 (Decrease)** | Targeted Reduction | 既然不能“封门”（大动作），能否“损”其吸引力？比如清理庭院食物残渣，让老鼠觉得“此地无利可图”。 |
-| **变 (Change)** | Adaptation | **变被动为主动。** 门封不住是“定数”，但捕鼠器、避鼠剂、或者养只猫（阴阳制衡）是“变数”。 |
-| **中庸 (The Mean)** | Balanced Mindset | 接受“老鼠会来”这个概率。既然门关不上是现实，就把老鼠当成“偶尔闯入的自然噪音”，降低对它的情绪投入。 |
+	virtual void test() {}
+};
 
----
+//public Base中 <public> 决定：基类（Base）中的成员在
+//派生类（Derived）中保持什么样的访问权限。（public则成员
+//的最高权限是public）
+class Derived : public Base
+{
+public:
+	Derived() {}
+	~Derived() {}
+};
 
-### 心理按摩
+class AnotherClass : public Base
+{
+public:
+	AnotherClass() {}
+	~AnotherClass() {}
+};
 
-你讨厌老鼠，是因为老鼠代表了**“失控感”**和**“不洁感”**。
-读《易经》让你理解了万物运行的规律，但老鼠是实体，它不属于抽象的哲学。**“看开”不代表要“爱上”老鼠，或者对老鼠“无感”。**
+int main()
+{
+	//C风格转换
+	double value = 5.25;
+	double a1 = value + 5.3;//10.55
+	double a2 = (int)value + 5.3;//强制截断，10.3 
+	double a3 = (int)(value + 5.3);//强制截断，10 
+	std::cout << a1 << std::endl;
+	std::cout << a2 << std::endl;
+	std::cout << a3 << std::endl;
 
-**“看开”的真实含义是：**
-老鼠来了（现象） $\rightarrow$ 我很讨厌（情绪） $\rightarrow$ 我去放个捕鼠夹（行动） $\rightarrow$ 事情结束，心不留痕。
+	// C++风格转换（以下C风格转换都能做到，但是C++风格还会做点
+	// 额外的事情）
+	double s = static_cast<int>(value) + 5.3;//1 静态转换，会有编译时检查
 
-不要因为讨厌老鼠而责怪自己“修行不够”，这种“责怪”本身才是违背自然、给自己加戏。
+	//double s1 = static_cast<AnotherClass>(value) + 5.3;//编译失败,没有哪个构造函数支持，即没有 AnotherClass(int)这样的构造函数先隐式转换成AnotherClass
 
-**需要我帮你出出主意，如何在不封门的前提下，用一些“损益”之道来防鼠吗？**
+	//AnotherClass s11 = static_cast<AnotherClass*>(value) ;//编译失败，无效的类型转换
+	//AnotherClass s12 = static_cast<AnotherClass*>(&value) ;;//编译失败，无效的类型转换
+
+
+	//2 重新解释转换 //类似类型双关
+	AnotherClass* a = reinterpret_cast<AnotherClass*>(&value);//“重新解释转换”，编译通过，即指向该值的指针，解释成：指向另一个类实例的指针
+
+
+	//3 动态类型转换 //多态时用到
+	Derived* derived = new Derived();
+	Base* base = derived;
+	//检查基类指针是否是(某个)派生类实例 
+	//静态转换，但很明显这会出问题(base是指向Derived实例而非AnotherClass)
+	AnotherClass* ac1 = static_cast<AnotherClass*>(base);
+	AnotherClass* ac1_1 = (AnotherClass*)(base);
+
+	Derived* ac3 = dynamic_cast<Derived*>(base);//编译通过
+
+	AnotherClass* ac2 = dynamic_cast<AnotherClass*>(base);//编译通过，但是返回null
+	if (ac3)
+	{
+		std::cout << "ac3转换成功" << std::endl;//ac3转换成功
+	}
+	if (ac2)
+	{
+		std::cout << "ac2转换成功" << std::endl;//没成功
+	}
+
+	//4 常量解释转换：移除或添加常量
+	//视频没说到
+
+	std::cin.get();
+	//成功的情况只有一种（0），而失败的原因
+	//可以有成千上万种（1, 2, 3...）。
+	return 0;
+}
+#endif
+```
+
+- `dynamic_cast` 是在==运行时（Runtime）==通过查询虚函数表（vtable）来确认对象的实际类型的。 
+	- 规则：只有当类中至少包含一个==虚函数（virtual function）==时，编译器才会为该类生成类型信息（RTTI）。
+	- 所以如果==被转换==的实例类中完全没有虚函数，那么使用`dynamic_cast`时在编译阶段就报错了
+- RTTI (运行时类型识别)：当类包含虚函数时，编译器会==在对象内存布局中增加一个指向“虚函数表”的指针==。表中包含了该类的 `type_info`。
+- 安全性检查：执行 `dynamic_cast` 时，程序会检查内存中对象的实际 `type_info`。如果 `Base* base` 实际上指向的是 `Derived`，转换成功；如果指向的是其他不相关的类，则返回 `NULL`。
+
+# 常量转换
+
+```cpp
+#ifdef LY_EP69
+#include <iostream>
+
+void IncreaseValue(const int* val_ptr) {
+	// 编译失败：不能修改 const 指针指向的内容
+	//*val_ptr = 10; 
+
+	// 使用 const_cast 去掉 const 属性
+	int* modifiable_ptr = const_cast<int*>(val_ptr);
+	*modifiable_ptr += 5;
+}
+
+int main() {
+
+	//number 是一个普通的非 const 变量 
+	int number = 10;
+
+	std::cout << "修改前: " << number << std::endl;
+
+	// 传入 number 的地址
+	IncreaseValue(&number);
+
+	std::cout << "修改后: " << number << std::endl; // 输出 15
+
+
+	//=====演示有问题情况=====
+	const int constant_var = 100; // 原始变量就是常量
+	const int* ptr = &constant_var;
+
+	int* naughty_ptr = const_cast<int*>(ptr);
+	*naughty_ptr = 200; // 危险！这是“未定义行为”
+	std::cout << "constant_var修改后: " << constant_var << std::endl;
+
+	// 此时打印 constant_var，结果可能还是 100，也可能是 200，取决于编译器优化
+
+	std::cin.get();
+	return 0;
+}
+#endif
+```
+
+为什么number修改成功，而constant_var修改失败
+
+- number 是一个普通的非 const 变量。虽然你在某一时刻给它贴上了 const 的标签（通过指针），但它在内存里的本质依然是可读写的。const_cast 只是恢复了对这块内存的写权限。
+- constant_var修改失败
+	- 情况 A（编译器的“欺骗”）：编译器在处理 const int 时，会像宏替换一样，把代码里所有出现 constant_var 的地方直接替换成 100。即便你通过指针改了内存里的值，当你直接打印 constant_var 时，它还是显示 100。
+	- 情况 B（程序崩溃）：在某些操作系统和编译器下，const 声明的全局变量会被存放在==受硬件保护的只读内存页==。当你尝试写入时，系统会直接触发“段错误”（Segmentation Fault）强制关闭程序。
