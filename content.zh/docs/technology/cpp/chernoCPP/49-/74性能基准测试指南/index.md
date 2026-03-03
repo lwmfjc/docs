@@ -13,3 +13,4 @@ cssAttach:
 cssclasses:
   - book03
 ---
+利用 C++ 对象的生命周期（析构函数）来自动化测量任务。
