@@ -23,7 +23,7 @@ cssclasses:
 
 调试中发现问题的情况下，如果使用ide的调试断点功能，就能省去重编译、编写代码再调试运行  
 
-# 添加Action
+# 添加Action和Condition
 
 ```cpp
 #ifdef LY_EP70
@@ -43,17 +43,18 @@ int main()
 #endif
 ```
 
-先添加断点，然后再点击Action，最后添加打印内容`values of a,b is : {(float)a}, {(float)b}` 
+- 先添加断点，然后再点击Action，最后添加打印内容`i is {i} ,values of a,b is : {(float)a}, {(float)b}` 
+- 然后设置Condition，设置为`i == 3`，即只有在i == 3时才触发断点
   
 
 ![](img/ly-20260227182641735.png)  
 
-![](img/ly-20260227183130371.png)  
+![](img/ly-20260301113433709.png)  
 
 这个`contine code execution`如果勾上了，则调试时不会停止，会直接跳过该断点  
 
 
-如下图，打印了五次  
+如下图，打印了1次（i == 3)  
 
-![](img/ly-20260227183301149.png)  
+![](img/ly-20260301113602898.png)  
 
