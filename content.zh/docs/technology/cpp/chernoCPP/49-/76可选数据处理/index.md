@@ -47,6 +47,11 @@ cssclasses:
 ## 完整代码
 
 ```cpp
+//同文件夹下：data.txt
+Data!Hello!
+```
+
+```cpp
 #ifdef LY_EP76
 
 #include <iostream>   
@@ -113,6 +118,11 @@ int main()
 	std::cin.get();
 
 } 
+/*
+File content: Data!Hello!
+File content: Data!Hello!
+Failed to read file(data1.txt).
+*/
 #endif
 ```
 # 3\. 如何检查与获取值 
