@@ -18,9 +18,9 @@ cssclasses:
 
 在 C++17 之前，处理 `std::tuple` 或 `std::pair` 非常繁琐：
 
--   ==方法一：使用 `std::get`==    
+- ==方法一：使用 `std::get`==    
     - 必须通过索引访问，如 `std::get<0>(person)` 获取姓名，`std::get<1>(person)` 获取年龄。这种方式语义不明确且代码冗长。
--   ==方法二：使用 `std::tie`==
+- ==方法二：使用 `std::tie`==
     - 虽然可以解构，但必须==先定义变量==。例如需要先声明 `string name; int age;`，然后再执行 `std::tie(name, age) = createPerson();`。这增加了代码行数，且无法使用 `auto`。
 
 ## 代码
@@ -102,8 +102,8 @@ struct: Cherno1 is 241 years old.
 auto [name, age] = createPerson(); 
 ``` 
 
--   ==简洁性==：不再需要显式定义变量类型，也不需要 `std::get`。
--   ==编译器要求==：必须在项目设置中开启 ==C++17== 标准（如 Visual Studio 中的 `/std:c++17`），否则会报错。
+- ==简洁性==：不再需要显式定义变量类型，也不需要 `std::get`。
+- ==编译器要求==：必须在项目设置中开启 ==C++17== 标准（如 Visual Studio 中的 `/std:c++17`），否则会报错。
 ![](img/ly-20260304114304256.png)  
 
 ```cpp
@@ -137,7 +137,7 @@ name:Cherno--age:24
 # 3. 实战案例：重构 OpenGL 代码
 
 Cherno 展示了如何将旧代码中的结构体解构，进一步优化代码结构：
--   ==场景==：原本有一个专门用于返回两个着色器源码字符串的 `struct ShaderProgramSource`。
+- ==场景==：原本有一个专门用于返回两个着色器源码字符串的 `struct ShaderProgramSource`。
 ## 旧代码
 
 ```cpp
@@ -166,12 +166,12 @@ ShaderProgramSource ParseShader(const std::string& filepath);
    auto [vertexSource, fragmentSource] = ParseShader("Basic.shader");
 ```
    
--   ==好处==：减少了代码库中“只用一次”的结构体类型定义，使代码库更加干净、不臃肿。
+- ==好处==：减少了代码库中“只用一次”的结构体类型定义，使代码库更加干净、不臃肿。
 
 # 4. 使用建议
 
--   如果一个数据结构在代码库中被==频繁使用==，保留明确命名的 `struct` 依然是更好的选择。
--   如果只是为了==函数返回多个值==，且这些值在调用后立即被解构使用，那么使用 `tuple` 加==结构化绑定==是目前最优雅、最高效的做法。
+- 如果一个数据结构在代码库中被==频繁使用==，保留明确命名的 `struct` 依然是更好的选择。
+- 如果只是为了==函数返回多个值==，且这些值在调用后立即被解构使用，那么使用 `tuple` 加==结构化绑定==是目前最优雅、最高效的做法。
 
 
 
