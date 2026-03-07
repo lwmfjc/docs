@@ -94,11 +94,11 @@ span.cm-inline-code,
  
 
 /*默认图片缩小*/
-img:not([alt^="i"]) {
+.image-embed .image-wrapper img:not([alt^="i"]):not([width]) {
     display: block;
-    width: 50%;
-    height: 50%;
+    width: 50%; 
 }
+
 
 p:has(+div[alt^="i-"]),div[alt^="i-"]{
     display: inline ;
