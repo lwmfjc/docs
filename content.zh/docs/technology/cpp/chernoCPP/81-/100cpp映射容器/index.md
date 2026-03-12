@@ -51,3 +51,100 @@ cssclasses:
 
 - 讲解了如果使用自定义类作为键，`std::map` 需要该类重载 `<` 运算符，而 `std::unordered_map` 则需要提供哈希函数。
 
+```cpp
+#ifdef LY_EP100
+
+#include <iostream>  
+#include <map>
+#include <unordered_map>
+#include <string>
+
+struct CityRecord
+{
+	std::string Name;
+	uint64_t Population;
+	double Latitude, Longitude;
+
+};
+
+ std::ostream& operator<<(std::ostream& stream,
+	const CityRecord& cityRecord)
+{ 
+	std::cout << "Name: " << cityRecord.Name << ","
+		<< "Population: " << cityRecord.Population << ","
+		<< "Latitude: " << cityRecord.Latitude << ","
+		<< "Longitude: " << cityRecord.Longitude << std::endl;
+	return stream;
+}
+
+namespace std {
+
+	template<>
+	struct hash<CityRecord>
+	{
+		size_t operator()(const CityRecord& key)
+		{
+			//hash<std::string>()这是调用构造函数，
+			//然后构造了std::hash<CityRecord> 类型的对象，
+			//之后调用了该对象的()重载方法
+			return hash<std::string>()(key.Name);
+		}
+	};
+}
+int main()
+{
+
+	//计算City
+	CityRecord cityRecord = { "name1",10000,2.3,4.5 };
+	auto hashcode=std::hash<CityRecord>()(cityRecord);
+	if (hashcode)
+	{
+		std::cout << "hashcode: " << hashcode << std::endl;
+		std::cout << cityRecord << std::endl;
+	}
+	std::cin.get();
+	return 0;
+}
+
+#endif
+```
+
+### 模板特化
+
+#### 1\. 什么是普通模板？（工厂的模具）
+
+模板就像一个==通用的模具==。比如你想写一个 `print` 函数，不管是 `int`、`float` 还是 `string` 都能用：
+
+```cpp
+template<typename T>
+void print(T value) {
+    std::cout << "通用打印: " << value << std::endl;
+}
+```
+
+当你调用 `print(10)` 或 `print("Hello")` 时，编译器会根据这个模具自动生成对应的代码。
+
+#### 2\. 什么是模板特化？（给特殊客人的定制版）
+
+有时候，==通用的模具对某些特定类型不好使==。
+
+比如，你想打印 `bool` 类型。通用的模具会打印 `1` 或 `0`。但你觉得这样不直观，你希望打印 `bool` 时输出 `"Yes"` 或 `"No"`。
+
+这时候你就需要==特化==（Specialization）—— 告诉编译器：“如果是别的类型，按通用模具来；==如果是 `bool` 类型，请按我专门写的这套逻辑来。==”
+
+```cpp
+// 1. 通用模板 (Primary Template)
+template<typename T>
+struct Printer {
+    void print(T value) { std::cout << value << std::endl; }
+};
+
+// 2. 全特化 (Full Specialization) —— 专门针对 bool 类型
+template<> // 注意：这里尖括号空了，因为类型已经定死在下面了
+struct Printer<bool> {
+    void print(bool value) {
+        std::cout << (value ? "Yes" : "No") << std::endl;
+    }
+};
+```
+

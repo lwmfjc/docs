@@ -168,6 +168,219 @@ obj still die?
 
 指向的对象已经销毁但是指针却不为空  
 
+## 循环引用
+
+```cpp
+#ifdef LY_EP105_
+#include <memory>
+#include <iostream>
+
+/* 以下
+  * a 的引用计数：指向堆内存 a 的所有 shared_ptr 共同拥有的那个控制块里的强引用计数
+  * b 的引用计数：指向堆内存 b 的所有 shared_ptr 共同拥有的那个控制块里的强引用计数
+*/
+
+struct B; // 前置声明
+
+struct A {
+    A()
+    {
+        std::cout << "堆内存a 创建了~" << std::endl;
+    }
+    std::shared_ptr<B> ptrB;
+    ~A() { std::cout << "堆内存a 销毁了\n"; }
+};
+
+struct B {
+    B()
+    {
+        std::cout << "堆内存b 创建了~" << std::endl;
+    }
+    std::shared_ptr<A> ptrA;
+    ~B() { std::cout << "堆内存b 销毁了\n"; }
+};
+
+void test() {
+    std::cout << "---1" << std::endl;
+    auto sharedA = std::make_shared<A>();//假设引用了堆内存a
+    std::cout << "---2" << std::endl;
+    auto sharedB = std::make_shared<B>();//假设引用了堆内存b
+
+    sharedA->ptrB = sharedB; // sharedA.ptrB 又引用了b
+    sharedB->ptrA = sharedA; // sharedB.ptrA 又引用 a
+
+    /*分析
+    * 堆内存 a：被两个 shared_ptr 盯着：
+        * 栈上的变量 sharedA（强引用 +1）
+        * 堆内存 b 里的成员变量 ptrA [sharedB.ptrA]（强引用 +1）
+        * 总计计数：2
+    * 堆内存 b：被两个 shared_ptr 盯着：
+        * 栈上的变量 sharedB（强引用 +1）
+        * 堆内存 a 里的成员变量 ptrB [sharedA.ptrB]（强引用 +1）
+        * 总计计数：2
+    
+    */
+
+    //打印目前引用计数
+    std::cout << "a被引用次数:" << sharedA.use_count() << std::endl;
+    std::cout << "a被引用次数:" << sharedB->ptrA.use_count() << std::endl;
+    std::cout << "b被引用次数:" << sharedB.use_count() << std::endl;
+    std::cout << "b被引用次数:" << sharedA->ptrB.use_count() << std::endl;
+
+}
+
+
+/*
+    当函数执行到 } 时，栈帧销毁，局部变量 sharedA 和 sharedB 被释放。
+    * 变量 sharedA 销毁：它原本指向 a，现在它没了，a 的引用计数从 2 降到了 1。
+        * 注意：因为计数还没到 0，a 不会调用析构函数。
+    * 变量 sharedB 销毁：它原本指向 b，现在它也没了，b 的引用计数从 2 降到了 1。
+        * 注意：因为计数还没到 0，b 不会调用析构函数。
+*/
+
+int main()
+{
+    test();
+    std::cin.get();
+    return 0;
+}
+/*
+---1
+堆内存a 创建了~
+---2
+堆内存b 创建了~
+a被引用次数:2
+a被引用次数:2
+b被引用次数:2
+b被引用次数:2
+*/
+#endif
+```
+
+### 弱引用解决循环引用的问题
+
+```cpp
+#ifdef LY_EP105
+#include <memory>
+#include <iostream>
+
+/* 以下
+  * a 的引用计数：指向堆内存 a 的所有 shared_ptr 共同拥有的那个控制块里的强引用计数
+  * b 的引用计数：指向堆内存 b 的所有 shared_ptr 共同拥有的那个控制块里的强引用计数
+*/
+
+struct B; // 前置声明
+
+struct A {
+    A()
+    {
+        std::cout << "堆内存a 创建了~" << std::endl;
+    }
+    std::shared_ptr<B> ptrB;
+    ~A() { std::cout << "堆内存a 销毁了\n"; }
+};
+
+struct B {
+    B()
+    {
+        std::cout << "堆内存b 创建了~" << std::endl;
+    }
+    std::weak_ptr<A> ptrA;
+    ~B() { std::cout << "堆内存b 销毁了\n"; }
+};
+
+void test() {
+    std::cout << "---1" << std::endl;
+    auto sharedA = std::make_shared<A>();//假设引用了堆内存a
+    std::cout << "---2" << std::endl;
+    auto sharedB = std::make_shared<B>();//假设引用了堆内存b
+
+    sharedA->ptrB = sharedB; // sharedA.ptrB 又引用了b
+    sharedB->ptrA = sharedA; // sharedB.ptrA 又引用 a
+
+    /*分析
+    * 堆内存 a：被两个 shared_ptr 盯着：
+        * 栈上的变量 sharedA（强引用 +1）
+        * 堆内存 b 里的成员变量 ptrA [sharedB.ptrA]（弱引用 +1）
+        * 总计计数：1
+    * 堆内存 b：被两个 shared_ptr 盯着：
+        * 栈上的变量 sharedB（强引用 +1）
+        * 堆内存 a 里的成员变量 ptrB [sharedA.ptrB]（强引用 +1）
+        * 总计计数：2
+
+    */
+
+    //打印目前引用计数
+    std::cout << "a被引用次数:" << sharedA.use_count() << std::endl;
+    std::cout << "a被引用次数:" << sharedB->ptrA.use_count() << std::endl;
+    std::cout << "b被引用次数:" << sharedB.use_count() << std::endl;
+    std::cout << "b被引用次数:" << sharedA->ptrB.use_count() << std::endl;
+
+}
+
+
+/*
+    当函数执行到 } 时，栈帧销毁，局部变量 sharedA 和 sharedB 被释放。
+    * 变量 sharedA 销毁：它原本指向 a，现在它没了，a 的引用计数从 1 降到了 0，所以 a 调用了析构函数，同时a.ptrB 也被销毁了，b的引用计数降到了1。
+    * 变量 sharedB 销毁：它原本指向 b，现在它也没了，b 的引用计数从 1 降到了 0，所以 b 调用了析构函数 
+*/
+
+int main()
+{
+    test();
+    std::cin.get();
+    return 0;
+}
+/*
+---1
+堆内存a 创建了~
+---2
+堆内存b 创建了~
+a被引用次数:1
+a被引用次数:1
+b被引用次数:2
+b被引用次数:2
+堆内存a 销毁了
+堆内存b 销毁了
+*/
+#endif
+```
+
+
+C++ 中，==局部变量的析构顺序确实是严格的“后进先出”（LIFO）==，即与定义的顺序相反。
+
+在你的代码中，`sharedB` 后定义，所以它会先于 `sharedA` 析构。
+
+虽然在这个特定的 `weak_ptr` 例子中，谁先析构最终都能成功释放内存，但==引用计数的中间跳变顺序==确实会因为这个析构顺序而不同。
+
+#### 1\. 析构顺序详解：sharedB 先走
+
+按照 C++ 标准，`test()` 结束时的具体步骤如下：
+##### 第一步：`sharedB` 析构
+
+1.  栈上的 `sharedB` 销毁。
+2.  它去减掉 ==堆内存 b== 的强引用计数。
+3.  ==b 的计数变化==：从 2（`sharedB` 和 `sharedA->ptrB`）降到 ==1==。
+    -   _注意：此时 b 不会销毁，因为 `sharedA->ptrB` 还拉着它。_
+##### 第二步：`sharedA` 析构
+
+1.  栈上的 `sharedA` 销毁。
+2.  它去减掉 ==堆内存 a== 的强引用计数。
+3.  ==a 的计数变化==：从 1（只有 `sharedA`，因为 `ptrA` 是弱引用不计入强计数）降到 ==0==。
+4.  ==a 触发析构==：打印 “堆内存 a 销毁了”。
+5.  ==连锁反应==：随着 `a` 的销毁，其成员 `a->ptrB` 也随之销毁。
+6.  ==b 的计数变化==：`ptrB` 销毁时，将 ==堆内存 b== 的计数从 1 降到了 ==0==。
+7.  ==b 触发析构==：打印 “堆内存 b 销毁了”。
+#### 2\. 如果调换定义顺序，会有区别吗？
+
+如果你的代码是先定义 `sharedB` 再定义 `sharedA`，那么 `sharedA` 会先析构：
+
+1.  `sharedA` 析构，==a 的计数归 0== → a 销毁。
+2.  a 销毁带动 `a->ptrB` 销毁 → ==b 的计数从 2 降到 1==。
+3.  接着栈上的 `sharedB` 析构 → ==b 的计数从 1 降到 0== → b 销毁。
+
+==结论：== 无论谁先谁后，最终两块内存都能安全释放。但在复杂的系统中（特别是对象之间有严格依赖逻辑时），这种“倒序析构”的特性非常重要，因为它保证了后创建的对象（可能依赖先创建的对象）会先被安全地拆除。
+
 # 什么是 `std::weak_ptr`？ 
 
 `std::weak_ptr` 是一种不增加引用计数的智能指针。它必须与 `std::shared_ptr` 配合使用。当你将一个 `shared_ptr` 赋值给 `weak_ptr` 时，==它会指向相同的人内存，但不会增加该内存的“所有权”计数（reference count）==。
