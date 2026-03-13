@@ -162,6 +162,9 @@ GLAD 是一个 [开源](https://github.com/Dav1dde/glad)库，它负责处理我
 
 请务必使用上方链接中的 GLAD1 版本： [https://glad.dav1d.de/](https://glad.dav1d.de/) 。这里还有一个 GLAD2 版本，但它无法编译。  
 
+![](img/ly-20260313214020363.png)  
+
+
 GLAD 现在应该已经提供了一个包含两个 include 文件夹和一个 `glad.c` 文件的 zip 文件。将这两个 include 文件夹（ `glad` 和 `KHR` ）复制到你的 include 目录中（或者添加一个指向这些文件夹的额外项），并将 `glad.c` 文件添加到你的项目中。
 
 完成上述步骤后，您应该能够在文件上方添加以下包含指令：
@@ -170,7 +173,9 @@ GLAD 现在应该已经提供了一个包含两个 include 文件夹和一个 `g
 #include <glad/glad.h>
 ```
 
-点击编译按钮后应该不会出现任何错误，此时我们就可以进入 [下一章](https://learnopengl.com/Getting-started/Hello-Window) ，讨论如何使用 GLFW 和 GLAD 配置 OpenGL 上下文并生成窗口。请务必检查所有包含目录和库目录是否正确，并确保链接器设置中的库名称与对应的库文件匹配。
+![](img/ly-20260313214351517.png)  
+
+点击编译按钮后应该不会出现任何错误，此时我们就可以进入 [下一章](https://learnopengl.com/Getting-started/Hello-Window) ，讨论如何使用 GLFW 和 GLAD 配置 OpenGL 上下文并生成窗口。请务必检查所有包含目录和库目录是否正确，并确保链接器设置中的库名称与对应的库文件匹配。  
 
 # 更多资源
 
