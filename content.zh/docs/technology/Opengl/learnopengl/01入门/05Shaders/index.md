@@ -152,7 +152,7 @@ void main()
 
 可以看到，我们在顶点着色器中声明了一个 vertexColor 变量，并将其设置为 `vec4` 输出；同时，我们在片段着色器中也声明了一个类似的 vertexColor 输入。由于它们的类型和名称相同，片段着色器中的 vertexColor 与顶点着色器中的 vertexColor 相关联。因为我们在顶点着色器中将颜色设置为深红色，所以生成的片段也应该是深红色。下图显示了输出结果：
 
-![](https://learnopengl.com/img/getting-started/shaders.png)
+![](img/ly-20260316102915777.png)
 
 搞定了！我们刚刚成功地将一个值从顶点着色器传递到了片段着色器。让我们再加点料，看看能不能将一个颜色从我们的应用程序传递到片段着色器！
 
@@ -236,7 +236,9 @@ while(!glfwWindowShouldClose(window))
 
 这段代码是对之前代码的相对简单的修改。这次，我们在每一帧绘制三角形之前都会更新一个统一变量的值。如果正确更新了该统一变量，你应该会看到三角形的颜色从绿色逐渐变为黑色，然后再变回绿色。
 
- ![](https://learnopengl.com/img/getting-started/shaders2.png)
+~~是渐变，这是图片体现不出来~~  
+
+ ![](img/ly-20260316102836635.png)
 
 如果遇到问题，可以查看 [这里的](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/3.1.shaders_uniform/shaders_uniform.cpp)源代码。
 
@@ -286,7 +288,7 @@ void main()
 
 由于我们添加了一个新的顶点属性并更新了 VBO 的内存，因此我们需要重新配置顶点属性指针。更新后的 VBO 内存中的数据现在看起来大致如下：
 
-![Interleaved data of position and color within VBO to be configured wtih <function id='30'>glVertexAttribPointer</function>](https://learnopengl.com/img/getting-started/vertex_attribute_pointer_interleaved.png)
+![](img/ly-20260316102755607.png)
 
 了解当前布局后，我们可以使用 glVertexAttribPointer 更新顶点格式：
 
@@ -306,7 +308,7 @@ glVertexAttribPointer 的前几个参数相对简单。这次我们配置的是�
 
 运行该应用程序后，应该会显示以下图像：
 
-![](https://learnopengl.com/img/getting-started/shaders3.png)
+![](img/ly-20260316102711094.png)
 
 如果遇到问题，可以查看 [这里的](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/3.2.shaders_interpolation/shaders_interpolation.cpp)源代码。
 
@@ -328,9 +330,9 @@ glVertexAttribPointer 的前几个参数相对简单。这次我们配置的是�
 
 ## 我们自己的着色器类
 
-编写、编译和管理着色器可能相当繁琐。作为着色器主题的最后总结，我们将通过构建一个着色器类来简化我们的工作。该类可以从磁盘读取着色器，编译并链接它们，检查错误，并且易于使用。这也有助于您了解如何将我们目前所学的一些知识封装到有用的抽象对象中。
+编写、编译和管理着色器可能相当繁琐。作为着色器主题的最后总结，我们将通过==构建一个着色器类==来简化我们的工作。该类可以==从磁盘读取着色器，编译并链接它们，检查错误==，并且易于使用。这也有助于您了解如何将我们目前所学的一些知识==封装到有用的抽象对象==中。
 
-我们将把着色器类完全放在一个头文件中，主要目的是为了学习和提高可移植性。首先，让我们添加必要的头文件并定义类结构：
+我们将把==着色器类完全放在一个头文件==中，主要目的是为了学习和提高可移植性。首先，让我们添加必要的头文件并定义类结构：
 
 ```cpp
 #ifndef SHADER_H
@@ -365,7 +367,7 @@ public:
 
 我们在头文件顶部使用了几个预处理器指令。这些简短的代码会告诉编译器，即使多个文件都包含了着色器头文件，也只有在该头文件尚未被包含的情况下才包含并编译它。这样可以避免链接冲突。
 
-着色器类保存着着色器程序的 ID。它的构造函数需要顶点着色器和片段着色器的源代码文件路径，我们可以将这些文件以纯文本文件的形式存储在磁盘上。为了方便起见，我们还添加了一些实用函数：\`use\` 函数用于激活着色器程序，而 \`set...\` 函数则用于查询 uniform 变量的位置并设置其值。
+==着色器类保存着着色器程序的 ID==。它的构造函数需要顶点着色器和片段着色器的源代码文件路径，我们可以将这些文件以纯文本文件的形式存储在磁盘上。为了方便起见，我们还添加了一些实用函数：\`use\` 函数用于==激活着色器程序==，而 \`set...\` 函数则用于==查询 uniform 变量的位置并设置其值==。
 
 ## 从文件读取
 
@@ -407,7 +409,7 @@ Shader(const char* vertexPath, const char* fragmentPath)
     [...]
 ```
 
-接下来我们需要编译和链接着色器。请注意，我们还会检查编译/链接是否失败，如果失败，则打印编译时错误。这在调试时非常有用（您最终会需要这些错误日志）：
+接下来我们需要==编译和链接着色器==。请注意，我们还会检查编译/链接是否失败，如果失败，则打印编译时错误。这在调试时非常有用（您最终会需要这些错误日志）：
 
 ```cpp
 // 2. compile shaders
@@ -494,5 +496,66 @@ while(...)
 ## 练习
 
 1.  调整顶点着色器，使三角形倒置： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/3.4.shaders_exercise1/shaders_exercise1.cpp) 。
+
+```VertexShape
+	//gl_Position = vec4(aPos, 1.0);//这个是输出了位置，默认有的属性
+	gl_Position = vec4(aPos.x,-aPos.y,aPos.z, 1.0);
+```
+
 2.  通过 uniform 变量指定水平偏移量，并在顶点着色器中使用此偏移值将三角形移动到屏幕右侧： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/3.5.shaders_exercise2/shaders_exercise2.cpp) 。
+   
+   ```VertexShape
+   #version 330 core
+layout (location = 0) in vec3 aPos;   // the position variable has attribute position 0
+layout (location = 1) in vec3 aColor; // the color variable has attribute position 1
+ 
+uniform float translate_x=0;
+out vec3 ourColor; // output a color to the fragment shader
+
+void main()
+{
+	//gl_Position = vec4(aPos, 1.0);//这个是输出了位置，默认有的属性
+	gl_Position = vec4(aPos.x+translate_x,-aPos.y,aPos.z, 1.0);
+    ourColor = aColor; // set ourColor to the input color we got from the vertex data
+}
+   ```
+
+```cpp
+
+		ourShader.use();
+		//use之后添加下面这行
+		ourShader.setFloat("translate_x", 0.2);
+```
 3.  使用 `out` 关键字将顶点位置输出到片段着色器，并将片段的颜色设置为等于该顶点位置（注意顶点位置值是如何在三角形内插值的）。完成此操作后，尝试回答以下问题：为什么三角形的左下角是黑色的？： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/3.6.shaders_exercise3/shaders_exercise3.cpp) 。
+
+> 为了方便测试一些历史变量没有删除
+
+```VertextShape
+#version 330 core
+layout (location = 0) in vec3 aPos;   // the position variable has attribute position 0
+layout (location = 1) in vec3 aColor; // the color variable has attribute position 1
+  
+out vec3 ourColor; // output a color to the fragment shader
+out vec3 outPos;
+void main()
+{
+	gl_Position = vec4(aPos, 1.0);//这个是输出了位置，默认有的属性
+    ourColor = aColor; // set ourColor to the input color we got from the vertex data
+	outPos = aPos;
+}
+```
+
+```FragmentShape
+#version 330 core
+out vec4 FragColor;  
+in vec3 ourColor;//用同名的ourColor接收顶点着色器给的变量
+in vec3 outPos;  
+  
+void main()
+{
+    //FragColor = vec4(ourColor, 1.0);
+    FragColor = vec4(outPos, 1.0);
+}
+```
+
+> 当你从中心点 (0,0) 往左下角走时，$x$ 和 $y$ 逐渐变负。一旦变成负数，GPU 就认为颜色是 0。所以，整个三角形左下侧那一大块区域，只要坐标里有负数，颜色看起来就都是黑色的。
