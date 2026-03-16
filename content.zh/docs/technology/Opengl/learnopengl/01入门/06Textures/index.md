@@ -320,16 +320,16 @@ FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);
 
 ## 纹理单元
 
-你可能想知道，既然我们没有用 glUniform 给 `sampler2D` 变量赋值，为什么它还是一个 uniform 变量。这是因为，使用 glUniform1i 我们可以给纹理采样器分配一个 _位置_ 值，这样我们就可以在片段着色器中一次设置多个纹理。纹理的这个位置通常被称为纹理单元。纹理的默认纹理单元是 `0` ，也就是默认的活动纹理单元，所以我们在上一节中不需要分配位置；需要注意的是，并非所有图形驱动程序都会分配默认纹理单元，因此上一节的内容可能无法正常渲染。
+你可能想知道，既然我们==没有用 glUniform 给 `sampler2D` 变量赋值，为什么它还是一个 uniform 变量==。这是因为，使用 glUniform1i 我们可以==给纹理采样器分配一个 _位置_ 值==，这样我们就可以在片段着色器中一次设置多个纹理。纹理的这个位置通常被称为==纹理单元==。==纹理的默认纹理单元是 `0` ，也就是默认的活动纹理单元==，所以我们在上一节中不需要分配位置；需要注意的是，并非所有图形驱动程序都会分配默认纹理单元，因此上一节的内容可能无法正常渲染。
 
-纹理单元的主要目的是允许我们在着色器中使用多个纹理。通过将纹理单元分配给采样器，只要我们先激活相应的纹理单元，就可以同时绑定到多个纹理。就像 glBindTexture 一样，我们可以使用 glActiveTexture 来激活纹理单元，并传入我们想要使用的纹理单元：
+纹理单元的主要目的是允许我们==在着色器中使用多个纹理==。通过==将纹理单元分配给采样器==，只要我们先==激活相应的纹理单元，就可以同时绑定到多个纹理==。就像 glBindTexture 一样，我们可以使用 glActiveTexture 来激活纹理单元，并传入我们想要使用的纹理单元：
 
 ```scss
 glActiveTexture(GL_TEXTURE0); // activate the texture unit first before binding texture
 glBindTexture(GL_TEXTURE_2D, texture);
 ```
 
-激活纹理单元后，后续的 glBindTexture 调用会将该纹理绑定到当前激活的纹理单元。纹理单元 GL\_TEXTURE0 默认始终处于激活状态，因此在之前的示例中使用 glBindTexture 时，我们无需激活任何纹理单元。
+激活纹理单元后，后续的 glBindTexture 调用会将该纹理绑定到当前激活的纹理单元。==纹理单元 GL\_TEXTURE0 默认始终处于激活状态，因此在之前的示例中使用 glBindTexture 时，我们无需激活任何纹理单元==。
 
 OpenGL 至少应该提供 16 个纹理单元供您使用，您可以使用 GL\_TEXTURE0 到 GL\_TEXTURE15 来激活它们。它们是按顺序定义的，因此我们也可以通过 GL\_TEXTURE0 + 8 来获得 GL\_TEXTURE8 ，例如，当我们需要遍历多个纹理单元时，这非常有用。
 
@@ -348,7 +348,7 @@ void main()
 }
 ```
 
-最终输出颜色是两个纹理查找结果的组合。GLSL 内置的 mix 函数接受两个输入值，并根据第三个参数在它们之间进行线性插值。如果第三个参数为 `0.0` ，则返回第一个输入值；如果为 `1.0` ，则返回第二个输入值。例如，如果第三个参数为 `0.2` ，则会返回第一个输入颜色的 `80%` 和第二个输入颜色的 `20%` ，从而得到两个纹理的混合颜色。
+最终输出颜色是两个纹理查找结果的组合。GLSL 内置的 mix 函数接受两个输入值，并根据第三个参数在它们之间进行线性插值。如果第三个参数为 `0.0` ，则返回第一个输入值；如果为 `1.0` ，则返回第二个输入值。例如，如果第三个参数为 `0.2` ，则会==返回第一个输入颜色的 `80%` 和第二个输入颜色的 `20%`== ，==从而得到两个纹理的混合颜色==。
 
 现在我们要加载并创建另一个纹理；你应该已经熟悉这些步骤了。请确保创建另一个纹理对象，加载图像，并使用 glTexImage2D 生成最终纹理。第二个纹理我们将使用你[在学习 OpenGL 时拍摄的面部表情](https://learnopengl.com/img/textures/awesomeface.png)图像：
 
@@ -375,7 +375,7 @@ glBindVertexArray(VAO);
 glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 ```
 
-我们还需要通过设置 glUniform1i 来告诉 OpenGL 每个着色器采样器所属的纹理单元。我们只需要设置一次，因此可以在进入渲染循环之前完成此操作：
+我们还需要通过设置 glUniform1i 来==告诉 OpenGL 每个*着色器采样器*所属的纹理单元==。我们只需要设置一次，因此可以在进入渲染循环之前完成此操作：
 
 ```scss
 ourShader.use(); // don't forget to activate the shader before setting uniforms!  
@@ -392,7 +392,7 @@ while(...)
 
 ![](https://learnopengl.com/img/getting-started/textures_combined.png)
 
-您可能已经注意到纹理上下颠倒了！这是因为 OpenGL 期望 y 轴上的 `0.0` 坐标位于图像的底部，但图像通常 y 轴上的 `0.0` 坐标位于顶部。幸运的是， `stb_image.h` 可以在加载任何图像之前添加以下语句来翻转 y 轴：
+您可能已经注意到纹理上下颠倒了！这是因为 ==OpenGL 期望 y 轴上的 `0.0` 坐标位于图像的底部，但图像通常 y 轴上的 `0.0` 坐标位于顶部==。幸运的是， `stb_image.h` 可以在加载任何图像之前添加以下语句来翻转 y 轴：
 
 ```scss
 stbi_set_flip_vertically_on_load(true);
@@ -408,7 +408,30 @@ stbi_set_flip_vertically_on_load(true);
 
 为了更好地适应不同的质地，建议在继续之前完成这些练习。
 
-- 通过更改片段着色器，确保**只有**笑脸朝向另一个/相反的方向： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.3.textures_exercise1/textures_exercise1.cpp) 。
+- 通过更改片段着色器，确保==只有==笑脸朝向另一个/相反的方向： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.3.textures_exercise1/textures_exercise1.cpp) 。
+  
+```FragmentShader
+//shader.fs
+  FragColor = mix(texture(texture1, TexCoord), texture(texture2, vec2(-TexCoord.s,TexCoord.t)), 0.2);
+
+```
+  
 - 尝试使用不同的纹理包裹方法，将纹理坐标的范围从 `0.0f` 到 `2.0f` 改为 `0.0f` 到 `1.0f` 。看看能否在边缘被限制的单个容器图像上显示 4 个笑脸： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.4.textures_exercise2/textures_exercise2.cpp) ， [结果](https://learnopengl.com/img/getting-started/textures_exercise2.png) 。同时，也尝试使用其他包裹方法。
+  
+```cpp
+//修改顶点的coords
+float vertices[] = {
+	// positions          // colors           // texture coords
+	 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   2.0f, 2.0f,   // top right
+	 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   2.0f, 0.0f,   // bottom right
+	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
+	-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 2.0f    // top left 
+};
+
+//箱子纹理那里，修改超出位置的纹理包裹方法
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);//超出的位置形成拉伸的边缘
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//超出的位置形成拉伸的边缘
+```
+
 - 尝试仅显示矩形区域内纹理图像的中心像素，通过改变纹理坐标使各个像素可见。尝试将纹理过滤方法设置为 GL\_NEAREST 以更清晰地查看像素： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.5.textures_exercise3/textures_exercise3.cpp) 。
 - 使用统一变量作为混合函数的第三个参数，可以改变两种纹理的可见程度。使用上下箭头键可以改变容器或笑脸的可见程度： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.6.textures_exercise4/textures_exercise4.cpp) 。
