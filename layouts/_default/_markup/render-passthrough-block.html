@@ -1,0 +1,23 @@
+{{ $myContent := .Inner }}
+{{ $myContent = ( strings.ReplaceRE `.*\[.*\]\(.+\.md\).*` "" $myContent ) }}  
+{{ if eq "" $myContent }}
+    {{/* 如果匹配到的是要注释的，那就置空 */}}
+    {{ "" }}
+{{/* ... 前面的正则过滤逻辑保持不变 ... */}}
+{{ else }} 
+    {{ $opts := dict "displayMode" true "throwOnError" false }}
+    {{ $result := transform.ToMath .Inner $opts }}
+    
+    <div class="math-block" style="margin: 1rem 0; overflow-x: auto;">
+        {{ if reflect.IsMap $result }} 
+            {{ with $result.Err }}
+                {{ warnf "Failed to render KaTeX: %q. See %s" . $.Position }}
+                {{ $.Inner }}
+            {{ else }}
+                {{ $result.Value | safeHTML }} {{/* 加上 safeHTML 确保标签正常解析 */}}
+            {{ end }}
+        {{ else }}
+            {{ $result | safeHTML }}
+        {{ end }}
+    </div>
+{{ end }}

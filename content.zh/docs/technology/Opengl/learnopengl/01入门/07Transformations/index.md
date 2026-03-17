@@ -13,6 +13,16 @@ cssAttach:
 cssclasses:
   - book03
 ---
+其中 $y=x^2$ 表示向量$\bar{\color{red}v}$的长度。通过在方程中添加 $z^2$，可以很容易地将$x^2$其扩展到 3D。
+
+I will give you \\$2 if you can solve $$y = x^2$$
+$$
+\begin{pmatrix} \color{red}1 \\ \color{green}2 \\ \color{blue}3 \end{pmatrix} + x \rightarrow 
+\begin{pmatrix} \color{red}1 \\ \color{green}2 \\ \color{blue}3 \end{pmatrix} + 
+\begin{pmatrix} x \\ x \\ x \end{pmatrix} = 
+\begin{pmatrix} \color{red}1+x \\ \color{green}2+x \\ \color{blue}3+x \end{pmatrix}
+$$
+
 ## 转变
 
 我们现在知道如何创建物体，给它们着色，或者用纹理赋予它们精细的外观，但它们仍然不够有趣，因为它们都是静态物体。我们可以尝试通过改变它们的顶点并在每一帧重新配置它们的缓冲区来让它们动起来，但这很麻烦，而且会消耗大量的处理能力。其实有更好的方法来变换物体，那就是使用（多个）矩阵对象。但这并不意味着我们要讨论功夫和庞大的数字人工世界。

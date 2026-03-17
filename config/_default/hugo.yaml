@@ -47,14 +47,12 @@ markup:
       strikethrough: false
       passthrough:
         delimiters:
-          block:
-          - - \[
-            - \]
+          block: 
           - - $$
             - $$
           inline:
-          - - \(
-            - \) 
+          - - '$'
+            - '$'
           - - '%%'
             - '%%'
         enable: true

@@ -283,7 +283,7 @@ Flowable使用UEL进行表达式解析，UEL代表统一表达式语言，是EE6
 
 一些开箱即用的函数
 
-- **variables:get(varName)**：检索变量的值。与直接在表达式中写变量名的主要区别在于，当变量不存在时，使用这个函数不会抛出异常。例如，如果*myVariable*不存在，*${myVariable == "hello"}*会抛出异常，但*${var:get(myVariable) == 'hello'}*会正常工作。
+- **variables:get(varName)**：检索变量的值。与直接在表达式中写变量名的主要区别在于，当变量不存在时，使用这个函数不会抛出异常。例如，如果*myVariable*不存在，`${myVariable == "hello"}`会抛出异常，但$`{var:get(myVariable) == 'hello'}`会正常工作。
 - **variables:getOrDefault(varName, defaultValue)**：类似于*get*，但可以选择提供默认值，当变量未设置或值为*null*时返回。
 - **variables:exists(varName)** ：如果变量具有非空值，则返回*true 。*
 - **variables:isEmpty(varName)** (alias *:empty* ) : 检查变量值是否不为空。根据变量类型，行为如下：
@@ -292,7 +292,7 @@ Flowable使用UEL进行表达式解析，UEL代表统一表达式语言，是EE6
   - 对于 ArrayNode 变量，如果没有元素则返回*true*
   - 如果变量为*null*，则始终返回*true*
 - **variables:isNotEmpty(varName)** (alias *: notEmpty) :* *isEmpty*的逆运算。
-- **variables:equals(varName, value)**（别名*:eq*）：检查变量是否等于给定值。这是表达式的简写函数，否则将被写为*${execution.getVariable("varName") != null && execution.getVariable("varName") == value}*。
+- **variables:equals(varName, value)**（别名*:eq*）：检查变量是否等于给定值。这是表达式的简写函数，否则将被写为`*${execution.getVariable("varName") != null && execution.getVariable("varName") == value}`*。
   - 如果变量值为 null，则返回 false（除非与 null 比较）。
 - **variables:notEquals(varName, value)**（别名*:ne ）：* *equals*的反向比较。
 - **variables:contains(varName, value1, value2, ...)**：检查提供的**所有**值是否包含在变量中。根据变量类型，行为如下：
@@ -303,7 +303,7 @@ Flowable使用UEL进行表达式解析，UEL代表统一表达式语言，是EE6
 - **variables:containsAny(varName, value1, value2, ...)**：类似于*contains*函数，但如果**任何**（而非全部）传递的值包含在变量中，则将返回*true 。*
 - **variables:base64(varName)**：将二进制或字符串变量转换为 Base64 字符串
 - 比较器功能：
-  - **variables:lowerThan(varName, value)** (别名*:lessThan*或*:lt* ) : *${execution.getVariable("varName") != null && execution.getVariable("varName") < value}的简写*
+  - **variables:lowerThan(varName, value)** (别名*:lessThan*或*:lt* ) : `${execution.getVariable("varName") != null && execution.getVariable("varName") < value}的简写`
   - **变量：lowerThanOrEquals(varName, value)**（别名*:lessThanOrEquals*或*:lte*）：类似，但现在用于*< =*
   - **variables:greaterThan(varName, value)** (alias *:gt* ) : 类似，但现在用于*>*
   - **variables:greaterThanOrEquals(varName, value)** (alias *:gte* ) : 类似，但现在用于*> =*

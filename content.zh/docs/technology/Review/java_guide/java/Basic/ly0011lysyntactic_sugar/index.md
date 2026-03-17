@@ -333,7 +333,7 @@ public class OutterClass {
 }
 ```
 
-编译之后，会生成两个class文件OutterClass.class和OutterClass$InnerClass.class。所以内部类是可以跟外部类完全一样的名字的
+编译之后，会生成两个class文件OutterClass.class和`OutterClass$InnerClass.class`。所以内部类是可以跟外部类完全一样的名字的
 如果要对OutterClass.class进行反编译，那么他会把OutterClass$InnerClass.class也一起进行反编译
 
 ```java
@@ -459,7 +459,7 @@ static final boolean $assertionsDisabled = !com/hollis/suguar/AssertTest.desired
 ```
 
 - **断言的底层是if**语言，如果断言为true，则什么都不做；如果**断言为false**，则**程序抛出AssertError**来打断程序执行
-- -enableassertions会设置$assertionsDisabled字段的值
+- -enableassertions会设置`$assertionsDisabled`字段的值
 
 ### 数值字面量
 
