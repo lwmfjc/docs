@@ -217,6 +217,12 @@ $$\begin{bmatrix} \color{red}4 & \color{red}2 & \color{red}0 \\ \color{green}0 &
 
 $$\begin{bmatrix} \color{red}1 & \color{red}0 & \color{red}0 & \color{red}0 \\ \color{green}0 & \color{green}1 & \color{green}0 & \color{green}0 \\ \color{blue}0 & \color{blue}0 & \color{blue}1 & \color{blue}0 \\ \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1 \end{bmatrix} \cdot \begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} = \begin{bmatrix} \color{red}1 \cdot 1 \\ \color{green}1 \cdot 2 \\ \color{blue}1 \cdot 3 \\ \color{purple}1 \cdot 4 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix}$$
 
+> 1. 单位矩阵：是一个 $N \times N$ 的方阵。
+> 2. 主对角线（Main Diagonal）上的所有元素必须全部为 1。
+> 3. 非主对角线上的所有元素全部为 0。
+> 	1. 在矩阵中，通常有两条对角线，但单位矩阵只认“主对角线”（主对角线（Main Diagonal）： 确实是从左上角到右下角）
+
+
 向量本身完全未受影响。这一点从乘法规则即可看出：第一个结果元素是==矩阵第一行的每个元素分别与向量的每个元素相乘==的结果。由于第一行除第一个元素外其余元素均为 0，因此我们得到：$\color{red}1\color{black}\cdot\color{black}1 + \color{red}0\color{black}\cdot2 + \color{red}0\color{black}\cdot3 + \color{red}0\color{black}\cdot4 = 1$  ，向量的其他三个元素也遵循同样的规则。 你可能想知道，一个不进行变换的变换矩阵有什么用？==单位矩阵通常是生成其他变换矩阵的起点==，如果我们更深入地研究线性代数，它还是一个==在证明定理和求解线性方程组中非常有用的矩阵==。  
 
  ~~附：(5 x 4的矩阵) x (4 x 1的矩阵)  ，结果为(5 x 1的矩阵)~~   
@@ -247,47 +253,52 @@ $$
 
 ## 缩放 Scaling
 
-当我们缩放一个向量时，我们实际上是将箭头的长度增加所需的缩放比例，同时保持其方向不变。由于我们处理的是二维或三维空间，我们可以用一个包含两个或三个缩放变量的向量来定义缩放，每个变量分别缩放一个轴（ $x$ 、 $y$ 或 $z$ ）。
+当我们==缩放一个向量==时，我们实际上是==将箭头的长度增加所需的缩放比例，同时保持其方向不变==。由于我们处理的是二维或三维空间，我们可以用一个==包含两个或三个缩放变量的向量来定义缩放==，每个变量分别缩放一个轴（ $x$ 、 $y$ 或 $z$ ）。
 
-我们来尝试缩放向量 v¯\=(3,2) 。我们将沿 x 轴将向量缩放 $0.5$ ，使其宽度变为原来的一半；我们将沿 y 轴将向量缩放 $2$ ，使其高度变为原来的一半。让我们看看如果将向量缩放 $(0.5,2)$ 得到 s¯ 会是什么样子：
+我们来尝试缩放向量 $\color{red}{\bar{v}} = (3,2)$ 。我们将沿 x 轴将向量缩放为 $0.5$ 倍，使其宽度变为原来的一半；我们将沿 y 轴将向量缩放为 $2$ 倍，使其高度变为原来的2倍。让我们看看如果将向量缩放 $(0.5,2)$ 得到 $\color{blue}{\bar{s}}$ 会是什么样子：
 
-![](https://learnopengl.com/img/getting-started/vectors_scale.png)
+![](img/ly-20260317221832554.png)
 
-请记住，OpenGL 通常在 3D 空间中运行，因此对于这个 2D 场景，我们可以将 z 轴缩放比例设置为 $1$ ，而不会影响图形效果。我们刚刚执行的缩放操作是非均匀缩放，因为每个轴的缩放因子并不相同。如果所有轴上的缩放比例都相等，则称为均匀缩放。
+请记住，OpenGL 通常在 3D 空间中运行，因此对于这个 2D 场景，我们可以将 z 轴缩放比例设置为 $1$ ，而不会影响图形效果。我们刚刚执行的缩放操作是==非均匀缩放，因为每个轴的*缩放因子*并不相同==。==如果所有轴上的缩放比例都相等，则称为均匀缩放==。
 
-让我们开始构建一个变换矩阵来进行缩放。从==单位矩阵==可以看出，每个对角线元素都与其对应的向量元素相乘。如果我们把单位矩阵中的 $1$ 替换成 $3$ 呢？在这种情况下，我们将每个向量元素乘以 $3$ ，从而有效地将向量均匀缩放 3 倍。如果我们用 (S1,S2,S3) 表示缩放变量，我们可以定义任意向量 (x,y,z) 的缩放矩阵如下：
+让我们开始构建一个变换矩阵来进行缩放。从==单位矩阵==可以看出，==每个对角线元素都与其对应的向量元素相乘==。如果我们把单位矩阵中的 $1$ 替换成 $3$ 呢？在这种情况下，我们将每个向量元素乘以 $3$ ，从而有效地将向量均匀缩放 3 倍。如果我们用 (S1,S2,S3) 表示缩放变量，我们可以定义任意向量 (x,y,z) 的缩放矩阵如下：
 
 $$\begin{bmatrix} \color{red}{S_1} & \color{red}0 & \color{red}0 & \color{red}0 \\ \color{green}0 & \color{green}{S_2} & \color{green}0 & \color{green}0 \\ \color{blue}0 & \color{blue}0 & \color{blue}{S_3} & \color{blue}0 \\ \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1 \end{bmatrix} \cdot \begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix} = \begin{pmatrix} \color{red}{S_1} \cdot x \\ \color{green}{S_2} \cdot y \\ \color{blue}{S_3} \cdot z \\ 1 \end{pmatrix}$$
 
-请注意，我们将第 4 个缩放值保持为 $1$ , $w$ 将用于其他用途，我们稍后会看到。
+请注意，==我们将第 4 个缩放值保持为 $1$ , $w$ 将用于其他用途，我们稍后会看到==。
 
-## 翻译
+## 平移Translation
 
-平移是指在原向量的基础上加上另一个向量，得到一个位置不同的新向量，从而实现基于平移向量的向量_移动_ 。我们之前已经讨论过向量加法，所以这应该不算太陌生。
+平移是指==在原向量的基础上加上另一个向量==，得到一个位置不同的新向量，从而实现==基于*平移向量*的向量 _移动_ == 。我们之前已经讨论过向量加法，所以这应该不算太陌生。
 
-与缩放矩阵类似，4×4 矩阵中也存在多个可用于执行特定操作的位置，对于平移操作，这些位置是第四列的前三个值。如果我们用 (Tx,Ty,Tz) 表示平移向量，则可以定义平移矩阵如下：
+与缩放矩阵类似，$4 \times4$ 矩阵中也存在多个可用于执行特定操作的位置，对于==平移==操作，这些位置是==第四列的前三个值==。如果我们用 $(\color{red}{T_x},\color{green}{T_y},\color{blue}{T_z})$ 表示平移向量，则可以定义平移矩阵如下：  
 
 $$\begin{bmatrix}  \color{red}1 & \color{red}0 & \color{red}0 & \color{red}{T_x} \\ \color{green}0 & \color{green}1 & \color{green}0 & \color{green}{T_y} \\ \color{blue}0 & \color{blue}0 & \color{blue}1 & \color{blue}{T_z} \\ \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1 \end{bmatrix} \cdot \begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix} = \begin{pmatrix} x + \color{red}{T_x} \\ y + \color{green}{T_y} \\ z + \color{blue}{T_z} \\ 1 \end{pmatrix}$$
 
-之所以可行，是因为所有平移值都乘以向量的第 $w$ 列，然后加到向量的原始值上（记住矩阵乘法规则）。这对于 3x3 矩阵来说是不可能实现的。 **齐次坐标**  
-向量的 $w$ 分量也称为齐次坐标。 要从齐次向量得到三维向量，我们需要将 $x$ 、 $y$ 和 $z$ 坐标除以其 $w$ 坐标。通常情况下，我们不会注意到这一点，因为 $w$ 分量大多数时候都为 $1.0$ 。使用齐次坐标有几个优点：它允许我们对三维向量进行矩阵平移（如果没有 $w$ 分量，我们就无法平移向量），并且在下一章中，我们将使用 $w$ 值来创建三维透视效果。此外，当齐次坐标等于 $0$ 时，该向量被称为方向向量，因为 $w$ 坐标为 $0$ 的向量不能平移。
+之所以可行，是因为==所有平移值都乘以向量的第 $w$ 列，然后加到向量的原始值上（记住矩阵乘法规则）==。这对于 3x3 矩阵来说是不可能实现的。 ==*齐次坐标向量的 $w$ 分量*==也称为==齐次坐标==。 ==要从*齐次向量*得到*三维向量*，我们需要将 $x$ 、 $y$ 和 $z$ 坐标除以其 $w$ 坐标==。通常情况下，我们不会注意到这一点，因为 ==$w$ 分量大多数时候都为 $1.0$== 。使用 *==齐次坐标有几个优点==* ：它允许我们==对三维向量进行矩阵平移==（如果没有 $w$ 分量，我们就无法平移向量），并且在下一章中，我们将==使用 $w$ 值来创建三维透视效果==。此外，==当齐次坐标等于 $0$ 时，该向量被称为方向向量，因为 $w$ 坐标为 $0$ 的向量不能平移==。
 
-通过平移矩阵，我们可以沿三个轴方向（ $x$ 、 $y$ 、 $z$ ）移动物体，使其成为我们变换工具包中非常有用的变换矩阵。
+通过平移矩阵，我们可以沿三个轴方向（ $x$ 、 $y$ 、 $z$ ）移动物体，使其成为我们==变换工具包中非常有用的变换矩阵==。
 
-## 旋转
+## 旋转Rotation
 
-最后几个变换相对容易理解，也容易在二维或三维空间中可视化，但旋转变换就稍微复杂一些。如果你想确切地了解这些矩阵是如何构造的，我建议你观看可汗学院 [线性代数](https://www.khanacademy.org/math/linear-algebra/matrix_transformations)视频中关于旋转变换的部分。
+最后几个变换相对容易理解，也容易在二维或三维空间中可视化，但旋转变换就稍微复杂一些。如果你想确切地==了解这些矩阵是如何构造==的，我建议你观看可汗学院 [线性代数](https://www.khanacademy.org/math/linear-algebra/matrix_transformations)视频中关于==旋转变换==的部分。
 
-首先，我们来定义一下向量的旋转究竟是什么。二维或三维空间中的旋转可以用角度来表示。角度可以用度数或弧度来表示，一个完整的圆周运动有 360 度或 [2π](http://en.wikipedia.org/wiki/Pi) 弧度。我更倾向于用度数来解释旋转，因为我们通常更习惯使用度数。大多数旋转函数需要弧度作为角度单位，但幸运的是，角度很容易转换为弧度：  
-$angle in degrees = angle in radians * (180 / PI)$  
-$angle in radians = angle in degrees * (PI / 180)$  
-其中 $PI$ 等于（四舍五入） $3.14159265359$ 。 旋转半圆等于旋转 360/2 = 180 度，向右旋转 1/5 圆等于向右旋转 360/5 = 72 度。以下以一个基本的二维向量为例进行说明： v¯ 相对于 k¯ 向右（顺时针）旋转 72 度。
+首先，我们来定义一下向量的旋转究竟是什么。二维或三维空间中的旋转可以用角度来表示。角度可以用==度数或弧度==来表示，一个完整的圆周运动有 360 度或 [2π](http://en.wikipedia.org/wiki/Pi) 弧度。我更倾向于用度数来解释旋转，因为我们通常更习惯使用度数。  
 
-![](https://learnopengl.com/img/getting-started/vectors_angle.png)
+>  ==大多数旋转函数需要弧度作为角度单位，但幸运的是，角度很容易转换为弧度==：  
+>  `angle in degrees = angle in radians * (180 / PI)`
+   `angle in radians = angle in degrees * (PI / 180) `
+>  其中 $PI$ 等于（四舍五入） $3.14159265359$ 。 
 
-在三维空间中，旋转由角度**和**旋转轴指定。指定的角度会使物体绕指定的旋转轴旋转。你可以想象一下，一边转动头部，一边持续注视着同一个旋转轴。例如，在三维空间中旋转二维向量时，我们将旋转轴设置为 z 轴（试着想象一下）。
+旋转半圆等于旋转 $360/2 = 180$ 度，向右旋转 $1/5$ 圆等于向右旋转 $360/5 = 72$ 度。以下以一个基本的二维向量为例进行说明：$\color{red}{\bar{k}}$ 相对于 ==*$\color{red}{\bar{v}}$ 向右（顺时针）旋转 72 度*==。
 
-利用三角函数，可以根据给定的角度将向量变换为新的旋转向量。这通常是通过巧妙地结合 $sine$ 函数和 $cosine$ 函数（通常简写为 $sin$ 和 $cos$ ）来实现的。旋转矩阵的生成方法不在本章的讨论范围之内。
+![](img/ly-20260317224745620.png)  
+
+~~Rotation Axis (0, 0, 1)：这说明旋转是绕着 Z 轴进行的（在 OpenGL 的坐标系里，Z 轴通常是指向屏幕内外的那根轴）。~~  
+
+==在三维空间中，旋转由角度和旋转轴==指定。指定的角度会使物体==绕指定的旋转轴==旋转。你可以想象一下，一边转动头部，一边持续注视着同一个旋转轴。例如，在三维空间中旋转二维向量时，我们==将旋转轴设置为 z 轴==（试着想象一下）。  ~~旋转轴z轴，跟向量v和向量k都垂直。v所谓的旋转， 说的是在v和k组成的那个面上旋转~~ 
+
+利用三角函数，==*可以根据给定的角度将向量变换为新的旋转向量*==。这通常是通过巧妙地结合 $sine$ 函数和 $cosine$ 函数（通常简写为 $sin$ 和 $cos$ ）来实现的。==旋转矩阵的生成方法不在本章的讨论范围之内==。
 
 在三维空间中，每个单位轴都定义了一个旋转矩阵，其中角度用 theta 符号表示 θ 。
 
@@ -303,19 +314,20 @@ $$\begin{bmatrix} \color{red}{\cos \theta} & \color{red}0 & \color{red}{\sin \th
 
 $$\begin{bmatrix} \color{red}{\cos \theta} & - \color{red}{\sin \theta} & \color{red}0 & \color{red}0 \\ \color{green}{\sin \theta} & \color{green}{\cos \theta} & \color{green}0 & \color{green}0 \\ \color{blue}0 & \color{blue}0 & \color{blue}1 & \color{blue}0 \\ \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1 \end{bmatrix} \cdot \begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix} = \begin{pmatrix} \color{red}{\cos \theta} \cdot x - \color{red}{\sin \theta} \cdot y  \\ \color{green}{\sin \theta} \cdot x + \color{green}{\cos \theta} \cdot y \\ z \\ 1 \end{pmatrix}$$
 
-利用旋转矩阵，我们可以绕三个单位轴之一变换位置向量。要绕任意三维轴旋转，我们可以先绕 X 轴旋转，再绕 Y 轴旋转，最后绕 Z 轴旋转，从而将三个旋转矩阵组合起来。然而，这种方法很快就会引入一个称为万向节锁的问题。我们在此不赘述细节，但更好的解决方案是直接绕任意单位轴（例如 $(0.662,0.2,0.722)$ ，注意这是一个单位向量）旋转，而不是组合旋转矩阵。这样的（略显冗长的）矩阵是存在的，如下所示，其中 (Rx,Ry,Rz) 代表任意旋转轴：
+==利用旋转矩阵，我们*可以绕三个单位轴之一变换位置向量*==。==要绕任意三维轴旋转，我们可以先绕 X 轴旋转，再绕 Y 轴旋转，最后绕 Z 轴旋转，从而将三个旋转矩阵组合起来==。然而，这种方法很快就会引入一个称为==万向节锁==的问题。我们在此不赘述细节，但更好的解决方案是直接绕任意==*单位轴*==（例如 $(0.662,0.2,0.722)$ ，注意这是一个==*单位向量*==）旋转，而不是组合旋转矩阵。这样的（略显冗长的）矩阵是存在的，如下所示，其中 ==(Rx,Ry,Rz) 代表任意旋转轴==：
 
 $$\begin{bmatrix} \cos \theta + \color{red}{R_x}^2(1 - \cos \theta) & \color{red}{R_x}\color{green}{R_y}(1 - \cos \theta) - \color{blue}{R_z} \sin \theta & \color{red}{R_x}\color{blue}{R_z}(1 - \cos \theta) + \color{green}{R_y} \sin \theta & 0 \\ \color{green}{R_y}\color{red}{R_x} (1 - \cos \theta) + \color{blue}{R_z} \sin \theta & \cos \theta + \color{green}{R_y}^2(1 - \cos \theta) & \color{green}{R_y}\color{blue}{R_z}(1 - \cos \theta) - \color{red}{R_x} \sin \theta & 0 \\ \color{blue}{R_z}\color{red}{R_x}(1 - \cos \theta) - \color{green}{R_y} \sin \theta & \color{blue}{R_z}\color{green}{R_y}(1 - \cos \theta) + \color{red}{R_x} \sin \theta & \cos \theta + \color{blue}{R_z}^2(1 - \cos \theta) & 0 \\ 0 & 0 & 0 & 1 \end{bmatrix}$$
 
-生成此类矩阵的数学讨论超出了本章的范围。请记住，即使是这种矩阵也不能完全防止万向节锁（尽管难度会大大增加）。要真正防止万向节锁，我们必须使用四元数来表示旋转，这不仅更安全，而且计算效率更高。然而，关于四元数的讨论也超出了本章的范围。
+==生成此类矩阵的数学讨论超出了本章的范围==。请记住，即使是这种矩阵也不能完全防止万向节锁（尽管难度会大大增加）。要==真正防止万向节锁，我们必须使用*四元数*来表示旋转，这不仅更安全，而且计算效率更高==。然而，关于四元数的讨论也超出了本章的范围。
 
-## 合并矩阵
+> 虽然我们可以通过分别绕 $X, Y, Z$ 轴旋转再相乘的方法来处理旋转（这叫欧拉角），但这种方法不靠谱。因为旋转是有先后顺序的，一旦中间那个轴转到了特定角度，另外两个轴就会“打架”并重叠，导致你无法朝某些方向旋转。所以，文章后面才会推荐你：不要分三步走，要直接“绕任意轴”一气呵成地旋转
+## 合并矩阵Combining matrices
 
-使用矩阵进行变换的真正优势在于，我们可以借助矩阵乘法将多个变换组合到一个矩阵中。让我们看看能否生成一个包含多个变换的变换矩阵。假设我们有一个向量 $(x,y,z)$ ，我们想要将其缩放 2 倍，然后平移 $(1,2,3)$ 。我们需要一个平移矩阵和一个缩放矩阵来实现所需的步骤。最终得到的变换矩阵如下所示：
+使用矩阵进行变换的真正优势在于，我们可以借助*矩阵乘法*将==多个变换组合到一个矩阵==中。让我们看看==能否生成一个包含多个变换的变换矩阵==。假设我们有一个向量 $(x,y,z)$ ，我们想要将其缩放 2 倍，然后平移 $(1,2,3)$ 。我们需要一个平移矩阵和一个缩放矩阵来实现所需的步骤。最终得到的变换矩阵如下所示：
 
 $$\begin{array}{c} Trans . Scale = \begin{bmatrix} \color{red}1 & \color{red}0 & \color{red}0 & \color{red}1 \\ \color{green}0 & \color{green}1 & \color{green}0 & \color{green}2 \\ \color{blue}0 & \color{blue}0 & \color{blue}1 & \color{blue}3 \\ \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1 \end{bmatrix} . \begin{bmatrix} \color{red}2 & \color{red}0 & \color{red}0 & \color{red}0 \\ \color{green}0 & \color{green}2 & \color{green}0 & \color{green}0 \\ \color{blue}0 & \color{blue}0 & \color{blue}2 & \color{blue}0 \\ \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1 \end{bmatrix} = \begin{bmatrix} \color{red}2 & \color{red}0 & \color{red}0 & \color{red}1 \\ \color{green}0 & \color{green}2 & \color{green}0 & \color{green}2 \\ \color{blue}0 & \color{blue}0 & \color{blue}2 & \color{blue}3 \\ \color{purple}0 & \color{purple}0 & \color{purple}0 & \color{purple}1 \end{bmatrix} \end{array}$$
 
-注意，矩阵乘法运算中，我们先进行平移，再进行缩放。矩阵乘法不满足交换律，这意味着运算顺序很重要。矩阵乘法运算中，最右边的矩阵先与向量相乘，因此您应该从右到左阅读乘法运算。建议在合并矩阵时，先进行缩放操作，然后是旋转操作，最后是平移操作，否则它们可能会相互影响（产生负面影响）。例如，如果您先进行平移再进行缩放，则平移向量也会被缩放！
+注意，矩阵乘法运算中，我们先进行 ~~指的是先写平移矩阵~~ 平移，再进行 ~~再写缩放矩阵~~ 缩放。矩阵乘法不满足交换律，这意味着运算顺序很重要。矩阵乘法运算中，==最右边的矩阵先与向量相乘，因此您应该从右到左阅读乘法运算==。==建议在合并矩阵时，*先进行缩放操作，然后是旋转操作，最后是平移操作* ~~很重要！！！~~ ，否则它们可能会相互影响（产生负面影响）==。例如，如果您先进行平移再进行缩放，则平移向量也会被缩放！
 
 对向量运行最终变换矩阵，得到以下向量：
 
@@ -323,30 +335,37 @@ $$\begin{bmatrix} \color{red}2 & \color{red}0 & \color{red}0 & \color{red}1 \\ \
 
 太好了！向量首先被缩放 2 倍，然后平移 $(1,2,3)$ 。
 
-# 实际应用
+# 实际应用In practice
 
-现在我们已经解释了变换背后的所有理论，是时候看看如何实际运用这些知识了。==OpenGL 本身并不内置任何矩阵或向量知识==，因此==我们需要定义自己的*数学类和函数*==。本书旨在抽象化所有细枝末节的数学细节，直接使用现成的数学库。幸运的是，==有一个易于使用且专为 OpenGL 定制的数学库，名为 GLM==。
+现在我们已经解释了变换背后的所有理论，是时候看看如何实际运用这些知识了。==OpenGL 本身并不内置任何矩阵或向量知识==，因此==我们需要定义自己的*数学类和函数*==。本书旨在抽象化所有细枝末节的数学细节，直接使用现成的数学库。幸运的是，==有一个易于使用且*专为 OpenGL 定制的数学库*，名为 GLM==。
 
 ## 广义线性模型
 
-![](https://learnopengl.com/img/getting-started/glm.png)GLM 代表 **OpenGL** **数学** ，它是一个_仅包含头文件_的库，这意味着我们只需要包含正确的头文件即可；无需链接和编译。GLM 可以从其 [网站](https://glm.g-truc.net/0.9.8/index.html)下载。将头文件根目录复制到您的 _includes_ 文件夹中，然后就可以开始使用了。
+![](img/ly-20260317231656586.png)
+
+GLM 代表 ==OpenGL数学==(==Open**GL** **M**athematics==)   ，它是一个 ==_仅包含头文件_ 的库==，这意味着我们==只需要包含正确的头文件即可；无需链接和编译==。GLM 可以从其 [网站](https://glm.g-truc.net/0.9.8/index.html)下载。将头文件根目录复制到您的 _includes_ 文件夹中，然后就可以开始使用了。  ~~在github上：`https://github.com/g-truc/glm/releases/tag/1.0.3`~~ 
+
+下载后，把文件夹glm放到`02创建窗口`那集设置的includes目录下即可  
+
+![](img/ly-20260317233116613.png)
 
 GLM 的大部分功能都包含在以下 3 个头文件中：
+
 ```cpp
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 ```
 
-让我们看看能否充分利用变换知识，将向量 $(1,0,0)$ 平移到 $(1,1,0)$ （注意，我们将其定义为 $glm::vec4$ ，其齐次坐标设置为 $1.0$ ）：
+让我们看看能否充分利用变换知识，将向量 $(1,0,0)$ 平移到 $(1,1,0)$ （注意，我们将其定义为 $glm::vec4$ ，其齐次坐标设置为 $1.0$ ：
 
-$$`ruby
+```cpp
 glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
 glm::mat4 trans = glm::mat4(1.0f);
 trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
 vec = trans * vec;
 std::cout << vec.x << vec.y << vec.z << std::endl;
-$$`
+```
 
 我们首先使用 GLM 的内置向量类定义一个名为 $vec$ 的向量。接下来，我们定义一个 $mat4$ ，并通过将矩阵的对角线元素初始化为 $1.0$ 来显式地将其初始化为单位矩阵；如果我们不将其初始化为单位矩阵，则该矩阵将为空矩阵（所有元素 $0$ ），并且所有后续的矩阵运算结果也将为空矩阵。
 
@@ -355,17 +374,17 @@ $$`
 
 让我们来做一些更有趣的事情，对上一章中的容器对象进行缩放和旋转：
 
-$$`ruby
+```cpp
 glm::mat4 trans = glm::mat4(1.0f);
 trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-$$`
+trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));  
+```
 
 首先，我们将容器沿每个轴缩放 $0.5$ ，然后绕 Z 轴旋转 $90$ 度。GLM 期望角度以弧度为单位，因此我们使用 $glm::radians$ 将角度转换为弧度。请注意，纹理矩形位于 XY 平面上，因此我们需要绕 Z 轴旋转。请记住，旋转轴应该是单位向量，因此如果您不是绕 X、Y 或 Z 轴旋转，请务必先对向量进行归一化。由于我们将矩阵传递给 GLM 的每个函数，GLM 会自动将这些矩阵相乘，从而生成一个包含所有变换的变换矩阵。
 
 下一个重要问题是：如何将变换矩阵传递给着色器？我们之前简要提到过，GLSL 也有一个 $mat4$ 类型。因此，我们将修改顶点着色器，使其接受一个 $mat4$ uniform 变量，并将位置向量乘以该矩阵 uniform 变量：
 
-$$`csharp
+```cpp
 #version 330 core
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec2 aTexCoord;
@@ -378,17 +397,17 @@ void main()
 {
     gl_Position = transform * vec4(aPos, 1.0f);
     TexCoord = vec2(aTexCoord.x, aTexCoord.y);
-}
-$$`
+} 
+```
 
 GLSL 还提供了 $mat2$ 和 $mat3$ 类型，它们允许像向量一样进行类似矩阵交换（swizzling）的操作。所有上述数学运算（例如标量矩阵乘法、矩阵向量乘法和矩阵矩阵乘法）都适用于这些矩阵类型。我们会在每次使用特殊矩阵运算时都进行解释。
 
 我们添加了 uniform 变量，并将位置向量与变换矩阵相乘，然后将其传递给 gl\_Position 。现在我们的容器应该缩小了一半，并且旋转了 $90$ 度（向左倾斜）。不过，我们仍然需要将变换矩阵传递给着色器：
 
-$$`cpp
+```cpp
 unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
 glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-$$`
+```
 
 我们首先查询 uniform 变量的位置，然后使用带有 $Matrix4fv$ 后缀的 glUniform 函数将矩阵数据发送到着色器。第一个参数应该已经很熟悉了，它是 uniform 变量的位置。第二个参数告诉 OpenGL 我们想要发送多少个矩阵，这里是 $1$ 第三个参数询问我们是否要转置矩阵，也就是交换列和行。OpenGL 开发者通常使用一种称为列优先顺序的内部矩阵布局，这也是 GLM 的默认矩阵布局，因此无需转置矩阵；我们可以将其设置为 GL\_FALSE 。最后一个参数是实际的矩阵数据，但 GLM 存储矩阵数据的方式并不总是符合 OpenGL 的预期，因此我们首先使用 GLM 的内置函数 value\_ptr 转换数据。
 
@@ -398,11 +417,11 @@ $$`
 
 完美！我们的容器确实向左倾斜，并且缩小了一半，所以变换成功了。让我们来点更有趣的，看看能否让容器随时间旋转，为了好玩，我们还将容器重新定位到窗口的右下角。要让容器随时间旋转，我们需要在渲染循环中更新变换矩阵，因为它需要每帧都更新。我们使用 GLFW 的 time 函数来获取随时间变化的角度：
 
-$$`ruby
+```cpp
 glm::mat4 trans = glm::mat4(1.0f);
 trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
 trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-$$`
+```
 
 请记住，在之前的情况下，我们可以将变换矩阵声明在任何地方，但现在我们必须在每次迭代中都创建它，才能持续更新旋转。这意味着我们必须在渲染循环的每次迭代中重新创建变换矩阵。通常，在渲染场景时，我们会有多个变换矩阵，它们会在每一帧中使用新的值重新创建。
 
@@ -420,10 +439,10 @@ $$`
 
 # 延伸阅读
 
--   [线性代数的精髓](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab) ：格兰特·桑德森制作的关于变换和线性代数的基本数学原理的精彩视频教程系列。
--   [矩阵乘法 XYZ](http://matrixmultiplication.xyz/) ：快来看看这个超棒的交互式可视化工具，它能清晰地展示矩阵乘法。尝试几个例子应该有助于巩固你的理解。
+- [线性代数的精髓](https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab) ：格兰特·桑德森制作的关于变换和线性代数的基本数学原理的精彩视频教程系列。
+- [矩阵乘法 XYZ](http://matrixmultiplication.xyz/) ：快来看看这个超棒的交互式可视化工具，它能清晰地展示矩阵乘法。尝试几个例子应该有助于巩固你的理解。
 
 # 练习
 
--   使用容器的最后一个变换，尝试先旋转再平移，交换顺序。观察会发生什么，并尝试推断其原因： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/5.2.transformations_exercise1/transformations_exercise1.cpp) 。
--   尝试使用另一个 glDrawElements 函数绘制第二个容器，但**仅**使用变换将其放置在不同的位置。确保第二个容器位于窗口的左上角，并且不要旋转它，而是随时间缩放它（这里使用 $sin$ 函数很有用；请注意，使用 $sin$ 函数会导致对象在应用负缩放后立即反转）： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/5.2.transformations_exercise2/transformations_exercise2.cpp) 。
+- 使用容器的最后一个变换，尝试先旋转再平移，交换顺序。观察会发生什么，并尝试推断其原因： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/5.2.transformations_exercise1/transformations_exercise1.cpp) 。
+- 尝试使用另一个 glDrawElements 函数绘制第二个容器，但**仅**使用变换将其放置在不同的位置。确保第二个容器位于窗口的左上角，并且不要旋转它，而是随时间缩放它（这里使用 $sin$ 函数很有用；请注意，使用 $sin$ 函数会导致对象在应用负缩放后立即反转）： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/5.2.transformations_exercise2/transformations_exercise2.cpp) 。
