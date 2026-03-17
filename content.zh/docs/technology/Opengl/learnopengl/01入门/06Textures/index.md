@@ -80,15 +80,15 @@ glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
 GL\_NEAREST （也称为最近邻或点过滤）是 OpenGL 的默认纹理过滤方法。设置为 GL\_NEAREST 时，OpenGL 会选择==中心距离*纹理坐标*最近的纹==素。下图显示了 4 个像素，十字标记代表了精确的*纹理坐标* ~~就是屏幕图片按照比例，在纹理图片的精准对应坐标~~ 。==左上角的*纹素中心* ~~纹素中心指的是每个小正方形的中心~~ 距离*纹理坐标*最近，因此被选为采样颜色==：
 
-![](https://learnopengl.com/img/getting-started/filter_nearest.png)
+![](img/ly-20260317090129132.png)
 
 GL\_LINEAR （也称为（双）线性滤波）==从纹理坐标的相邻纹素中插值，近似表示纹素之间的颜色==。纹理坐标到纹素中心的距离越小，该纹素的颜色对采样颜色的贡献就越大。如下所示，返回的是相邻像素的混合颜色：
 
-![](https://learnopengl.com/img/getting-started/filter_linear.png)
+![](img/ly-20260317090142425.png)
 
 但这种纹理过滤方法的视觉效果如何呢？让我们看看当在大物体上使用低分辨率纹理时，这些方法是如何工作的（纹理会被放大，单个纹素会变得很明显）：
 
-![](https://learnopengl.com/img/getting-started/texture_filtering.png)
+![](img/ly-20260317090228660.png)
 
 ==GL\_NEAREST 会生成块状图案，我们可以清晰地看到构成纹理的像素==；而 ==GL\_LINEAR 则会生成更平滑的图案，单个像素不太明显==。GL\_LINEAR 的输出效果更逼真，但有些开发者更喜欢 8 位风格，因此会选择 GL\_NEAREST 。
 
@@ -241,7 +241,7 @@ float vertices[] = {
 
 由于我们添加了一个额外的顶点属性，因此我们需要再次通知 OpenGL 新的顶点格式：
 
-![Image of VBO with interleaved position, color and texture data with strides and offsets shown for configuring vertex attribute pointers.](https://learnopengl.com/img/getting-started/vertex_attribute_pointer_interleaved_textures.png)
+![](img/ly-20260317090326527.png)
 
 ```scss
 glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
@@ -300,7 +300,7 @@ glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 如果一切操作正确，您应该会看到以下图像：
 
-![](https://learnopengl.com/img/getting-started/textures2.png)
+![](img/ly-20260317090343739.png)
 
 如果你的矩形完全是白色或黑色，那很可能是你的操作过程中出现了错误。检查你的着色器日志，并尝试将你的代码与应用程序的 [源代码](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.1.textures/textures.cpp)进行比较。
 
@@ -314,7 +314,7 @@ FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);
 
 结果应该是顶点颜色和纹理颜色的混合：
 
-![](https://learnopengl.com/img/getting-started/textures_funky.png)
+![](img/ly-20260317090354012.png)
 
 我想你可以说我们的集装箱喜欢跳迪斯科。
 
@@ -390,7 +390,7 @@ while(...)
 
 通过 glUniform1i 设置采样器，我们可以确保每个 uniform 采样器都对应于正确的纹理单元。您应该得到以下结果：
 
-![](https://learnopengl.com/img/getting-started/textures_combined.png)
+![](img/ly-20260317090437856.png)
 
 您可能已经注意到纹理上下颠倒了！这是因为 ==OpenGL 期望 y 轴上的 `0.0` 坐标位于图像的底部，但图像通常 y 轴上的 `0.0` 坐标位于顶部==。幸运的是， `stb_image.h` 可以在加载任何图像之前添加以下语句来翻转 y 轴：
 
@@ -400,7 +400,7 @@ stbi_set_flip_vertically_on_load(true);
 
 在指示 `stb_image.h` 在加载图像时翻转 y 轴之后，您应该会得到以下结果：
 
-![](https://learnopengl.com/img/getting-started/textures_combined2.png)
+![](img/ly-20260317090449833.png)
 
 如果你看到一个正常的容器，那就说明你做对了。你可以把它和 [源代码](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.2.textures_combined/textures_combined.cpp)进行比较。
 
@@ -434,4 +434,93 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);//超出的�
 ```
 
 - 尝试仅显示矩形区域内纹理图像的中心像素，通过改变纹理坐标使各个像素可见。尝试将纹理过滤方法设置为 GL\_NEAREST 以更清晰地查看像素： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.5.textures_exercise3/textures_exercise3.cpp) 。
-- 使用统一变量作为混合函数的第三个参数，可以改变两种纹理的可见程度。使用上下箭头键可以改变容器或笑脸的可见程度： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.6.textures_exercise4/textures_exercise4.cpp) 。
+  
+  mipmap主要用于缩小，这里明显是放大 ，所以我只更改了他们的GL_TEXTURE_MAG_FILTER  
+```cpp
+//两个纹理都改为
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+//其实是改了纹理坐标，只用中心点那0.1x0.1的地方来做纹理
+float vertices[] = {
+	// positions          // colors           // texture coords (note that we changed them to 'zoom in' on our texture image)
+	 0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   0.55f, 0.55f, // top right
+	 0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   0.55f, 0.45f, // bottom right
+	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.45f, 0.45f, // bottom left
+	-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.45f, 0.55f  // top left 
+};
+```
+  
+- 使用统一变量作为混合 ~~mix~~ 函数的第三个参数，可以改变两种纹理的可见程度。使用上下箭头键可以改变容器或笑脸的可见程度： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/4.6.textures_exercise4/textures_exercise4.cpp) 。  
+
+```FragmentShader
+#version 330 core
+out vec4 FragColor;
+  
+in vec3 ourColor;
+//对应的纹理坐标
+in vec2 TexCoord;
+
+//所有的 Uniform 变量在初始化时默认值都是 0
+//纹理采样器
+uniform sampler2D ourTexture;
+uniform sampler2D texture1;
+uniform sampler2D texture2;
+uniform float mixValue=0.1;
+
+void main()
+{
+    //其实这里ourColor没用的，不过
+    //这里给他强行加了奇怪的效果
+    //这个不是向量乘积，a * b = (ar* br,ag*bg,ab*bb,aa*ba)
+    //FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);
+    FragColor = mix(texture(texture1, TexCoord), texture(texture2, TexCoord), mixValue);
+    //FragColor = mix(texture(texture1, TexCoord), texture(texture2, vec2(-TexCoord.s,TexCoord.t)), 0.2);
+
+}
+```
+
+```cpp
+
+float mixValue = 0.2f;
+
+void processInput(GLFWwindow* window)
+{
+	/*
+	检查用户是否按下了 Esc 键（如果没有按下，glfwGetKey 返回 GLFW\_RELEASE ）。如果用户按下了 Esc 键，我们使用 glfwSetwindowShouldClose 将 GLFW 的 WindowShouldClose 属性设置为 `true` 来关闭 GLFW
+	*/
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+	{
+
+		mixValue += 0.001f;
+		if (mixValue >= 1.0f)
+		{
+			mixValue = 1.0f;
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+	{
+		mixValue -= 0.001f;
+		if (mixValue <= 0.0f)
+		{
+			mixValue = 0.0f;
+		}
+	}
+
+}
+
+//循环内的修改
+
+		//将新创建的程序对象作为参数来激活
+		ourShader.use();
+
+		//这个setFloat要放在use()的后面，否则第一帧就不会
+		// 是setFloat的值，而是在第一帧use()之后，第二
+		// 帧在setFloat成功
+		ourShader.setFloat("mixValue", mixValue);
+
+```
+  
+  
