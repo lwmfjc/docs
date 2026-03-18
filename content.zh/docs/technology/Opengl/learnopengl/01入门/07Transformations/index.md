@@ -415,7 +415,7 @@ glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
 
 我们创建了一个变换矩阵，在顶点着色器中声明了一个 uniform 变量，并将该矩阵发送到着色器，用于变换顶点坐标。结果应该类似于这样：
 
-![](https://learnopengl.com/img/getting-started/transformations.png)
+![](img/ly-20260318163539305.png)
 
 完美！我们的容器确实向左倾斜，并且缩小了一半，所以变换成功了。让我们来点更有趣的，看看能否让容器随时间旋转，为了好玩，我们还==将容器重新定位到窗口的右下角==。要==让容器随时间旋转，我们需要在*渲染循环中更新*变换矩阵，因为它需要每帧都更新==。我们使用 GLFW 的 time 函数来获取随时间变化的角度：
 
@@ -431,7 +431,7 @@ trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 
 如果你的操作正确，你应该得到以下结果：
 
- ![](https://learnopengl.com/img/getting-started/transformations2.png)
+![](img/ly-20260318163605311.png)
 
 瞧，这就是答案。一个容器随着时间推移而旋转，这一切都由一个变换矩阵完成！现在你应该明白为什么矩阵在图形学领域如此强大了。==我们可以定义无限多的变换，并将它们全部组合到一个矩阵中，然后根据需要重复使用==。在顶点着色器中使用这样的变换，可以==省去重新定义顶点数据的麻烦，还能节省一些处理时间，因为我们不必总是重新发送数据（这很慢）；我们只需要更新变换 uniform 变量即可==。
 
