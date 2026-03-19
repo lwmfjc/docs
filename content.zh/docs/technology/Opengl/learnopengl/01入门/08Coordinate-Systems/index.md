@@ -194,7 +194,7 @@ model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 ```rust
 glm::mat4 view = glm::mat4(1.0f);
 // note that we're translating the scene in the reverse direction of where we want to move
-//如果不用投影，不会处理w，直接就超出了[1.0,1.0]的范围
+//如果不投影，不会处理w，直接就超出了[1.0,1.0]的范围
 view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
 ```
 
@@ -389,5 +389,42 @@ for(unsigned int i = 0; i < 10; i++)
 ```
 - 通过沿多个方向平移来调整视图矩阵，观察场景的变化。可以将视图矩阵视为一个相机对象。  
   
+```cpp
+//右移0.5
+model = glm::translate(model, glm::vec3(0.5f, 0.0f, 0.0f));
+
+
+//上移0.5
+model = glm::translate(model, glm::vec3(0.0f, 0.5f, 0.0f));
+
+//远离镜头3.0
+view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)); 
+
+//在没有投影矩阵的情况下，OpenGL 只会渲染落在标准化设备坐标 (NDC) 范围内的物体
+projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+```
   
 - 尝试使每隔 3 个容器（包括第 1 个容器）随时间旋转，而其他容器保持静止，仅使用模型矩阵： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/6.4.coordinate_systems_exercise3/coordinate_systems_exercise3.cpp) 。
+
+```cpp
+
+		for (unsigned int i = 0; i < 10; i++)
+		{
+
+
+			//对角线都是1.0
+			glm::mat4 model = glm::mat4(1.0f); 
+
+			model = glm::translate(model, cubePositions[i]);
+
+			if (i % 3 == 0) {
+				float angle = 2.0f * (i + 1);
+				model = glm::rotate(model, (float)glfwGetTime() * angle, glm::vec3(1.0f, 0.3f, 0.5f));
+
+			}
+			ourShader.setMat4("model", model);
+			 
+			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+		}
+```
