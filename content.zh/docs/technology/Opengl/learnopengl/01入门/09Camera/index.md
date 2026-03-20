@@ -186,7 +186,7 @@ view = glm::lookAt(glm::vec3(camX, 0.0, camZ), glm::vec3(0.0, 0.0, 0.0), glm::ve
 
 转动摄像机拍摄场景固然有趣，但自己控制所有镜头运动更有意思！首先我们需要搭建一个摄像机系统，因此在程序开头定义一些摄像机变量会很有帮助：
 
-```css
+```cpp
 glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
@@ -194,7 +194,9 @@ glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
 
 `LookAt` 函数现在变为：
 
-```ini
+```cpp
+//第一个参数(摄像头放哪里)：摄像头的位置
+//第二个参数(盯着的位置)：摄像头的位置+ (z轴-1.0f)[摄像头前方1.0f的位置]
 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 ```
 
@@ -207,12 +209,18 @@ void processInput(GLFWwindow *window)
 {
     ...
     const float cameraSpeed = 0.05f; // adjust accordingly
+    //按一次w就+0.05个cameraFront【 glm::vec3(0.0f, 0.0f, -1.0f) 】,
+    //也就是相机的位置朝负z轴前进
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront;
+    //按一次w就-0.05个cameraFront【 glm::vec3(0.0f, 0.0f, -1.0f) 】,
+    //也就是相机的位置朝正z轴前进
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         cameraPos -= cameraSpeed * cameraFront;
+    //往左就是往负x轴移动
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    //往右就是往正x轴移动
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
 }
