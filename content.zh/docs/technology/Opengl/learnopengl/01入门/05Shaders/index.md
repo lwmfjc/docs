@@ -489,7 +489,7 @@ while(...)
 }
 ```
 
-这里我们将顶点着色器和片段着色器的源代码分别存储在名为 `shader.vs` 和 `shader.fs` 的两个文件中。您可以随意命名着色器文件；我个人觉得 `.vs` 和 `.fs` 这两个扩展名非常直观。
+这里我们将顶点着色器和片段着色器的源代码分别存储在名为 `shader.vs` 和 `shader.fs` 的两个文件中。您可以随意命名着色器文件；我个人觉得 `.vs` 和 `.fs` 这两个扩展名非常直观。  ~~为了和visual studio 的扩展插件配合（而且.fs好像和F#冲突了），我用了 .vert和.frag 后缀~~ 
 
 您可以 [在这里](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/3.3.shaders_class/shaders_class.cpp)找到我们新创建的[着色器类的](https://learnopengl.com/code_viewer_gh.php?code=includes/learnopengl/shader_s.h)源代码。请注意，您可以点击着色器文件路径来查找着色器的源代码。
 
