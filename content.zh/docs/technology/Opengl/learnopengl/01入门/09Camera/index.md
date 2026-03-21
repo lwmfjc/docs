@@ -463,10 +463,13 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
     lastX = xpos;
     lastY = ypos;
 
+	//xoffset 和 yoffset 是鼠标两次移动之间的像素差（比如你猛甩鼠标，偏移量可能是 100 像素）。
+	//作用：如果不乘以 0.1f，相机视角会转得飞快（鼠标动一下，视角转 100 度）。乘以这个系数后，旋转会变得平滑、可控。
     float sensitivity = 0.1f;
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
+	//我们人为规定“鼠标移动 1 个单位 = 视角转动 $0.1^\circ$”
     yaw   += xoffset;
     pitch += yoffset;
 
@@ -487,7 +490,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 
 ## Zoom
 
-作为相机系统的补充，我们还将实现缩放界面。在上一章中我们提到， _视野范围_ （ _FOV）_ 很大程度上决定了我们能看到的场景范围。当视野范围缩小时，场景的投影空间也会缩小。这个缩小的空间会投影到相同的 NDC 上，从而产生放大的错觉。要实现放大，我们将使用鼠标滚轮。与鼠标移动和键盘输入类似，我们也有一个用于鼠标滚轮滚动的回调函数：
+作为相机系统的补充，我们还将实现==缩放界面==。在上一章中我们提到， _视野范围_ （ _FOV）_ 很大程度上决定了我们能看到的场景范围。当视野范围缩小时，场景的投影空间也会缩小。这个==缩小的空间会投影到相同的 NDC 上，从而产生放大的错觉==。要实现放大，我们将使用鼠标滚轮。与鼠标移动和键盘输入类似，我们也有一个用于鼠标滚轮滚动的回调函数：
 
 ```cpp
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
@@ -504,7 +507,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 现在我们需要在每一帧都将透视投影矩阵上传到 GPU，但这次要将 fov 变量作为其视野范围：
 
-```ini
+```cpp
 projection = glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
 ```
 
@@ -1036,4 +1039,57 @@ private:
 # 练习
 
 - 看看能否将相机类转换为==真正的== fps 相机，使之成为不能飞行的相机；只能在 `xz` 平面上环顾四周： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/7.5.camera_exercise1/camera_exercise1.cpp) 。
+  
+```cpp
+  void ProcessKeyboard(Camera_Movement direction, float deltaTime)
+{
+    //......
+
+    //如果不加这一行：在第一人称视角中，如果你正抬头看着天空（Front 向量指向斜上方）按“前进”键，相机不仅会向前走，还会飞上天。同理，低头走会钻进地里。加上这一行后：实现“步行”效果：玩家只能在 $XZ$ 平面（地面）移动。即使你仰望星空按 W 键，你也只是在地面上向前挪动，而不会真的飞起来。
+    Position.y = 0.0f;
+}
+```
 - 尝试创建自己的 LookAt 函数，并按照本章开头讨论的方式手动创建视图矩阵。将 glm 的 LookAt 函数替换为您自己的实现，看看它是否仍然具有相同的行为： [解决方案](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/7.6.camera_exercise2/camera_exercise2.cpp) 。
+  
+```cpp
+//Camera.h中添加该方法
+static glm::mat4 myLookAt(glm::vec3 cameraPos, glm::vec3 cameraTarget, glm::vec3 Up)
+{
+	// 1. 计算相机坐标系的三个轴（正交基）
+	// 注意：OpenGL 中相机看向 -Z 方向，所以 zaxis 是从目标指向相机的向量（正Z）
+	glm::vec3 zaxis = glm::normalize(cameraPos - cameraTarget);
+
+	// 计算右向量 (xaxis)：由“世界向上向量”与“相机Z轴”叉乘得到
+	glm::vec3 xaxis = glm::normalize(glm::cross(Up, zaxis));
+
+	// 计算相机自身的向上向量 (yaxis)：由 Z 轴与 X 轴叉乘得到
+	glm::vec3 yaxis = glm::cross(zaxis, xaxis);
+
+	// 2. 创建平移矩阵 (Translation)
+	// 目的：将相机移动到世界原点。位移量是相机位置的负值
+	// GLM 采用列主序存储：mat[列][行]
+	glm::mat4 translation = glm::mat4(1.0f);
+	translation[3][0] = -cameraPos.x; // 第4列，第1行
+	translation[3][1] = -cameraPos.y; // 第4列，第2行
+	translation[3][2] = -cameraPos.z; // 第4列，第3行
+
+	// 3. 创建旋转矩阵 (Rotation)
+	// 目的：将世界坐标轴对齐到相机的方向轴
+	// 这是一个正交矩阵的转置（即逆矩阵），用于把世界基向量变换到相机基向量
+	glm::mat4 rotation = glm::mat4(1.0f);
+
+	// 第一行：填充 xaxis (右向量)
+	rotation[0][0] = xaxis.x; rotation[1][0] = xaxis.y; rotation[2][0] = xaxis.z;
+
+	// 第二行：填充 yaxis (上向量)
+	rotation[0][1] = yaxis.x; rotation[1][1] = yaxis.y; rotation[2][1] = yaxis.z;
+
+	// 第三行：填充 zaxis (前向量/后退方向)
+	rotation[0][2] = zaxis.x; rotation[1][2] = zaxis.y; rotation[2][2] = zaxis.z;
+
+	// 4. 返回最终的观察矩阵 (LookAt Matrix)
+	// 变换顺序：先平移再旋转。在线性代数中，矩阵从右向左读取：Rotation * Translation
+	return rotation * translation;
+}
+
+```
