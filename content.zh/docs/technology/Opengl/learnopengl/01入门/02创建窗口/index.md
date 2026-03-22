@@ -27,7 +27,7 @@ GLFW 是一个用 C 语言编写的库，专门针对 OpenGL。==GLFW 提供了�
 
 您可以从 GLFW 的网页 [下载](http://www.glfw.org/download.html)页面获取它。GLFW 已经提供了适用于 Visual Studio 2012 到 2019 的预编译二进制文件和头文件，但为了完整起见，==我们将从源代码自行编译 GLFW==。这样做是为了让您体验自行编译开源库的过程，因为并非所有库都有预编译的二进制文件。那么，让我们下载_源代码包_吧。
 
-我们将把所有库都构建成 64 位二进制文件，因此如果您使用的是预编译的二进制文件，请确保获取 64 位二进制文件。
+我们将把所有库都构建成 64 位二进制文件，因此如果您使用的是预编译的二进制文件，请确保获取 64 位二进制文件。 ~~我这里用的是32位的~~ 
 
 下载完源代码包后，请解压缩并打开其内容。我们只需要其中的几个项目：
 
@@ -57,12 +57,12 @@ build之后的文件夹
 
 ## 汇编
 
-现在可以在 `build` 文件夹中找到名为 `GLFW.sln` 的文件，我们使用 Visual Studio 2019 打开它。由于 CMake 生成的项目文件已经包含了正确的配置设置，我们只需要构建解决方案即可。CMake 应该已经自动配置解决方案，使其编译为 64 位库；现在点击“构建解决方案”。这将生成一个名为 `glfw3.lib` 的已编译库文件，该文件位于 `build/src/Debug` 下。  
+现在可以在 `build` 文件夹中找到名为 `GLFW.sln` 的文件，我们使用 Visual Studio 2019 打开它。由于 CMake 生成的项目文件已经包含了正确的配置设置，我们只需要构建解决方案即可。CMake 应该已经自动配置解决方案，使其编译为 64 位库 ~~我用的32位~~ ；现在点击“构建解决方案”。这将生成一个名为 `glfw3.lib` 的已编译库文件，该文件位于 `build/src/Debug` 下。  
 
 ![](img/ly-20260313201314022.png)  
 
 ```cpp
-20:14:04:407	35>------ Skipped Build: Project: INSTALL, Configuration: Debug x64 ------
+20:14:04:407	35>------ Skipped Build: Project: INSTALL, Configuration: Debug x86 ------
 20:14:04:407	35>Project not selected to build for this solution configuration 
 20:14:04:456	========== Build: 32 succeeded, 0 failed, 0 up-to-date, 3 skipped ==========
 20:14:04:456	========== Build completed at 20:14 and took 41.900 seconds ==========
@@ -92,7 +92,7 @@ openglFiles
 
 # 我们的第一个项目
 
-首先，我们打开 Visual Studio 并创建一个新项目。如果有多个选项，请选择 C++，然后选择 `Empty Project` （别忘了给项目起个合适的名字 ~~我用的HelloOpengl~~ ）。由于我们将使用 64 位系统，而项目默认是 32 位，因此我们需要将顶部“调试”旁边的下拉菜单从 x86 更改为 x64：
+首先，我们打开 Visual Studio 并创建一个新项目。如果有多个选项，请选择 C++，然后选择 `Empty Project` （别忘了给项目起个合适的名字 ~~我用的HelloOpengl~~ ）。由于我们将使用 64 位系统，而项目默认是 32 位，因此我们需要将顶部“调试”旁边的下拉菜单从 x86 更改为 x64 ~~这里我用的32位~~ ：
 
 ![Image of how to switch from x86 to x64](https://learnopengl.com/img/getting-started/x64.png)
 
@@ -104,7 +104,7 @@ openglFiles
 
 我们可以告诉 IDE 在查找库文件和包含文件时考虑这个目录。在解决方案资源管理器中右键单击项目名称，然后转到 `VC++ Directories` 如下图所示：
 
-![Image of Visual Studio's VC++ Directories configuration](https://learnopengl.com/img/getting-started/vc_directories.png)
+![](img/ly-20260322231716486.png)
 
 之后，您可以添加自己的目录，让项目知道在哪里搜索。您可以手动将目录插入文本，或者单击相应的路径字符串并选择 `<Edit..>` 对 `Library Directories` 和 `Include Directories` 都执行此操作：
 
@@ -122,7 +122,7 @@ openglFiles
 
 如果您使用的是 Windows 系统，OpenGL 库 `opengl32.lib` 包含在 Microsoft SDK 中，该 SDK 会在安装 Visual Studio 时默认安装。由于本章使用 VS 编译器且运行在 Windows 系统上，我们需要将 `opengl32.lib` 添加到链接器设置中。请注意，OpenGL 库的 64 位版本名称与 32 位版本相同，都叫做 `opengl32.lib` ，这个名称略显不妥。
 
-![](img/ly-20260313203457590.png)  
+![](img/ly-20260322231812731.png)
 
 ## Linux 上的 OpenGL 库
 
