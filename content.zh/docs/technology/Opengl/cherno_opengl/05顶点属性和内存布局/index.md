@@ -78,5 +78,116 @@ glEnableVertexAttribArray(0);
 	- 比如前12个字节是3个浮点数，这是位置；之后8个字节是纹理坐标2个浮点数
 - 着色器端也需要接收在CPU端定义的layout
 - 顶点是几何图形上的一个点，但是在视觉上我们通过可以==通过其中的位置坐标给它定位==。顶点不止包括位置，还有颜色、条纹等
-- 
+
+# 代码
+
+![](img/ly-20260323162130632.png)  
+
+
+```cpp
+#ifdef LY_EP05
+#include <iostream>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+int main(void)
+{
+#pragma region 一些初始化
+	GLFWwindow* window;
+	// 初始化 GLFW 库，失败则退出
+	if (!glfwInit())
+		return -1;
+
+	// 创建窗口对象
+	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	if (!window)
+	{
+		// 创建失败则清理并退出
+		glfwTerminate();
+		return -1;
+	}
+
+	// 将当前窗口的上下文设置为 OpenGL 渲染的目标
+	glfwMakeContextCurrent(window);
+
+	// 初始化 GLEW 以加载 OpenGL 函数指针，需在有上下文后执行
+	if (glewInit() != GLEW_OK)
+	{
+		std::cout << "Error!" << std::endl;
+	}
+#pragma endregion
+
+	// 定义三角形的顶点坐标（CPU 内存）
+	float positions[25] = {
+		-0.5f, -0.5,0.0f,0.3f,
+		0.0f, 0.5f,0.0f,0.3f,
+		0.5f, -0.5f,0.0f,0.3f,
+		1.0f, 0.5f,0.0f,0.3f,
+		0.0f, 0.5f,0.0f,0.3f,
+	};
+
+	unsigned int buffer;
+	// 生成一个缓冲区 ID
+	glGenBuffers(1, &buffer);
+	// 绑定该 ID 到顶点缓冲区插槽
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	// 将顶点数据从 CPU 内存拷贝到 GPU 显存，设为静态读取模式
+	glBufferData(GL_ARRAY_BUFFER, 25 * sizeof(float),
+		positions, GL_STATIC_DRAW);
+
+
+	// 启用索引为 0 的(顶点)属性
+	// 默认情况下，所有顶点属性都是禁用的，必须手动“合上电闸”才能让 GPU 读取该属性。
+	glEnableVertexAttribArray(0);
+
+	//参数1-index：顶点的哪个属性[有位置、颜色、纹理等]（和在着色器程序里指定的索引一致），设置完后，当使用着色器程序从显卡读取位置时，就能从缓冲区，简单的读取并使用这些属性
+	//参数2-size：每个属性是几个分量的向量，即占用了几个数值
+	//参数3-type：提供的数据类型
+	//参数4normalized：是否归一化，可以让cpu帮你做（那就是true），或者弄好传给它。（比如
+	//把0-255映射成0-1
+	//参数5stride：从*当前顶点的属性的起始点*到*下一个顶点的同属性起始点*的字节数
+	//参数6pointer：在单个顶点数据块内，该属性距离(这个块的)起始位置的字节偏移。可以使用宏简化 
+	//1. 打标签：它把当前 GL_ARRAY_BUFFER 里的数据流，贴上了“0号”的标签。2. 定规则：它告诉 GPU，当你（Shader）想要 location = 0 的数据时，请按照“每 2 个 float 为一组”的规则去缓存里抓取。
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (const void*)0);
+
+
+	glEnableVertexAttribArray(1); 
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 4, (const void*)2);
+
+
+
+	// 游戏/渲染主循环
+	while (!glfwWindowShouldClose(window))
+	{
+		// 清理屏幕颜色缓冲区
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		// 读取当前绑定的缓冲区数据并绘制三角形：从
+		// 索引2即第2个顶点开始画，读取三个顶点(
+		//并行地读第2个顶点的0号属性_以及_第2个顶点的1号属性)
+
+		//如果是分层布局，比如顶点数据：
+		// [V,V, V,V, V,V, V,V, V,V, -->全是位置
+		//  T,T, T,T, T,T, T,T, T,T] -->全是纹理
+		//那么会同时读取第三组[V,V]和下面第三组[T,T]
+		glDrawArrays(GL_TRIANGLES, 2, 3);
+
+		// 交换前后缓冲区以刷新画面
+		glfwSwapBuffers(window);
+
+		// 轮询并处理窗口事件（如键盘输入、关闭动作）
+		glfwPollEvents();
+	}
+
+	// 退出前清理资源
+	glfwTerminate();
+	return 0;
+}
+
+#endif
+```
+
+
+
+
 
