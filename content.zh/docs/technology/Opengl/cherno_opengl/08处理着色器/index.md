@@ -186,7 +186,7 @@ int main(void)
 #pragma endregion
 
 	// 定义三角形的顶点坐标（CPU 内存）
-	float positions[10] = {
+	float positions[6] = {
 		-0.5f, -0.5,
 		0.0f, 0.5f,
 		0.5f, -0.5f,
@@ -251,4 +251,27 @@ int main(void)
 }
 
 #endif
+```
+
+着色器  
+
+```Shader
+//res/shader/Basic.shader
+#shader vertex
+#version 330 core
+layout(location = 0 ) in vec4 position;
+void main()
+{
+  gl_Position=position;//自动转换，X, Y, Z：如果缺省，默认补 0.0。W：如果缺省，默认补 1.0
+}
+
+
+#shader fragment
+#version 330 core
+layout(location = 0 ) out vec4 color; //这里应该不需要指定layout
+void main()
+{
+  color=vec4(0.2,0.3,0.8,1.0);
+}
+
 ```
