@@ -44,7 +44,7 @@ cssclasses:
 
 
 # 现代方案：`glDebugMessageCallback`
-
+~~视频没讲到这个~~  
 - ==新特性==：在 OpenGL 4.3+ 版本中引入。    
 - ==优势==：这是“被动式”报错。你只需在初始化时设置一个回调函数，一旦 OpenGL 出错，驱动程序会自动跳进你的函数。    
 - ==局限性==：虽然更现代，但某些旧显卡驱动支持不佳。Cherno 推荐在学习阶段使用 `GLCall` 宏，因为它兼容性最强且更直观。
@@ -66,3 +66,55 @@ cssclasses:
 |      ==调试效率==       | 配合 `__debugbreak()`（Windows 特有）可以让调试器直接定位到崩掉的那行源码。 |
 
 ==在发布版本（Release）中通常要关掉这些报错检查==。因为频繁地通过总线询问 GPU 状态会严重拖慢帧率（FPS）。
+
+
+# 代码
+
+```cpp
+//1. 宏定义
+
+//_debugbreak() 是msvc特有的
+//__FILE__和__LINE__ 是所有编译器都支持的
+//#x：字符串化操作符。它会将你传入的代码直接转成字符串
+//__FILE__ 和 __LINE__：编译器内置宏，自动获取当前代码所在的文件名和行号
+#define ASSERT(x) if(!(x)) __debugbreak();
+#define GLCall(x) GLClearError();\
+	x;\
+	ASSERT(GLLogCall(#x,__FILE__,__LINE__));
+
+static void GLClearError()
+{
+	//直到不是GL_NO_ERROR，就退出while循环
+	while (glGetError() != GL_NO_ERROR);
+}
+
+static bool GLLogCall(const char* function,
+	const char* file,int line)
+{ 
+	while (GLenum error = glGetError())
+	{
+		std::cout << "[OpenGL Error](" << error << "): "
+			<< function << " " << file << ":" << line << std::endl;
+		return false;
+	}
+
+	return true;
+}
+
+
+//2. while循环中使用
+
+	while (!glfwWindowShouldClose(window))
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		//GLClearError();
+		//参数错误
+		GLCall(glDrawElements(GL_TRIANGLES, 6, GL_INT, nullptr));
+		//ASSERT(GLLogCall()); 
+		
+		glfwSwapBuffers(window);
+
+		glfwPollEvents();
+	}
+```
