@@ -57,7 +57,7 @@ public:
 
 # 代码
 
-## Render
+## Render 渲染器
 
 ```cpp
 //Render.h
@@ -108,7 +108,7 @@ bool GLLogCall(const char* function,
 }
 ```
 
-## VertextBuffer
+## VertextBuffer 顶点缓冲区
 
 ```cpp
 //VertextBuffer.h
@@ -168,7 +168,7 @@ void VertexBuffer::Unbind() const
 
 ```
 
-## IndexBuffer
+## IndexBuffer 索引缓冲区
 
 ```cpp
 //IndexBuffer.h
@@ -234,7 +234,7 @@ void IndexBuffer::Unbind() const
 
 ```
 
-# VertexBufferLayout
+## VertexBufferLayout 顶点缓冲区布局设置
 
 ```cpp
 //VertexBufferLayout.h
@@ -311,7 +311,8 @@ public :
 
 ```
 
-# VertexArray 
+## VertexArray 顶点数组（属性）绑定
+
 ```cpp
 //VertexArray.h
 #pragma once
@@ -380,23 +381,14 @@ void VertexArray::Unbind() const
 }
 
 ```
-## Main
+
+## Shader着色器
 
 ```cpp
-//Main.cpp
-#ifdef LY_EP13
-#include <iostream>
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <fstream>
-#include <sstream>
+//Shader.h
+#pragma once
 #include <string>
-
-#include "Render.h"
-
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
+#include <unordered_map>
 
 struct ShaderProgramSource
 {
@@ -404,7 +396,72 @@ struct ShaderProgramSource
 	std::string FragmentSource;
 };
 
-static ShaderProgramSource ParseShader(const std::string& filepath)
+class Shader
+{
+private:
+	std::string m_FilePath;
+	unsigned int m_RendererID;
+	std::unordered_map<std::string, unsigned int> m_UniformLocationCache;
+
+	// caching for uniforms
+public:
+	Shader(const std::string& filepath);
+	~Shader();
+
+	void Bind() const;
+	void Unbind() const;
+
+	void SetUniform4f(const std::string& name, float v0, float v1,
+		float v2, float v3);
+private:
+	bool CompileShader();
+	unsigned int GetUniformLocation(const std::string& name);
+
+	ShaderProgramSource ParseShader(const std::string& filepath);
+	unsigned int CompileShader(unsigned int type,
+		const std::string& source);
+	//创建着色器程序对象：编译并链接顶点着色器和片段着色器
+	unsigned int CreateShader(const std::string& vertexShader,
+		const std::string& fragmentShader);
+};
+
+
+
+```
+
+```cpp
+//Shader.cpp
+#pragma once
+#include "Shader.h"
+#include <iostream>
+#include <fstream>
+#include <sstream> 
+#include "Render.h"
+
+Shader::Shader(const std::string& filepath)
+	:m_FilePath(filepath),m_RendererID(0)
+{
+	ShaderProgramSource source = ParseShader(filepath);
+	m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
+
+}
+
+Shader::~Shader()
+{
+	glDeleteProgram(m_RendererID);
+}
+
+void Shader::Bind() const
+{
+	glUseProgram(m_RendererID);
+}
+
+void Shader::Unbind() const
+{
+		glUseProgram(0);
+}
+
+ ShaderProgramSource Shader::ParseShader(const std::string& filepath)
 {
 
 	enum class ShaderType
@@ -443,7 +500,7 @@ static ShaderProgramSource ParseShader(const std::string& filepath)
 }
 
 //GLenum也就是unsigned int,这里不用GLenum是为了解耦
-static unsigned int CompileShader(unsigned int type,
+unsigned int Shader::CompileShader(unsigned int type,
 	const std::string& source)
 {
 	//创建着色器对象，向 OpenGL 申请一个空的“容器”来存放你的代码
@@ -491,7 +548,8 @@ static unsigned int CompileShader(unsigned int type,
 	return id;
 }
 
-static unsigned int CreateShader(const std::string& vertexShader,
+
+ unsigned int Shader::CreateShader(const std::string& vertexShader,
 	const std::string& fragmentShader)
 {
 	//在 GPU 中申请一个空的“程序对象”
@@ -521,6 +579,47 @@ static unsigned int CreateShader(const std::string& vertexShader,
 
 	return program;
 }
+
+
+void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+{
+	glUniform4f(GetUniformLocation(name), v0, v1, v2, v3);
+}
+
+unsigned int Shader::GetUniformLocation(const std::string& name)
+{
+	if (m_UniformLocationCache.find(name) != m_UniformLocationCache.end())
+	{
+		return m_UniformLocationCache[name];
+	}
+	unsigned int location=glGetUniformLocation(m_RendererID, name.c_str());
+	if (location == -1)
+		std::cout << "Warning: uniform '" << name << "' doesn't exist!" << std::endl;
+
+	m_UniformLocationCache[name] = location;
+	return location;
+}
+
+```
+## Main 主文件
+
+```cpp
+//Main.cpp
+#ifdef LY_EP13
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+
+#include "Render.h"
+
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
+#include "VertexArray.h"
+#include "Shader.h"
+
 
 int main(void)
 {
@@ -594,33 +693,22 @@ int main(void)
 		//申请创建一个GPU上的缓冲区，绑定并复制进去数据
 		IndexBuffer ib(indices, 6);
 
-		//这是一个相对路径，相对于 工作目录
-		//如果不是在visual studio中运行，就会相对于 可执行文件 所在的目录
-		//如果在visual studio中，工作目录被设置为$(ProjectDir) (右键目录-属性-调试-woking directory)
-		ShaderProgramSource source = ParseShader("res/shaders/Basic.shader");
+		Shader shader("res/shaders/Basic.shader");
+		shader.Bind();
 
-		//std::cout << source.VertexSource << std::endl;
-		//std::cout << source.FragmentSource << std::endl;
-
-		// 将字符串源码编译并链接成一个完整的程序对象
-		unsigned int program = CreateShader(source.VertexSource, source.FragmentSource);
-		// 告诉 OpenGL 状态机：接下来的所有绘制指令（如 glDrawArrays）都请使用这个编译好的着色器程序
-		// 进行渲染
-		glUseProgram(program);
+		shader.SetUniform4f("u_Color", 0.8f, 0.3f, 0.8f, 1.0f);
 
 
 		//===这里故意把他解绑了（假设他去绑定别的去了）===
 		vb.Unbind();
 
-		glUseProgram(0);
+		shader.Unbind();
 		va.Unbind();
 
 		//element_array_buffer 和vertexAttribArray不能
 		//在解绑vao之前处理，否则就记录进去了
 		ib.Unbind();
 
-		glDisableVertexAttribArray(0);
-		glDisableVertexAttribArray(1);
 		//========================================
 
 		float r = 0.0f;
@@ -633,18 +721,10 @@ int main(void)
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			//绘图前重新绑定
-			glUseProgram(program);
+			shader.Bind();
 
 			//必须先绑定program，因为vao不负责着色器程序的切换
 			va.Bind();
-
-			//========设置uniform========
-			//==在绑定程序后，获取变量地址，然后设置变量==
-			//问着色器，让着色器告诉CPU变量的位置
-			unsigned int location = glGetUniformLocation(program, "u_Color");
-			//不为1时会报错并且停止程序（当设置了变量但是着色器没
-			//使用过时，OpenGL会在编译时删除那个变量）
-			ASSERT(location != -1);
 
 			if (r > 1.0f)
 				increment = -0.05f;
@@ -654,7 +734,7 @@ int main(void)
 			r += increment;
 
 			//在u_Color的位置上设置数值
-			glUniform4f(location, r, 0.3f, 0.0f, 1.0f);
+			shader.SetUniform4f("u_Color", r, 0.3f, 0.0f, 1.0f);
 			//========设置uniform========
 
 			//重新启动属性
@@ -680,10 +760,7 @@ int main(void)
 		}
 
 		//最后解绑vao
-		glBindVertexArray(0);
-
-		// 手动通知显卡驱动释放该程序占用的显存
-		glDeleteProgram(program);
+		//glBindVertexArray(0);
 	}
 
 	// 退出前清理资源
@@ -694,6 +771,5 @@ int main(void)
 }
 
 #endif
-
-#endif
 ```
+
