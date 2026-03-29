@@ -1,6 +1,6 @@
 ---
-title: 13抽象OpenGL成类
-description: 13抽象OpenGL成类
+title: 13-16抽象OpenGL成类
+description: 13-16抽象OpenGL成类
 categories:
   - 学习
 tags:
@@ -15,7 +15,7 @@ cssclasses:
 ---
 将零散的 OpenGL 原生 API 封装成 ==C++ 类==。这不仅是为了让 `main` 函数变干净，更是为了构建一个可复用的==渲染引擎底层==。
 
-# 概述
+# 13-16抽象OpenGL成类
 
 ## 为什么要抽象？（工程思维）
 
@@ -60,13 +60,16 @@ public:
 ## Render 渲染器
 
 ```cpp
-//Render.h
+//Renderer.h
 //编译器第一次遇到这个文件，正常读取内容。
 //编译器会记下这个文件的物理路径。
 //当后续代码再次尝试 #include 这个路径的文件时，编译器直接跳过，不再读取。
 #pragma once
 
 #include <GL/glew.h> 
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "Shader.h"
 
 //_debugbreak() 是msvc特有的
 //__FILE__和__LINE__ 是所有编译器都支持的
@@ -81,11 +84,18 @@ void GLClearError();
 
 bool GLLogCall(const char* function,
 	const char* file, int line);
+
+class Renderer
+{
+public:
+	void Clear() const;
+	void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
+};
 ```
 
 ```cpp
-//Render.cpp
-#include "Render.h"
+//Renderer.cpp
+#include "Renderer.h"
 #include <iostream>
 
 void GLClearError()
@@ -106,6 +116,30 @@ bool GLLogCall(const char* function,
 
 	return true;
 }
+
+void Renderer::Clear() const
+{
+	GLCall(glClear(GL_COLOR_BUFFER_BIT));
+}
+
+void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
+{
+
+	//绘图前重新绑定
+	shader.Bind();
+
+	//必须先绑定program，因为vao不负责着色器程序的切换
+	va.Bind();
+
+	//这个可以不用，已经在va中录制了
+	//ib.Bind();
+
+	GLCall(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
+
+	//绘制后经常不需要再解绑，因为这会消耗性能，而且
+	//我们经常会在下一帧继续使用它们并覆盖 
+}
+
 ```
 
 ## VertextBuffer 顶点缓冲区
@@ -241,7 +275,7 @@ void IndexBuffer::Unbind() const
 #pragma once
 #include <vector>
 #include <GL/glew.h>
-#include "Render.h"
+#include "Renderer.h"
 
 struct VertexBufferElement
 {
@@ -301,12 +335,13 @@ public :
 	void Push<unsigned char>(int count)
 	{
 		m_Elements.push_back({ GL_UNSIGNED_BYTE,count,GL_TRUE });
-		m_Stride += count * VertexBufferElement::GetSizeOfType(GL_BYTE);
+		m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_BYTE);
 	}
 
 	inline const std::vector<VertexBufferElement> GetElements() const { return m_Elements; }
 	inline unsigned int GetStrde() const { return m_Stride; }
 };
+
 
 
 ```
@@ -317,7 +352,10 @@ public :
 //VertexArray.h
 #pragma once
 #include "VertexBuffer.h" 
-#include "VertexBufferLayout.h"
+//#include "VertexBufferLayout.h"
+
+//它告诉编译器：“哥们，后面会有一个类叫 VertexBufferLayout，我现在先提一嘴，你先别管它长啥样，只要知道它是个‘类’就行。”
+class VertexBufferLayout;
 
 class VertexArray
 {
@@ -336,7 +374,11 @@ public:
 ```
 
 ```cpp
+//VertexArray.cpp
+
 #include "VertexArray.h"
+//这里要真正调用 layout.GetElements()。这时候编译器必须看到具体的类定义，才能知道 GetElements() 函数长什么样。
+#include "VertexBufferLayout.h"
 
 VertexArray::VertexArray()
 { 
@@ -605,7 +647,7 @@ unsigned int Shader::GetUniformLocation(const std::string& name)
 
 ```cpp
 //Main.cpp
-#ifdef LY_EP13
+#ifdef LY_EP16
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -613,9 +655,10 @@ unsigned int Shader::GetUniformLocation(const std::string& name)
 #include <sstream>
 #include <string>
 
-#include "Render.h"
+#include "Renderer.h"
 
 #include "VertexBuffer.h"
+#include "VertexBufferLayout.h"
 #include "IndexBuffer.h"
 #include "VertexArray.h"
 #include "Shader.h"
@@ -687,7 +730,7 @@ int main(void)
 		VertexBuffer vb(positions, 4 * 2 * sizeof(float));
 
 		VertexBufferLayout layout;
-		layout.Push<float>(2); 
+		layout.Push<float>(2);
 		va.AddBuffer(vb, layout);
 
 		//申请创建一个GPU上的缓冲区，绑定并复制进去数据
@@ -714,17 +757,17 @@ int main(void)
 		float r = 0.0f;
 		float increment = 0.05f;
 
+		Renderer renderer;
+
 		// 游戏/渲染主循环
 		while (!glfwWindowShouldClose(window))
 		{
 			// 清理屏幕颜色缓冲区
-			glClear(GL_COLOR_BUFFER_BIT);
+			renderer.Clear();
 
-			//绘图前重新绑定
-			shader.Bind();
 
 			//必须先绑定program，因为vao不负责着色器程序的切换
-			va.Bind();
+			//va.Bind();
 
 			if (r > 1.0f)
 				increment = -0.05f;
@@ -733,24 +776,14 @@ int main(void)
 
 			r += increment;
 
+			//绘图前重新绑定
+			shader.Bind();
 			//在u_Color的位置上设置数值
 			shader.SetUniform4f("u_Color", r, 0.3f, 0.0f, 1.0f);
 			//========设置uniform========
 
-			//重新启动属性
-			//glEnableVertexAttribArray(0);
-			//glEnableVertexAttribArray(1);
-
-			//最后一个参数：nullptr (或 0)：表示从绑定的 EBO 数据最开头（偏移量为 0）开始读取索引。	非零值：表示从 EBO 的第几个字节开始读取。
-			//glDrawElements 的规范（Specification）中明确规定，第三个参数 type 必须是以下三个之一：	GL_UNSIGNED_BYTE，GL_UNSIGNED_SHORT，GL_UNSIGNED_INT，否则会黑屏
-			//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-			//GLClearError();
-			//参数错误
-			GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-
-			//ASSERT(GLLogCall());
-			//跳过前三个顶点
-			//glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, (void*)(3 * sizeof(unsigned int)));
+			renderer.Draw(va, ib, shader);
+			 
 
 			// 交换前后缓冲区以刷新画面
 			glfwSwapBuffers(window);
