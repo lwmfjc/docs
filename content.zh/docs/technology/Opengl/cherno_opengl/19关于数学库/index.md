@@ -25,19 +25,36 @@ cssclasses:
 - ==GLSL 同步==：我们需要在 CPU 端计算好矩阵，然后传递给 Shader。如果 CPU 端的数学库逻辑（比如数据排布）能与 Shader 中的 GLSL 保持一致，开发效率会极高。    
 - ==GLM 的选择==：Cherno 选择了 ==GLM (OpenGL Mathematics)==。它是一个 ==Header-only==（仅头文件）的库，设计思路完全模仿 GLSL，且与 OpenGL 兼容性完美。
     
+`https://github.com/g-truc/glm/releases/tag/1.0.3`  
 
+项目属性中设置：  
+
+![](img/ly-20260411231545098.png)  
+
+之后这里把`Texture.cpp`的头文件前几行改为  
+
+```cpp
+#include "Texture.h"
+#include "Renderer.h"
+#include <iostream>
+
+#include "stb_image/stb_image.h" //去除了vendor/
+```
+
+1. 把 glm这个文件夹 `include` 
+2. 把 `glm/detail/glm.cpp` 和 `glm/glm.cppm`  `exclude project `
 
 ## 向量与矩阵的基本概念
 
-- ==向量 (Vector)==：不仅代表位置，还代表方向。在 2D 中是 `vec2`，3D 中是 `vec3`，带上齐次坐标则是 `vec4`。    
+- ==向量 (Vector)==：==不仅代表位置，还代表方向==。在 2D 中是 `vec2`，3D 中是 `vec3`，带上齐次坐标则是 `vec4`。    
 - ==矩阵 (Matrix)==：图形学中的“魔法方阵”。`mat4`（4x4 矩阵）可以同时包含 ==旋转 (Rotation)==、==平移 (Translation)== 和 ==缩放 (Scale)== 信息。
-    
 
 ## 正交投影矩阵 (Orthographic Projection)
 
 这是本集的实战重点。Cherno 引入了 `glm::ortho` 函数：
 
 - ==作用==：将你定义的坐标（比如 0 到 800）映射到 OpenGL 的 ==NDC 标准设备坐标系==（-1.0 到 1.0）。    
+	- 告诉window窗口，如何将不同的顶点映射到它
 - ==意义==：有了它，你就不需要再写 `-0.5f` 这种坐标了，可以直接按像素坐标（如 `0, 0` 到 `640, 480`）来定义你的顶点。
     
 
@@ -46,9 +63,8 @@ cssclasses:
 Cherno 特别强调了数学上的乘法顺序：
 
 - ==列主序 (Column Major)==：GLM 和 OpenGL 一样，默认采用列主序。
-    
 - ==计算逻辑==：如果你想对一个点进行变换，公式通常是：
-    
+  $$P' = Projection \times View \times Model \times P$$
 - ==代码体现==：在代码里写乘法时，变换的顺序是从右往左读的。例如 `mvp = p * v * m`。
 
 
