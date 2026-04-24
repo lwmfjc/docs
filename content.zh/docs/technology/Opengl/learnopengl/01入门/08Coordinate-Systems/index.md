@@ -123,7 +123,7 @@ glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width/(float)heigh
 
 `glm::perspective` 作用是创建一个大的_视锥体_来定义可见空间，视锥体之外的任何物体都不会被裁剪到裁剪空间中，因此会被裁剪掉。==视锥体可以想象成一个形状不规则的立方体==，==立方体内部的每个坐标都会映射到裁剪空间中的一个点==。下图展示了一个视锥体：
 
-![](https://learnopengl.com/img/getting-started/perspective_frustum.png)
+![](img/ly-20260424211308949.png)
 
 它的第一个参数定义了视场角（FOV）值，即==视野范围==，它决定了视场的大小。为了获得逼真的视觉效果，==通常将其设置为 45 度==，但如果想要更接近《毁灭战士》风格的效果，可以将其设置为更大的值。第二个参数设置了==宽高比==，它是通过将视口的宽度除以其高度计算得出的。第三个和第四个参数分别设置了==视锥体的 _近_ 平面和 _远_ 平面==。我们==通常将近距离设置为 `0.1` ，远距离设置为 `100.0`== 。所有位于近平面和远平面之间且在视锥体内部的顶点都将被渲染。
 
@@ -137,7 +137,7 @@ glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)width/(float)heigh
 
 使用正交投影时，每个顶点坐标都直接映射到裁剪空间，而没有进行任何复杂的透视分割（它*仍然会进行透视分割，但 `w` 分量不会被修改（它始终为 `1` ），因此不会产生任何影响*）。由于正交投影不使用透视投影，远处的物体看起来不会变小，这会导致视觉效果怪异。因此，==正交投影主要用于 2D 渲染以及一些建筑或工程应用==，在这些应用中，我们不希望顶点因透视而变形。像 _Blender_ 这样的 3D 建模软件有时也会使用正交投影进行建模，因为它能==更准确地描绘每个物体的尺寸==。下面您将看到 Blender 中两种投影方法的比较：
 
-![](https://learnopengl.com/img/getting-started/perspective_orthographic.png)
+![](img/ly-20260424211330507.png)
 
 ==你可以看到，在透视投影中，距离较远的顶点看起来要小得多，而在正交投影中，每个顶点到用户的距离都相同==。
 
@@ -178,7 +178,7 @@ model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
 按照惯例，==OpenGL 是一个右手坐标系==。这意味着 x 轴正方向位于你的右侧，y 轴正方向位于上方，z 轴正方向位于你的后方。你可以想象屏幕是这三个坐标轴的中心，z 轴正方向穿过屏幕指向你。坐标轴的绘制方式如下：
 
-![](https://learnopengl.com/img/getting-started/coordinate_systems_right_handed.png)
+![](img/ly-20260424211354161.png)
 
 要了解为什么称之为右手习惯，请执行以下操作：
 
@@ -237,7 +237,9 @@ glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 - 离我们稍微远一点。
 - 要以透视方式显示（==顶点越远，图像应该越小==）。
 
-让我们来检验一下结果是否确实满足这些要求： ![](https://learnopengl.com/img/getting-started/coordinate_systems_result.png)
+让我们来检验一下结果是否确实满足这些要求：   
+
+![](img/ly-20260424211425491.png)
 
 看起来这架飞机确实像是一个静止在某个假想地面上的三维平面。如果你没有得到相同的结果，请将你的代码与完整的 [源代码](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/6.1.coordinate_systems/coordinate_systems.cpp)进行比较。
 
@@ -305,7 +307,7 @@ glDrawArrays(GL_TRIANGLES, 0, 36);
 
 你应该会得到类似以下内容：
 
- ![](https://learnopengl.com/img/getting-started/coordinate_systems_no_depth.png)
+ ![](img/ly-20260424211455164.png)
 
 它确实有点像个立方体，但总感觉哪里不对劲。==立方体的某些面被绘制到了其他面之上==。这是因为 OpenGL 在绘制立方体时，会==逐个三角形、逐个片段==地绘制，这==会覆盖之前已经绘制过的像素颜色==。由于 OpenGL 无法保证三角形的渲染顺序（在同一次绘制调用中），因此==即使一个三角形应该在另一个三角形的前面，有些三角形也会被绘制在彼此之上==。
 
@@ -331,7 +333,7 @@ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 让我们重新运行程序，看看 OpenGL 现在是否执行深度测试：
 
- ![](https://learnopengl.com/img/getting-started/coordinate_systems_with_depth.png)
+ ![](img/ly-20260424211525564.png)
 
 好了！一个带有完整纹理、具备正确深度检测功能且会随时间旋转的立方体。点击 [此处](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/6.2.coordinate_systems_depth/coordinate_systems_depth.cpp)查看源代码。
 
@@ -374,7 +376,7 @@ for(unsigned int i = 0; i < 10; i++)
 
 这段代码会在*每次绘制新立方体时更新模型矩阵*，总共执行 10 次。现在我们应该看到一个充满 10 个旋转角度各异的立方体的世界：
 
-![](https://learnopengl.com/img/getting-started/coordinate_systems_multiple_objects.png)
+![](img/ly-20260424211553445.png)
 
 太好了！看来我们的容器找到了一些志同道合的朋友。如果你遇到问题，可以尝试将你的代码与 [源代码](https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/6.3.coordinate_systems_multiple/coordinate_systems_multiple.cpp)进行比较。
 

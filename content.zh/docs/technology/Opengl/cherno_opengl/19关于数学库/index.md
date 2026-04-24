@@ -41,8 +41,8 @@ cssclasses:
 #include "stb_image/stb_image.h" //去除了vendor/
 ```
 
-1. 把 glm这个文件夹 `include` 
-2. 把 `glm/detail/glm.cpp` 和 `glm/glm.cppm`  `exclude project `
+1. 把 glm这个文件夹 (ui-右键)`include` 
+2. 把 `glm/detail/glm.cpp` 和 `glm/glm.cppm`  (ui-右键)`exclude project `
 
 ## 向量与矩阵的基本概念
 
@@ -92,3 +92,99 @@ Cherno 特别强调了数学上的乘法顺序：
 3.  ==坐标轴==：OpenGL 默认是右手坐标系。在设置 `glm::ortho` 的近平面和远平面时，如果数值填反了，你的方块可能会因为“剔除”而消失。    
 
 ==总结：== 第 19 集让你的程序从“手动拼凑坐标”进化到了“使用数学工具精准控制”。
+
+# 代码
+
+## Basic.shader
+
+```cpp
+#shader vertex
+#version 330 core
+layout(location = 0 ) in vec4 position;
+layout(location = 1 ) in vec2 texCoord;
+
+out vec2 v_TextCoord;
+
+//添加了这行--1
+//模型，视图，投影  矩阵
+uniform mat4 u_MVP;
+
+void main()
+{
+  //添加了这行--2
+  //经过 u_MVP * position 这一行代码计算后，赋值给
+  //gl_Position 的结果必须落在 $[-1.0, 1.0]$ 的区间内，
+  //否则它就会被丢弃
+  gl_Position = u_MVP * position;
+  //gl_Position=position;//自动转换，X, Y, Z：如果缺省，默认补 0.0。W：如果缺省，默认补 1.0
+  v_TextCoord=texCoord;//从顶点着色器获取到的又传出来
+}
+
+
+#shader fragment
+#version 330 core
+//layout(location = 0 ) out vec4 color; //这里应该不需要指定layout
+out vec4 color; 
+
+in vec2 v_TextCoord;
+
+uniform vec4 u_Color;//同意u_开头表示uniform变量
+uniform sampler2D u_Texture;//目前给了2
+
+void main()
+{ 
+  vec4 textColor = texture(u_Texture, v_TextCoord); 
+ color=textColor;//只要纹理颜色  
+
+}
+
+```
+
+
+## Shader.h添加定义  
+
+```cpp
+
+#include "glm/glm.hpp"
+
+
+public:
+	void SetUniformMat4f(const std::string& name, const glm::mat4& matrix);
+```
+
+## Shader.cpp添加实现
+
+```cpp
+ void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)
+ {
+	 //参数2：要传输的矩阵数量
+	 //参数3：是否需要转置（行列对调）
+	 //参数4：矩阵数据的首地址（指针）
+	 glUniformMatrix4fv(GetUniformLocation(name),1, 
+		 GL_FALSE,&matrix[0][0]);
+
+ }
+```
+
+## Main中修改
+
+```cpp
+		//宽高比：2.0:1.5即4:3
+		//添加这行
+		glm::mat4 proj = glm::ortho(-2.0f, 2.0f, -1.5f, 1.5f, -1.0f, 1.0f);
+
+		Renderer renderer;
+		Shader shader("res/shaders/Basic.shader");
+		shader.Bind();
+		shader.SetUniform1i("u_Texture", 2);
+		//添加这行
+		shader.SetUniformMat4f("u_MVP", proj);
+```
+
+# 效果
+
+![](img/ly-20260424151937953.png)  
+
+原图  
+
+![](img/ly-20260424152025493.png)
