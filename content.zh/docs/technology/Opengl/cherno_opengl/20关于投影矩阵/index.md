@@ -52,6 +52,13 @@ cssclasses:
 
 ![](img/ly-20260426000611720.png)
 
+```cpp
+		//透视投影
+		//第一个参数，是广角度数
+		//第二个参数，长宽比
+		//第三第四个参数：z的最近最远参数
+		projection = glm::perspective(glm::radians(fov), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+```
 ## 例子1  
 
 ```cpp
