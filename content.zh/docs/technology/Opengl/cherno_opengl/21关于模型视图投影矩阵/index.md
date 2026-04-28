@@ -72,6 +72,49 @@ cssclasses:
 这是第 21 集最核心的操作，在传给 Shader 之前，你在 C++ 里把它们乘在了一起。
 - ==计算顺序==：==`proj * view * model`==（注意：必须是从左往右写的这个顺序，因为矩阵运算是从右向左生效的）。    
 - ==意义==：这三者合并成了一个单一的 `glm::mat4` 矩阵，它包含了“物体在哪”、“相机在哪”和“投影范围”的所有信息。
+## 例子
+
+```cpp
+		//宽高比：960:540即16:9
+		glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+		
+		//这里在原来的基础上，左移了100
+		//即向右移动相机
+		glm::mat4 view = glm::translate(glm::mat4(1.0f),
+			glm::vec3(-100, 0, 0));
+
+		glm::mat4 mvp = proj * view;
+		//.....
+		
+		shader.SetUniformMat4f("u_MVP", mvp);
+
+```
+
+![](img/ly-20260428223956962.png)  
+
+移动后：  
+
+![](img/ly-20260428224005708.png)  
+
+```cpp
+
+		//宽高比：960:540即16:9
+		glm::mat4 proj = glm::ortho(0.0f, 960.0f, 0.0f, 540.0f, -1.0f, 1.0f);
+		//即向右移动相机
+		glm::mat4 view = glm::translate(glm::mat4(1.0f),
+			glm::vec3(-100, 0, 0));
+		//向右向上移动200
+		glm::mat4 model = glm::translate(glm::mat4(1.0f),
+			glm::vec3(200, 200, 0));
+
+		glm::mat4 mvp = proj * view * model;
+
+		glm::vec4 vp(100.0f, 100.0f, 0.0f, 1.0f);
+		glm::vec4 result = proj * vp * model;
+``` 
+
+![](img/ly-20260428224522138.png)  
+
 
 # 4. 传输阶段：Uniform 传递
 
