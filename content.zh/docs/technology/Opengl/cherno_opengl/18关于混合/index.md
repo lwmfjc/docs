@@ -59,7 +59,7 @@ GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 ==举个例子：== 如果你画一个 Alpha 为 $0.3$（ $30\%$ 不透明）的红色方块在黑色背景上：
 
-- 最终颜色 = $(红色 * 0.3) + (背景黑 * 0.7)$。
+- 最终颜色 = $(\text{红色} * 0.3) + (\text{背景黑} * 0.7)$。
 - 结果就是一种半透明的暗红色。
 另一个例子：  
 
@@ -70,7 +70,7 @@ GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 
 除了 `glBlendFunc` 定义权重，还可以通过 `glBlendEquation` 定义中间的符号：
 
-$$结果 = (源颜色 \times 权重A) \quad \mathbf{运算符} \quad (目标颜色 \times 权重B)$$  
+$$\text{结果} = (\text{源颜色} \times \text{权重A}) \quad \mathbf{\text{运算符}} \quad (\text{目标颜色} \times \text{权重B})$$  
 - ==`GL_FUNC_ADD`==：相加（默认，最常用）。      
 - ==`GL_FUNC_SUBTRACT`==：相减。    
 - ==`GL_MIN / GL_MAX`==：取两者的最小值或最大值。
