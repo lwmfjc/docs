@@ -198,8 +198,8 @@ $\begin{bmatrix} \color{red}1 & \color{red}2 \\ \color{green}3 & \color{green}4 
 
 让我们用一个更大的例子来结束关于矩阵乘法的讨论。试着用颜色来形象化这个规律。作为一项有益的练习，尝试自己计算出乘法结果，然后与结果矩阵进行比较（一旦你尝试手动进行矩阵乘法运算，你很快就会掌握要领）。
 
-$$\begin{bmatrix} \color{red}4 & \color{red}2 & \color{red}0 \\ \color{green}0 & \color{green}8 & \color{green}1 \\ \color{blue}0 & \color{blue}1 & \color{blue}0 \end{bmatrix} \cdot \begin{bmatrix} \color{red}4 & \color{green}2 & \color{blue}1 \\ \color{red}2 & \color{green}0 & \color{blue}4 \\ \color{red}9 & \color{green}4 & \color{blue}2 \end{bmatrix} = \begin{bmatrix} \color{red}4 \cdot \color{red}4 + \color{red}2 \cdot \color{red}2 + \color{red}0 \cdot \color{red}9 & \color{red}4 \cdot \color{green}2 + \color{red}2 \cdot \color{green}0 + \color{red}0 \cdot \color{green}4 & \color{red}4 \cdot \color{blue}1 + \color{red}2 \cdot \color{blue}4 + \color{red}0 \cdot \color{blue}2 \\ \color{green}0 \cdot \color{red}4 + \color{green}8 \cdot \color{red}2 + \color{green}1 \cdot \color{red}9 & \color{green}0 \cdot \color{green}2 + \color{green}8 \cdot \color{green}0 + \color{green}1 \cdot \color{green}4 & \color{green}0 \cdot \color{blue}1 + \color{green}8 \cdot \color{blue}4 + \color{green}1 \cdot \color{blue}2 \\ \color{blue}0 \cdot \color{red}4 + \color{blue}1 \cdot \color{red}2 + \color{blue}0 \cdot \color{red}9 & \color{blue}0 \cdot \color{green}2 + \color{blue}1 \cdot \color{green}0 + \color{blue}0 \cdot \color{green}4 & \color{blue}0 \cdot \color{blue}1 + \color{blue}1 \cdot \color{blue}4 + \color{blue}0 \cdot \color{blue}2 \end{bmatrix} 
- \\ = \begin{bmatrix} 20 & 8 & 12 \\ 25 & 4 & 34 \\ 2 & 0 & 4 \end{bmatrix}$$
+$$ \begin{bmatrix} \color{red}4 & \color{red}2 & \color{red}0 \\ \color{green}0 & \color{green}8 & \color{green}1 \\ \color{blue}0 & \color{blue}1 & \color{blue}0 \end{bmatrix} \cdot \begin{bmatrix} \color{red}4 & \color{green}2 & \color{blue}1 \\ \color{red}2 & \color{green}0 & \color{blue}4 \\ \color{red}9 & \color{green}4 & \color{blue}2 \end{bmatrix} = \begin{bmatrix} \color{red}4 \cdot \color{red}4 + \color{red}2 \cdot \color{red}2 + \color{red}0 \cdot \color{red}9 & \color{red}4 \cdot \color{green}2 + \color{red}2 \cdot \color{green}0 + \color{red}0 \cdot \color{green}4 & \color{red}4 \cdot \color{blue}1 + \color{red}2 \cdot \color{blue}4 + \color{red}0 \cdot \color{blue}2 \\ \color{green}0 \cdot \color{red}4 + \color{green}8 \cdot \color{red}2 + \color{green}1 \cdot \color{red}9 & \color{green}0 \cdot \color{green}2 + \color{green}8 \cdot \color{green}0 + \color{green}1 \cdot \color{green}4 & \color{green}0 \cdot \color{blue}1 + \color{green}8 \cdot \color{blue}4 + \color{green}1 \cdot \color{blue}2 \\ \color{blue}0 \cdot \color{red}4 + \color{blue}1 \cdot \color{red}2 + \color{blue}0 \cdot \color{red}9 & \color{blue}0 \cdot \color{green}2 + \color{blue}1 \cdot \color{green}0 + \color{blue}0 \cdot \color{green}4 & \color{blue}0 \cdot \color{blue}1 + \color{blue}1 \cdot \color{blue}4 + \color{blue}0 \cdot \color{blue}2 \end{bmatrix} = \begin{bmatrix} 20 & 8 & 12 \\ 25 & 4 & 34 \\ 2 & 0 & 4 \end{bmatrix} $$
+
 
 正如你所见，矩阵乘法是一个相当繁琐且极易出错的过程（这也是我们通常让计算机来完成这项工作的原因），而且当矩阵规模增大时，问题会迅速变得尤为突出。如果你仍然渴望了解更多，并且对矩阵的更多数学性质感兴趣，我强烈建议你观看 [可汗学院关于矩阵的这些视频](https://www.khanacademy.org/math/algebra-home/alg-matrices) 。
 
@@ -225,31 +225,13 @@ $$\begin{bmatrix} \color{red}1 & \color{red}0 & \color{red}0 & \color{red}0 \\ \
 
 向量本身完全未受影响。这一点从乘法规则即可看出：第一个结果元素是==矩阵第一行的每个元素分别与向量的每个元素相乘==的结果。由于第一行除第一个元素外其余元素均为 0，因此我们得到：$\color{red}1\color{black}\cdot\color{black}1 + \color{red}0\color{black}\cdot2 + \color{red}0\color{black}\cdot3 + \color{red}0\color{black}\cdot4 = 1$  ，向量的其他三个元素也遵循同样的规则。 你可能想知道，一个不进行变换的变换矩阵有什么用？==单位矩阵通常是生成其他变换矩阵的起点==，如果我们更深入地研究线性代数，它还是一个==在证明定理和求解线性方程组中非常有用的矩阵==。  
 
- ~~附：(5 x 4的矩阵) x (4 x 1的矩阵)  ，结果为(5 x 1的矩阵)~~   
+ ~~附：(5 x 4的矩阵) x (4 x 1的矩阵)  ，结果为(5 x 1的矩阵)~~     
+
  $$
-\begin{bmatrix} 
-1 & 0 & 0 & 0 \\ 
-0 & 1 & 0 & 0 \\ 
-0 & 0 & 1 & 0 \\ 
-0 & 0 & 0 & 1 \\ 
-1 & 0 & 0 & 0 
-\end{bmatrix} 
-\times 
-\begin{bmatrix} 
-1 \\ 
-2 \\ 
-3 \\ 
-4 
-\end{bmatrix} 
-= 
-\begin{bmatrix} 
-1 \\ 
-2 \\ 
-3 \\ 
-4 \\ 
-1 
-\end{bmatrix}
-$$
+\begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \\ 1 & 0 & 0 & 0 \end{bmatrix} \times \begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \\ 3 \\ 4 \\ 1 \end{bmatrix}
+$$  
+
+
 
 ## 缩放 Scaling
 
