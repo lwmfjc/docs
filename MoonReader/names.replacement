@@ -3,3 +3,4 @@
 <strong>(.*?)</strong>#->#<span style="color: #000000; font-weight: bold; font-size: 1.2em;">$1</span>
 <em>(.*?)</em>#->#<span style="text-decoration: underline; color: black; font-style: inherit;">$1</span>
 <code>(.*?)</code>#->#<span style="text-decoration: underline; color: DarkBlue; font-style: inherit;">$1</span>
+<hr.*?>[\s\S]*?title[\s\S]*?date[\s\S]*?<hr.*?>#->#
