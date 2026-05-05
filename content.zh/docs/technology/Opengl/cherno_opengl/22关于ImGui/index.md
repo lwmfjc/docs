@@ -37,6 +37,7 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 
 ```cpp
 
+		
 		//=======imgui添加============
 		//imGui创建上下文
 		// Setup ImGui binding
@@ -63,6 +64,8 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 		bool show_another_window = false;
 		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+		glm::vec3 translation(200, 200, 0);
+
 		// 游戏/渲染主循环
 		while (!glfwWindowShouldClose(window))
 		{
@@ -83,6 +86,7 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 
 			r += increment;
 
+			//=======imgui添加============
 			//绘图前重新绑定
 			shader.Bind();
 			//在u_Color的位置上设置数值
@@ -91,12 +95,15 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 
 			renderer.Draw(va, ib, shader);
 
-			//小窗口
 			//=======imgui添加============
+			//小窗口
 			{
 				static float f = 0.0f;
 				static int counter = 0;
 				ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
+				//这里传入translation.x的地址，imgui会在这个地址上修改值
+				//第一个参数是标签，表示在imgui界面上显示的名字，第二个参数是要修改的值的地址，后面是这个值的范围
+				ImGui::SliderFloat3("Translation", &translation.x, 0.0f, 960.0f);            // Edit 1 float using a slider from 0.0f to 1.0f  
 				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
 				ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
@@ -111,10 +118,17 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			}
 
+			//imgui:这里吧mvp相关代码移到while循环中
+			//向右向上移动200
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
+
+			glm::mat4 mvp = proj * view * model;
+			shader.SetUniformMat4f("u_MVP", mvp);
+
 
 			//=======imgui添加============
 			ImGui::Render();
-			//=======imgui添加============
+
 			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
 			// 交换前后缓冲区以刷新画面
@@ -127,7 +141,7 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 		//最后解绑vao
 		//glBindVertexArray(0);
 	}
-	
+
 	//=======imgui添加============
 	ImGui_ImplGlfwGL3_Shutdown();
 
@@ -138,6 +152,7 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 	return 0;
 ```
 
+![](img/ly-20260505220751808.png)
 
 按==程序生命周期的时间线==，我们可以把 ImGui 的 *==集成==* 与运行分为以下阶段：
 
