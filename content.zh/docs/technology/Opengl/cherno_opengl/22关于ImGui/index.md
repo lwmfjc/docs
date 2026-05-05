@@ -15,7 +15,131 @@ cssclasses:
 ---
 第 22 集是 Cherno 系列中非常爽的一集，因为它让你告别了“硬编码”坐标的痛苦，转而使用==可视化 UI== 来直接操控显卡里的数据。
 
-按==程序生命周期的时间线==，我们可以把 ImGui 的集成与运行分为以下阶段：
+# 代码
+
+https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致  
+
+根目录下所有.h和.cpp文件，以及`examples\opengl3_example`文件夹中的.h和.cpp文件都复制到项目中 ~~不要include main.cpp文件~~ 。  
+
+![](img/ly-20260503213446407.png)  
+
+修改`imgui_impl_glfw_gl3.cpp`中开头的 `#include <GL/gl3w.h>` 为`#include <GL/glew.h> `  
+
+## 添加头文件
+
+```cpp
+
+#include "imgui_1.60/imgui.h"
+#include "imgui_1.60/imgui_impl_glfw_gl3.h"
+```
+
+## shader后的修改
+
+```cpp
+
+		//=======imgui添加============
+		//imGui创建上下文
+		// Setup ImGui binding
+		ImGui::CreateContext();
+		//windows ,告诉 ImGui 你的程序窗口在哪里
+		//允许 ImGui 自动接管窗口的回调函数（比如鼠标点击、滚轮滚动）
+		ImGui_ImplGlfwGL3_Init(window, true);
+		//设置 UI 的主题配色
+		ImGui::StyleColorsDark();
+
+		//解决白屏问题2：在进入 while 循环前，手动清一次屏并交换缓冲
+		//设置“清除颜色”
+		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+		//用上面选好的“油漆”填满整个颜色缓冲区（Color Buffer）
+		glClear(GL_COLOR_BUFFER_BIT);
+		//交换缓冲区
+		glfwSwapBuffers(window); // 这一步把“深绿色”推送到显卡
+		//解决白屏问题3：最后才显示窗口
+		glfwShowWindow(window);
+
+
+		//=======imgui添加============
+		bool show_demo_window = true;
+		bool show_another_window = false;
+		ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+		// 游戏/渲染主循环
+		while (!glfwWindowShouldClose(window))
+		{
+			// 清理屏幕颜色缓冲区
+			renderer.Clear();
+
+			//=======imgui添加============
+			ImGui_ImplGlfwGL3_NewFrame();
+
+
+			//必须先绑定program，因为vao不负责着色器程序的切换
+			//va.Bind();
+
+			if (r > 1.0f)
+				increment = -0.05f;
+			else if (r < 0.0f)
+				increment = 0.05f;
+
+			r += increment;
+
+			//绘图前重新绑定
+			shader.Bind();
+			//在u_Color的位置上设置数值
+			shader.SetUniform4f("u_Color", r, 0.3f, 0.0f, 1.0f);
+			//========设置uniform========
+
+			renderer.Draw(va, ib, shader);
+
+			//小窗口
+			//=======imgui添加============
+			{
+				static float f = 0.0f;
+				static int counter = 0;
+				ImGui::Text("Hello, world!");                           // Display some text (you can use a format string too)
+				ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
+				ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+
+				ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our windows open/close state
+				ImGui::Checkbox("Another Window", &show_another_window);
+
+				if (ImGui::Button("Button"))                            // Buttons return true when clicked (NB: most widgets return true when edited/activated)
+					counter++;
+				ImGui::SameLine();
+				ImGui::Text("counter = %d", counter);
+
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			}
+
+
+			//=======imgui添加============
+			ImGui::Render();
+			//=======imgui添加============
+			ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
+
+			// 交换前后缓冲区以刷新画面
+			glfwSwapBuffers(window);
+
+			// 轮询并处理窗口事件（如键盘输入、关闭动作）
+			glfwPollEvents();
+		}
+
+		//最后解绑vao
+		//glBindVertexArray(0);
+	}
+	
+	//=======imgui添加============
+	ImGui_ImplGlfwGL3_Shutdown();
+
+	// 退出前清理资源
+	//glfwTerminate会破坏Context，导致析构函数中的glGetError()
+	//返回一个OpenGL错误
+	glfwTerminate();
+	return 0;
+```
+
+
+按==程序生命周期的时间线==，我们可以把 ImGui 的 *==集成==* 与运行分为以下阶段：
 
 
 # 1. 初始化阶段：建立连接
@@ -24,7 +148,7 @@ cssclasses:
 
 - ==动作==：`ImGui::CreateContext()`。    
 - ==绑定==：调用 `ImGui_ImplGlfw_InitForOpenGL` 和 `ImGui_ImplOpenGL3_Init`。   
-- ==目的==：让 ImGui 知道两件事：它该去哪个窗口捕获鼠标/键盘（GLFW），以及它该用哪个版本的驱动来画出自己的 UI（OpenGL）。
+- ==目的==：让 ImGui 知道两件事：它该去哪个窗口捕获鼠标/键盘（GLFW），以及它该用哪个版本的驱动来画出自己的 UI (OpenGL) 。
 
 
 # 2. 渲染循环内：新帧准备
