@@ -66,6 +66,7 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 
 		glm::vec3 translation(200, 200, 0);
 
+		
 		// 游戏/渲染主循环
 		while (!glfwWindowShouldClose(window))
 		{
@@ -89,8 +90,16 @@ https://github.com/ocornut/imgui  下载1.6版本，和视频中保持一致
 			//=======imgui添加============
 			//绘图前重新绑定
 			shader.Bind();
+			//imgui:这里吧mvp相关代码移到while循环中
+			//向右向上移动200
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), translation);
+
+			glm::mat4 mvp = proj * view * model;
+			shader.SetUniformMat4f("u_MVP", mvp);
+
+			//=======imgui添加============
 			//在u_Color的位置上设置数值
-			shader.SetUniform4f("u_Color", r, 0.3f, 0.0f, 1.0f);
+			//shader.SetUniform4f("u_Color", r, 0.3f, 0.0f, 1.0f);
 			//========设置uniform========
 
 			renderer.Draw(va, ib, shader);
