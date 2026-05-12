@@ -22,10 +22,12 @@ cssclasses:
 请提前下载好以下固件文件：
 
 1. ==过渡固件:==  be12 pro openWRT过渡固件.bin
-2. ==正式固件:== openwrt-mediatek-filogic-tenda_be12-pro-squashfs-sysupgrade.bin ，固件可在 https://firmware-selector.openwrt.org 搜索“Tenda BE12 Pro进行下载  ~~目前我在这里下载的固件不可用会变砖不过可以通过后面的救灾操作恢复~~ 。
-   ![](img/ly-20260510221846138.png)
+2. ==正式固件:== openwrt-mediatek-filogic-tenda_be12-pro-squashfs-sysupgrade.bin ，固件可在 https://firmware-selector.openwrt.org 搜索“Tenda BE12 Pro进行下载  ~~目前我在【下载应向】这里下载的固件没有web管理界面（luci及luci汉化），所以要点上面那个【关于此构建-自定义原装软件包，如下图2】~~ 。
+   ![](img/ly-20260510221846138.png)  
+   
+   ![](img/ly-20260512231857067.png)  
+   `luci` 和 `luci-i18n-base-zh-cn` 是必须的。如果用默认的构建能联网 ~~openwrt默认关了wifi，所以如果想联网只能通过网线~~ 但没有web界面的情况下，想办法从ssh进去安装这两个包即可 ~~如果自行构建的情况下，我保持它默认的预安装的那些，并添加了`luci-i18n-base-zh-cn`~~   
 
-  
 # 2. 刷机 (二个阶段) 
 
 ## 第一阶段：刷入临时系统
