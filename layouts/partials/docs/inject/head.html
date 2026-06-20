@@ -1,4 +1,4 @@
-{{ $cssMap :=  dict "book01" "/css/book01.css"  "book02" "/css/book02.css"   "book03" "/css/book03.css"  }}
+{{ $cssMap :=  dict "book01" "css/book01.css"  "book02" "css/book02.css"   "book03" "css/book03.css"  }}
 {{/*获取md中指定的样式*/}}
 {{ $cssArr := .Param "cssAttach" }}
 {{ range $v := $cssArr }} 
