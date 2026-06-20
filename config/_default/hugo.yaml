@@ -1,7 +1,7 @@
 baseURL: https://lwmfjc.github.io/docs/
 relativeURLs: true    # 👈 强制开启相对路径（新增这行）
 canonifyURLs: false   # 👈 配合相对路径使用（新增这行）
-languageCode: zh
+languageCode: zh-cn
 defaultContentLanguage: zh
 defaultContentLanguageInSubdir: true
 title: My New Hugo Site
