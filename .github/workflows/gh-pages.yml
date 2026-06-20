@@ -3,34 +3,51 @@ name: GitHub Pages
 on:
   push:
     branches:
-      - main  # Set a branch to deploy
+      - main
   pull_request:
+
+# 必须显式声明官方部署所需的特殊权限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-22.04
     env:
       HUGO_CACHEDIR: /tmp/hugo_cache
-    concurrency:
-      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          submodules: true  # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod 
+          submodules: true
+          fetch-depth: 0
 
-      - uses: actions/cache@v4
+      - name: Cache Hugo Modules
+        uses: actions/cache@v4
         with:
-          path: ${{ env.HUGO_CACHEDIR }} # <- Use the same env variable just right here
-          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum') }}
+          path: ${{ env.HUGO_CACHEDIR }}
+          key: ${{ runner.os }}-hugomod-${{ hashFiles('**/go.sum', '**/hugo.toml', '**/config.toml') }}
           restore-keys: |
             ${{ runner.os }}-hugomod-
 
       - name: Read .env
         id: hugo-version
         run: |
-          . ./.env
-          echo "HUGO_VERSION=${HUGO_VERSION}" >> "${GITHUB_OUTPUT}"
+          if [ -f .env ]; then
+            . ./.env
+            echo "HUGO_VERSION=${HUGO_VERSION}" >> "${GITHUB_OUTPUT}"
+          else
+            echo "HUGO_VERSION=latest" >> "${GITHUB_OUTPUT}"
+          fi
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
@@ -41,14 +58,12 @@ jobs:
       - name: Build
         run: hugo --minify 
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
-        if: github.ref == 'refs/heads/main'
+      # ===== 以下是核心修改：改用官方原生无 Git 部署 =====
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          personal_token: ${{ secrets.MY_GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: main 
-          external_repository: lwmfjc/lwmfjc.github.io 
-        # with:
-        #   github_token: ${{ secrets.MY_GITHUB_TOKEN }}
-        #   publish_dir: ./public
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
