@@ -1,7 +1,7 @@
 baseURL: https://lwmfjc.github.io/docs/
-#languageCode: en-us
-languageCode: zh-cn
-#languageCode: zh-cn #这句话貌似没效果，是说编程语言是中文还是英文吗？？
+relativeURLs: true    # 👈 强制开启相对路径（新增这行）
+canonifyURLs: false   # 👈 配合相对路径使用（新增这行）
+languageCode: zh
 defaultContentLanguage: zh
 defaultContentLanguageInSubdir: true
 title: My New Hugo Site
