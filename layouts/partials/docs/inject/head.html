@@ -4,6 +4,7 @@
 {{ range $v := $cssArr }} 
 	{{ $cssHref := (index $cssMap $v) }} 
 	{{ if $cssHref }} 
-		<link type=text/css rel="stylesheet" href="{{ $cssHref }}">
+		{{/* 💡 核心修改：利用 | absURL 帮你在开头自动补全标准的 /docs/ 前缀 */}}
+		<link type="text/css" rel="stylesheet" href="{{ $cssHref | absURL }}">
 	{{ end }} 
-{{ end }} 
+{{ end }}
