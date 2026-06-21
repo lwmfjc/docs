@@ -115,6 +115,8 @@ glSetObjectOption(GL_WINDOW_TARGET, GL_OPTION_WINDOW_HEIGHT, 600);
 // set context target back to default
 glBindObject(GL_WINDOW_TARGET, 0);
 
+//如果此时，使用glBindObject(GL_WINDOW_TARGET, objectId); 重新绑定，那么现在设置还是800和600
+
 
 ```
 
