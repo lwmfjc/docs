@@ -158,7 +158,7 @@ void Logr(const char* message) {
 ```
 未解析的外部符号Log，Multiply引用了它，但是它找不到要将它链接到哪个函数中  
 
-如果将Multiply函数中的*调用Log*语句`Log("Multiply");`注释掉，则build项目成功无报错  
+如果将Multiply函数中的*调用Log*语句`Log("Multiply");`注释掉，则build项目成功无报错 ~~因为只有本文件内声明了Log但是又没用到，所以不会去链接他~~   
 
 ```c++
 int Multiply(int a, int b) {
@@ -170,6 +170,7 @@ int Multiply(int a, int b) {
 如果将Main函数中的Multiply函数调用注释，则build照样提示链接错误  
 
 ```c++
+//Main.cpp
 #include <iostream>
 void Log(const char* message);
 int Multiply(int a, int b) {
@@ -188,7 +189,12 @@ int main() {
 ========== Build: 0 succeeded, 1 failed, 0 up-to-date, 0 skipped ========== */
 ```
 
-为什么未使用它却没有删除它并且避免报错？因为虽然该文件(Main.cpp)没有使用Multiply，但是有可能另一个文件可能使用它，所以链接器会链接它，要保证允许使用的函数都必须是可链接的  
+为什么未使用它却没有删除它并且避免报错？因为虽然该文件(Main.cpp)没有使用Multiply，但是有可能另一个文件可能使用它（Multiply），所以链接器会链接它，要保证允许使用的函数都必须是可链接的  
+
+> 1. 未被引用的函数，其内部代码依然会被编译：Multiply 函数虽然没有在 main 中被调用，但只要它存在于 .cpp 文件中，且没有被声明为静态（static）或内联（inline），编译器就会认为它是一个可以被其他翻译单元（其他 .cpp 文件）调用的全局函数。
+> 2. 默认开启二进制生成：在 Debug 模式下，为了方便调试，编译器不会默认把“没被调用的代码”优化掉。Multiply 依然会被编译进 Math.obj。
+> 3. 产生外部符号依赖：因为 Multiply 里面写了 Log("Multiply");，编译器在编译 Multiply 时，发现只有 Log 的声明（没有函数体），就会在 Math.obj 里打一个标记：“我需要一个叫做 void Log(const char*) 的函数，链接器你帮我在别的 .obj 里找找”。
+> 4. 链接失败：链接器把所有 .obj 文件翻了个遍，都没找到 Log 的具体实现，于是抛出了 LNK2019 (unresolved external symbol) 错误。
 
 ## 消除链接的必要性
 
@@ -371,7 +377,7 @@ static void Log(const char* message) {
 inline，内联，将采用我们的实际函数==体==并用它替换调用  
 
 ```c++
-//Log.cpp
+//Log.h
 
 #pragma once
 //当在同一个源文件中被多次包含时，使用 #pragma once 可以确保该头文件的内容只被编译一次。
