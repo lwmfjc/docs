@@ -58,7 +58,7 @@ int main() {
 
 ![](img/ly-20251220182411767.png)  
 
-项目编译后生成的可执行文件放在解决方案文件夹下  
+项目编译后生成的可执行文件放在（总的）解决方案文件夹下  
 
 ![](img/ly-20251220182451084.png)  
 
@@ -75,6 +75,8 @@ OutputDirectory: `$(SolutionDir)bin\$(Platform)\$(Configuration)\`
 > 如果解决方案有多个项目，如果构建DLL文件或者其他需要的东西，我们需要这些在同一个文件夹中（而不用深入每个项目的文件夹）
 
 IntermediateDirectory: `$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\`  
+
+~~这里建议加上项目名，避免中间文件冲突(覆盖) `$(SolutionDir)bin\intermediates\$(ProjectName)\$(Platform)\$(Configuration)\`~~
 
 ![](img/ly-20251220185019820.png)  
 
