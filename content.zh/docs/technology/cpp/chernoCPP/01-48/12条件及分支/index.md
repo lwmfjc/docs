@@ -38,10 +38,10 @@ cssclasses:
 
 - 其中，`dword ptr [rbp+0F4h],0 ` 表示 `将0存储到内存地址rbp+0xF4处的4字节空间（双字）中` ，rbp通常指基指针寄存器（Base Pointer Register），通常是栈帧的基地址
 
-- test基本是执行按位与运算  
+- test基本是执行 `按位与` 运算  
   ![](img/ly-20251219231053130.png)  
-  > 补充：test eax, eax 不会改变 eax 的值，只是临时计算 eax AND eax，然后丢弃结果，唯一目的：设置CPU的标志位
-    > 为什么要自己和自己AND？因为 eax AND eax 的结果就是 eax 本身：如果 eax = 0 → 结果是 0 → ZF=1；如果 eax ≠ 0 → 结果非零 → ZF=0；如果 eax < 0（最高位为1） → SF=1
+  > 补充：test eax, eax 不会改变 eax 的值，只是临时计算 eax AND eax，然后丢弃结果，唯一目的：设置CPU的标志位 ~~同时，test 指令还会强制清零 溢出标志（OF = 0）和进位标志（CF = 0）~~ 
+    > 为什么要自己和自己AND？因为 eax AND eax 的结果就是 eax 本身：如果 eax = 0 → 结果是 0 → ZF=1  ~~零标志位（ZF, Zero Flag）~~ ；如果 eax ≠ 0 → 结果非零 → ZF=0 ；如果 eax < 0（最高位为1） → SF=1  ~~符号标志位（SF, Sign Flag）~~   
     
 以上都是在Debug模式下看的，所以并没有优化代码，其实comparisionResult的值在编译前就已经知晓  
 
