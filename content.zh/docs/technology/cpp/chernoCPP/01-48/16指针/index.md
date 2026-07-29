@@ -39,7 +39,7 @@ int main(){
 }
 ```
 
-~~C++ 允许**局部函数声明**~~  
+~~C/C++ 允许==局部函数声明== ~~  
 
 > void func(int);
   void func(void*);
@@ -51,8 +51,9 @@ int main(){
 ```cpp
 	int var = 8;
 	//void* ptr = &var;
-	//int* ptr=&var;
-	//double* ptr=(double*)&ptr;
+	 int* ptr=&var;
+	 double* ptr1=(double*)&ptr; //我知道 ptr 是一个 int* 类型变量(一串表示地址的数字)，但我骗编译器说：ptr 这块内存里放的是一个 double。 骗编译器说 ptr 这个变量里面存放的那几个字节（也就是一个地址值）可以当成 double 来读取。
+	//double* ptr=(double*)&var;
 	std::cin.get();
 ```
 
