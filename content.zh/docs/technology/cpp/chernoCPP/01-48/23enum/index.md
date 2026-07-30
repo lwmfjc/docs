@@ -14,9 +14,11 @@ cssclasses:
   - book03
 ---
 - 枚举，其实就是==一组==值  
-- 想用整数来表示某些状态，并且给他们命名
+- 想用整数 ~~只能是整数，比如char，signed char，unsigned char，short，unsigned short，int，unsigned int，long，unsigned long，long long，unsigned long long，不能是浮点类型~~ 来表示某些状态，并且给他们命名
+- 这里解释一下char为什么分 char 和 signed char：==signed char 明确表示 -128~127 的小整数；unsigned char 明确表示 0~255；char 是专门给字符用的类型，它的符号性由编译器决定。==
 - 
 ```cpp
+#ifdef LY_EP23
 #include <iostream>
 
 //默认情况下是无符号整型unsigned int
@@ -28,6 +30,14 @@ enum Example:unsigned char
 	A,B,C
 };
 
+enum e_MyLong : long
+{
+	//如果不指定的话，第一个
+	//为0，然后逐个增加
+	//只要没有指定的值，都会根据前一个指定的值逐个增加
+	A1, B1, C1
+};
+
 
 int a = 0;
 int b = 1;
@@ -36,14 +46,17 @@ int c = 2;
 
 int main()
 {
-	Example value = B;
+	Example value = B;//如果e_MyLong里面也有B的话，编译器会报错
+	Example value1 = Example::B;
 
-	//if (value == 1) {
+	//if (value == 1) //也可以这么写
 	if (value == B) {
 		std::cout << "get" << std::endl;
 	}
 	std::cin.get();
 }
+
+#endif
 ```
 
 ## 日志系统改进
