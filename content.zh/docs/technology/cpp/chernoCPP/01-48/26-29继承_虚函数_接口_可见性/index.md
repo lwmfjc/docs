@@ -279,6 +279,361 @@ delete p
 再调用Animal::~Animal()
 ```
 
+## 【补充】多继承的情况分析
+
+```cpp
+class Animal
+{
+public:
+    virtual void eat();
+    int age;
+};
+
+
+class Runnable
+{
+public:
+    virtual void run();
+    int speed;
+};
+
+
+class Dog : public Animal, public Runnable
+{
+public:
+    void eat() override;
+    void run() override;
+
+    int weight;
+};
+```
+
+### 一个dog对象的内存布局
+
+```shell
+Dog对象 dog
+
+//它(Animal vptr)指向的是“Dog针对Animal继承关系生成的虚函数表”。
+
++----------------+
+| Animal vptr    | ----+
++----------------+     |
+| Animal::age    |     |
++----------------+     |
+                       |
+                       v
+                 Dog-A vtable
+
+                 +----------------+
+                 | Dog::eat       |
+                 +----------------+
+
+//它(Runnable vptr)指向的是“Dog针对Runnable继承关系生成的虚函数表”。
+
++----------------+
+| Runnable vptr  | ----+
++----------------+     |
+| Runnable::speed|     |
++----------------+     |
+                       |
+                       v
+                 Dog-R vtable
+
+                 +----------------+
+                 | Dog::run       |
+                 +----------------+
+
+
++----------------+
+| Dog::weight    |
++----------------+
+```
+
+即
+
+```shell
+Dog
+ |
+ +-- Animal vptr --> Dog的Animal虚表
+ |
+ +-- Runnable vptr --> Dog的Runnable虚表
+```
+
+### 多继承下多个虚函数解析
+
+假设：
+
+```C++
+class Runnable
+{
+public:
+    virtual void run();
+    virtual void stop();
+};
+
+
+class Animal
+{
+public:
+    virtual void eat();
+};
+
+
+class Dog : public Animal, public Runnable
+{
+public:
+    void eat() override;
+    void run() override;
+    void stop() override;
+};
+```
+
+#### 1\. Runnable自己的虚函数表
+
+先看 Runnable。
+
+在 Runnable 的世界里：
+
+```C++
+Runnable* r;
+```
+
+它只知道：
+
+```C++
+virtual void run();
+virtual void stop();
+```
+
+所以它认为虚函数表是： 
+
+```shell
+Runnable vtable
+
+[0] Runnable::run
+[1] Runnable::stop
+```
+
+注意：  
+
+-   第0个槽位对应 `run`
+-   第1个槽位对应 `stop`    
+
+这个顺序在编译 Runnable 时就确定了。
+
+#### 2\. Dog继承 Runnable 后
+
+Dog 重写：
+
+```C++
+void run() override;
+void stop() override;
+```
+
+所以 Dog 的 Runnable 部分虚表：
+
+```shell
+Dog-Runnable vtable
+
+[0] Dog::run
+[1] Dog::stop
+```
+
+不是：
+
+```shell
+[0] Runnable::run
+[1] Runnable::stop
+[2] Dog::run
+[3] Dog::stop
+```
+
+而是==直接替换父类对应槽位==。
+
+
+#### 3\. 完整 Dog 对象
+
+多继承：
+
+```C++
+class Dog : public Animal, public Runnable
+```
+
+通常布局类似：
+
+```shell
+Dog对象
+
++----------------+
+| Animal vptr    |-----> Dog-Animal vtable
++----------------+
+| Animal数据     |
++----------------+
+
+
++----------------+
+| Runnable vptr  |-----> Dog-Runnable vtable
++----------------+
+| Runnable数据   |
++----------------+
+
+
++----------------+
+| Dog数据        |
++----------------+
+```
+
+两个 vtable：
+
+##### Animal方向：
+
+```shell
+Dog-Animal vtable
+
+[0] Dog::eat
+```
+
+##### Runnable方向：
+
+```shell
+Dog-Runnable vtable
+
+[0] Dog::run
+[1] Dog::stop
+```
+
+#### 4\. 调用时发生什么？
+
+##### 情况1：
+
+```C++
+Runnable* r = &dog;
+
+r->run();
+```
+
+编译器知道： `r 是 Runnable*`
+
+所以：
+
+它认为：
+
+```shell
+Runnable vtable:
+
+[0] = run
+[1] = stop
+```
+
+生成：`r->vptr[0]()`
+
+运行：  
+
+```shell
+Runnable vptr
+       |
+       v
+Dog-Runnable vtable
+
+[0] Dog::run
+[1] Dog::stop
+```
+
+调用： `Dog::run()`
+
+##### 情况2：
+
+```C++
+r->stop();
+```
+
+编译器生成：`r->vptr[1]()`
+
+找到： 
+
+```shell
+Dog-Runnable vtable
+
+[0] Dog::run
+[1] Dog::stop
+```
+
+调用： `Dog::stop()`
+
+#### 5\. 如果Dog只重写其中一个呢？
+
+例如：
+
+```C++
+class Dog : public Runnable
+{
+public:
+    void run() override;
+};
+```
+
+没有重写 stop。
+
+那么：
+
+Dog-Runnable vtable：
+
+```shell
+[0] Dog::run
+[1] Runnable::stop    //注意，这里Runnable::stop并没有被重新，所以还是保留着调用基类的stop地址
+```
+
+因为：
+
+-   run 被替换
+-   stop 继承父类实现  
+
+
+#### 6\. 回到你的疑问：为什么一定是第0、第1？
+
+因为：
+
+对于任何 `Runnable*`： `Runnable* p;`
+
+它都遵守同一个协议：  
+
+```shell
+Runnable接口：
+
+虚函数0 -> run()
+虚函数1 -> stop()
+```
+
+这个协议不能改变。
+
+所以任何实现 Runnable 的对象，都必须保证：
+
+```shell
+vptr[0] 能找到 run
+vptr[1] 能找到 stop
+```
+
+Dog只是把地址换成自己的实现：
+
+```shell
+vptr[0] -> Dog::run
+vptr[1] -> Dog::stop
+```
+
+所以总结一句：
+
+> **虚函数表的槽位编号属于基类接口，而不是属于派生类。派生类只是把对应槽位替换成自己的函数地址。**
+
+这也是为什么 C++ 的虚函数能够做到：
+
+```C++
+Runnable* p = new Dog();
+
+p->run();
+p->stop();
+```
+
+即使 `p` 完全不知道自己是 Dog，也能正确调用 Dog 的版本。
 
 # 接口
 
@@ -436,7 +791,18 @@ public :
 		X = 0;
 		Print();
 	}
+	// 声明 PrintEntity 是 Entity 的友元函数
+    friend void PrintEntity(Entity& e);
 };
+
+// 注意：这里不是 Entity 的成员函数
+// 它是一个普通函数
+void PrintEntity(Entity& e)
+{
+    // 因为它是 friend，所以可以访问 private
+    std::cout << e.X << std::endl;
+    std::cout << e.Y << std::endl;
+}
 
 class Player :public Entity
 { 
@@ -464,7 +830,7 @@ int main()
 
 class Entity 
 { 
-//private意味着只有Entity类及其子类里面可以直接读取它们，
+//protected意味着只有Entity类及其子类里面可以直接读取它们，
 //(其他外部的类[比如main()]也不行)
 //例外：友元函数可以读取一个类的protected成
 // 员[友元函数是普通函数，不是类的成员]
@@ -477,7 +843,19 @@ public :
 		X = 0;
 		Print();
 	}
+	
+	// 声明 PrintEntity 是 Entity 的友元函数
+    friend void PrintEntity(Entity& e);
 };
+
+// 注意：这里不是 Entity 的成员函数
+// 它是一个普通函数
+void PrintEntity(Entity& e)
+{
+    // 因为它是 friend，所以可以访问 private
+    std::cout << e.X << std::endl;
+    std::cout << e.Y << std::endl;
+}
 
 class Player :public Entity
 { 
@@ -509,4 +887,8 @@ int main()
 当使用private时，帮助自己/团队其他人员，禁止使用这个数据/方法，说明某些数据仅支持在类内部使用
 
 > 这里举了个例子，假设有个ui功能，里面有数据x,y表示坐标，正常情况下需要使用类方法才能移动该图形。如果x,y不是私有，就有导致坐标被单独修改而图形未移动的奇怪现象
+
+## 友元函数说明
+
+友元函数就是：一个不是类成员的普通函数，被类主动授权后，可以访问这个类的 private 和 protected 成员。  
 
