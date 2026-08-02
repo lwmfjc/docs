@@ -129,6 +129,8 @@ int main()
 	std::cout << name.size() << std::endl;//6
 
 	//把两个字符串相加,下面这句会报错
+	//"Cherno" 或者 "_hello" 都是类型：const char[7]，表达式中退化成 const char* ，  
+	//但是 C++ 没有定义两个指针相加的运算。
 	//std::string name2 = "Cherno" + "_hello";
 	//这里+,+= 被 std::string重载了
 	name = name + "_hello";
@@ -137,7 +139,7 @@ int main()
 	std::string name3 = std::string("Cherno") + "_hello";
 
 	//std::string::npos 是一个特殊常量，表示 "未找到" 或 "无效位置"。
-	bool contains = name.find("no") != std::string::npos;
+	bool contains = name.find("no") != std::string::npos; // 如果不等于为true，即不是未找到，即查找到
 	std::cin.get();
 }
 ```
