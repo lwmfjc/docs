@@ -23,16 +23,21 @@ cssclasses:
 - 安装哪些应用？默认集合
 - 安装推荐的专有软件：1 为图形和wifi硬件安装第三方软件 2 下载并安装对其他媒体格式的支持。2个都勾选
 - 安装过程半个小时以上（比debian久很多）
-- vmware安装
+- vmware安装(ubuntu26.04及以上)
   `sudo apt install -y open-vm-tools open-vm-tools-desktop`  
-- 设置静态ip
-  `sudo nmcli connection modify ens33 ipv4.addresses 192.168.6.206/24 ipv4.gateway 192.168.6.1`
+
+```shell
+# 设置静态ip (这个先不要操作，貌似不能用)
+sudo nmcli connection modify ens33 ipv4.addresses 192.168.6.206/24 ipv4.gateway 192.168.6.1
+```
+
 
 # 设置静态ip
 
 ```shell
 cd /etc/netplan
-sudo nano 00-installer-config.yaml #修改基础配置文件
+ls #先查看文件夹下有哪些文件配置
+sudo nano 00-installer-config.yaml #修改基础配置文件（没有的话就不用修改，也不一定叫这个名字）
 
 ```
 
@@ -84,9 +89,9 @@ ip route #查看ip和网关
 # 允许ssh远程登录
 
 ```shell
-sudo apt install openssh-server #安装ssh
+sudo apt install -y openssh-server #安装ssh
 sudo systemctl enable --now ssh
-ly@ubt26:~$ sudo systemctl status ssh
+sudo systemctl status ssh
 ● ssh.service - OpenBSD Secure Shell server
      Loaded: loaded (/usr/lib/systemd/system/ssh.service; enabled; preset: enabled) 
 ```
@@ -98,10 +103,15 @@ cd /etc/apt/sources.list.d/
 sudo cp ubuntu.sources ubuntu.sources.bak
 ```
 
+使用ctrl+k删除当前行  
 
-sudo nano /etc/apt/sources.list.d/ubuntu.sources  ~~使用ctrl+k删除当前行~~   
+```shell
+sudo nano /etc/apt/sources.list.d/ubuntu.sources
+```
+
 
 修改为如下   
+## 26.04LTS清华源
 
 ```shell
 Types: deb
@@ -145,10 +155,54 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 # # Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
 ```
 
+## 24.04LTS清华源
+
+```shell
+Types: deb
+URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+# Types: deb-src
+# URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+# Suites: noble noble-updates noble-backports
+# Components: main restricted universe multiverse
+# Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# 以下安全更新软件源为镜像站配置
+Types: deb
+URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+Suites: noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# Types: deb-src
+# URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+# Suites: noble-security
+# Components: main restricted universe multiverse
+# Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# 预发布软件源，不建议启用
+
+# Types: deb
+# URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+# Suites: noble-proposed
+# Components: main restricted universe multiverse
+# Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# # Types: deb-src
+# # URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+# # Suites: noble-proposed
+# # Components: main restricted universe multiverse
+# # Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+```
 # 安装中文输入法
 
 ```shell
 sudo apt install ibus ibus-libpinyin
+sudo reboot #这里需要重启一下
 ibus-setup #添加中文 Chinese → Intelligent Pinyin
 ```
 
@@ -162,7 +216,7 @@ ibus-setup #添加中文 Chinese → Intelligent Pinyin
 
 # 安装chrome
 ```shell
-bash wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb   
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb   
 
 ```
 
