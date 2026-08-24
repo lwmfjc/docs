@@ -244,3 +244,25 @@ sudo systemctl isolate graphical.target
 ```shell
 sudo mount -t fuse.vmhgfs-fuse .host:/ /mnt/hgfs -o allow_other
 ```
+
+# Oh My zsh安装
+
+```shell
+sudo apt update
+sudo apt install zsh git curl
+
+zsh --version
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+echo $SHELL #/usr/bin/zsh
+
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git \
+"${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+
+#修改主题
+nano ~/.zshrc
+#注释ZSH_THEME="robbyrussell"
+#修改为
+ZSH_THEME="powerlevel10k/powerlevel10k"
+exec zsh
+
+```
