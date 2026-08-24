@@ -1,6 +1,6 @@
 ---
-title: 黑暗为何存在
-description: 黑暗为何存在
+title: 20260824-黑暗为何存在
+description: 20260824-黑暗为何存在
 categories:
   - 生活
 tags:
