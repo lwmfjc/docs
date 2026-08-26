@@ -106,26 +106,56 @@ print(r.text)
 
 ## 写一个简单对话
 
-这里用的其他模型，简单点  
+这里用的其他模型，简单点 ~~用了流式一个字一个字输出，也保留了完整聊天结果~~   
 
 `nano chat.py`
 
 
 ```shell
 import requests
+import json
 
 
 url = "http://192.168.6.201:11434/api/chat"
 
+model = "qwen3:4b-instruct"
+
+# 保存聊天历史
 messages = []
 
 
 while True:
-    question = input("\n你：")
 
+    # 获取用户输入
+    try:
+        question = input("\n你：")
+
+    except EOFError:
+        print("\n退出")
+        break
+
+    except KeyboardInterrupt:
+        print("\n退出")
+        break
+
+
+    # 空输入跳过
+    if not question.strip():
+        continue
+
+
+    # 退出
     if question.lower() == "exit":
         print("退出")
         break
+
+
+    # 清空上下文
+    if question == "/clear":
+        messages.clear()
+        print("上下文已清空")
+        continue
+
 
     # 添加用户消息
     messages.append(
@@ -135,25 +165,50 @@ while True:
         }
     )
 
+
+    answer = ""
+
+
     try:
-        r = requests.post(
+
+        response = requests.post(
             url,
             json={
-                "model": "qwen3:0.6b",
+                "model": model,
                 "messages": messages,
-                "stream": False,
+                "stream": True,
                 "think": False
             },
+            stream=True,
             timeout=120
         )
 
-        result = r.json()
 
-        answer = result["message"]["content"]
+        print("\nAI：", end="", flush=True)
 
-        print("\nAI：", answer)
 
-        # 保存AI回复，让模型记住上下文
+        # 接收流式输出
+        for line in response.iter_lines():
+
+            if line:
+
+                data = json.loads(line)
+
+                content = data["message"]["content"]
+
+                print(
+                    content,
+                    end="",
+                    flush=True
+                )
+
+                answer += content
+
+
+        print()
+
+
+        # 保存AI回复
         messages.append(
             {
                 "role": "assistant",
@@ -161,8 +216,41 @@ while True:
             }
         )
 
+
+    except KeyboardInterrupt:
+
+        print("\n\n已停止生成")
+
+        # 删除没有完成的用户请求
+        if messages and messages[-1]["role"] == "user":
+            messages.pop()
+
+        continue
+
+
+    except requests.exceptions.Timeout:
+
+        print("\n请求超时")
+
+        if messages and messages[-1]["role"] == "user":
+            messages.pop()
+
+
+    except requests.exceptions.ConnectionError:
+
+        print("\n无法连接 Ollama")
+
+        if messages and messages[-1]["role"] == "user":
+            messages.pop()
+
+
     except Exception as e:
-        print("错误：", e)
+
+        print("\n错误：", e)
+
+        if messages and messages[-1]["role"] == "user":
+            messages.pop()
+
 
 ```
 
