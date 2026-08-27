@@ -103,5 +103,67 @@ cssclasses:
 
 # Python安装
 
-- 用免费的Anaconda发行版，将安装Python语言以及一系列有用的工具，简要运行JupyterNotebook ~~整个分析过程、代码和结果都会保存在同一个 .ipynb 文件中。Jupyter Notebook 就像一个“可以边写代码、边写文档、边看结果”的交互式实验本~~   
+- 用免费的Anaconda发行版，将==安装Python语言==以及一个易于使用的==开发环境==和==导航器启动工具==、其他库、其他工具 ~~包括Jupyter Notebook环境~~ ，简要运行JupyterNotebook ~~整个分析过程、代码和结果都会保存在同一个 .ipynb 文件中。Jupyter Notebook 就像一个“可以边写代码、边写文档、边看结果”的交互式实验本~~   
 - 介绍一些在线免安装运行Python的网站
+
+## 下载anaconda
+
+- 文档 `https://www.anaconda.com/docs/main` 
+- 下载链接 `https://www.anaconda.com/download` 
+
+一些设置  
+
+![](img/ly-20260827193217076.png)  
+
+安装后启动 ~~可以发现这就是一个集成并管理各种第三方软件的一个工具，所以我猜Jupyter Notebook这个应该也是可以独立下载安装的并不一定要在anaconda才能安装~~   
+
+![](img/ly-20260827200408766.png)  
+
+
+## Jupyter Notebook
+
+/ˈdʒuːpɪtər/  
+
+直接在菜单“Home”里面就能启动  
+
+启动后，默认显示文件夹为`C:\Users\ly`  
+
+![](img/ly-20260827201344699.png)  
+
+## 启动anaconda时自动启动vscode并卡住
+
+在Anaconda里，点开“File”--“References”，拉到最下面有VS Code path栏，把其中的路径改成完整的VS Code路径，==保存== ~~一定要记得保存~~ ，然后重启Anaconda就好了。
+
+
+## 修改启动 jupyter时的默认目录
+
+修改文件 `C:\Users\ly\.jupyter\jupyter_notebook_config.json`
+~~新增notebook_dir那行~~  
+
+```shell
+{
+  "NotebookApp": {
+    "nbserver_extensions": {
+      "jupyter_nbextensions_configurator": true
+    },
+    "notebook_dir": "D:\\Users\\ly\\Jupyter"
+  }
+}
+```
+
+我这里到 https://github.com/pierian-data/complete-python-3-bootcamp 下载了zip整份代码并压缩到了该目录  
+
+![](img/ly-20260827231918847.png)
+
+~~其实整个视频课程应该是（可以）边做笔记边写代码的形式~~    
+
+
+## jupyter简单使用
+
+- File-New-Notebook 简单新建笔记
+- 以单元格形式存在，每个单元格可以是 markdown或者raw或者code（代码）
+- 添加后点击运行 ~~不论是markdown单元格或者raw或者code都行~~ 
+
+![](img/ly-20260827233411589.png)  
+
+

@@ -82,6 +82,8 @@ tags:
    dns-nameservers 223.5.5.5 223.6.6.6
    ```
 
+如果网络还是不通，可能要注释掉`dns-nameservers 223.5.5.5 223.6.6.6` 这行，然后修改`/etc/resolv.conf` 文件，末尾添加 `nameserver 223.5.5.5 nameserver 223.6.6.6` (两个网关分两行)
+
 3. 重启网络  
    ```shell
    sudo service networking restart
