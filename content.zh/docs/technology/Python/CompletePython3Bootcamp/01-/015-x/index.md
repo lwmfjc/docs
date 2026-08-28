@@ -77,7 +77,7 @@ cssclasses:
     -   Python 支持 `int` 与 `float` 进行 `==` 比较，数值相等即返回 `True`（如 `1 == 1.0` 结果为 `True`）。        
     -   但数值与字符串比较不会自动隐式转换，结果始终为 `False`（如 `1 == "1"` 结果为 `False`）。
 
-### 其他类型
+### 数据结构
 
 | 数据结构 | `==` 比较标准 | 顺序敏感？ | 独立定义时 `a is b` |
 | :--- | :--- | :--- | :--- |
@@ -85,3 +85,210 @@ cssclasses:
 | **列表 (`list`)** | 按位置依次比较元素 | **敏感** | **必为 `False`**（可变对象独立开辟内存） |
 | **字典 (`dict`)** | 比较所有的 `Key: Value` 是否相同 | **不敏感** | **必为 `False`** |
 | **集合 (`set`)** | 比较去重后的元素集合是否一致 | **不敏感** | **必为 `False`** |
+# Python 交互式解释器(REPL)
+
+也叫做Python REPL  ~~Read - Evaluate - Print - Loop；读取 - 执行 - 打印 - 循环~~ 
+
+# 数字类型
+
+```shell
+#基础运算
+y@dba13:~$ python3
+Python 3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 2+1
+3
+>>> 2-1
+1
+>>> 2*2
+4
+>>> 3/2
+1.5
+>>> 7/4
+1.75
+>>> 7%4
+3
+>>> 50%5
+0
+>>> 23%2
+1
+>>> 20%2
+0
+>>> 2**3
+8
+>>> 2 + 10 * 10 +3
+105
+>>> (2+10)*(10+3)
+156
+>>> 7//3  #整除
+2
+
+```
+
+# 变量
+
+## 命名规则
+
+- 名称不能以数字开头。
+- 名称中不能包含空格，请使用下划线代替。
+- 名称中不能包含以下任何符号：
+  `:'",<>/?|\!@#%^&*~-+`
+
+- 根据 PEP8 规范，名称应使用小写字母并加下划线。
+- 避免使用 Python 内置关键字，例如 list 和 str
+- 避免使用单个字符 l （小写字母 el）、 O （大写字母 oh）和 I （大写字母 eye），因为它们容易与 1 和 0 混淆。
+
+## 其他说明
+
+Python 使用动态类型 ，这意味着你可以将变量重新赋值给不同的数据类型。  
+
+### 例子1
+
+```shell
+>>> my_dogs=2
+>>> my_dogs=["sammy","frankie"]
+>>> type(my_dogs)
+<class 'list'>
+>>> my_dogs="abc"
+>>> type(my_dogs)
+<class 'str'>
+>>> my_dogs=1;type(my_dogs)
+<class 'int'>
+>>> my_dogs=1.0;type(my_dogs)
+<class 'float'>
+>>> my_dogs=false
+Traceback (most recent call last):
+  File "<python-input-7>", line 1, in <module>
+    my_dogs=false
+            ^^^^^
+NameError: name 'false' is not defined. Did you mean: 'False'?
+>>> my_dogs=False;type(my_dogs)
+<class 'bool'>
+
+```
+
+### 例子2
+
+```shell
+>>> a=5
+>>> a
+5
+>>> a=10
+>>> a+a
+20
+>>> a=a+a
+>>> a
+20
+
+```
+### 例子3
+
+不要拿关键字int当变量名，这里的int是内置函数，表示转换字符串为数字
+
+```shell
+>>> int = 4
+>>> int
+4
+>>> int("123")
+Traceback (most recent call last):
+  File "<python-input-2>", line 1, in <module>
+    int("123")
+    ~~~^^^^^^^
+TypeError: 'int' object is not callable
+
+```
+
+int是一个函数名  
+
+```shell
+>>> a="123"
+>>> a
+'123'
+>>> int(a)
+123
+
+```
+## ptpython 和 ipython
+
+用来增强原生repl ~~会有高亮、自动补全等等~~ ，Jupyter就是内置的ipython  
+
+### 虚拟环境下安装 ipython 
+
+```shell
+sudo apt install python3-pip
+#创建虚拟环境安装
+sudo apt install python3-venv
+```
+
+```shell
+sudo apt update
+sudo apt install python3-full python3-venv
+#创建一个Python环境
+mkdir ~/python-env
+
+cd ~/python-env
+python3 -m venv myenv
+source myenv/bin/activate #激活
+ls myenv
+bin  include  lib  lib64  pyvenv.cfg
+
+which python
+which pip
+
+#给虚拟环境安装ipython
+python -m pip install ipython #找到这个 Python 自己带的 pip，然后运行它。
+#给虚拟环境安装ptpython
+python -m pip install ptpython #找到这个 Python 自己带的 pip，然后运行它。
+(myenv) ly@dba13:~$ ptpython --version
+3.0.32
+(myenv) ly@dba13:~$ ipython --version
+9.17.0
+
+```
+
+#### 虚拟环境进退
+
+```shell
+deactivate #退出虚拟环境
+source ~/python-env/myenv/bin/activate #进入虚拟环境
+```
+
+### debian下直接安装
+
+```shell
+sudo apt install ipython3
+ipython3 --version
+8.35  #这里落后了很大的版本
+```
+
+## 多行输入
+
+这个只有在jupyter里面才行，在传统的repl中不行，在ipython中可以用%edit实现多行输入  
+
+```shell
+(myenv) ly@dba13:~$ ipython
+Python 3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]
+Type 'copyright', 'credits' or 'license' for more information
+IPython 9.17.0 -- An enhanced Interactive Python. Type '?' for help.
+Tip: You can find how to type a Unicode symbol by back-completing it, eg `\Ⅷ<tab>` will expand to `\ROMAN NUMERAL EIGHT`.
+
+In [1]: %edit
+IPython will make a temporary file named: /tmp/ipython_edit_yl61cokf/ipython_edit_z7l3kxva.py
+```
+
+![](img/ly-20260828234917015.png)
+
+保存并退出编辑器后，IPython 会把这几行代码作为一次输入执行  
+
+```
+Editing... done. Executing edited code...
+Out[1]: 'my_income = 100\ntax_rate=0.1\nmy_taxes = my_income*tax_rate\n'
+
+In [2]: my_taxes
+Out[2]: 10.0
+
+```
+
+
+# 字符串
+
