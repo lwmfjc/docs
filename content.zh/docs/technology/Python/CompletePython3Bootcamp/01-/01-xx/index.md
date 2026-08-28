@@ -111,13 +111,19 @@ cssclasses:
 - 文档 `https://www.anaconda.com/docs/main` 
 - 下载链接 `https://www.anaconda.com/download` 
 
-一些设置  
+一些设置 ~~默认即可~~    
 
-![](img/ly-20260827193217076.png)  
+![](img/ly-20260828124104965.png)
 
 安装后启动 ~~可以发现这就是一个集成并管理各种第三方软件的一个工具，所以我猜Jupyter Notebook这个应该也是可以独立下载安装的并不一定要在anaconda才能安装~~   
 
 ![](img/ly-20260827200408766.png)  
+
+比如这里还可以安装指定版本  
+
+![](img/ly-20260828085405507.png)
+
+Enviroment 那里，也可以指定版本号 ~~但是base和anacona3这两个环境不允许修改，自己建的可以~~   
 
 
 ## Jupyter Notebook
@@ -166,4 +172,10 @@ cssclasses:
 
 ![](img/ly-20260827233411589.png)  
 
+
+## 一些在线的网站
+
+- jupyter在线： https://jupyter.org/try  
+- google colab https://colab.research.google.com/notebook
+- https://replit.com/ 
 
