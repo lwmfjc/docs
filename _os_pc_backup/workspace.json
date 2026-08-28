@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "9022d3ff426b987f",
+        "id": "4ecce649764c55a5",
         "type": "tabs",
         "children": [
           {
-            "id": "7bf38527eb60c842",
+            "id": "0bfda9ae87eddeea",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/index.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "index"
+              "title": "新标签页"
             }
           }
         ]
@@ -33,35 +29,8 @@
       {
         "id": "bb8bff9663f6a883",
         "type": "tabs",
+        "dimension": 36.76470588235294,
         "children": [
-          {
-            "id": "44ac17082a18a706",
-            "type": "leaf",
-            "state": {
-              "type": "file-explorer",
-              "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
-              },
-              "icon": "lucide-folder-closed",
-              "title": "文件列表"
-            }
-          },
-          {
-            "id": "f49c16d8011c6944",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "content.zh/docs/culture/易经/解读易经_傅佩荣/01乾卦/index.md",
-                "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-list",
-              "title": "index 的大纲"
-            }
-          },
           {
             "id": "cb2a18b06e86cbcc",
             "type": "leaf",
@@ -73,7 +42,7 @@
                 "explainSearch": false,
                 "collapseAll": false,
                 "extraContext": false,
-                "sortOrder": "alphabetical"
+                "sortOrder": "byCreatedTimeReverse"
               },
               "icon": "lucide-search",
               "title": "搜索"
@@ -84,17 +53,43 @@
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {},
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
               "icon": "lucide-bookmark",
               "title": "书签"
             }
           }
         ],
         "currentTab": 1
+      },
+      {
+        "id": "802adf77f0314e6e",
+        "type": "tabs",
+        "dimension": 63.23529411764705,
+        "children": [
+          {
+            "id": "44ac17082a18a706",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "文件列表"
+            }
+          }
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 218.50607681274414
+    "width": 279.5,
+    "collapsed": true
   },
   "right": {
     "id": "8ef25d9ebd1552f4",
@@ -104,6 +99,20 @@
         "id": "43a531549381e715",
         "type": "tabs",
         "children": [
+          {
+            "id": "29994c75655e319e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "大纲"
+            }
+          },
           {
             "id": "1e63122f5edc53a5",
             "type": "leaf",
@@ -124,20 +133,6 @@
             }
           },
           {
-            "id": "d02c12780c540872",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "index 的出链列表"
-            }
-          },
-          {
             "id": "68487316feba03b2",
             "type": "leaf",
             "state": {
@@ -153,106 +148,89 @@
             }
           },
           {
-            "id": "d17ce847cd7a7216",
+            "id": "d02c12780c540872",
             "type": "leaf",
             "state": {
-              "type": "outline",
+              "type": "outgoing-link",
               "state": {
-                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
-                "followCursor": false,
-                "showSearch": true,
-                "searchQuery": ""
+                "file": "content.zh/docs/technology/cpp/chernoCPP/49_/61(60)避免使用命名空间/index.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
               },
-              "icon": "lucide-list",
-              "title": "index 的大纲"
-            }
-          },
-          {
-            "id": "29994c75655e319e",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "file": "content.zh/docs/culture/道家/人生困惑问庄子_傅佩荣/01第一章_庄子何许人也/index.md",
-                "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-list",
-              "title": "index 的大纲"
+              "icon": "links-going-out",
+              "title": "index 的出链列表"
             }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "horizontal",
-    "width": 222.5,
-    "collapsed": true
+    "width": 252
   },
   "left-ribbon": {
     "hiddenItems": {
-      "templater-obsidian:Templater": false,
-      "obsidian-excalidraw-plugin:新建绘图文件": false,
-      "file-cleaner-redux:Clean files": false,
-      "command-palette:打开命令面板": false,
-      "zenmode:Toggle Zen Mode": false,
-      "bases:创建新数据库": true,
+      "bases:新建数据库": false,
       "switcher:打开快速切换": true,
       "graph:查看关系图谱": true,
       "canvas:新建白板": true,
       "daily-notes:打开/创建今天的日记": true,
       "templates:插入模板": true,
-      "update-time-updater:Update modified date": false
+      "command-palette:打开命令面板": false,
+      "file-cleaner-redux:Clean files": false,
+      "templater-obsidian:Templater": false,
+      "update-time-updater:Update modified date": false,
+      "zenmode:Toggle zen mode": false,
+      "obsidian-excalidraw-plugin:新建绘图文件": false,
+      "hide-folders:Show hidden folders": false
     }
   },
-  "active": "7bf38527eb60c842",
+  "active": "0bfda9ae87eddeea",
   "lastOpenFiles": [
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/64未济卦/index.md",
-    "public/zh/docs/technology/Interview/database/redis/redis-questions-02/img/a9338aaef431d37e4421f4d852b377bc_MD5.jpg",
-    "public/zh/docs/technology/Interview/database/redis/redis-persistence/img/c4554e440221a065d1312602511cd638_MD5.jpg",
-    "public/zh/docs/technology/Interview/database/mysql/images/redo-log.png",
-    "public/zh/docs/technology/Interview/cs-basics/network/images/network-model/nerwork-layer-protocol.png",
-    "public/zh/docs/problem/Other/01/img/ly-20241212141837403.png",
-    "public/zh/docs/problem/Other/01/img/ly-20241212141837227.png",
-    "public/zh/docs/problem/Other/01/img/ly-20241212141837046.png",
-    "public/zh/docs/problem/Other/01/img/ly-20241212141836869.png",
-    "public/zh/docs/problem/Other/01/img/ly-20241212141836693.png",
-    "public/zh/docs/problem/Other/01/img/ly-20241212141836507.png",
-    "public/zh/docs/problem/Other/01/img",
-    "public/zh/docs/problem/Linux/20230919/img",
-    "public/zh/docs/problem/Linux/20230819/img",
-    "public/zh/docs/problem/Linux/20230803/img",
-    "public/zh/docs/problem/Linux/20230523/img",
-    "public/zh/docs/problem/JVM/20230526/img",
-    "public/zh/docs/life/20250926/index.html",
-    "public/zh/docs/life/20250926/img",
-    "public/zh/docs/life/20250926",
-    "public/zh.search.min.1e4f848cb2310862e8eb77f27fcb207eb8a7b0761a8a96d8a501c9edb93cc146.js",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/63既济卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/62小过卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/61中孚卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/60节卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/59涣卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/58兑卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/57巽卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/56旅卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/55丰卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/54归妹卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/53渐卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/52艮卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/51震卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/50鼎卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/49革卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/48井卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/47困卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/46升卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/45萃卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/43夬卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/44姤卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/42益卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/41损卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/40解卦/index.md",
-    "content.zh/docs/culture/易经/解读易经_傅佩荣/39蹇卦/index.md"
+    "_os_pc_backup/plugins/obsidian-front-matter-title-plugin/index.md",
+    "_os_pc_backup/plugins/folder-notes/index.md",
+    "_os_pc_backup/plugins/open-tab-settings/index.md",
+    "_os_pc_backup/plugins/obsidian-front-matter-title-plugin/manifest.json",
+    "_os_pc_backup/plugins/obsidian-front-matter-title-plugin/main.js",
+    "_os_pc_backup/plugins/obsidian-front-matter-title-plugin/data.json",
+    "_os_pc_backup/plugins/obsidian-front-matter-title-plugin",
+    "_os_pc_backup/plugins/folder-notes/styles.css",
+    "_os_pc_backup/plugins/folder-notes/manifest.json",
+    "_os_pc_backup/plugins/folder-notes/main.js",
+    "_os_pc_backup/plugins/folder-notes/data.json",
+    "_os_pc_backup/plugins/folder-notes",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/index.md",
+    "_os_pc_backup/plugins/oz-image-plugin/index.md",
+    "_os_pc_backup/appearance.json",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/001-014/index.md",
+    "content.zh/_index.md",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/img/ly-20260828184356149.png",
+    "content.zh/docs/technology/AI/HelloWorld/index.md",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/img/ly-20260828183231466.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/img/ly-20260828183117326.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/_index.md",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/img/index.md",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/img/ly-20260828181441202.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/img/ly-20260828181335183.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/img/ly-20260828180545902.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-x/img/ly-20260828180054227.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/_index.md",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/015-y/index.md",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/001-014/img/ly-20260828164551365.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/001-014/img/ly-20260828164527958.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/001-014/img/ly-20260828164217486.png",
+    "content.zh/docs/technology/Python/CompletePython3Bootcamp/01-/01-14/index.md",
+    "content.zh/docs/problem/Linux/20230815/index.md",
+    "content.zh/docs/technology/Linux/create_clone/index.md",
+    "content.zh/docs/technology/Linux/SHELL(learnLinuxTV)_/06ExitCode/index.md",
+    "content.zh/docs/problem/Linux/20230803/index.md",
+    "content.zh/docs/technology/cpp/chernoCPP/01-48/01-04设置cpp/index.md",
+    "content.zh/docs/life/20260824-黑暗为何存在/index.md",
+    "content.zh/docs/technology/Linux/Vmware上安装Ubuntu/index.md",
+    "content.zh/docs/life/思考/未命名/index.md",
+    "content.zh/docs/technology/Linux/hanshunping_/07-11/index.md",
+    "content.zh/docs/problem/Linux/20250331/index.md",
+    "content.zh/docs/technology/cpp/chernoCPP/01-48/31字符串/index.md",
+    "content.zh/docs/problem/Linux/20230817/index.md",
+    "content.zh/docs/technology/Linux/_TheLinuxCommandsHandbook_/index.md"
   ]
 }

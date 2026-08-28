@@ -4,17 +4,24 @@
   "newFileLocation": "current",
   "newLinkFormat": "relative",
   "useMarkdownLinks": true,
-  "showUnsupportedFiles": true,
+  "showUnsupportedFiles": false,
   "attachmentFolderPath": "./img",
   "newFileFolderPath": "./img",
   "autoConvertHtml": false,
   "showInlineTitle": true,
   "readableLineLength": false,
   "strictLineBreaks": true,
-  "smartIndentList": false,
+  "smartIndentList": true,
   "userIgnoreFilters": [
     "static/",
-    "public/"
+    "public/",
+    "attachments/books/",
+    "attachments/pdfjs/",
+    "content.zh/docs/technology/Interview/",
+    "/[aA][tT][tT][aA][cC][hH][mM][eE][nN][tT][sS]/",
+    "/[iI][mM][gG]/",
+    "/(^_)|(/_)/"
   ],
-  "mobileToolbarCommands": []
+  "mobileToolbarCommands": [],
+  "focusNewTab": true
 }

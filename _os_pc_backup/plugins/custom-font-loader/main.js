@@ -79,6 +79,7 @@ var FontPlugin = class extends import_obsidian.Plugin {
     super(...arguments);
     this.config_dir = this.app.vault.configDir;
     this.plugin_folder_path = `${this.config_dir}/plugins/custom-font-loader`;
+    this.processingNoticeShown = false;
   }
   async load_plugin() {
     await this.loadSettings();
@@ -105,17 +106,25 @@ var FontPlugin = class extends import_obsidian.Plugin {
         applyCss("", "custom_font_general");
       }
     } catch (error) {
-      new import_obsidian.Notice(error);
+      console.error("Error loading fonts:", error);
+      new import_obsidian.Notice(`Error loading fonts: ${error.message || error}`);
     }
   }
   async process_and_load_font(font_file_name, load_all_fonts) {
-    console.log("loading %s", font_file_name);
-    const css_font_path = `${this.plugin_folder_path}/${font_file_name.toLowerCase().replace(".", "_")}.css`;
-    if (!await this.app.vault.adapter.exists(css_font_path)) {
-      await this.convert_font_to_css(font_file_name, css_font_path);
-    } else {
-      await this.load_font(css_font_path, load_all_fonts);
-      await this.load_css(font_file_name);
+    try {
+      console.log("loading %s", font_file_name);
+      const css_font_path = `${this.plugin_folder_path}/${font_file_name.toLowerCase().replace(".", "_")}.css`;
+      if (!await this.app.vault.adapter.exists(css_font_path)) {
+        await this.convert_font_to_css(font_file_name, css_font_path);
+        await this.load_font(css_font_path, load_all_fonts);
+        await this.load_css(font_file_name);
+      } else {
+        await this.load_font(css_font_path, load_all_fonts);
+        await this.load_css(font_file_name);
+      }
+    } catch (error) {
+      console.error(`Error processing font ${font_file_name}:`, error);
+      new import_obsidian.Notice(`Failed to process font: ${font_file_name}`);
     }
   }
   async load_font(css_font_path, appendMode) {
@@ -139,37 +148,60 @@ var FontPlugin = class extends import_obsidian.Plugin {
     applyCss(css_string, "custom_font_general");
   }
   async convert_font_to_css(font_file_name, css_font_path) {
-    new import_obsidian.Notice("Processing Font files");
-    const file = `${this.settings.font_folder}/${font_file_name}`;
-    const arrayBuffer = await this.app.vault.adapter.readBinary(file);
-    const base64 = arrayBufferToBase64(arrayBuffer);
-    const font_family_name = font_file_name.split(".")[0].toLowerCase();
-    const font_extension_name = font_file_name.split(".")[1].toLowerCase();
-    let css_type = "";
-    switch (font_extension_name) {
-      case "woff":
-        css_type = "font/woff";
-        break;
-      case "ttf":
-        css_type = "font/truetype";
-        break;
-      case "woff2":
-        css_type = "font/woff2";
-        break;
-      case "otf":
-        css_type = "font/opentype";
-        break;
-      default:
-        css_type = "font";
-    }
-    const base64_css = `@font-face{
+    try {
+      if (!this.processingNoticeShown) {
+        new import_obsidian.Notice("Processing Font files");
+        this.processingNoticeShown = true;
+        setTimeout(() => {
+          this.processingNoticeShown = false;
+        }, 5e3);
+      }
+      const file = `${this.settings.font_folder}/${font_file_name}`;
+      const arrayBuffer = await this.app.vault.adapter.readBinary(file);
+      const font_family_name = font_file_name.split(".")[0].toLowerCase();
+      const font_extension_name = font_file_name.split(".")[1].toLowerCase();
+      const fontBlob = new Blob([arrayBuffer]);
+      const fontUrl = URL.createObjectURL(fontBlob);
+      const fontFace = new FontFace(font_family_name, `url(${fontUrl})`, {
+        display: "swap"
+        // Better loading performance
+      });
+      try {
+        await fontFace.load();
+        const fonts = document.fonts;
+        if (fonts && typeof fonts.add === "function") {
+          fonts.add(fontFace);
+          console.log(`Font ${font_family_name} loaded successfully using CSS Font Loading API`);
+        } else {
+          console.log(`CSS Font Loading API not fully supported, falling back to traditional method for ${font_family_name}`);
+          throw new Error("CSS Font Loading API not supported");
+        }
+        const base64 = arrayBufferToBase64(arrayBuffer);
+        const css_type = font_extension_name === "woff" ? "font/woff" : font_extension_name === "woff2" ? "font/woff2" : font_extension_name === "otf" ? "font/opentype" : "font/truetype";
+        const base64_css = `@font-face{
 	font-family: '${font_family_name}';
 	src: url(data:${css_type};base64,${base64});
+	font-display: swap;
 }`;
-    this.app.vault.adapter.write(css_font_path, base64_css);
-    console.log("saved font %s into %s", font_family_name, css_font_path);
-    console.log("Font CSS Saved into %s", css_font_path);
-    await this.load_plugin();
+        await this.app.vault.adapter.write(css_font_path, base64_css);
+        URL.revokeObjectURL(fontUrl);
+      } catch (fontLoadError) {
+        console.warn(`CSS Font Loading API failed for ${font_family_name}, falling back to traditional method:`, fontLoadError);
+        URL.revokeObjectURL(fontUrl);
+        const base64 = arrayBufferToBase64(arrayBuffer);
+        const css_type = font_extension_name === "woff" ? "font/woff" : font_extension_name === "woff2" ? "font/woff2" : font_extension_name === "otf" ? "font/opentype" : "font/truetype";
+        const base64_css = `@font-face{
+	font-family: '${font_family_name}';
+	src: url(data:${css_type};base64,${base64});
+	font-display: swap;
+}`;
+        await this.app.vault.adapter.write(css_font_path, base64_css);
+      }
+      console.log("saved font %s into %s", font_family_name, css_font_path);
+    } catch (error) {
+      console.error(`Error converting font ${font_file_name} to CSS:`, error);
+      throw error;
+    }
   }
   async onload() {
     this.load_plugin();

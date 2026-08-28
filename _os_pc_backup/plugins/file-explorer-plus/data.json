@@ -1,0 +1,31 @@
+{
+  "hideStrictPathFilters": true,
+  "pinFilters": {
+    "active": true,
+    "tags": [],
+    "paths": [
+      {
+        "name": "",
+        "active": true,
+        "type": "FILES_AND_DIRECTORIES",
+        "pattern": "content.zh",
+        "patternType": "WILDCARD"
+      }
+    ],
+    "frontMatter": []
+  },
+  "hideFilters": {
+    "active": true,
+    "tags": [],
+    "paths": [
+      {
+        "name": "",
+        "active": true,
+        "type": "DIRECTORIES",
+        "pattern": "img",
+        "patternType": "WILDCARD"
+      }
+    ],
+    "frontMatter": []
+  }
+}

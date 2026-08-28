@@ -1,0 +1,7 @@
+{
+  "openExternalURLs": false,
+  "enableAdblocking": true,
+  "homepage": "https://gemini.google.com/app",
+  "searchEngine": "google",
+  "customSearchEngine": "https://duckduckgo.com/?q=%s"
+}

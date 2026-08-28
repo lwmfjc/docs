@@ -13,14 +13,6 @@
       "key": "D"
     }
   ],
-  "outline:open-for-current": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "G"
-    }
-  ],
   "graph:open": [],
   "editor:delete-paragraph": [],
   "editor:set-heading-1": [
@@ -146,6 +138,65 @@
         "Shift"
       ],
       "key": "B"
+    }
+  ],
+  "webviewer:open": [
+    {
+      "modifiers": [
+        "Mod",
+        "Shift"
+      ],
+      "key": "E"
+    }
+  ],
+  "editor:toggle-bold": [],
+  "quickadd:choice:7ed51f75-61fd-4656-ba02-41cb3bd6218c": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "B"
+    }
+  ],
+  "app:toggle-left-sidebar": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "G"
+    }
+  ],
+  "editor:fold-all": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "F"
+    }
+  ],
+  "editor:open-search-replace": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "H"
+    }
+  ],
+  "obsidian-regex-replace:obsidian-regex-replace": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "H"
+    }
+  ],
+  "editor:unfold-all": [
+    {
+      "modifiers": [
+        "Alt",
+        "Mod"
+      ],
+      "key": "F"
     }
   ]
 }
