@@ -71,17 +71,7 @@ module.exports = async (params) => {
                 }
 
 
-
-                // 修改第一个一级标题
-                if (/^# .*$/m.test(newContent)) {
-
-                    newContent =
-                        newContent.replace(
-                            /^# .*$/m,
-                            `# ${folderName}`
-                        );
-
-                }
+ 
 
 
 
