@@ -1,6 +1,6 @@
 ---
-title: 026-x
-description: 026-x
+title: 026-032
+description: 026-032
 categories:
   - 学习
 tags:
@@ -219,7 +219,14 @@ dict_keys(['k1', 'k2', 'k3', 'c'])
 
 # Tuples 元组
 
-元组是不可变的  
+- 元组是不可变的  
+- 固定数量 + 固定顺序 + 固定含义，这也是为什么它特别适合表示：
+	- 坐标 (x, y)
+	- RGB (255, 128, 0)
+	- 日期 (2026, 8, 29)
+	- 数据库的一行记录
+	- 函数返回的多个结果
+	- 一个对象的固定属性组合
 
 ## 元组和列表极其相似
 
@@ -238,3 +245,108 @@ dict_keys(['k1', 'k2', 'k3', 'c'])
 >>> t[0]
 'one'
 ```
+
+## 一些方法
+
+把元组当作*不可修改的序列*  
+
+```shell
+>>> numbers = (10, 20, 10, 30, 10)
+>>> numbers.count(10) 
+3
+>>> numbers.index(10) #返回第一次出现索引的值
+0
+>>> numbers.index(20)
+1
+
+```
+
+元组的不可变性  
+
+```shell
+>>> t
+('a', 'a', 'b')
+>>> mylist=[1,2,3]
+>>> mylist[0]='NEW'
+>>> mylist
+['NEW', 2, 3]
+>>> t[0]='NEW'
+Traceback (most recent call last):
+  File "<python-input-17>", line 1, in <module>
+    t[0]='NEW'
+    ~^^^
+TypeError: 'tuple' object does not support item assignment
+
+```
+
+在程序中传递对象且确保它不会被修改时，元组提供了一种非常方便的数据完整性保障  
+
+# Set 集合
+
+- 无序的
+- 集合中的值是唯一的，不会重复添加
+
+```shell
+#使用
+>>> myset=set()
+>>> myset.add(1)
+>>> myset
+{1}
+>>> myset.add('hello')
+>>> myset
+{1, 'hello'}
+>>> myset.add(1)
+>>> myset
+{1, 'hello'}
+#把列表转成唯一的值（只保留唯一的值）
+>>> mylist=[1,2,2,2,3,3,1,3,4]
+>>> set(mylist)
+{1, 2, 3, 4}
+>>> a=set(mylist)  #并不会改变原列表
+>>> a
+{1, 2, 3, 4}
+>>> type(a)
+<class 'set'>
+>>> mylist
+[1, 2, 2, 2, 3, 3, 1, 3, 4]
+
+```
+
+# Booleans
+
+- `[ˈbuːliən]`
+- False，True 
+
+- 用来表示对立的两种状态  
+- 通过比较运算符，或者逻辑运算符，返回布尔值
+
+```shell
+>>> True
+True
+>>> False
+False
+>>> true
+Traceback (most recent call last):
+  File "<python-input-2>", line 1, in <module>
+    true
+NameError: name 'true' is not defined. Did you mean: 'True'?
+>>> type(False)
+<class 'bool'>
+>>> 1>2
+False
+>>> 1 == 1
+True
+>>> b=None #以免出现b未定义
+>>> b
+>>> c
+Traceback (most recent call last):
+  File "<python-input-8>", line 1, in <module>
+    c
+NameError: name 'c' is not defined
+
+```
+
+
+
+
+
