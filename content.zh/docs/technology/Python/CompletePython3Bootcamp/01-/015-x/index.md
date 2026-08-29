@@ -292,3 +292,84 @@ Out[2]: 10.0
 
 # 字符串
 
+```shell
+#接下来使用ipython
+
+In [2]: print('hello')
+hello
+
+In [3]: print("Hello")
+Hello
+
+In [4]: print("I don't know")
+I don't know
+
+In [5]: print(' hah "hai"')
+ hah "hai"
+
+```
+
+- 字符串是有序序列，可以使用 indexing 或 slicing 来获取字符串子集  
+- 索引和java、c/cpp一样从0开始
+- 可以使用反向索引
+  ![](img/ly-20260829104529449.png)  
+- 切片 [start:stop:step]
+	- start （包括）
+	- stop （不包括）
+	- step （跳跃幅度）
+
+
+```shell
+#返回字符串（不是打印字符串），所以这里还显示了''表示这是一个字符串
+In [1]: 'hello'
+Out[1]: 'hello'
+
+In [2]: "world"
+Out[2]: 'world'
+
+In [3]: 'this is a "Test'
+Out[3]: 'this is a "Test'
+
+In [4]: 'this is a "Test"'
+Out[4]: 'this is a "Test"'
+```
+
+## 例子1
+
+![](img/ly-20260829105617812.png)  
+
+- 创建/取得一个对象 → 用完 → 丢弃  
+- 这个例子其实没有什么实际意义，在.py文件中然后被 `python xx.py`时，这个代码出现在文件中，是会被合并成"hello1hello2"的，而且没人引用它，最终也会被丢弃
+
+## 例子2
+
+![](img/ly-20260829105814642.png)
+
+有明显含义，打印了两行
+
+```shell
+#转义字符
+In [8]: print('hello\nworld')
+hello
+world
+
+In [9]: print('helloworld')
+helloworld
+
+```
+
+
+## 例子3
+
+```shell
+In [10]: len('hah')
+Out[10]: 3
+
+In [11]: len('你好')
+Out[11]: 2
+
+In [12]: len('hi h')
+Out[12]: 4
+
+```
+
