@@ -105,7 +105,7 @@
       "id": "26c0424e-3cfd-46e3-82fc-28b103252ddb",
       "name": "FolderSync",
       "type": "Macro",
-      "command": false,
+      "command": true,
       "runOnStartup": true,
       "macro": {
         "name": "FolderSync",
