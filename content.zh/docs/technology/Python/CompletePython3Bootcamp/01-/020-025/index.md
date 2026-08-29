@@ -1,6 +1,6 @@
 ---
-title: 020-x
-description: 020-x
+title: 020-025
+description: 020-025
 categories:
   - 学习
 tags:
@@ -315,4 +315,20 @@ Th result was  0.129
 Th result was 0.128700
 ```
 
+## f-strings
 
+```shell
+>>> name="Jose"
+>>> print('Helo,his name is {}'.format('kankan'))
+Helo,his name is kankan
+>>> print(f'Helo,his name is {name}')
+Helo,his name is Jose
+>>> print('Helo,his name is {}'.format(name))
+Helo,his name is Jose
+
+>>> name="Sam";age=3
+>>> print(f'{name} is {age} years old.')
+Sam is 3 years old.
+
+
+```
