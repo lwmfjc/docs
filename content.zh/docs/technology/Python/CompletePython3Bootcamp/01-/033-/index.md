@@ -73,5 +73,26 @@ this is the second line$
 this is the third line$
 ```
 
+## 输入输出
 
+```shell
+#查看当前目录
+>>> import os
+>>> os.getcwd()
+'/home/ly'
+#pwd只有在ipython里才有用
+>>> os.listdir()
+['myfile.txt', '.Xauthority', '.python_history', '.config', '.bash_logout', '.viminfo', '.sudo_as_admin_successful', 'python-env', '.bash_history', '.bashrc', '.profile', '.ipython', '.local', '.cache']
 
+>>> myfile=open('myfile.txt')
+>>> type(myfile)
+<class '_io.TextIOWrapper'>
+>>> content=myfile.read()
+>>> type(content)
+<class 'str'>
+>>> content
+'Hello this is a text file\nthis is the second line\nthis is the third line\n'
+>>> myfile.read() #再次读取，发现是空字符串
+''
+
+```
