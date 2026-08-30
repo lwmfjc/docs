@@ -92,6 +92,7 @@ this is the third line$
 <class 'str'>
 >>> content
 'Hello this is a text file\nthis is the second line\nthis is the third line\n' 
+>>> myfile.close()
 ```
 
 注意这个  
@@ -143,6 +144,7 @@ seek()参数是字节，而read()参数是字符
 2
 >>> myfile.read(3) #读取三个字符（不是字节）
 'llo'
+>>> myfile.close()
 ```
 
 ### seek作用
@@ -187,9 +189,10 @@ this is the third line
 0
 >>> myfile.readlines() #原有\n的地方留在列表元素中
 ['Hello this is a text file\n', 'this is the second line\n', 'this is the third line']
+>>> myfile.close()
 ```
 
-## 文件位置
+## 从文件位置读取
 
 ```shell
 #新建并编辑保存一个文件
@@ -197,5 +200,67 @@ ly@dba13:~/mydir$ cat -A  ~/mydir/hello
 hello$
 hi$
 
+#推荐使用with，代码块运行后文件会自动关闭
+>>> with open('/home/ly/mydir/hello') as my_new_file:
+     contents = my_new_file.read() #缩进代码中的任何代码都知道my_new_file这个变量
+     
+>>> contents
+'hello\nhi\n'
+
+```
+
+# 读取和写入(位置参数和关键字参数)
+
+光标放到左括号`(`之后，然后按shift+tab 即可查看函数使用方法  
+
+![](img/ly-20260830183741388.png)  
+现在回到普通的repl测试  
+
+```shell
+>>> with open('myfile.txt','r') as myfile:
+...     contents=myfile.read()
+...     
+>>> with open(mode='r',file='myfile.txt') as myfile:
+...     contents=myfile.read()
+...     
+>>> with open('r',file='myfile.txt') as myfile:
+...     contents=myfile.read()
+...     
+Traceback (most recent call last):
+  File "<python-input-2>", line 1, in <module>
+    with open('r',file='myfile.txt') as myfile:
+         ~~~~^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: argument for open() given by name ('file') and position (1)
+>>> with open('myfile.txt',mode='r') as myfile:
+...     contents=myfile.read()
+...     
+>>> contents
+'Hello this is a text file\nthis is the second line\nthis is the third line'
+>>> with open(file='myfile.txt','r') as myfile:
+...     contents=myfile.read()
+...     
+  File "<python-input-5>", line 1
+    with open(file='myfile.txt','r') as myfile:
+                                   ^
+SyntaxError: positional argument follows keyword argument
+
+
+```
+
+```shell
+#写模式下读取（失败）
+#mode='w'，覆盖写入；mode='a'，追加写入；mode='r'，读取文件
+>>> with open('myfile.txt','w') as myfile: 
+...     contents=myfile.read()
+...     
+Traceback (most recent call last):
+  File "<python-input-6>", line 2, in <module>
+    contents=myfile.read()
+io.UnsupportedOperation: not readable
+
+```
+
+
+```python
 
 ```
