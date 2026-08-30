@@ -170,6 +170,11 @@ nano -L hello.txt
 vim hello.txt
 #编辑过程中，ctr+c 弹出命令模式，然后:set noeol | wq
 
+#或者
+vim ~/.vimrc
+set nofixeol
+#需要重新登录/或者重启
+
 ```
 
 ### 分行读取到列表
@@ -218,27 +223,27 @@ hi$
 
 ```shell
 >>> with open('myfile.txt','r') as myfile:
-...     contents=myfile.read()
-...     
+              contents=myfile.read()
+              
 >>> with open(mode='r',file='myfile.txt') as myfile:
-...     contents=myfile.read()
-...     
+              contents=myfile.read()
+              
 >>> with open('r',file='myfile.txt') as myfile:
-...     contents=myfile.read()
-...     
+              contents=myfile.read()
+              
 Traceback (most recent call last):
   File "<python-input-2>", line 1, in <module>
     with open('r',file='myfile.txt') as myfile:
          ~~~~^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: argument for open() given by name ('file') and position (1)
 >>> with open('myfile.txt',mode='r') as myfile:
-...     contents=myfile.read()
-...     
+              contents=myfile.read()
+              
 >>> contents
 'Hello this is a text file\nthis is the second line\nthis is the third line'
 >>> with open(file='myfile.txt','r') as myfile:
-...     contents=myfile.read()
-...     
+              contents=myfile.read()
+              
   File "<python-input-5>", line 1
     with open(file='myfile.txt','r') as myfile:
                                    ^
@@ -251,16 +256,259 @@ SyntaxError: positional argument follows keyword argument
 #写模式下读取（失败）
 #mode='w'，覆盖写入；mode='a'，追加写入；mode='r'，读取文件
 >>> with open('myfile.txt','w') as myfile: 
-...     contents=myfile.read()
-...     
+              contents=myfile.read()
+              
 Traceback (most recent call last):
   File "<python-input-6>", line 2, in <module>
     contents=myfile.read()
 io.UnsupportedOperation: not readable
+#失败之后，文件内容会被清空
+```
+
+重新编辑写入文件  
+
+```shell
+ly@dba13:~$ cat myfile.txt
+hello1
+hi2
+```
+
+## read函数的参数mode简介
+
+| mode   | 名称               | 是否读取 | 是否写入 | 文件不存在 | 文件存在    |
+| ------ | ---------------- | ---- | ---- | ----- | ------- |
+| `'r'`  | read（默认）         | ✅    | ❌    | 报错    | 从开头读取   |
+| `'w'`  | write            | ❌    | ✅    | 创建    | 清空原内容   |
+| `'a'`  | append           | ❌    | ✅    | 创建    | 追加到末尾   |
+| `'x'`  | exclusive create | ❌    | ✅    | 创建    | 报错      |
+| `'r+'` | read/write       | ✅    | ✅    | 报错    | 从开头读写   |
+| `'w+'` | write/read       | ✅    | ✅    | 创建    | 清空后读写   |
+| `'a+'` | append/read      | ✅    | ✅    | 创建    | 末尾追加，可读 |
+
+新增一个文件  
+
+```shell
+ly@dba13:~$ cat -A my_new_file.txt
+one$
+two$
+threely
+```
+
+读取文件：  
+
+```shell
+>>> with open('my_new_file.txt',mode='r') as f:
+...     print(f.read())
+...     
+one
+two
+three
+>>> with open('my_new_file.txt',mode='r') as f:
+...   f.read()
+...   
+'one\ntwo\nthree'
+>>> with open('my_new_file.txt',mode='r') as f:
+...   contents=f.read()
+...   
+>>> contents
+'one\ntwo\nthree'
 
 ```
 
+如果此时修改了my_new_file.txt为：  
 
-```python
+```shell
+ly@dba13:~$ cat my_new_file.txt 
+one
+two
+three
+
+```
+
+```shell
+#运行
+>>> with open('my_new_file.txt',mode='r') as f:
+...     print(f.read())
+...     
+one
+two
+three
+
+>>> with open('my_new_file.txt',mode='r') as f:
+...   f.read()
+...   
+'one\ntwo\nthree\n'
+>>> with open('my_new_file.txt',mode='r') as f:
+...   contents=f.read()
+...   
+>>> contents
+'one\ntwo\nthree\n'
+
+```
+
+说明之前这里是没有空行的，否则应有一个空的行  
+
+![](img/ly-20260830221307260.png)  
+
+
+
+## 追加
+
+```shell
+>>> with open('my_new_file.txt',mode='a') as f:
+...   f.write('four')
+...   
+4  #其实这个4就是添加了4个字符的意思
+>>> with open('my_new_file.txt',mode='r') as f:
+...   contents=f.read()
+...   
+>>> contents
+'one\ntwo\nthree\nfour'
+
+```
+
+如上，在`one\ntwo\nthree\n`的基础上添加了`four` ~~没有换行符~~   
+
+## 写入 w
+
+w模式：文件不存在的话就会创建新文件
+
+```shell
+>>> with open('not_exist_idufiusf.txt',mode='w') as f:
+...   f.write('haha_hello_你好')
+...   
+13
+>>> with open('not_exist_idufiusf.txt',mode='r') as f:
+...   contents=f.read()
+...   
+>>> contents
+'haha_hello_你好'
+
+```
+
+# 至今为止的一些测试题
+
+```shell
+>>> 3+1.5+4
+8.5
+>>> type(3+1.5+4) #一旦表达式引入浮点数，结果一定是浮点数
+<class 'float'>
+>>> 4**2
+16
+>>> 4**0.5
+2
+>>> import math;math.sqrt(9)
+3.0
+
+```
+
+## 字符串相关
+
+```shell
+>>> s='hello'
+>>> s[2]
+'l'
+>>> s[-1:] #由-1位置向后遍历
+'o'
+>>> s[-1:0] #由-1位置向后遍历
+''
+>>> s[1:2]
+'e'
+>>> s[-1:0:-1] #这个不包括位置0
+'olle'
+>>> s[-1:-1:-1]
+''
+>>> s[::-1] #反向遍历
+'olleh'
+
+```
+
+`s[-1:0]`相当于`s[4:0:1]`，也就是`start = 4,stop  = 0,step  = 1` ，所以不可能有元素，直接返回了空  
+
+```shell
+#使用两种方法创建包括三个0的列表
+>>> [0,0,0]
+[0, 0, 0]
+>>> [0]*3
+[0, 0, 0]
+#修改hello为goodbye
+>>> list3=[1,2,[3,4,'hello']]
+>>> list3[2][2]='goodbye'
+>>> list3
+[1, 2, [3, 4, 'goodbye']]
+#排序
+>>> list4=[5,3,4,6,1]
+>>> list4.sort() #原地操作；字符串的upper()和lower()不是原地操作
+>>> list4
+[1, 3, 4, 5, 6]
+
+>>> list4=[5,3,4,6,1]
+>>> sorted(list4) #sorted不会原地操作
+[1, 3, 4, 5, 6]
+>>> list4
+[5, 3, 4, 6, 1]
+
+```
+
+## 字典
+
+```shell
+#获取hello
+>>> d={'simple_key':'hello'}
+>>> d['simple_key']
+'hello'
+>>> d={'k1':{'k2':'hello'}}
+>>> d['k1']['k2']
+'hello'
+#获取hello
+>>> d={'k1':[{'nest_key':['this is deep',['hello']]}]}
+>>> d['k1'][0]['nest_key'][1][0]
+'hello'
+#获取hello
+>>> d={'k1':[1,2,{'k2':['this is tricky',{'tough':[1,2,['hello']]}]}]}
+>>> d['k1'][2]['k2'][1]['tough'][2][0]
+'hello'
+
+```
+
+不能对字典进行排序，因为==普通字典==是映射，不是序列 ~~不过存折一种类似字典的对象，叫有序字典~~   
+
+
+## 元组
+
+```shell
+#元组创建；元组元素顺序不可变；元组也不可变
+>>> (1,3,'a')
+(1, 3, 'a')
+
+```
+
+## 集合
+
+```shell
+>>> list5=[1,2,2,33,4,4,11,22,3,3,2]
+>>> set(list5)
+{1, 2, 33, 4, 3, 11, 22}
+
+```
+
+## 布尔
+
+```shell
+>>> 2>3
+False
+>>> 3<=2
+False
+>>> 3==2.0
+False
+>>> 3.0==3
+True
+>>> 4**0.5!=2
+False
+#较为复杂
+>>> l_one=[1,2,[3,4]]
+>>> l_two=[1,2,{'k1':4}]
+>>> l_one[2][0]>=l_two[2]['k1']
+False
 
 ```

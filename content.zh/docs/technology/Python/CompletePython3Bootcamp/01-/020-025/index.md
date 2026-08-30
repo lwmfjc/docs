@@ -148,7 +148,7 @@ IndexError: string index out of range
 '02468'
 >>> mystring[::]
 '0123456789'
->>> mystring[::-1]
+>>> mystring[::-1]#从开头到末尾，以向后1步的方式遍历
 '9876543210'
 >>> step=2
 >>> mystring[::step]
