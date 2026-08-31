@@ -19,7 +19,7 @@ cssclasses:
 ![](img/ly-20260831105135822.png)
 
 2. github-settings-pages
-   ![](img/ly-20260831105255874.png)  
+   ![](img/ly-20260831111134146.png)     
 3. hugo的配置修改hugo.yaml
    将baseURL: `https://lwmfjc.github.io/doc`  修改为 `https://blog.liuyi2026.asia`  
    ![](img/ly-20260831105352972.png)
