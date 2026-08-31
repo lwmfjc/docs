@@ -231,6 +231,8 @@ oll Number: 9
 
 ### 常用场景
 
+#### 求和
+
 ```shell
 >>> mylist=[1,2,3,4,5,6,7,8,9,10]
 >>> list_num=0
@@ -276,5 +278,168 @@ IndentationError: unindent does not match any outer indentation level #取消缩
   File "<python-input-50>", line 4
     print(list_num)
 IndentationError: unexpected indent #Python 本来不期待这里有缩进，但是你加了。
+```
+
+#### 字符串
+
+```shell
+>>> mystring='hello world'
+>>> for letter in mystring:
+...     print(letter,end=',')
+... print()
+... 
+h,e,l,l,o, ,w,o,r,l,d,
+>>> for letter in "Hello":
+...     print(letter,end=',')
+... print()
+... 
+H,e,l,l,o,
+>>> for le23tter in "Hello":
+...     print(le23tter,end=',')
+... print()
+... 
+H,e,l,l,o,
+#_ 就是一个普通变量名。不过当你不关心变量时才会用
+
+#不常用
+>>> for _ in "Hello":
+...     print(_,end=',')
+... print()
+... 
+H,e,l,l,o,
+
+#常用
+>>> for _ in "Hello":
+...     print('abc',end=',')
+... print()
+... 
+abc,abc,abc,abc,abc,
+
+#不论要遍历的对象是啥，没有特殊处理的情况下，永远只遍历外层的对象(这个是元组)的元素个数次数
+>>> for item in (1,2,['t','e'],'a',(5,6)):
+...     print(item)
+...     
+1
+2
+['t', 'e']
+a
+(5, 6)
+```
+
+#### 元组解包
+
+tuple unpacking
+
+```shell
+
+mylist=[(1,2),(3,4),(5,6),(7,8)]
+>>> for item in mylist:
+...     print(item)
+...     
+(1, 2)
+(3, 4)
+(5, 6)
+(7, 8)
+#用变量单独访问元组单个的项
+>>> for (a,b) in mylist:
+...     print(f'{a}xx{b}')
+...     
+1xx2
+3xx4
+5xx6
+7xx8
+#省略左括号和右括号
+>>> for a,b in mylist:
+...     print(f'{a}xx{b}')
+...     
+1xx2
+3xx4
+5xx6
+7xx8
+
+
+>>> mylist=[(1,2,3),(5,6,7),(8,9,10)]
+>>> for a,b,c in mylist:
+...     print(f'a={a},b={b},c={c}')
+...     
+a=1,b=2,c=3
+a=5,b=6,c=7
+a=8,b=9,c=10
+```
+
+#### 字典-迭代解包
+
+ ~~默认字典是无序的，下面只是看起来好像有序~~   
+
+```shell
+#默认情况下只遍历键
+>>> for a in {'name':'kankan','age':12}:
+...     print(a)
+...     
+name
+age
+#只遍历值
+>>> for a in {'name':'kankan','age':12}.values():
+...     print(a)
+...     
+kankan
+12
+#遍历项
+>>> for item in {'name':'kankan','age':12}.items():
+...     print(item)
+...     
+('name', 'kankan')
+('age', 12)
+#解包
+>>> for a,b in {'name':'kankan','age':12}.items():
+...     print(f'{a}xx{b}')
+...     
+namexxkankan
+agexx12
+```
+
+# while
+
+while:  
+
+```shell
+>>> i=0
+>>> while i<10:
+...     print(i,end=',')
+...     i+=1
+...     
+0,1,2,3,4,5,6,7,8,9,>>> i
+10
+```
+
+while-else:  
+
+```shell
+>>> i=0;
+>>> while i<4:
+...     print(i)
+...     i+=1
+... else:
+...     print(f'end--i={i}')
+...     
+0
+1
+2
+3
+end--i=4
+```
+
+附（模拟do-while）：  
+
+```shell
+>>> while True:
+...     value = input("请输入：")
+... 
+...     if value == "quit":
+...         break
+...         
+请输入：2
+请输入：3
+请输入：quit
 ```
 
