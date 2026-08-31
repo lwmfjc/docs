@@ -1,4 +1,4 @@
 ---
 bookCollapseSection: false
-title: "SpringCloud"
+title: ""
 ---
