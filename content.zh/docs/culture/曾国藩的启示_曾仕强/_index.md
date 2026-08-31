@@ -1,6 +1,6 @@
 ---
 bookCollapseSection: true
 title: 
-bookHidden: true
+bookHidden: false
 weight: 9998
 ---
