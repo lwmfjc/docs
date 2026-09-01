@@ -1,6 +1,6 @@
 ---
-title: 039-x
-description: 039-x
+title: 039-041
+description: 039-041
 categories:
   - 学习
 tags:
@@ -427,6 +427,37 @@ while-else:
 2
 3
 end--i=4
+#while和else不是顺序关系，更像是while里面嵌套了 if-else ，然后else隐藏了break，类似
+i=0
+while(True):
+	if(i<4):
+		print(i)
+		i+=1
+	else:
+		print(f'end--i={i}')
+		break
+	
+#下面这个会直接打印end--i=50并退出
+>>> i=50
+>>> while(True):
+...     if(i<4):
+...             print(i)
+...             i+=1
+...     else:
+...             print(f'end--i={i}')
+...             break
+... 
+end--i=50
+#while-else一样的结果
+>>> i=50
+>>> while i<4:
+...     print(i)
+...     i+=1
+... else:
+...     print(f'end--i={i}')
+...  
+... 
+end--i=50
 ```
 
 附（模拟do-while）：  
@@ -443,3 +474,77 @@ end--i=4
 请输入：quit
 ```
 
+
+## break，continue，pass
+
+- pass相当于什么都不做
+- 占位语法，空操作（no-op，no operation）
+
+```shell
+
+>>> x = [1,2,3]
+>>> for item in x:
+...     # comment
+...     print('ha')
+...     pass
+...     print('b')
+... print('end of my script')
+... 
+ha
+b
+ha
+b
+ha
+b
+end of my script
+
+```
+
+continue: 跳过当前循环的余下部分，继续下一次迭代  
+
+```shell
+>>> for item in x:
+...     # comment
+...     print('ha')
+...     continue
+...     print('b')
+... print('end of my script')
+... 
+ha
+ha
+ha
+end of my script
+
+```
+
+break: 跳出该层循环体 ~~外层的迭代继续~~   
+
+```shell
+>>> for item in x:
+...     for _ in [1,2]:
+...          # comment
+...          print('ha')
+...          break
+...          print('b')
+... print('end of my script')
+... 
+ha
+ha
+ha
+end of my script
+
+```
+
+whiel中使用break：  
+
+```shell
+>>> while x<5:
+...     if x == 2:
+...         break #遍历到2就跳出whle循环
+...     print(x)
+...     x+=1
+...     
+0
+1
+
+```
