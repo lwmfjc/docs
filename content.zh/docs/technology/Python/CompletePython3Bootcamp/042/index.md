@@ -1,6 +1,6 @@
 ---
-title: 042-
-description: 042-
+title: 042
+description: 042
 categories:
   - 学习
 tags:
@@ -33,7 +33,7 @@ cssclasses:
 0
 1
 2
-#只可以迭代[3,6) 左边包括右边不包括
+#只可以迭代[3,6) 包括左边界，不包括右边界
 >>> for num in range(3,6):
 ...     print(num)
 ...     
@@ -223,3 +223,104 @@ dict_keys(['mykey', 'LiKan', 'new', 'new_2', 'new_3'])
 ```
 
 ## 数学函数
+### min,max,shuffle
+
+```shell
+>>> mylist=[10,20,303,50]
+>>> min(mylist)
+10
+>>> max(mylist)
+303
+# 从random模块导入shuffle函数
+>>> from random import shuffle
+>>> mylist = [1,2,3,4,5,6,7]
+#原地操作，不返回任何东西
+>>> shuffle(mylist)
+>>> mylist
+[3, 2, 5, 7, 4, 1, 6]
+>>> shuffle(mylist)
+>>> mylist
+[7, 2, 6, 1, 5, 3, 4]
+#导入整个random模块
+import random
+random.shuffle(mylist)
+#什么都不返回
+>>> random_list
+Traceback (most recent call last):
+  File "<python-input-99>", line 1, in <module>
+    random_list
+NameError: name 'random_list' is not defined
+>>> random_list=shuffle(mylist)
+>>> type(random_list)
+<class 'NoneType'>
+>>> type(shuffle(mylist))
+<class 'NoneType'>
+
+```
+
+- module（模块） → random
+- package（包） → 一组模块的集合
+- library（库） → 更大的概念，可能包含多个包/模块
+
+```shell
+#补充，None是NoneType唯一的实例,使用的是单例模式
+>>> None
+>>> a=None
+>>> b=None
+>>> a==b
+True
+>>> mylist
+[4, 6, 3, 1, 7, 5, 2]
+```
+
+### randint
+
+```shell
+#上下限之间取一个随机值（包括1，也包括100）
+>>> random.randint(1,100)
+41
+
+```
+
+## 接收用户输入
+
+```shell
+#接收输入到result中input返回值永远为str
+>>> input('enter a number here:')
+enter a number here:123
+'123'
+>>> result=input('enter a number here:')
+enter a number here:34
+>>> type(result)
+<class 'str'>
+#类型转换
+>>> int(result)
+34
+>>> result
+'34'
+>>> float(result)
+34.0
+
+
+```
+
+
+```shell
+#不确定输入是否为用户类型，则用try except
+>>> try:
+...     result=float(result)
+... except ValueError:
+...     pass
+... print(result)
+... 
+34.0
+>>> result='3se'
+>>> try:
+...     result=float(result)
+... except ValueError:
+...     pass
+... print(result)
+... 
+3se
+
+```
