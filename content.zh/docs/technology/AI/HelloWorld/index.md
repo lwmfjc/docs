@@ -106,6 +106,8 @@ print(r.text)
 
 ## 写一个简单对话
 
+### 本地模型
+
 这里用的其他模型，简单点 ~~用了流式一个字一个字输出，也保留了完整聊天结果~~   
 
 `nano chat.py`
@@ -272,3 +274,176 @@ AI： 中国国土面积约为960万平方公里。如果您有其他问题或�
 
 ```
 
+### DeepSeek--api调用
+
+```shell
+vim ~/.bashrc
+#最后一行添加你的DeepSeekApi
+export DEEPSEEK_API_KEY="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+#然后注销用户重新登录
+```
+
+
+python代码：  
+
+```shell
+import os
+from openai import OpenAI
+
+
+# =========================
+# 创建 DeepSeek 客户端
+# =========================
+
+client = OpenAI(
+    api_key=os.environ.get("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com"
+)
+
+
+# =========================
+# 模型
+# =========================
+
+model = "deepseek-v4-flash"
+#model = "deepseek-v4-pro"
+
+
+# =========================
+# 保存聊天历史
+# =========================
+
+messages = []
+
+
+# =========================
+# 开始聊天
+# =========================
+
+while True:
+
+    # 获取用户输入
+    try:
+        question = input("\n你：")
+
+    except EOFError:
+        print("\n退出")
+        break
+
+    except KeyboardInterrupt:
+        print("\n退出")
+        break
+
+
+    # 空输入跳过
+    if not question.strip():
+        continue
+
+
+    # 输入 exit 退出
+    if question.lower() == "exit":
+        print("退出")
+        break
+
+
+    # 输入 /clear 清空上下文
+    if question == "/clear":
+        messages.clear()
+        print("上下文已清空")
+        continue
+
+
+    # =========================
+    # 添加用户消息
+    # =========================
+
+    messages.append({
+        "role": "user",
+        "content": question
+    })
+
+
+    # 保存 AI 回复
+    answer = ""
+
+
+    try:
+
+        # =========================
+        # 调用 DeepSeek API
+        # =========================
+
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            stream=True
+        )
+
+
+        print("\nAI：", end="", flush=True)
+
+
+        # =========================
+        # 流式接收 AI 回复
+        # =========================
+
+        for chunk in response:
+
+            # 有些 chunk 没有 content
+            if not chunk.choices:
+                continue
+
+            content = chunk.choices[0].delta.content
+
+            if content:
+
+                print(
+                    content,
+                    end="",
+                    flush=True
+                )
+
+                answer += content
+
+
+        print()
+
+
+        # =========================
+        # 保存 AI 回复
+        # =========================
+
+        messages.append({
+            "role": "assistant",
+            "content": answer
+        })
+
+
+    # =========================
+    # Ctrl + C
+    # =========================
+
+    except KeyboardInterrupt:
+
+        print("\n\n已停止生成")
+
+        # 删除刚才没有完成的用户消息
+        if messages and messages[-1]["role"] == "user":
+            messages.pop()
+
+        continue
+
+
+    # =========================
+    # 其他错误
+    # =========================
+
+    except Exception as e:
+
+        print("\n错误：", e)
+
+        # 请求失败
+        # 删除刚才添加的用户消息
+        if messages and messages[-1]["role"] == "user":
+            messages.pop()
+```
