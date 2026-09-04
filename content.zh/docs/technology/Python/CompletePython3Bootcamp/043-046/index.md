@@ -78,3 +78,50 @@ range(0, 11)
 [0, 2, 4, 6, 8, 10]
 
 ```
+
+更复杂的表达式  
+
+```shell
+>>> celcius=[0,10,20,34.5]
+>>> fahrenheit=[(9/5*temp+32) for temp in celcius]
+>>> fahrenheit
+[32.0, 50.0, 68.0, 94.1]
+
+>>> fahrenheit=[ 9 / 5 * temp + 32 for temp in celcius]
+>>> fahrenheit
+[32.0, 50.0, 68.0, 94.1]
+#空格不是必须的
+>>> fahrenheit=[9/5*temp+32 for temp in celcius]
+>>> fahrenheit
+[32.0, 50.0, 68.0, 94.1]
+#相当于
+>>> fahrenheit2=[]
+>>> for temp in celcius:
+...     fahrenheit2.append(((9/5)*temp+32))
+...     
+>>> fahrenheit2
+[32.0, 50.0, 68.0, 94.1]
+
+```
+
+## 使用if-else（不推荐）
+
+```shell
+#遍历(0,10]，如果x为偶数则输出它自己；如果x为奇数，则输出0DD
+>>> results=[x if x%2==0 else '0DD' for x in range(0,11)]
+>>> results
+[0, '0DD', 2, '0DD', 4, '0DD', 6, '0DD', 8, '0DD', 10]
+
+```
+
+## 嵌套（不推荐）
+
+```shell
+>>> mylist=[x*y for x in [2,4,6] for y in [1,10,1000]]
+>>> mylist
+[2, 20, 2000, 4, 40, 4000, 6, 60, 6000]
+
+```
+
+# 小测试
+
