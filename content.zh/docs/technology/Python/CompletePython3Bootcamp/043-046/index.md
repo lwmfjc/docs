@@ -125,3 +125,27 @@ range(0, 11)
 
 # 小测试
 
+```shell
+>>> st='Print only the words that start with s in his sentence'
+>>> st.split() #默认以空格分割
+['Print', 'only', 'the', 'words', 'that', 'start', 'with', 's', 'in', 'his', 'sentence']
+
+>>> st='Print  only the words that start with s in his sentence'
+>>> st.split()
+['Print', 'only', 'the', 'words', 'that', 'start', 'with', 's', 'in', 'his', 'sentence']
+>>> st.split()
+KeyboardInterrupt
+>>> st2='aa234aaa324aaaa54'
+>>> st2.split('a')
+['', '', '234', '', '', '324', '', '', '', '54']
+>>> st2='  234   324    54'
+>>> st2.split('')
+Traceback (most recent call last):
+  File "<python-input-7>", line 1, in <module>
+    st2.split('')
+    ~~~~~~~~~^^^^
+ValueError: empty separator
+>>> st2.split() #比较特殊，如果是多个空格，并不会在空格与空格之间切分成空字符串
+['234', '324', '54']
+
+```
