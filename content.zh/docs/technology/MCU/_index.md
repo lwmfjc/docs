@@ -1,4 +1,4 @@
 ---
 bookCollapseSection: true
-title:
+title: "其他"
 ---
