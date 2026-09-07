@@ -1,8 +1,12 @@
 ---
-title: 00基础前提
-description: 00基础前提
+title: 01STM32_硬件世界入门课
+description: 01STM32_硬件世界入门课
 categories:
+  - 学习
 tags:
+  - stm32
+  - 单片机
+  - 江科大
 date: 2026-09-06T19:31:23+08:00
 lastmod: 2026-09-06T19:31:23+08:00
 cssAttach:

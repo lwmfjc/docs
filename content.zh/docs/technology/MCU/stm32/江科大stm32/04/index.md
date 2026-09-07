@@ -14,8 +14,24 @@ cssAttach:
 cssclasses:
   - book03
 ---
-- STM32开发方式
-	- 基于寄存器：用程序直接配置寄存器
+# 软件安装
+
+这里推荐安装keil5 C51，然后安装kei5 MTK，都装在同一个文件夹里面，这样以后打开keil5同时能编译C51或者STM32项目。之后关闭Keil5软件，用管理员权限运行打开，选File---xxxLicense 激活 ~~激活软件用的keygen_new2032~~ 。把keil5中的信息复制到激活软件然后genarate后再复制key到keil5即可激活  
+
+## 环境配置 
+
+edit-->configuration：  
+
+![](img/ly-20260907144554224.png)  
+
+![](img/ly-20260907145330832.png)  
+
+![](img/ly-20260907150611517.png)  
+
+
+# 开发方式
+
+- 基于寄存器：用程序直接配置寄存器
 		- 最底层，最直接，但是由于STM32结构复杂，寄存器太多 ~~不推荐~~ 
 	- ==【本课程】基于标准库==，也就是库函数：使用ST官方提供的封装好的函数，通过调用函数来间接地配置寄存器。 
 		- ST对寄存器封装的较好，所以这种方式既能满足对寄存器的配置，对开发人员也比较友好，有利于提高开发效率
@@ -331,9 +347,72 @@ STM32是由内核和内核外围的设备组成的，内核的寄存器描述和
 
 ### main函数
 
-1. 在Windows文件管理中新建User文件夹
-2. Target右键：AddGroup
+- 在Windows文件管理中新建User文件夹
+-  Target右键：AddGroup
    ![](img/ly-20260907132316763.png)  
    
    修改名字为User
-3. 
+- 添加新文件，选择 `.c` 文件，Name为main，Location选择User文件夹  
+   
+   ![](img/ly-20260907143827941.png)  
+   ![](img/ly-20260907143903224.png)
+   
+- main函数内容
+  
+```c
+#include "stm32f10x.h" //定义STM32F103芯片里面所有外设的地址和结构
+
+int main(void)
+{
+	while(1)
+	{
+		
+	}
+}//这里之后还有一行空行
+
+```
+- 设置编译后生成`.hex`文件
+  ![](img/ly-20260907153300550.png)
+  
+  ![](img/ly-20260907153323303.png)
+## 编译项目
+   
+   ![](img/ly-20260907145939320.png)
+   
+```shell
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Target 1'
+compiling main.c...
+linking...
+Program Size: Code=648 RO-data=252 RW-data=0 ZI-data=1632  
+".\Objects\Project.axf" - 0 Error(s), 0 Warning(s).
+Build Time Elapsed:  00:00:00
+```
+
+目前如果是基于寄存器开发的话，这里就已经完成了==初始工作==    
+
+
+
+## 直接操作寄存器
+
+- 位4（目前测试就直接设为1，否则得用其他操作；目前会把其他位清除
+  0x00000010
+   ![](img/ly-20260907151124792.png)  
+  ![](img/ly-20260907151426812.png)
+  
+  `RCC->APB2ENR=0x00000010;`
+- 用来配置13号口
+  ![](img/ly-20260907152250716.png)  
+  ![](img/ly-20260907152345916.png)  
+  `GPIOC->CRH=0x00300000;`
+
+- 给PC13口输出数据
+  ![](img/ly-20260907152706488.png)  
+  这一位写1,13号口就是高电平  
+  `GPIOC->ODR=0x00002000;`
+- 
+## 补充说明开发板硬件知识
+
+
+
+
