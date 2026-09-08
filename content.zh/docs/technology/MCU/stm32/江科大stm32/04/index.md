@@ -18,6 +18,14 @@ cssclasses:
 
 这里推荐安装keil5 C51，然后安装kei5 MTK，都装在同一个文件夹里面，这样以后打开keil5同时能编译C51或者STM32项目。之后关闭Keil5软件，用管理员权限运行打开，选File---xxxLicense 激活 ~~激活软件用的keygen_new2032~~ 。把keil5中的信息复制到激活软件然后genarate后再复制key到keil5即可激活  
 
+## slink驱动
+
+地址： https://www.st.com/en/development-tools/stsw-link009.html#get-software 
+
+4根杜邦线接好即可，建议先接板子上的给他固定顺序，因为可能经常拔插，USB这头的相对不会去拔插  
+
+
+
 ## 环境配置 
 
 edit-->configuration：  
@@ -391,6 +399,11 @@ Build Time Elapsed:  00:00:00
 
 目前如果是基于寄存器开发的话，这里就已经完成了==初始工作==    
 
+## ST-LINK设置
+
+![](img/ly-20260908172914370.png)  
+![](img/ly-20260908172947613.png)  
+
 
 
 ## 直接操作寄存器
@@ -410,9 +423,387 @@ Build Time Elapsed:  00:00:00
   ![](img/ly-20260907152706488.png)  
   这一位写1,13号口就是高电平  
   `GPIOC->ODR=0x00002000;`
-- 
-## 补充说明开发板硬件知识
+### 这里附上普中单片机A7-换芯-STM32版本
+
+ ~~注：由于我没有江科大视频中提到的STM8F103C8T6以及面板上这些，手头只有*普中单片机A7*（STC89C516+STM8)【可将89C516拆下来换成STM32F103C8T6】，所以开发板、还有连线什么的都有出入~~   
+
+```c
+#include "stm32f10x.h" //包含STM32F103芯片的寄存器定义、外设地址和相关结构体
 
 
+int main(void)
+{
+    //1. 开启GPIOA时钟
+    //GPIOA属于APB2总线上的外设
+    //STM32外设默认关闭时钟，需要先开启对应时钟才能使用
+    //
+    //RCC_APB2ENR寄存器负责控制APB2外设时钟
+    //将IOPAEN位置1，即开启GPIOA时钟
+    //
+    //RCC->APB2ENR = 0x00000004;  //直接操作寄存器方式
+    RCC->APB2ENR |= RCC_APB2ENR_IOPAEN; //开启GPIOA时钟
+
+
+    //2. 配置PA0引脚模式
+    //
+    //GPIO的配置寄存器：
+    //CRL负责配置PA0~PA7
+    //CRH负责配置PA8~PA15
+    //
+    //每个GPIO引脚占用4个bit配置
+    //PA0对应CRL最低4位
+    //
+    //清空PA0原来的配置
+    GPIOA->CRL &= 0xFFFFFFF0;
+    
+    //设置PA0为推挽输出模式
+    //MODE=11：输出速度50MHz
+    //CNF=00：通用推挽输出
+    //
+    //最终配置：
+    //PA0 = 输出模式，最大速度50MHz
+    GPIOA->CRL |= 0x00000003;
+
+
+    //3. 控制PA0输出电平
+    //
+    //普中开发板LED连接到PA0
+    //
+    //GPIO输出：
+    //ODR对应GPIO输出数据寄存器
+    //第0位对应PA0
+    //
+    //输出1：
+    //PA0为高电平
+    //
+    //输出0：
+    //PA0为低电平
+    //
+    //根据你的普中开发板硬件连接：
+    //PA0输出低电平时LED熄灭
+    //PA0输出高电平时LED点亮
+    //
+    //关闭LED
+   GPIOA->ODR &= ~(1 << 0);
+  //  GPIOA->ODR |= (1<<0);//灯亮
+
+
+    while (1)
+    {
+
+    }
+}
+
+```
+
+### 说明(普中A7)  
+
+由STM32F103C8T6核心板原理图得知：   
+
+![](img/ly-20260908175805302.png)
+
+#### GPIO
+
+GPIO：General Purpose Input Output，即 *通用输入输出接口*  
+
+GPIOA 和 GPIOC 是 STM32 芯片里面两组“管脚控制模块”，A、C代表不同的GPIO端口（Port）。 ~~STM32 有很多引脚，STM32把它们分组，每16个一组。~~     
+
+```shell
+STM32芯片
+│
+├── GPIOA（A区）
+│    ├── PA0
+│    ├── PA1
+│    ├── PA2
+│    ...
+│    └── PA15
+│
+├── GPIOB（B区）
+│    ├── PB0
+│    ├── PB1
+│    ...
+│
+├── GPIOC（C区）
+│    ├── PC0
+│    ├── PC1
+│    ...
+│    └── PC15
+│
+└── 其它外设
+     ├── USART
+     ├── TIM
+     ├── ADC
+     └── SPI
+```
+
+比如PA5，即GPIOA组里面的第5号引脚（从0号开始）  
+
+#### 外设时钟使能
+
+STM32 默认把 GPIOA 关闭了，需要先给它供电（开启时钟），即：  
+
+```c
+//RCC->APB2ENR = 0x00000004;  //直接操作寄存器方式
+
+//把 RCC 的 APB2 外设时钟使能寄存器里面 GPIOA 对应的那一位置1。
+RCC->APB2ENR |= RCC_APB2ENR_IOPAEN; //开启GPIOA时钟
+```
+
+STM32 是一个低功耗芯片。里面有很多硬件模块：  
+
+```
+STM32
+
+├── GPIOA
+├── GPIOB
+├── GPIOC
+├── USART1
+├── SPI1
+├── ADC
+├── TIM1
+...
+```
+
+如果只是点灯，其他模块是不需要工作的，会导致功耗增加，所以默认关闭时钟  
+
+##### 外设时钟
+
+即：给 GPIOA 提供运行所需的时钟信号。  
+
+STM32内部：  
+
+```
+晶振
+ |
+ |
+时钟系统 RCC
+ |
+ |
++--------------+
+|              |
+GPIOA       USART1
+ |              |
+工作          工作
+```
+
+没有时钟的话，GPIOA内部电路不运行  
+
+##### RCC(复位和时钟控制器)
+
+Reset and Clock Control，复位和时钟控制器  
+
+它是 STM32里面负责：*开关外设时钟，配置系统时钟，复位外设*的模块。 ~~RCC就是 STM32 的「总电闸」。~~   
+
+##### APB2(高级外设总线2)
+
+Advanced Peripheral Bus 2，高级外设总线2  
+
+STM32内部有很多总线：
+
+简单理解：
+
+```
+CPU
+
+ |
+ |
+总线
+ |
+ +--- GPIOA
+ |
+ +--- USART1
+ |
+ +--- TIM1
+```
+
+STM32==*把外设分到不同总线*==上：
+
+例如：
+
+```
+APB2:
+
+GPIOA
+GPIOB
+GPIOC
+USART1
+ADC
+TIM1
+
+
+APB1:
+
+USART2
+TIM2
+TIM3
+I2C
+SPI2
+```
+
+GPIOA属于：
+
+```
+APB2
+```
+
+所以控制它 
+
+##### ENR(使能寄存器)
+
+APB2ENR：  
+
+| Bit   | 名称               | 功能          |
+| ----- | ---------------- | ----------- |
+| bit0  | **AFIOEN**       | AFIO 时钟使能   |
+| bit1  | 保留               | Reserved    |
+| bit2  | **IOPAEN**       | GPIOA 时钟使能  |
+| bit3  | **IOPBEN**       | GPIOB 时钟使能  |
+| bit4  | **IOPCEN**       | GPIOC 时钟使能  |
+| bit5  | **IOPDEN**       | GPIOD 时钟使能  |
+| bit6  | **IOPEEN**       | GPIOE 时钟使能  |
+| bit7  | 保留               | Reserved    |
+| bit8  | **ADC1EN**       | ADC1 时钟使能   |
+| bit9  | **ADC2EN**       | ADC2 时钟使能   |
+| bit10 | **TIM1EN**       | TIM1 时钟使能   |
+| bit11 | **SPI1EN**       | SPI1 时钟使能   |
+| bit12 | **TIM8EN**（部分型号） | TIM8 时钟使能   |
+| bit13 | **USART1EN**     | USART1 时钟使能 |
+
+到这里就很清楚了，RCC->APB2ENR 是一个 32 位寄存器。但是 不是32位都用来控制外设，STM32F103 只使用其中一部分位  
+
+##### RCC_APB2ENR_IOPAEN(宏)
+
+宏（Macro）就是在预处理阶段进行文本替换的东西。  
+
+其他一些名词  
+
+| 名字            | 含义                |
+| ------------- | ----------------- |
+| 宏（Macro）      | `#define` 定义的替换符号 |
+| 寄存器（Register） | 硬件里的控制存储单元        |
+| 位（Bit）        | 寄存器里的某一个开关        |
+| 结构体映射         | 用 C 结构体表示硬件地址     |
+| 位掩码（Bit Mask） | 用于操作某几个bit的数字     |
+| 头文件           | 提供硬件定义            |
+
+
+#### CRL，CRH。(配置寄存器)
+
+- 每组GPIO，都有两个配置寄存器  
+- 每一个寄存器是32位，每一个代表8个引脚的配置，即每个引脚可以用其中4位表示配置
+
+*CRL：*
+
+低8个：
+
+```
+PA0 ~ PA7
+```
+
+*CRH：*
+
+高8个：
+
+```
+PA8 ~ PA15
+```
+
+所以：
+
+*PA0：*
+
+```
+PA0属于0~7
+
+↓
+
+GPIOA->CRL
+```
+
+`GPIOA->CRL |= 0x00000003;`  ~~注意，这是16进制~~ 所以它处理了最后4位为0011，也就是配置第一个引脚  
+
+##### GPIOA->CRL
+
+CRL：Configuration Register Low  
+
+```
+bit31                         bit0
+ |                             |
++---+---+---+---+---+---+---+---+
+|PA7|PA6|PA5|PA4|PA3|PA2|PA1|PA0|
++---+---+---+---+---+---+---+---+
+
+每个占4bit
+```
+
+##### GPIOA->CRH
+
+CRH：Configuration Register High  
+
+```
+bit31                 bit0
+ |                     |
+PA15 PA14 ... PA9 PA8
+```
+
+
+#### ODR(输出数据寄存器
+
+ODR：Output Data Register  
+
+GPIOA->ODR 就是在操作 GPIOA 这一组引脚的“输出电平控制寄存器”。  
+
+其实GPIOA里面有很多寄存器：  
+
+| 寄存器  | 作用           |
+| ---- | ------------ |
+| CRL  | 配置PA0~PA7模式  |
+| CRH  | 配置PA8~PA15模式 |
+| IDR  | 读取输入电平       |
+| ODR  | 设置输出电平       |
+| BSRR | 置位/复位        |
+| BRR  | 复位           |
+
+```
+GPIOA
+ |
+ ├── CRL
+ ├── CRH
+ ├── IDR
+ └── ODR
+```
+
+ODR寄存器，里面有16位，即：ODR的每一位控制一个GPIO引脚。    
+
+```
+GPIOA->ODR
+
+
+bit15 bit14 ... bit1 bit0
+
+ PA15 PA14      PA1 PA0
+```
+
+##### 设置低电平
+
+如果让ODR中最后一位为1，也就是配置PA0  
+
+```
+GPIOA->ODR &= ~(1 << 0);
+#过程：
+#~(1 << 0) = 0000 0000 0000 0001 取反 = 1111 1111 1111 1110
+#也就是让其他15位保持不变，最后1位为0
+``` 
+
+即：通过GPIOA的输出数据寄存器，把PA0这个物理引脚输出电平设置为低电平。
+
+##### 设置高电平
+
+```
+GPIOA->ODR |= (1<<0);
+#过程：
+#~(1 << 0) = 0000 0000 0000 0001  
+#也就是让其他15位保持不变，最后1位为1
+``` 
 
 

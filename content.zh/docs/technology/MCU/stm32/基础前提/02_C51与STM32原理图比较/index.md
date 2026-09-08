@@ -14,6 +14,8 @@ cssAttach:
 cssclasses:
   - book03
 ---
+
+
 # 普中A7开发板原理图(89C516)
 
 ![](img/ly-20260907225240578.png)  
@@ -29,7 +31,7 @@ cssclasses:
 ![](img/ly-20260907224918378.png)  
 
 
-# STM32F103核心板原理图
+# STM32F103C8T6核心板原理图
 
 ![](img/ly-20260907225138143.png)
 
