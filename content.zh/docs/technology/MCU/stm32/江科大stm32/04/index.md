@@ -17,6 +17,10 @@ cssclasses:
 # 软件安装
 
 这里推荐安装keil5 C51，然后安装kei5 MTK，都装在同一个文件夹里面，这样以后打开keil5同时能编译C51或者STM32项目。之后关闭Keil5软件，用管理员权限运行打开，选File---xxxLicense 激活 ~~激活软件用的keygen_new2032~~ 。把keil5中的信息复制到激活软件然后genarate后再复制key到keil5即可激活  
+## 格式化
+
+https://sourceforge.net/projects/astyle/
+
 
 ## slink驱动
 
@@ -322,7 +326,7 @@ D:\software\单片机代码\STM32江科大\2-
 
 STM32是由内核和内核外围的设备组成的，内核的寄存器描述和外围设备的描述文件不是在一起的，以下添加内核寄存器描述、以及一些内核配置函数  
 
-- ==core_cm3.c== 
+- ==core_cm3.c==   ~~很多现代编译器（特别是新版本的 ARM Compiler、GCC、IAR）已经将 core_cm3.c 中实现的部分功能（如 `__get_PSP`, `__set_PRIMASK` 等）作为内置函数（Intrinsics） 提供了 所以压根不需要包含它~~ 
 - ==core_cm3.h==   ~~1. Cortex-M3内核寄存器 2. 内核数据结构 3. 内核相关宏 ||||#比如NVIC，SysTick，SCB~~ 
 
 把以上2个文件也复制到start文件夹  
@@ -460,9 +464,14 @@ int main(void)
     //MODE=11：输出速度50MHz
     //CNF=00：通用推挽输出
     //
-    //最终配置：
-    //PA0 = 输出模式，最大速度50MHz
-    GPIOA->CRL |= 0x00000003;
+    //
+	//最终配置：
+	//PA0 = 输出模式，最大速度50MHz
+	//复位或未配置时，GPIO 寄存器 ODR
+	//（输出数据寄存器）默认值为 0。一旦将引
+	//脚切为推挽输出模式，引脚硬件上会立即根据 ODR 的当
+	//前值（0）驱动电平，因此 PA0 输出低电平。
+	GPIOA->CRL |= 0x00000003;
 
 
     //3. 控制PA0输出电平
