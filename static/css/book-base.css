@@ -45,12 +45,12 @@ p del,mark del, li del, span.cm-strikethrough, td del  {
     bottom: -0.15em;
 }
 
-/*正文--黑色加大*/
+/*正文--黑色加粗*/
 strong, .cm-strong , .markdown strong,
 .cm-strong.cm-inline-code,.cm-strong.cm-highlight{
-    font-size: 1.2em;
-    font-weight: normal;
-    --font-weight: normal;
+    font-size: 1.0em;
+    font-weight: bold;
+    --font-weight: bold;
 }
 
 

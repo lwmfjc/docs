@@ -1,6 +1,19 @@
+/*.book02{cssstart*/
+/*平常博客里去除缩进*/
+@import url("./book-base.css");
+
+   /*正文--黑色加大*/
+   strong, .cm-strong , .markdown strong,
+   .cm-strong.cm-inline-code,.cm-strong.cm-highlight{
+       font-size: 1.2em;
+       font-weight: normal;
+       --font-weight: normal;
+   }
+
+/*}cssend*/
+
 /*body.theme-light :is(.book02){cssstart*/
 /*  资治通鉴之类古书里字体默认灰色 */
-@import url("./book-base.css");
 
 article p, div.cm-line:not(.HyperMD-header),
  div.el-p,mark { 
