@@ -4,9 +4,8 @@ description: 08_target_link_libraries深入_库、链接、依赖关系
 categories:
   - 学习
 tags:
-  - 单片机
-  - STM32
-  - 江科大
+  - CMake
+  - ChatGPTGuides
 date: 2026-09-10T19:01:28+08:00
 lastmod: 2026-09-10T19:01:28+08:00
 cssAttach:

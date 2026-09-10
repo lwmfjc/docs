@@ -4,9 +4,8 @@ description: 07_target_sources和 target_include_directories
 categories:
   - 学习
 tags:
-  - 单片机
-  - STM32
-  - 江科大
+  - CMake
+  - ChatGPTGuides
 date: 2026-09-10T18:04:25+08:00
 lastmod: 2026-09-10T18:04:25+08:00
 cssAttach:
