@@ -996,7 +996,27 @@ CMake
 
 # 补充：至今为止的一些命令顺序
 
+- 这些统称为`CMake command（命令）`  
+- 很多 CMake 命令的第一个参数通常是**操作对象（target）**，后面的参数**描述属性**。
+- 括号()里面的叫**参数**，参数之间以**空白符** ~~换行、空格、Tab效果一样~~ 或者分号 ~~即;但是可读性差~~ 分割，**括号**表示**命令边界**  
+- 
+
 > CMakeLists.txt 不是像 C/C++ 那样严格按声明顺序全部决定，但它是“从上到下执行”的；凡是 target_xxx() 命令，都要求对应 target 已经存在。cmake_minimum_required() 和 project() 基本固定放前面。
+
+类似：  
+
+```
+cmake_minimum_required()
+        ↓
+project()
+        ↓
+add_library()
+add_executable()
+        ↓
+target_sources()
+target_include_directories()
+target_link_libraries()
+```
 
 下一章会讲：
 

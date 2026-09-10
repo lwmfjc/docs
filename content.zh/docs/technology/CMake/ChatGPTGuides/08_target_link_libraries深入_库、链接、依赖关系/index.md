@@ -30,6 +30,7 @@ cssclasses:
 
 先看一个简单程序。
 
+
 目录：
 
 ```
@@ -243,9 +244,9 @@ robot
 robot
 ```
 
-运行时：
+**运行时：**
 
-不需要这个库。
+**不需要这个库。**
 
 ---
 
@@ -475,22 +476,19 @@ make
 
 ```
 motor.cpp
-
-↓
-
+   ↓ 编译
 motor.o
-
-↓
-
+   ↓ 打包
 libmotor.a
 ```
+
 
 然后：
 
 ```
 main.cpp
 
-↓
+↓编译
 
 main.o
 ```
@@ -504,7 +502,7 @@ main.o
 
 libmotor.a
 
-↓
+↓ 链接
 
 robot
 ```
