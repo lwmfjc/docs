@@ -46,7 +46,11 @@ target_include_directories(
     PUBLIC
     include
 )
+#xxx 自己编译时需要去 include 找头文件，同时使用 xxx 的 target 也需要这个 include 路径。
 ```
+
+> 1. CMake 中，target 的 usage requirements（使用要求）会沿着依赖关系向下游传播。
+> 2. 这里就提前说明了，target 的头文件**搜索路径**、**链接库**等使用要求，可以传递给依赖它的 target。
 
 很多初学者知道语法，但是不知道为什么。
 
@@ -281,13 +285,12 @@ math
 里面：
 
 ```cpp
-#include <Eigen/Core>
+#include "math.h"
 
-
-class MatrixCalculator
+void MatrixCalculator::calculate()
 {
-    Eigen::Matrix mat;
-};
+    // 真正的实现
+}
 ```
 
 注意：
@@ -301,11 +304,14 @@ math.h
 里面也暴露：
 
 ```cpp
+#pragma once
+
 #include <Eigen/Core>
 
 class MatrixCalculator
 {
-    Eigen::Matrix m;
+public:
+    Eigen::MatrixXd calculate();
 };
 ```
 
@@ -313,7 +319,7 @@ class MatrixCalculator
 
 使用math的人：
 
-必须知道Eigen。
+要`include "math.h" `就必须知道Eigen ~~因为.h中的声明类型有Eigen::MatrixXd ~~ 。
 
 关系：
 
@@ -351,7 +357,6 @@ math依赖Eigen
 使用math的人也继承这个依赖
 ```
 
----
 
 # 9.5 INTERFACE：只传递，不参与自身编译
 
@@ -359,14 +364,236 @@ math依赖Eigen
 
 例如：
 
-你创建一个纯头文件库。
+你创建一个纯头文件库。 ~~纯头文件库 ≠ “只有声明的头文件库”，而是库的实现也放在头文件中，因此使用者不需要单独链接一个编译好的库二进制文件。~~ 
+
+> 1. 纯头文件库的实现会随着 `#include` 进入每个 .cpp 的编译单元，因此可能增加编译时间；但只要库按照 C++ 的规则设计（例如 inline、模板等），多个 .cpp 同时包含它通常不会产生重复定义的链接冲突。
+> 2. 对于 inline，编译器/链接器有机制允许多个定义存在，并且通常会选择/合并其中一个版本。如果你违反 ODR，程序可能直接编译链接成功 ~~也可能失败~~ ，但行为是未定义的（Undefined Behavior）。这点非常重要。
+
+## 1. `logger`
 
 目录：
 
 ```text
-include
+logger/
+├── CMakeLists.txt
+└── include/
+    └── logger.hpp
+```
 
-└── logger.hpp
+`logger.hpp`：
+
+```cpp
+#pragma once
+
+void log(const char* msg)
+{
+    // 实现
+}
+```
+
+CMake：
+
+```cmake
+add_library(logger INTERFACE)
+
+target_include_directories(
+    logger
+    INTERFACE
+    include
+)
+```
+
+这里的：
+
+```cmake
+add_library(logger INTERFACE)
+```
+
+实际上是在告诉 CMake：
+
+> **logger 是一个“接口 target”，它本身没有需要编译的源文件。**
+
+所以 CMake 不会做：
+
+```text
+logger.cpp
+   ↓
+logger.o
+```
+
+因为根本没有 `logger.cpp`。
+
+## 2. 那 `target_include_directories(... INTERFACE include)` 是什么意思？
+
+它不是说：
+
+> “logger 自己去 `include` 找头文件。”
+
+而是：
+
+> **凡是使用 `logger` 的 target，都需要把 `include` 加入自己的头文件搜索路径。**
+
+例如：
+
+```cmake
+target_link_libraries(
+    app
+    PRIVATE
+    logger
+)
+```
+
+CMake 就知道：
+
+```text
+app
+ ↓
+使用 logger
+ ↓
+继承 logger 的 INTERFACE include 路径
+ ↓
+app 编译时增加：
+logger/include/
+```
+
+于是 `app.cpp`：
+
+```cpp
+#include <logger.hpp>
+
+int main()
+{
+    log("hello");
+}
+```
+
+编译时就能找到：
+
+```text
+logger/include/logger.hpp
+```
+
+## 3. 如果logger依赖了`math` 
+
+假设：
+
+```text
+logger/
+└── include/
+    └── logger.hpp
+
+math/
+└── include/
+    └── math.hpp
+```
+
+然后：
+
+```cpp
+// logger.hpp
+
+#include <math.hpp>
+
+inline void log()
+{
+    math::something();
+}
+```
+
+此时 `logger` 依赖 `math`。
+
+如果：
+
+```cmake
+add_library(logger INTERFACE)
+
+target_include_directories(
+    logger
+    INTERFACE
+    include
+)
+
+target_link_libraries(
+    logger
+    INTERFACE
+    math
+)
+```
+
+这里就非常有意思了。
+
+因为：
+
+```text
+logger
+  │
+  │ INTERFACE
+  ↓
+ math
+```
+
+意思是：
+
+> **logger 自己不需要编译，但凡是使用 logger 的人，也需要 math。**
+
+于是：
+
+```cmake
+target_link_libraries(
+    app
+    PRIVATE
+    logger
+)
+```
+
+形成：
+
+```text
+app
+ │
+ ↓
+logger
+ │
+ ↓
+math
+```
+
+最终 `app` 编译的时候：
+
+```text
+app.cpp
+  │
+  ├── #include <logger.hpp>
+  │
+  ↓
+logger.hpp
+  │
+  ├── #include <math.hpp>
+  │
+  ↓
+math.hpp
+```
+
+***所以 app 必须能够找到 `math.hpp`。***
+
+而 CMake 会通过：
+
+```cmake
+target_link_libraries(logger INTERFACE math)
+```
+
+**把 `math` 的使用要求继续传给 `app`**。
+
+
+## 4. 概述
+
+> logger 自己是不需要编译的，所以压根不需要知道头文件 math 去哪里找。
+
+
+因为：
+
+```text
+logger
 ```
 
 没有：
@@ -375,63 +602,102 @@ include
 logger.cpp
 ```
 
-代码：
+所以 CMake 不需要建立：
 
-```cpp
-#include "logger.hpp"
+```text
+logger.cpp → logger.o
 ```
 
-所有代码都在头文件。
+这个编译过程。
 
-CMake：
-
-```cmake
-add_library(
-    logger
-
-    INTERFACE
-)
-```
-
-表示：
-
-创建一个接口库。
-
-然后：
+因此：
 
 ```cmake
 target_include_directories(
     logger
-
     INTERFACE
-
-    include
+    ...
 )
 ```
 
-别人使用：
+中的 `INTERFACE` 就表示：
 
-```cmake
-target_link_libraries(
-    app
+> **这个 include 路径不是给 logger 自己编译用的，而是给 logger 的使用者用的。**
 
-    logger
-)
-```
-
-于是：
-
-app自动获得：
 
 ```text
-include路径
+                 logger
+                   │
+             提供 usage requirements
+                   │
+        ┌──────────┴──────────┐
+        ↓                     ↓
+    include路径             math依赖
+        │                     │
+        └──────────┬──────────┘
+                   ↓
+                  app
+                   ↓
+                 编译
 ```
 
-但是：
+而真正的 C++ `#include`：
 
-logger自己不用编译。
+```cpp
+#include <logger.hpp>
+```
 
----
+把头文件内容**文本意义上纳入当前翻译单元**。
+
+也就是说：
+
+```text
+CMake
+ ↓
+负责告诉编译器：
+“去 logger/include 找头文件”
+
+        ↓
+
+编译器预处理
+ ↓
+
+#include <logger.hpp>
+ ↓
+把 logger.hpp 的内容纳入 app.cpp
+```
+
+所以最好把两件事情分开：
+
+### CMake 的工作
+
+```text
+target_link_libraries(app PRIVATE logger)
+                     ↓
+继承 logger 的 usage requirements
+                     ↓
+获得 include 路径、依赖等
+```
+
+### C++ 预处理器的工作
+
+```text
+app.cpp
+ ↓
+#include <logger.hpp>
+ ↓
+logger.hpp 的内容进入这个翻译单元
+```
+
+## 5. 最后用一句话总结 
+
+
+> `logger` 是 INTERFACE target，因此它自己没有需要编译的源文件，所以 `logger` 自己不存在“编译 logger.hpp 时去哪里找 math.hpp”这个编译过程。`logger` 的作用主要是向它的使用者传播使用要求。当 `app` 使用 `logger` 后，`logger` 的 INTERFACE include 路径以及它的 INTERFACE 依赖会传递给 `app`；然后真正编译 `app.cpp` 时，`app` 才会通过这些路径找到 `logger.hpp`、`math.hpp` 等头文件。
+
+
+这就是 `INTERFACE` target 最核心的思想。
+
+还有一个特别重要的点：**`target_link_libraries(app logger)` 并不是把 `logger.hpp` “复制进 app”**。它是在建立 **CMake target 之间的依赖关系**；真正让头文件内容进入 `app.cpp` 的，是 `#include`。
 
 # 9.6 三者对比
 
@@ -442,6 +708,8 @@ logger自己不用编译。
 | PRIVATE   | ✅    | ❌      |
 | PUBLIC    | ✅    | ✅      |
 | INTERFACE | ❌    | ✅      |
+
+PUBLIC / PRIVATE / INTERFACE 是 CMake 用来描述 target 属性 **“自己使用”** 和 **“向下游传播”** 关系的关键字，CMake 会**把某个*target*的使用要求传递给*依赖者***，这就是 CMake 所说的 ***usage requirements（使用要求）传播***。
 
 ---
 
@@ -465,8 +733,6 @@ motor内部使用hardware
 
 别人不用知道。
 
----
-
 ## PUBLIC
 
 ```cmake
@@ -482,10 +748,9 @@ hardware
 ```text
 motor使用hardware
 
-而且用户motor也需要hardware
+而且依赖motor的target也需要hardware
 ```
 
----
 
 ## INTERFACE
 
@@ -504,8 +769,6 @@ config自己不用
 
 但是使用它的人需要xxx
 ```
-
----
 
 # 9.7 为什么现代CMake强调这个？
 

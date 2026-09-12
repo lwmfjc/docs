@@ -1,6 +1,6 @@
 ---
-title: 10_
-description: 10_
+title: 10_CMake变量和常用内置变量
+description: 10_CMake变量和常用内置变量
 categories:
   - 学习
 tags:
