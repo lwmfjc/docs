@@ -78,9 +78,13 @@ apt install -y adduser
 adduser ly
 #这里会输入一堆东西，都可以enter跳过（我输入了FullName）
 usermod -aG sudo ly
+```
 
+## 修改主机名
+
+```
 apt install nano vim -y
-nano /etc/wsl.conf
+vim /etc/wsl.conf
 #写入
 #修改为  
 [user]
@@ -90,17 +94,17 @@ default=ly
 systemd=true
 
 [network]
-hostname=debian13
+hostname=dba13-1
 generateHosts=false
 
 
 #修改主机名
-echo debian13 | sudo tee /etc/hostname 
+echo dba13-1 | sudo tee /etc/hostname 
 
 #解决unable to resolve host debian13: Name or service not known
 sudo vim /etc/hosts
 #添加一行：
-127.0.1.1       debian13
+127.0.1.1       dba13-1
 
 #关机然后重进
 wsl --shutdown
@@ -202,33 +206,6 @@ deactivate
 
 ```
 
-## 拷贝远程机器的目录到本机
-
-```bash
-scp -P 22 -r ly@192.168.6.208:/home/ly/ly_vscode .
-```
-
-## 语言问题
-
-```bash
-sudo apt update
-sudo apt install -y locales
-
-sudo vim /etc/locale.gen
-# en_US.UTF-8 UTF-8
-# zh_CN.UTF-8 UTF-8
-#上面的两行取消注释
-
-sudo locale-gen 
-locale -a
-C
-C.utf8
-en_US.utf8
-POSIX
-zh_CN.utf8
-ly@debian13:~$ sudo update-locale LANG=en_US.UTF-8
-
-```
 
 ## ssh
 
@@ -267,6 +244,34 @@ sudo vim /etc/ssh/sshd_config
 #Port 22
 #修改为
 Port 2201
+```
+
+## 拷贝远程机器的目录到本机
+
+```bash
+scp -P 22 -r ly@192.168.6.208:/home/ly/ly_vscode .
+```
+
+## 语言问题
+
+```bash
+sudo apt update
+sudo apt install -y locales
+
+sudo vim /etc/locale.gen
+# en_US.UTF-8 UTF-8
+# zh_CN.UTF-8 UTF-8
+#上面的两行取消注释
+
+sudo locale-gen 
+locale -a
+C
+C.utf8
+en_US.utf8
+POSIX
+zh_CN.utf8
+ly@debian13:~$ sudo update-locale LANG=en_US.UTF-8
+
 ```
 
 ## 修改为DHCP分配ip
@@ -361,5 +366,73 @@ Get-NetFirewallHyperVVMCreator
 到这里下载wsl镜像： https://releases.ubuntu.com/noble/?utm_source=chatgpt.com  
 
 ```
-wsl --install --from-file D:\software\WSLInstall\ubuntu-24.04.5-wsl-amd64.wsl --location E:\WSL\Ubuntu-24.04
+wsl --install --from-file D:\software\WSLInstall\ubuntu-24.04.5-wsl-amd64.wsl --location E:\WSL\Ubuntu24_2
+```
+
+
+## 修改源
+
+修改一下源为清华源(http)
+
+```bash
+#root用户下
+cp /etc/apt/sources.list.d/ubuntu.sources /etc/apt/sources.list.d/ubuntu.sources.bak
+sudo tee /etc/apt/sources.list.d/ubuntu.sources > /dev/null <<'EOF'
+Types: deb
+URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+Types: deb
+URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+Suites: noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+EOF
+
+apt update
+apt upgrade -y
+
+```
+
+
+## 修改主机名
+
+```
+apt install nano vim -y
+sudo vim /etc/wsl.conf
+#写入
+#修改为  
+[user]
+default=ly
+
+[boot]
+systemd=true
+
+[network]
+hostname=ubt24-2
+generateHosts=false
+
+
+#修改主机名
+echo ubt24-2 | sudo tee /etc/hostname 
+
+#解决unable to resolve host debian13: Name or service not known
+sudo vim /etc/hosts
+#添加一行：
+127.0.1.1       ubt24-2
+
+#关机然后重进
+wsl --shutdown
+wsl -d Debian
+
+wsl -d Debian13_1
+
+#修改bashrc修改默认进入时的目录
+vim ~/.bashrc
+
+最后一行添加：cd ~
+
+
 ```
