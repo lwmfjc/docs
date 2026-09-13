@@ -277,12 +277,15 @@ Port 2201
 #修改C:\Users\你的用户名\.wslconfig
 [wsl2]
 
-# 让 WSL 使用镜像网络模式，使 WSL 能够更直接地参与宿主机网络
+# 让 WSL 使用镜像网络模式，使 WSL 更直接地参与宿主机网络
 networkingMode=mirrored
+
+# 限制整个 WSL 2 虚拟机的内存为 1GB
+memory=1GB
 
 [experimental]
 
-# 允许 WSL 使用 Windows 主机的 IP 地址访问 WSL 中的服务
+# 允许 WSL 通过宿主机地址访问 Windows 上监听的服务
 hostAddressLoopback=true
 
 
