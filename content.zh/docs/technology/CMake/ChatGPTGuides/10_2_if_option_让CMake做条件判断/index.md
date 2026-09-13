@@ -178,7 +178,9 @@ option(BUILD_DEMO "Build demo program" ON)
 
 这句话可以理解为：
 
-> 创建一个叫 `BUILD_DEMO` 的开关，默认打开。
+> 1. 创建一个叫 `BUILD_DEMO` 的开关，默认打开。
+> 2. "Build demo program"这个在非图形化界面不体现的，主要给程序员或者可能gui页面会出现
+> 3. 使用方式：`cmake .. -DBUILD_DEMO=OFF`
 
 然后：
 
@@ -206,6 +208,83 @@ BUILD_DEMO = ON
 BUILD_DEMO = OFF
         ↓
 不编译 demo
+```
+
+## 测试
+
+```bash                                                                                
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:45:40
+╰─❯ ls
+
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:45:43
+╰─❯ cmake .. -DBUILD_DEMO=OFF
+-- The C compiler identification is GNU 14.2.0
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.7s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/ly/ly_vscode/HelloMake/cmakeTest10_2/build
+
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:46:05
+╰─❯ make
+[ 33%] Building CXX object CMakeFiles/robot.dir/src/main.cpp.o
+[ 66%] Building CXX object CMakeFiles/robot.dir/src/robot.cpp.o
+[100%] Linking CXX executable robot
+[100%] Built target robot
+
+#OFF的时候只有robot
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:46:09
+╰─❯ ls
+CMakeCache.txt  CMakeFiles  cmake_install.cmake  Makefile  robot
+
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:46:11
+╰─❯ rm -rf *                 
+zsh: sure you want to delete all 5 files in /home/ly/ly_vscode/HelloMake/cmakeTest10_2/build [yn]? n
+ 
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:46:28
+╰─❯ ls
+
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:46:29
+╰─❯ cmake .. -DBUILD_DEMO=ON 
+-- The C compiler identification is GNU 14.2.0
+-- The CXX compiler identification is GNU 14.2.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (0.7s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/ly/ly_vscode/HelloMake/cmakeTest10_2/build
+
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:46:38
+╰─❯ make
+[ 20%] Building CXX object CMakeFiles/robot.dir/src/main.cpp.o
+[ 40%] Building CXX object CMakeFiles/robot.dir/src/robot.cpp.o
+[ 60%] Linking CXX executable robot
+[ 60%] Built target robot
+[ 80%] Building CXX object CMakeFiles/demo.dir/examples/demo.cpp.o
+[100%] Linking CXX executable demo
+[100%] Built target demo
+
+╭─ ~/ly_vscode/HelloMake/cmakeTest10_2/build      ly@dba13 22:46:42
+╰─❯ ls
+CMakeCache.txt  CMakeFiles  cmake_install.cmake  demo  Makefile  robot
+
 ```
 
 ---
@@ -238,7 +317,7 @@ SRC_DIR = src
 
 一般是：
 
-> **提供一个可以由用户控制的 ON/OFF 开关。**
+> **提供一个可以由*用户控制*的 ON/OFF 开关。**
 
 例如：
 
@@ -320,7 +399,7 @@ if(BUILD_TESTS)
 endif()
 ```
 
-这样一个 CMake 项目就可以根据配置选择编译哪些东西。
+这样**一个 CMake 项目就可以根据配置选择编译哪些东西**。
 
 ---
 
@@ -553,6 +632,16 @@ if(BUILD_EXAMPLES)
 endif()
 ```
 
+```shell
+#上面的if(BUILD_EXAMPLES)块，
+#就相当于下面的：
+if(BUILD_DEMO)
+	add_executable(demo
+		examples/demo.cpp
+	)
+
+```
+
 默认：
 
 ```text
@@ -578,6 +667,8 @@ robot_demo
 ```bash
 cmake -S . -B build -DBUILD_EXAMPLES=ON
 ```
+
+> 即告诉 CMake：以当前目录`.`作为源码目录 ~~`-S .`~~ ，使用 build 作为构建目录 ~~-`B build`~~ ，并且把 CMake 变量 BUILD_EXAMPLES 设置为 ON ~~-`DBUILD_EXAMPLES=ON`~~ ，然后执行配置过程
 
 那么：
 
