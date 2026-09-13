@@ -635,7 +635,8 @@ sudo apt install proxychains wget -y
 sudo vim /etc/proxychains.conf 
 #添加socks5 127.0.0.1 10808
 #注释socks4所在行
-#注释proxy_dns
+#注释proxy_dns #出问题可以考虑注释这行
+##strict_chain #还出问题可以考虑注释这行，排列组合4种情况的注释
 
 #霞鹭文楷
 proxychains wget https://github.com/lxgw/LxgwWenKai/releases/download/v1.511/LXGWWenKaiMono-Medium.ttf
