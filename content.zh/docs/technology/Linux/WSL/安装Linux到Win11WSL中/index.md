@@ -275,12 +275,14 @@ Port 2201
 
 ```bash
 #修改C:\Users\你的用户名\.wslconfig
-#内容
 [wsl2]
+
+# 让 WSL 使用镜像网络模式，使 WSL 能够更直接地参与宿主机网络
 networkingMode=mirrored
 
-#不加这样的话，局域网其他计算机访问不到虚拟机开放的端口
 [experimental]
+
+# 允许 WSL 使用 Windows 主机的 IP 地址访问 WSL 中的服务
 hostAddressLoopback=true
 
 
@@ -288,6 +290,68 @@ hostAddressLoopback=true
 #此时已经获取到了动态ip
 
 ```
+
+## http端口访问限制
+
+```shell
+#以下都在window powershell的管理员权限下访问
+#添加
+New-NetFirewallHyperVRule `
+    -Name "WSL-HTTP-8080" `
+    -DisplayName "WSL HTTP 8080" `
+    -Direction Inbound `
+    -VMCreatorId '{40E0AC32-46A5-438A-A0B2-2B479E8F2E90}' `
+    -Protocol TCP `
+    -LocalPorts 8080
+    
+    
+#查看某一条
+Get-NetFirewallHyperVRule -Name "WSL-HTTP-8080" |
+    Format-List *
+    
+#按端口查
+Get-NetFirewallHyperVRule |
+    Where-Object { $_.LocalPorts -contains "8080" } |
+    Format-List *
+    
+#删除某个端口规则
+Remove-NetFirewallHyperVRule -Name "WSL-HTTP-8080"
+
+#一次性查清所有WSL-开头的规则
+Get-NetFirewallHyperVRule |
+    Where-Object {
+        $_.Name -like "WSL-*"
+    } |
+    Format-Table Name,DisplayName,Direction,Protocol,LocalPorts,Action,Enabled
+    
+#端口测试
+Test-NetConnection 192.168.6.201 -Port 8080
+
+#开放所有端口
+New-NetFirewallHyperVRule `
+    -Name "WSL-All-TCP" `
+    -DisplayName "WSL All TCP Ports" `
+    -Direction Inbound `
+    -VMCreatorId '{40E0AC32-46A5-438A-A0B2-2B479E8F2E90}' `
+    -Protocol TCP `
+    -LocalPorts 1-65535
+    #范围 -LocalPorts 2201,8080,3000,5000
+    
+#查看VMWAREid（有规则的情况下）
+Get-NetFirewallHyperVRule |
+    Select-Object -ExpandProperty VMCreatorId -Unique
+#查看目前虚拟机有哪些规则
+Get-NetFirewallHyperVRule |
+    Where-Object {
+        $_.VMCreatorId -eq "{40E0AC32-46A5-438A-A0B2-2B479E8F2E90}"
+    } |
+    Format-Table Name,DisplayName,Direction,Protocol,LocalPorts,RemoteAddresses,Action,Enabled
+    
+#查看VMWARE ID--多个 WSL 发行版共用一个 VMCreatorId
+Get-NetFirewallHyperVVMCreator
+
+```
+
 
 # Ubuntu
 
