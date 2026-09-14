@@ -89,15 +89,19 @@ motor.cpp
 
 编译：
 
-```text
-main.o
-robot.o
-motor.o
+```bash
+g++ -c main.cpp
+g++ -c motor.cpp
+g++ -c robot.cpp
+#main.o
+#robot.o
+#motor.o
 ```
 
 链接：
 
-```text
+```bash
+g++ main.o motor.o robot.o -o robot_app
 robot_app
 ```
 
@@ -157,9 +161,6 @@ motor.cpp
 
 ## .c与库编译程序
 
-
-
----
 
 # 12.2 `add_library()` 基本形式
 
