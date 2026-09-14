@@ -52,11 +52,19 @@ Vmware里面的debian,连接外面物理机的v2ray。
 
 这个对于终端不生效
 
-# zsh安装
+# ohmyzsh安装
 
 ```shell
+sudo apt install zsh -y
+```
+
+```shell
+#===========================
 proxychains wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+
 proxychains sh install.sh
+#或者直接用下面这句
+proxychains sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 ```
 
 ## zsh主题安装
