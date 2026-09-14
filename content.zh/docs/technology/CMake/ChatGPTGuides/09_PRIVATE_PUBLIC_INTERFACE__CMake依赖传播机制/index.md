@@ -268,6 +268,24 @@ m.run();
 
 里面用了GPIO。
 
+***这里没有出现下面这种形式，因为target_sources一般都是自己编译的源码，不会被别人拿去编译，默认就是PRIVATE***  
+
+
+```
+target_sources(robot_app
+    PRIVATE
+        main.cpp
+        motor.cpp
+)
+```
+
+| 命令                             | 省略关键字时       |
+| ------------------------------ | ------------ |
+| `target_sources()`             | 默认 `PRIVATE` |
+| `target_include_directories()` | 不要省略，必须明确    |
+| `target_link_libraries()`      | 旧签名存在，不推荐省略  |
+
+
 ---
 
 # 9.4 PUBLIC：公开依赖

@@ -1,6 +1,6 @@
 ---
-title: 11_1_第11章_add_subdirectory()__多目录 CMake项目
-description: 11_1_第11章_add_subdirectory()__多目录 CMake项目
+title: 11_add_subdirectory()__多目录 CMake项目
+description: 11_add_subdirectory()__多目录 CMake项目
 categories:
   - 学习
 tags:
@@ -282,7 +282,7 @@ target_link_libraries(robot PRIVATE motor)
 
 > **CMake 的 target 不等于某个 CMakeLists.txt 文件。**
 
-target 是整个 CMake 构建系统中的一个对象。
+***target 是整个 CMake 构建系统中的一个对象***。  
 
 所以：
 
@@ -472,17 +472,24 @@ add_subdirectory(app)
 `hardware/CMakeLists.txt`：
 
 ```cmake
+#注意，这里没有写cmake_minimum_required(),
+#也没有project()
+
 add_library(hardware)
 
+#libray中的实现文件一般用 PRIVATE
 target_sources(
-    hardware
-    PRIVATE
+        hardware
+        PRIVATE
         hardware.cpp
 )
 
+#依赖hardware的人，需要知道头文件路径
+#CMAKE_CURRENT_SOURCE_DIR：当前CMakeLists.txt 
+#的源码目录
 target_include_directories(
-    hardware
-    PUBLIC
+        hardware
+        PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 ```
@@ -514,6 +521,10 @@ target_include_directories(
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
+#依赖 motor 的 target（假设是app），会传递依赖 hardware。
+#1. 如果这里是PRIVATE，那么app不能直接使用hardware的类、方法。
+#2. 当 motor.hpp 里面暴露了 hardware 的类型时，通常就应该考虑 PUBLIC；如
+#果 hardware 只在 motor.cpp 里面使用，通常就是 PRIVATE。
 target_link_libraries(
     motor
     PUBLIC
@@ -596,6 +607,19 @@ motor PUBLIC hardware
 * 第10章变量
 
 全部串起来了。
+
+```c
+#这个例子还需要再补充main.cpp源代码才能cmake编译通过
+╭─ ~/ly_vscode/HelloCMake/11_1 main ?1                                                       
+╰─❯ cat app/main.cpp
+#include <iostream>
+
+int main()
+{
+        std::cout << "hello" << std::endl;
+        return 0;
+}
+```
 
 ---
 
