@@ -79,7 +79,7 @@ target_link_libraries(
 
 **它不是靠猜。**
 
-CMake 需要先通过：
+CMake 需要**先通过**：
 
 ```cmake
 find_package()
@@ -111,6 +111,8 @@ sudo apt install libopencv-dev
 
 ```text
 opencv2/opencv.hpp
+...
+#里头还有一堆.hpp
 ```
 
 库文件：
@@ -125,6 +127,8 @@ opencv2/opencv.hpp
 libopencv_core.so
 libopencv_imgproc.so
 libopencv_highgui.so
+...
+#里头还有一堆.so
 ```
 
 结构：
@@ -149,6 +153,76 @@ OpenCV
 
 ```text
 OpenCVConfig.cmake
+```
+
+## OpenCVConfig.cmake部分内容
+
+```cmake
+╭─ ∅ /usr/lib/x86_64-linux-gnu/cmake/opencv4
+╰─❯ cat OpenCVConfig.cmake
+# ===================================================================================
+#  The OpenCV CMake configuration file
+#
+#             ** File generated automatically, do not modify **
+#
+#  Usage from an external project:
+#    In your CMakeLists.txt, add these lines:
+#
+#    find_package(OpenCV REQUIRED)
+#    include_directories(${OpenCV_INCLUDE_DIRS}) # Not needed for CMake >= 2.8.11
+#    target_link_libraries(MY_TARGET_NAME ${OpenCV_LIBS})
+#
+#    Or you can search for specific OpenCV modules:
+#
+#    find_package(OpenCV REQUIRED core videoio)
+#
+#    You can also mark OpenCV components as optional:
+
+#    find_package(OpenCV REQUIRED core OPTIONAL_COMPONENTS viz)
+#
+#    If the module is found then OPENCV_<MODULE>_FOUND is set to TRUE.
+#
+#    This file will define the following variables:
+#      - OpenCV_LIBS                     : The list of all imported targets for OpenCV modules.
+#      - OpenCV_INCLUDE_DIRS             : The OpenCV include directories.
+#      - OpenCV_COMPUTE_CAPABILITIES     : The version of compute capability.
+#      - OpenCV_ANDROID_NATIVE_API_LEVEL : Minimum required level of Android API.
+#      - OpenCV_VERSION                  : The version of this OpenCV build: "4.6.0"
+#      - OpenCV_VERSION_MAJOR            : Major version part of OpenCV_VERSION: "4"
+#      - OpenCV_VERSION_MINOR            : Minor version part of OpenCV_VERSION: "6"
+#      - OpenCV_VERSION_PATCH            : Patch version part of OpenCV_VERSION: "0"
+#      - OpenCV_VERSION_STATUS           : Development status of this build: ""
+#
+#    Advanced variables:
+#      - OpenCV_SHARED                   : Use OpenCV as shared library
+#      - OpenCV_INSTALL_PATH             : OpenCV location
+#      - OpenCV_LIB_COMPONENTS           : Present OpenCV modules list
+#      - OpenCV_USE_MANGLED_PATHS        : Mangled OpenCV path flag
+#
+#    Deprecated variables:
+#      - OpenCV_VERSION_TWEAK            : Always "0"
+#
+# ===================================================================================
+
+# ======================================================
+#  Version variables:
+# ======================================================
+SET(OpenCV_VERSION 4.6.0)
+SET(OpenCV_VERSION_MAJOR  4)
+SET(OpenCV_VERSION_MINOR  6)
+SET(OpenCV_VERSION_PATCH  0)
+SET(OpenCV_VERSION_TWEAK  0)
+SET(OpenCV_VERSION_STATUS "")
+
+include(FindPackageHandleStandardArgs)
+
+if(NOT CMAKE_VERSION VERSION_LESS 2.8.8
+    AND OpenCV_FIND_COMPONENTS  # prevent excessive output
+)
+  # HANDLE_COMPONENTS was introduced in CMake 2.8.8
+  list(APPEND _OpenCV_FPHSA_ARGS HANDLE_COMPONENTS)
+  
+#....还有一堆没有截取出来
 ```
 
 ---
@@ -354,6 +428,11 @@ xxx
 > 依赖不是文件路径，而是 target。
 
 ---
+# 补充：安装OpenCV最新版
+
+否则下面的`OpenCV::opencv_core`可能会报错  
+
+
 
 # 13.7 一个完整 OpenCV 示例
 
