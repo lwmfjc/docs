@@ -111,6 +111,7 @@ robot_app
 
 ```text
 robot/
+├── CMakeLists.txt
 ├── motor
 │   ├── motor.cpp
 │   ├── motor.h
@@ -204,6 +205,7 @@ STATIC
 motor.cpp
 ```
 
+
 ---
 
 # 12.3 STATIC 库（静态库）
@@ -281,6 +283,121 @@ Java：
 jar包打进最终程序
 ```
 
+
+## 关键代码
+
+```shell
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ cat ../main.cpp
+#include <iostream>
+#include <motor.h>
+
+int  main()
+{
+        motorRun();
+        return 0;
+}
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ cat ../CMakeLists.txt
+cmake_minimum_required(VERSION 3.20)
+
+project(robot)
+
+add_executable(robot)
+
+target_sources(
+        robot
+        PRIVATE
+        main.cpp
+)
+
+add_library(
+        motor
+        STATIC
+        motor/motor.cpp
+)
+
+target_include_directories(
+        motor
+        PUBLIC
+        motor
+)
+
+target_link_libraries(
+        robot
+        PRIVATE
+        motor
+)
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ cmake ..
+-- The C compiler identification is GNU 13.3.0
+-- The CXX compiler identification is GNU 13.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (8.9s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/ly/ly_vscode/HelloCMake/12_5/build
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1                                              9s
+╰─❯ ls
+CMakeCache.txt  CMakeFiles  Makefile  cmake_install.cmake
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ make
+[ 25%] Building CXX object CMakeFiles/motor.dir/motor/motor.cpp.o
+[ 50%] Linking CXX static library libmotor.a
+[ 50%] Built target motor
+[ 75%] Building CXX object CMakeFiles/robot.dir/main.cpp.o
+[100%] Linking CXX executable robot
+[100%] Built target robot
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ ls -lh
+total 56K
+-rw-r--r-- 1 ly ly  14K Sep 15 11:20 CMakeCache.txt
+drwxr-xr-x 6 ly ly 4.0K Sep 15 11:22 CMakeFiles
+-rw-r--r-- 1 ly ly 6.3K Sep 15 11:22 Makefile
+-rw-r--r-- 1 ly ly 1.7K Sep 15 11:20 cmake_install.cmake
+-rw-r--r-- 1 ly ly 2.3K Sep 15 11:22 libmotor.a
+-rwxr-xr-x 1 ly ly  17K Sep 15 11:22 robot
+```
+
+如上，编译文件夹多了 `libmotor.a`  `robot`  两个文件
+
+删除 .a 文件程序也能运行  
+
+```shell
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ rm -rf libmotor.a
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ ls
+CMakeCache.txt  CMakeFiles  Makefile  cmake_install.cmake  robot
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ ./robot
+motor run
+#ldd robot 是 Linux 下查看可执行文件依赖的动态链接库的命令(没有libmotor.a)
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ ldd robot
+        linux-vdso.so.1 (0x000078d9f83c2000)
+        libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x000078d9f8000000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000078d9f7c00000)
+        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x000078d9f82a9000)
+        /lib64/ld-linux-x86-64.so.2 (0x000078d9f83c4000)
+        libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x000078d9f7fd2000)
+```
+
 ---
 
 # 12.4 SHARED 库（动态库）
@@ -353,6 +470,50 @@ ldd robot
 
 ```text
 libmotor.so
+```
+
+## 执行过程
+
+```bash
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ make
+[ 25%] Building CXX object CMakeFiles/motor.dir/motor/motor.cpp.o
+[ 50%] Linking CXX shared library libmotor.so
+[ 50%] Built target motor
+[ 75%] Building CXX object CMakeFiles/robot.dir/main.cpp.o
+[100%] Linking CXX executable robot
+[100%] Built target robot
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ ls -lh
+total 64K
+-rw-r--r-- 1 ly ly  14K Sep 15 11:20 CMakeCache.txt
+drwxr-xr-x 7 ly ly 4.0K Sep 15 11:20 CMakeFiles
+-rw-r--r-- 1 ly ly 6.3K Sep 15 11:20 Makefile
+-rw-r--r-- 1 ly ly 1.7K Sep 15 11:20 cmake_install.cmake
+-rwxr-xr-x 1 ly ly  16K Sep 15 11:20 libmotor.so.bak
+-rwxr-xr-x 1 ly ly  16K Sep 15 11:20 robot
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ ldd robot
+        linux-vdso.so.1 (0x0000799a947ab000)
+        libmotor.so => /home/ly/ly_vscode/HelloCMake/12_5/build/libmotor.so (0x0000799a94799000)
+        libstdc++.so.6 => /lib/x86_64-linux-gnu/libstdc++.so.6 (0x0000799a94400000)
+        libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000799a94000000)
+        libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000799a9468b000)
+        /lib64/ld-linux-x86-64.so.2 (0x0000799a947ad000)
+        libgcc_s.so.1 => /lib/x86_64-linux-gnu/libgcc_s.so.1 (0x0000799a943d2000)
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ ./robot
+motor run
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ mv libmotor.so libmotor.so.bak
+
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ ./robot
+./robot: error while loading shared libraries: libmotor.so: cannot open shared object file: No such file or directory
 ```
 
 ---
@@ -531,6 +692,7 @@ Robot/
 #define MOTOR_SPEED 100
 ```
 
+
 没有：
 
 ```text
@@ -542,6 +704,9 @@ config.cpp
 传统：
 
 ```cmake
+#旧式全局的
+#当前 CMakeLists.txt 后面的所有 target
+#都会加上这个 include 路径
 include_directories(include)
 ```
 
@@ -559,6 +724,7 @@ add_library(
 然后：
 
 ```cmake
+#这个作用主要是传递了头文件的路径
 target_include_directories(
     config
     INTERFACE
@@ -568,9 +734,12 @@ target_include_directories(
 
 ---
 
+
 使用：
 
 ```cmake
+#只有robot知道头文件路径，PRIVATE
+#使得依赖robot的其他target也不知道
 target_link_libraries(
     robot
     PRIVATE
@@ -594,7 +763,22 @@ include路径
 libconfig.a
 ```
 
-因为它没有代码。
+因为它没有代码。  
+
+```bash
+╭─ ~/ly_vscode/HelloCMake/12_5/build main ?1
+╰─❯ cat ../main.cpp
+#include <iostream>
+#include <motor.h>
+#include <config.h>
+
+int  main()
+{
+        motorRun();
+        std::cout << "speed: " << MOTOR_SPEED << std::endl;
+        return 0;
+}
+```
 
 ---
 
