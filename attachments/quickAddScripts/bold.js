@@ -18,7 +18,14 @@ async function start(quickAddApi) {
         return;
     }
 
-    const selection = editor.getSelection();
+    let selection = editor.getSelection();
+    
+    // 新增：清理每行首尾空格
+    selection = selection
+        .split('\n')
+        .map(line => line.replace(/^\s+|\s+$/g, ''))
+        .join('\n');
+    
     const cursor = editor.getCursor();
 
     // 情况1：有选中文本
