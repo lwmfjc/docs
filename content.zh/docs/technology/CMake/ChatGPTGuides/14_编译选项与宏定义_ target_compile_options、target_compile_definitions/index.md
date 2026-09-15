@@ -102,6 +102,13 @@ main.cpp
 
 使用 C++17。
 
+```bash
+╭─ ~/ly_vscode/HelloCMake/14_1 main ?1                      
+╰─❯ g++ -dM -E -x c++ /dev/null | grep __cplusplus #查找默认标准
+#define __cplusplus 201703L
+```
+
+> g++默认可以编译很多标准。-std=c++17 就是指定「按照 C++17 语言规范编译这个程序」，让编译器知道可以使用 C++17 提供的语法和库。
 ---
 
 以前可能这样写：
@@ -213,6 +220,7 @@ target_compile_options(
 编译：
 
 ```bash
+#相当于
 g++ -Wall main.cpp
 ```
 
@@ -301,8 +309,7 @@ target_compile_options(
 意思：
 
 ```
-config自己不编译
-
+INTERFACE 属性只传播给依赖者，本 target 不消费该属性。即使 target 本身是 STATIC/SHARED 库，也一样。
 依赖config的人获得-Wall
 ```
 
@@ -333,12 +340,30 @@ int a;
 unused variable
 ```
 
+```shell
+╭─ ~/ly_vscode/HelloCMake/14_1/build main ?1                                            7s ≡
+╰─❯ cmake ..
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/ly/ly_vscode/HelloCMake/14_1/build
+
+╭─ ~/ly_vscode/HelloCMake/14_1/build main ?1                                               ≡
+╰─❯ make
+[ 50%] Building CXX object CMakeFiles/robot.dir/main.cpp.o
+/home/ly/ly_vscode/HelloCMake/14_1/main.cpp: In function ‘int main()’:
+/home/ly/ly_vscode/HelloCMake/14_1/main.cpp:6:13: warning: unused variable ‘a’ [-Wunused-variable]
+    6 |         int a;
+      |             ^
+[100%] Linking CXX executable robot
+[100%] Built target robot
+```
+
 ---
 
 更严格：
 
 ```cmake
--Wextra
+-Wextra #再额外开启另一批更严格警告
 ```
 
 更多警告。
@@ -627,7 +652,7 @@ debug mode
 
 ---
 
-# 14.10 为什么不用直接写 #define？
+# 14.10 为什么不用直接写`#define`？
 
 例如：
 
