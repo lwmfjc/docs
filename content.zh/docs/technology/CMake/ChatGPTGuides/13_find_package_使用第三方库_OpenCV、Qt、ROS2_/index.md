@@ -1,6 +1,6 @@
 ---
-title: 13_
-description: 13_
+title: 13_find_package_使用第三方库_OpenCV、Qt、ROS2_
+description: 13_find_package_使用第三方库_OpenCV、Qt、ROS2_
 categories:
   - 学习
 tags:
@@ -309,16 +309,18 @@ target_link_libraries(
 target_link_libraries(
     robot
     PRIVATE
-    OpenCV::opencv_core
+    opencv_core
 )
 ```
+
+> 校正：没有 `OpenCV::opencv_core` 这种 target 用法时，可以使用 opencv_core（无命名空间 target） ~~只依赖一个~~ 或者 ${OpenCV_LIBS} / ${OpenCV_LIBRARIES}（变量方式） ~~会依赖变量展开的所有~~ 这两种。
 
 为什么？
 
 因为：
 
 ```text
-OpenCV::opencv_core
+opencv_core
 ```
 
 本身就是一个 target。
@@ -354,7 +356,7 @@ build target
 但是：
 
 ```cmake
-OpenCV::opencv_core
+opencv_core
 ```
 
 不是你创建的。
@@ -381,7 +383,7 @@ find_package(OpenCV)
       |
       ↓
 
-OpenCV::opencv_core
+opencv_core
 
 
 这个target来自系统
@@ -396,7 +398,7 @@ OpenCV::opencv_core
 例如：
 
 ```text
-OpenCV::opencv_core
+opencv_core
 
 里面保存：
 
@@ -428,10 +430,6 @@ xxx
 > 依赖不是文件路径，而是 target。
 
 ---
-# 补充：安装OpenCV最新版
-
-否则下面的`OpenCV::opencv_core`可能会报错  
-
 
 
 # 13.7 一个完整 OpenCV 示例
@@ -467,20 +465,22 @@ cmake_minimum_required(VERSION 3.20)
 
 project(OpenCVTest)
 
-
 find_package(OpenCV REQUIRED)
 
+#显示变量表示的所有依赖名
+#message(STATUS "OpenCV_LIBS = ${OpenCV_LIBS}")
 
 add_executable(
-    opencv_test
-    main.cpp
+        opencv_test
+        main.cpp
 )
 
-
 target_link_libraries(
-    opencv_test
-    PRIVATE
-    OpenCV::opencv_core
+        opencv_test
+        PRIVATE
+        opencv_core
+#       ${OpenCV_LIBS}
+#       ${OpenCV_LIBRARIES}
 )
 ```
 
@@ -523,7 +523,7 @@ opencv_test
 
 ↓
 
-OpenCV::opencv_core
+opencv_core
 ```
 
 ---
@@ -533,8 +533,10 @@ OpenCV::opencv_core
 CMake 自动知道：
 
 ```text
+#-I表示到哪里找头文件
 -I/usr/include/opencv4
 
+#-lopencv_core 表示链接名为 opencv_core 的库，通常对应 libopencv_core.so 或 libopencv_core.a。【但是我觉得这里可能不止是一个文件，而是好几个】
 -lopencv_core
 ```
 
@@ -583,6 +585,87 @@ endif()
 ```
 
 判断。
+
+## 完整解释
+
+执行：
+
+```
+find_package(OpenCV)
+```
+
+之后，CMake 会自动设置一个变量：
+
+```
+OpenCV_FOUND
+```
+
+它的值类似：
+
+```
+OpenCV_FOUND = TRUE
+```
+
+或者：
+
+```
+OpenCV_FOUND = FALSE
+```
+
+然后：
+
+```
+if(OpenCV_FOUND)
+```
+
+相当于：
+
+```
+如果 OpenCV_FOUND 为真
+    执行这里
+否则
+    执行 else
+```
+例如：
+```
+find_package(OpenCV)
+
+if(OpenCV_FOUND)
+    add_executable(
+        opencv_test
+        main.cpp
+    )
+
+    target_link_libraries(
+        opencv_test
+        PRIVATE
+        opencv_core
+    )
+endif()
+```
+
+逻辑：
+
+```
+查找 OpenCV
+
+      |
+      |
+      v
+
+找到？
+  |
+  +---- 是
+  |       |
+  |       v
+  |   创建程序并链接 OpenCV
+  |
+  |
+  +---- 否
+          |
+          v
+      什么都不做
+```
 
 ---
 
@@ -697,22 +780,59 @@ target依赖关系
 ```
 
 ---
+好的，这一节需要修正。我把 **第13.11节**重新整理，删除 `OpenCV::opencv_core` 的错误示例。
 
-# 13.11 `xxx::yyy` 为什么经常出现？
+先说明修正：
 
-你以后会看到：
+之前写：
+
+```cmake
+OpenCV::opencv_core
+```
+
+作为 OpenCV 示例是不严谨的。
+
+你的环境：
+
+* Ubuntu 24.04
+* apt 安装
+* OpenCV 4.6.0
+
+实际提供的是：
+
+```cmake
+opencv_core
+```
+
+以及：
+
+```cmake
+${OpenCV_LIBS}
+```
+
+OpenCV 官方示例也是使用：
+
+```cmake
+target_link_libraries(opencv_test PRIVATE ${OpenCV_LIBS})
+```
+
+而不是 `OpenCV::opencv_core`。([GitHub][1])
+
+---
+
+# 13.11节 `xxx::yyy` 为什么经常出现？
+
+在 CMake 中，你经常会看到：
 
 ```cmake
 Qt6::Widgets
-
-OpenCV::opencv_core
 
 Eigen3::Eigen
 
 Boost::filesystem
 ```
 
-这种格式。
+这种形式。
 
 例如：
 
@@ -724,27 +844,23 @@ target_link_libraries(
 )
 ```
 
-不要理解成：
+这里：
 
 ```text
-Qt6文件夹里面的Widgets
+Qt6::Widgets
 ```
+
+不是文件路径。
 
 它是：
 
-> 一个 target 名字。
+> 一个 CMake target 名称。
 
 ---
 
-这个：
+## 13.11.1 `::` 表示什么？
 
-```text
-::
-```
-
-只是 CMake 的命名习惯。
-
-通常表示：
+通常：
 
 ```text
 命名空间::target
@@ -753,14 +869,291 @@ Qt6文件夹里面的Widgets
 例如：
 
 ```text
+Qt6::Widgets
+```
+
+可以理解为：
+
+```text
+Qt6
+ |
+ └── Widgets
+```
+
+但是它不是目录关系。
+
+它只是一个名字。
+
+---
+
+## 13.11.2 target 可以来自哪里？
+
+前面学习过：
+
+自己创建：
+
+```cmake
+add_library(
+    motor
+)
+```
+
+得到：
+
+```text
+motor
+```
+
+target。
+
+---
+
+第三方库：
+
+例如：
+
+```cmake
+find_package(Qt6 REQUIRED)
+```
+
+之后可能得到：
+
+```cmake
+Qt6::Widgets
+```
+
+这种 imported target。
+
+关系：
+
+```
+你的程序
+
+robot
+ |
+ |
+ ↓
+
+Qt6::Widgets
+
+(来自Qt安装)
+```
+
+---
+
+## 13.11.3 但是 OpenCV 是特殊情况
+
+OpenCV 不应该写：
+
+```cmake
 OpenCV::opencv_core
+```
 
-命名空间:
-OpenCV
+作为通用示例。
 
-target:
+常见写法：
+
+### 方法1：使用 OpenCV_LIBS（推荐兼容）
+
+```cmake
+find_package(OpenCV REQUIRED)
+
+
+target_link_libraries(
+    opencv_test
+    PRIVATE
+    ${OpenCV_LIBS}
+)
+```
+
+OpenCV 的 CMake 配置会生成：
+
+```text
+OpenCV_LIBS
+```
+
+这个变量。
+
+里面类似：
+
+```text
+opencv_core
+opencv_imgproc
+opencv_highgui
+...
+```
+
+([GitHub][2])
+
+---
+
+### 方法2：指定模块
+
+如果只需要核心模块：
+
+```cmake
+find_package(OpenCV REQUIRED)
+
+
+target_link_libraries(
+    opencv_test
+    PRIVATE
+    opencv_core
+)
+```
+
+CMake 最终会交给链接器：
+
+```bash
+-lopencv_core
+```
+
+然后寻找：
+
+```text
+libopencv_core.so
+```
+
+或者：
+
+```text
+libopencv_core.a
+```
+
+---
+
+## 13.11.4 为什么不能认为所有库都是 `xxx::yyy`？
+
+错误理解：
+
+```
+find_package()
+        |
+        ↓
+一定得到
+xxx::yyy
+```
+
+实际：
+
+```
+find_package()
+
+可能得到：
+
+① imported target
+
+例如：
+Qt6::Widgets
+
+
+② 普通target
+
+例如：
+opencv_core
+
+
+③ 变量
+
+例如：
+OpenCV_LIBS
+```
+
+不同库设计不同。
+
+---
+
+## 13.11.5 如何判断一个库有什么 target？
+
+不要猜。
+
+查看：
+
+```cmake
+if(TARGET xxx::yyy)
+    message("exists")
+endif()
+```
+
+例如：
+
+```cmake
+if(TARGET OpenCV::opencv_core)
+    message("OpenCV target exists")
+else()
+    message("not exists")
+endif()
+```
+
+你的 OpenCV 4.6.0：
+
+结果：
+
+```text
+not exists
+```
+
+---
+
+## 13.11.6 本节重新总结
+
+记住：
+
+### CMake target
+
+可能是：
+
+自己创建：
+
+```cmake
+add_library(motor)
+```
+
+得到：
+
+```
+motor
+```
+
+---
+
+第三方库：
+
+可能：
+
+```
+Qt6::Widgets
+```
+
+---
+
+也可能：
+
+```
 opencv_core
 ```
+
+---
+
+或者：
+
+变量：
+
+```
+${OpenCV_LIBS}
+```
+
+---
+
+不要死记：
+
+```
+所有库都是 xxx::yyy
+```
+
+正确理解：
+
+> CMake 的核心是 target，但是不同第三方库暴露 target 的方式不同。
 
 ---
 
@@ -802,7 +1195,7 @@ find_package(OpenCV)
 
 target_link_libraries(
     robot
-    OpenCV::opencv_core
+    opencv_core
 )
 ```
 
@@ -834,7 +1227,7 @@ find_package()
   |
 得到 target
 
-OpenCV::opencv_core
+opencv_core
   |
   |
 target_link_libraries()
@@ -915,7 +1308,7 @@ find_package(OpenCV REQUIRED)
 得到：
 
 ```cmake
-OpenCV::opencv_core
+opencv_core
 ```
 
 然后：
@@ -924,7 +1317,7 @@ OpenCV::opencv_core
 target_link_libraries(
     robot
     PRIVATE
-    OpenCV::opencv_core
+    opencv_core
 )
 ```
 
