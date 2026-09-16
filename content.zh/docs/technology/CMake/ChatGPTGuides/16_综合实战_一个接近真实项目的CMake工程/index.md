@@ -255,7 +255,7 @@ libmotor.a
 target_include_directories(
     motor
     PUBLIC
-    include
+    include #相当于${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 ```
 
@@ -563,6 +563,8 @@ cmake ..
 -- Generating done
 ```
 
+以上是Cmake配置，我使用的是 `cmake -S . -B build`
+
 ---
 
 编译：
@@ -587,17 +589,74 @@ build
 
 ```
 
+以上是Cmake构建，我使用的是 `cmake --build build`
+
 ---
 
 运行：
 
 ```bash
+#这个命令执行的前提是在build目录内
 ./app/robot_app
+#这里我的命令应该是
+╭─ ~/ly_vscode/HelloCMake/16_1 main !1 ?4
+╰─❯ ./build/app/robot_app
+motor moving
 ```
 
 输出：
 
 ```
+motor moving
+```
+
+## 附:install
+
+target在哪里定义，通常install就跟在哪里。 ~~谁创建 target，谁负责定义这个 target 的 install 规则~~ 根目录负责“项目管理”，子目录负责“自己的target”。
+
+修改app/CMakeLists.txt，添加：  
+
+```cmake
+install(
+        TARGETS robot_app
+        DESTINATION bin
+)
+```
+
+```bash
+╭─ ~/ly_vscode/HelloCMake/16_1 main !1 ?4
+╰─❯ cmake -B build -S .
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/ly/ly_vscode/HelloCMake/16_1/build
+
+╭─ ~/ly_vscode/HelloCMake/16_1 main !1 ?4
+╰─❯ cmake --build build
+[ 33%] Built target motor
+[ 66%] Built target sensor
+[100%] Built target robot_app
+
+╭─ ~/ly_vscode/HelloCMake/16_1 main !1 ?4
+╰─❯ cmake --install build
+-- Install configuration: ""
+-- Installing: /usr/local/bin/robot_app
+CMake Error at build/app/cmake_install.cmake:52 (file):
+  file INSTALL cannot copy file
+  "/home/ly/ly_vscode/HelloCMake/16_1/build/app/robot_app" to
+  "/usr/local/bin/robot_app": Permission denied.
+Call Stack (most recent call first):
+  build/cmake_install.cmake:57 (include)
+
+
+
+╭─ ~/ly_vscode/HelloCMake/16_1 main !1 ?4
+╰─❯ sudo cmake --install build
+[sudo] password for ly:
+-- Install configuration: ""
+-- Installing: /usr/local/bin/robot_app
+
+╭─ ~/ly_vscode/HelloCMake/16_1 main !1 ?4
+╰─❯ robot_app
 motor moving
 ```
 
@@ -669,6 +728,8 @@ PUBLIC
 
 robot_app自动继承OpenCV。
 
+~~由于robot_app这个target目前没有直接使用OpenCV（main.cpp没用到），所以也可以设置为PRIVATE~~  
+
 ---
 
 # 16.13 如果加入ROS2？
@@ -707,6 +768,8 @@ target_link_libraries(
 ```
 
 ROS2中大量使用这种结构。
+
+***以上只是一个说明，该示例并没有robot_node，代码不能直接使用***
 
 ---
 
