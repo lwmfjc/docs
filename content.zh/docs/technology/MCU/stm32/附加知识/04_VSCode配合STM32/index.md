@@ -129,3 +129,57 @@ target_sources(${PROJECT_NAME} PRIVATE
 2. `Ctrl+Shit+P`：DeleteCachAndReconfigure
 3. Ctrl+Shit+P: Clean-rebuild
 4. F5调试-选择st-lint没出错即可
+
+不要用左下角CMakeTools的工具，会出错 ~~这个是给普通CMake项目或者远程Linux系统中的CMake项目用的~~
+
+![](img/ly-20260917144924004.png)  
+
+STM32 的启动流程可以简单理解为：  
+
+```scss
+上电复位
+    ↓
+读取启动地址
+    ↓
+执行启动文件 startup_xxx.s
+    ↓
+初始化C运行环境
+    ↓
+执行 SystemInit()
+    ↓
+进入 main()
+```
+
+详细版  
+
+```
+        STM32上电
+             |
+             ↓
+        CPU复位
+             |
+             ↓
+      读取向量表
+             |
+             ↓
+  设置MSP + 跳Reset_Handler
+             |
+             ↓
+ startup_stm32f10x_md.s
+             |
+             ↓
+ 初始化.data段
+ 清零.bss段
+             |
+             ↓
+       SystemInit()
+             |
+             ↓
+     初始化C环境
+             |
+             ↓
+          main()
+             |
+             ↓
+       用户程序运行
+```
