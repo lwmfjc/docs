@@ -33,10 +33,10 @@ cssclasses:
 鼠标放Target1上面，出现上图右侧三个图标依次是`编译`、`下载`、`重新编译`  
 
 有个弊端，好像是不能直接在VSCode中添加/删除文件、调试之类的，只能是在keil中新增好之后才能  
-
+ 
 # STM32CubeIDE for Visual Studio Code
 
-- Cortex-Debug  ~~也可以不装~~ 
+- Cortex-Debug  ~~也可以先不装~~ 
 - C/C++
 - 安装 SetupSTM32CubeMX 
 - 插件库中添加插件  ~~发布者：STMicroelectronics  ~~ 
@@ -45,90 +45,87 @@ cssclasses:
 ![](img/ly-20260909130459211.png)  
 
 ![](img/ly-20260909142522266.png)  
+创建之后，右下角有open-in-this-window ，如果不小心点掉了可以从主菜单重新open-folder  
 
-创建完成后，重新从File-OpenFolder打开  
+然后中间---manage--trust-folder（信任该文件夹）  
 
-之后我在项目中的Src文件夹中，又添加了两个文件夹：\Startup 以及 \Core  
+1. `Ctrl+Shit+P`：Cmake-Configure
+2. Ctrl+Shit+P: Cmake-build
+3. Run-start_debugging，选择S-link即可
+4. 如果进入调试，那么说明成功了。如果没有，报错找不到st-link，检查下 计算机-管理-通用串行总线控制器，是否检测到st-link
 
-- Core里面放置3个文件： stm32f10x.h，system_stm32f10x.c， system_stm32f10x.h ，core_cm3.h（这里移除了core_cm3.c，因为里面有个代码，gcc较新版本(可能是gcc10以上)编译不过去，但是core_cm3.c中的一些函数都已经在gcc较新版中实现了  
+接下来，复制 Src，Core，Startup 这三个文件夹过来。这里简单看一下目录结构  
 
-- Startup里面放置文件：`startup_stm32f10x_md.s`
-- Src里面放置：`main.c` 
+```
+.
+├── Core
+│   ├── core_cm3.h
+│   ├── stm32f10x.h
+│   ├── system_stm32f10x.c
+│   └── system_stm32f10x.h
+├── Src
+│   ├── main.c
+│   ├── startup_stm32f103xx.S
+│   ├── syscall.c
+│   └── sysmem.c
+└── Startup
+    └── startup_stm32f10x_md.s
+```
 
-最后还要修改文件CMakeLists.txt    
+1. 修改`cmake/files.cmake`
+   
+```cmake
+#"${CMAKE_CURRENT_SOURCE_DIR}/Src/startup_stm32f103xx.S"
+#替换为
+"${CMAKE_CURRENT_SOURCE_DIR}/Startup/startup_stm32f10x_md.s"
+#添加
+ "${CMAKE_CURRENT_SOURCE_DIR}/Core/system_stm32f10x.c"
+```
 
-```txt
-cmake_minimum_required(VERSION 3.20)
+2. 修改CMakeLists.txt
 
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/target.cmake)
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/gcc-arm-none-eabi.cmake)
-
-
-project(STM32Test)
-
-
-enable_language(C ASM)
-
-
-add_executable(${PROJECT_NAME})
-
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/stm32f103x8_flash.ld"
-    "${CMAKE_CURRENT_BINARY_DIR}/stm32f103x8_flash.ld"
-    COPYONLY
-)
-
-set_target_properties(${PROJECT_NAME} PROPERTIES
-    LINK_DEPENDS "${CMAKE_CURRENT_BINARY_DIR}/stm32f103x8_flash.ld"
-)
-
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/flags.cmake)
-
-
-target_sources(${PROJECT_NAME} PRIVATE
-
-    Src/main.c
- 
-    Core/system_stm32f10x.c
-
-    Startup/startup_stm32f10x_md.s
-
-)
-
-
+```
+#这里添加头文件路径
+# Add include directories
 target_include_directories(${PROJECT_NAME} PRIVATE
-
-    Core
-
+  # User defined include directories
+  ${CMAKE_CURRENT_SOURCE_DIR}/Core
 )
+```
 
+3. 删除build文件夹
+4. `Ctrl+Shit+P`：DeleteCachAndReconfigure
+5. Ctrl+Shit+P: Clean-rebuild
+6. F5调试-选择st-lint没出错即可
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE
+删除Src文件夹下多余的3个文件：  
 
-    STM32F10X_MD
+```
+├── Src
+│   ├── startup_stm32f103xx.S
+│   ├── syscall.c
+│   └── sysmem.c
+```
 
-)
+注释掉files.cmake中的无用的引入  
 
-# 生成 HEX 和 BIN 文件
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+```cmake
+target_sources(${PROJECT_NAME} PRIVATE
+#下面2个注释掉
+#    "${CMAKE_CURRENT_SOURCE_DIR}/Src/syscall.c"
+#    "${CMAKE_CURRENT_SOURCE_DIR}/Src/sysmem.c"
+     "${CMAKE_CURRENT_SOURCE_DIR}/Src/main.c"
 
-    COMMAND arm-none-eabi-objcopy
-    -O ihex
-    $<TARGET_FILE:${PROJECT_NAME}>
-    ${PROJECT_NAME}.hex
-
-    COMMAND arm-none-eabi-objcopy
-    -O binary
-    $<TARGET_FILE:${PROJECT_NAME}>
-    ${PROJECT_NAME}.bin
-
-    COMMENT "Generating HEX and BIN files..."
+	#"${CMAKE_CURRENT_SOURCE_DIR}/Src/startup_stm32f103xx.S"
+	#替换为
+	"${CMAKE_CURRENT_SOURCE_DIR}/Startup/startup_stm32f10x_md.s"
+	#添加
+	 "${CMAKE_CURRENT_SOURCE_DIR}/Core/system_stm32f10x.c"
 )
 ```
 
 
-![](img/ly-20260909171341320.png)  
-
+1. 删除build文件夹
+2. `Ctrl+Shit+P`：DeleteCachAndReconfigure
+3. Ctrl+Shit+P: Clean-rebuild
+4. F5调试-选择st-lint没出错即可
