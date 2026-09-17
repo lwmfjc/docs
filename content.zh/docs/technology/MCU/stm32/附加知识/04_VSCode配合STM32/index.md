@@ -132,7 +132,11 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 不要用左下角CMakeTools的工具，会出错 ~~这个是给普通CMake项目或者远程Linux系统中的CMake项目用的~~
 
-![](img/ly-20260917144924004.png)  
+![](img/ly-20260917144924004.png)
+
+上面的出错是因为这里的问题 ~~cmake设置先改成绝对路径再改为cmake就行了，不知道是不是bug。但是即使改成功了，也是没法直接调试的，因为目标文件不是.exe而是.elf~~ ：  
+
+![](img/ly-20260917171506243.png)
 
 STM32 的启动流程可以简单理解为：  
 
