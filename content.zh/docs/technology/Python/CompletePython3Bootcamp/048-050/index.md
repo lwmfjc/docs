@@ -1,6 +1,6 @@
 ---
-title: 048-
-description: 048-
+title: 048-050
+description: 048-050
 categories:
   - 学习
 tags:
@@ -60,7 +60,7 @@ Docstring explains function.
 | 函数中间的 `"""xxx"""` / `'''xxx'''` | 通常不会保留为运行时对象   | 几乎没有                 |
 ## 初步认识doc文档
 
-```shell
+```bash
 #初步认识doc文档
 
 >>> def devide(a,b):
@@ -104,7 +104,7 @@ Raises:
 
 ```
 
-```shell
+```bash
 >>> def add_function(num1,num2):
 ...     return num1+num2
 ...     
@@ -127,7 +127,7 @@ Raises:
 
 函数的主要用途，就是 ~~减少工作量地~~ 重复使用代码块  
 
-```shell
+```bash
 >>> def say_hello():
 ...     print("hello")
 ...     print("are")
@@ -180,7 +180,7 @@ you
 
 ## 默认值
 
-```shell
+```bash
 >>> def say_hello(name):
 ...     print(f'hello {name}')
 ...     
@@ -204,7 +204,7 @@ hello xiaoming
 
 ## return
 
-```shell
+```bash
 #使用return后才能把结果赋值给变量
 >>> def add_num(num1,num2):
 ...     return num1+num2
@@ -229,6 +229,84 @@ jupyter中的特殊含义：
 
 ![](img/ly-20260904225705971.png)  
 
-```shell
+```bash
 
+In [2]: def print_result(a,b):
+   ...:     print(a+b)
+   ...:
+
+In [3]: def return_result(a,b):
+   ...:     return a+b
+   ...:
+
+In [4]: result=print_result(10,20)
+30
+
+In [5]: result
+
+In [6]: type(result)
+Out[6]: NoneType
+
+In [7]: return_result(10,20)
+Out[7]: 30
+
+In [8]: result=return_result(10,20)
+
+In [9]: result
+Out[9]: 30
+
+In [10]: type(result)
+Out[10]: int
+```
+
+## 同时有打印结果和输出
+
+```bash
+In [11]: def myfunc(a,b):
+    ...:     print(a+b)
+    ...:     return a+b
+    ...:
+
+In [12]: result=myfunc(10,20)
+30
+
+In [13]: myfunc(10,20)
+30
+Out[13]: 30
+
+In [14]: abcd=123
+
+In [15]: abcd
+Out[15]: 123
+
+```
+
+如上，`abcd=123`之类的`变量=value`不会有输出，只有`函数执行`或者`变量`才有可能有输出 ~~即 out\[x\]:xx~~ 
+
+### 数据类型
+
+Python是非静态数据类型，即动态数据类型，不需要提前制定类型  
+
+```bash
+In [16]: def sum_numbers(num1,num2):
+    ...:     return num1+num2
+    ...:
+
+In [17]: sum_numbers(10,20)
+Out[17]: 30
+
+In [18]: sum_numbers('10',20)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+Cell In[18], line 1
+----> 1 sum_numbers('10',20)
+
+Cell In[16], line 2, in sum_numbers(num1, num2)
+      1 def sum_numbers(num1,num2):
+----> 2     return num1+num2
+
+TypeError: can only concatenate str (not "int") to str
+
+In [19]: sum_numbers('10','20')
+Out[19]: '1020'
 ```
