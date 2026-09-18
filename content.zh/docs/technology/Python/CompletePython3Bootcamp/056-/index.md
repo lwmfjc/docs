@@ -33,10 +33,10 @@ In [11]: lesser_of_two_evens(4,2)
 Out[11]: 2
 ```
 
-```
+```python
 #接收2单词的字符串，如果他们以同样字符开头则返回True，否则false
 In [18]: def animal_crackers(str):
-    ...:     words=str.split()
+    ...:     words=str.lower().split()
     ...:     if(len(words)>=2 and words[0][0] == words[1][0]):
     ...:         return True
     ...:     else:
@@ -48,6 +48,10 @@ Out[19]: True
 
 In [20]: animal_crackers('Levelhelkd Kdkfjks')
 Out[20]: False
+```
+
+```python
+
 ```
 
 ## 一级问题
