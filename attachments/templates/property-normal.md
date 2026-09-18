@@ -4,8 +4,8 @@ description:
 categories:
   - 学习
 tags:
-  - CMake
-  - ChatGPTGuides
+  - Python
+  - CompletePython3Bootcamp
 date: <% tp.file.creation_date("YYYY-MM-DDTHH:mm:ssZ") %>
 lastmod: <% tp.file.creation_date("YYYY-MM-DDTHH:mm:ssZ") %>
 cssAttach:

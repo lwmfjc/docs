@@ -19,6 +19,11 @@ cssclasses:
 - 这里会把控制流、循环、逻辑等结合并练习
 
 # def关键字
+
+```
+def (/dɛf/) 
+```
+
 ```python
 >>> def name_of_function():
 ...     """
