@@ -1,6 +1,6 @@
 ---
-title: 061-
-description: 061-
+title: 061
+description: 061
 categories:
   - 学习
 tags:
@@ -465,9 +465,35 @@ Out[13]: 9
 In [18]: mynums=[1,2,3,4,5,6]
 
 In [19]: list(map(lambda num:num**2,mynums))
-Out[19]: [1, 4, 9, 16, 25, 36]
+Out[19]: [1, 4, 9, 16, 25, 36] 
 
-In [20]: list(filter(check_even,mynums))
-Out[20]: [2, 4, 6]
+In [24]: list(filter(lambda x : x%2 == 0,mynums))
+Out[24]: [2, 4, 6]
+
+In [26]: names=['Andy','Eve','Sally']
+
+In [27]: list(map(lambda x:x[0],names))
+Out[27]: ['A', 'E', 'S']
+
+In [28]: list(map(lambda x:x[::-1],names))
+Out[28]: ['ydnA', 'evE', 'yllaS']
 ```
 
+不是每个函数都可以、适合转换为lambda表达式，只建议较为简单的函数用lambda表达式来表示  
+
+```python
+#lambda中不会自动解包
+
+In [29]: mytest=[('lili',12),('kankan',20)]
+
+In [30]: list(map(lambda x,y : (x,y,123),mytest))
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+Cell In[30], line 1
+----> 1 list(map(lambda x,y : (x,y,123),mytest))
+
+TypeError: <lambda>() missing 1 required positional argument: 'y'
+
+In [31]: list(map(lambda item : (item[0],item[1],123),mytest))
+Out[31]: [('lili', 12, 123), ('kankan', 20, 123)]
+```
