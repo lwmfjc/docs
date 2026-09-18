@@ -133,5 +133,73 @@ Wrong guess!
 分别代表arguments（参数）以及 keyword arguments（关键字参数）  
 ***用来接收任意数量的参数***  
 
+## 可扩展的固定参数
 
+```python
+In [2]: def myfunc(a,b):
+   ...:     # Return 5% of the sum of a and b
+   ...:     pass
+   ...:     pass
+   ...:     return sum((a,b))*0.05
+   ...:
 
+In [3]: myfunc(10,20)
+Out[3]: 1.5
+
+In [4]: def myfunc(a,b,c=0,d=0):
+   ...:     # Return 5% of the sum of a and b
+   ...:     pass
+   ...:     pass
+   ...:     return sum((a,b,c,d))*0.05
+   ...:
+
+In [5]: myfunc(10,20)
+Out[5]: 1.5
+
+In [6]: myfunc(10,20,30,40)
+Out[6]: 5.0
+
+#只能添加2-4个参数
+In [8]: myfunc(10,20,30,40,4)
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+Cell In[8], line 1
+----> 1 myfunc(10,20,30,40,4)
+
+TypeError: myfunc() takes from 2 to 4 positional arguments but 5 were given
+```
+
+## 可扩展的任意数量参数
+
+```python
+#*args，允许将传入的参数作为一个元组来处理
+In [10]: def myfunc(*args):
+    ...:     return sum(args)*0.05
+    ...:
+
+In [11]: myfunc(10,20,30,40,4)
+Out[11]: 5.2
+
+In [12]: myfunc(10,20)
+Out[12]: 1.5
+
+In [13]: myfunc(10,20,4,3,2,11,2)
+Out[13]: 2.6
+```
+
+注意，如果args前面有固定参数，他是不接收的：  
+
+```python
+In [14]: def myfunc(a1,*args):
+    ...:     return sum(args)*0.05
+    ...:
+
+In [15]: myfunc(10)
+Out[15]: 0.0
+
+In [16]: myfunc(10,100)
+Out[16]: 5.0
+
+In [17]: myfunc(10,100,900)
+Out[17]: 50.0
+```
