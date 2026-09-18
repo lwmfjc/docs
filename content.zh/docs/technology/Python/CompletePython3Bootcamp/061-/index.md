@@ -439,3 +439,35 @@ Out[16]: <filter at 0x7127a4f4d540>
 In [17]: list(a)
 Out[17]: [2, 4, 6]
 ```
+
+# lambda表达式
+
+```python
+In [8]: def square(num):
+   ...:     result = num ** 2
+   ...:     return result
+   ...:
+
+In [9]: def square(num):
+   ...:     return num ** 2
+   ...:
+
+In [10]: def square(num): return num ** 2
+
+In [11]: lambda num: num**2
+Out[11]: <function __main__.<lambda>(num)>
+
+In [12]: square=lambda num: num** 2
+
+In [13]: square(3)
+Out[13]: 9
+
+In [18]: mynums=[1,2,3,4,5,6]
+
+In [19]: list(map(lambda num:num**2,mynums))
+Out[19]: [1, 4, 9, 16, 25, 36]
+
+In [20]: list(filter(check_even,mynums))
+Out[20]: [2, 4, 6]
+```
+
