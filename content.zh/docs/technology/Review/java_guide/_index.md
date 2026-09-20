@@ -1,6 +1,7 @@
 ---
 bookCollapseSection: false
 title: "JavaGuide"
+BookComments: false
 ---
 
 基本全部转载自https://github.com/Snailclimb/JavaGuide（添加小部分笔记）感谢作者!
