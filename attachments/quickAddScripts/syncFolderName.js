@@ -18,9 +18,12 @@ module.exports = async (params) => {
                 const content = await app.vault.read(indexFile);
                 
                 // 执行替换逻辑
-                const newContent = content
-                    .replace(/^title:.*$/m, `title: ${folderName}`)
-                    .replace(/^description:.*$/m, `description: ${folderName}`);
+               // 执行替换逻辑
+		const yamlString = JSON.stringify(folderName);
+
+		const newContent = content
+    			.replace(/^title:.*$/m, `title: ${yamlString}`)
+    			.replace(/^description:.*$/m, `description: ${yamlString}`);
                 
                 if (content !== newContent) {
                     await app.vault.modify(indexFile, newContent);
