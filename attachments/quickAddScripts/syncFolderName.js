@@ -1,42 +1,113 @@
 module.exports = async (params) => {
+
     const { app } = params;
 
-    // 使用辅助函数防止逻辑冲突
+
+
     const syncIndexFile = async (file) => {
+
+
         // 只处理文件夹
         if (!file.children) return;
 
+
+
         const folderName = file.name;
-        const indexPath = `${file.path}/index.md`;
-        
-        // 稍微延迟，避开文件系统重命名的瞬间死锁
+
+        const indexPath =
+            `${file.path}/index.md`;
+
+
+
+        // 延迟300ms，等待文件系统稳定
         setTimeout(async () => {
+
+
             try {
-                const indexFile = app.vault.getAbstractFileByPath(indexPath);
+
+
+                const indexFile =
+                    app.vault.getAbstractFileByPath(indexPath);
+
+
+
                 if (!indexFile) return;
 
-                const content = await app.vault.read(indexFile);
-                
-                // 执行替换逻辑
-               // 执行替换逻辑
-		const yamlString = JSON.stringify(folderName);
 
-		const newContent = content
-    			.replace(/^title:.*$/m, `title: ${yamlString}`)
-    			.replace(/^description:.*$/m, `description: ${yamlString}`);
-                
+
+                const content =
+                    await app.vault.read(indexFile);
+
+
+
+                const yamlString =
+                    JSON.stringify(folderName);
+
+
+
+                const newContent =
+                    content
+                        .replace(
+                            /^title:.*$/m,
+                            `title: ${yamlString}`
+                        )
+                        .replace(
+                            /^description:.*$/m,
+                            `description: ${yamlString}`
+                        );
+
+
+
                 if (content !== newContent) {
-                    await app.vault.modify(indexFile, newContent);
-                    new Notice(`✅ 已同步 index.md: ${folderName}`);
+
+
+                    await app.vault.modify(
+                        indexFile,
+                        newContent
+                    );
+
+
+
+                    new Notice(
+                        `✅ 已同步 index.md: ${folderName}`
+                    );
+
                 }
-            } catch (e) {
-                console.error("FolderSync Error:", e);
+
+
+
+            } catch(e) {
+
+
+                console.error(
+                    "FolderSync Error:",
+                    e
+                );
+
             }
-        }, 300); 
+
+
+        },300);
+
     };
 
-    // 注册监听
-    app.vault.on('rename', syncIndexFile);
 
-    console.log("FolderSync: 监听器已就绪");
+
+
+    app.vault.on(
+        'rename',
+        syncIndexFile
+    );
+
+
+
+    new Notice(
+        "FolderSync 已启动"
+    );
+
+
+    console.log(
+        "FolderSync: 监听器已就绪"
+    );
+
 };
