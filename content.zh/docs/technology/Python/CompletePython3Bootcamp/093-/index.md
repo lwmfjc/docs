@@ -15,7 +15,7 @@ cssclasses:
 ---
 # 里程碑（练习面向对象编程）
 
-> 本章我使用了vscode进行编写单独的.py文件并直接运行（为了避免拷贝文本、大段代码出问题难以查找之类的问题），需要安装python插件。不过我的.py文件是放在ubuntu24.04中，通过vscode远程连接上并运行的，不在本地win11中
+> 如果使用vscode进行编写单独的.py文件并直接运行，需要安装python插件。不过我的.py文件是放在ubuntu24.04中，可以通过vscode远程连接上并运行的，不在本地win11中
 
 ## 游戏规则介绍
 
@@ -156,7 +156,7 @@ In [25]: two_hearts.value < three_of_clubs.value
 Out[25]: True
 ```
 
-# Deck
+## Deck
 
 - 一副新牌
 - 能洗牌（牌的顺序随机）
@@ -433,3 +433,184 @@ In [93]: print(len(new_deck.all_cards))
 
 ```
 
+## Player
+
+- 保持当前玩家持有牌的列表
+- 能添加或移除卡牌
+- 将有顶部和底部的卡牌转换为Python列表
+    - 出牌从顶部 ~~pop(0)，移除指定索引的元素~~ 
+    - 收牌则是收到底部 ~~append(value)，添加到列表末端。append只能添加单个元素，如果append一个列表，那么整个列表会被当做一个元素~~ 
+    - 顶部和底部，对应的是列表的左侧和右侧  `[(顶部)1,2,3,4,(底部)5]`
+    - 收多张牌  ~~extend(new_list)~~ 
+```python
+>>> mylist=[1,2,3,4,5]
+>>> mylist.extend(6)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'int' object is not iterable
+>>> mylist.extend([6,7,8])
+>>> mylist
+[1, 2, 3, 4, 5, 6, 7, 8]
+```
+
+> 可以添加卡牌、移除卡牌
+
+```python
+
+In [101]: class Player:
+     ...:     def __init__(self,name):
+     ...:         self.name=name
+     ...:         self.all_cards=[]
+     ...:     def remove_one(self):
+     ...:         return self.all_cards.pop(0)
+     ...:     def add_cards(self,new_cards):
+     ...:         if type(new_cards)==type([]):
+     ...:             #添加多张
+     ...:             self.all_cards.extend(new_cards)
+     ...:         else:
+     ...:             #添加单张
+     ...:             self.all_cards.append(new_cards)
+     ...:     def __str__(self):
+     ...:         return f'Player {self.name} has {len(self.all_cards)} cards.'
+     ...:
+
+In [102]: new_player=Player("Jose")
+
+In [103]: print(new_player)
+Player Jose has 0 cards.
+
+In [105]: print(mycard)
+Two of Spades
+
+In [106]: new_player.add_cards(mycard)
+
+In [107]: print(new_player)
+Player Jose has 1 cards.
+
+#测试添加列表（多长卡牌）是否成功
+In [108]: new_player.add_cards([mycard,mycard,mycard])
+
+In [109]: print(new_player)
+Player Jose has 4 cards.
+
+In [110]: new_player.remove_one()
+Out[110]: <__main__.Card at 0x718fb0c207a0>
+
+In [111]: print(new_player)
+Player Jose has 3 cards.
+```
+
+## 游戏逻辑（第一部分）
+
+> 接下来要继续完善游戏逻辑
+> 1 -> 可视化部分
+> 2,3 ->实际编写代码
+
+
+> 正常来说我们应该是围绕即将实现的逻辑然后再来规划类的设计，在现实场景中，你往往会同时考虑应用程序的逻辑和类结构设计
+
+- 玩家一和玩家一
+- 一副新牌-->洗牌-->分牌（一人一半）
+
+- （开始游戏）先检查是否有人输掉（while循环）
+- 每位玩家抽出一张
+    - 如果不是平局-->赢的人把牌放入排底
+    - 如果平局，额外抽出5张牌 ~~游戏规定的~~ 
+        - 如果发生战争时抽不出5张牌，就算输
+        - 要判断是否又平局
+        - 平局如果结束，赢的人收回所有的牌
+
+## 游戏逻辑（第二部分）
+
+> 1. 游戏初始化
+> 2. 循环（游戏）
+
+```python
+>>> for x in range(1,3):
+...     print(x)
+...
+1
+2
+#相当于range(0,3)
+>>> for x in range(3):
+...     print(x)
+...
+0
+1
+2
+```
+
+> 初始化
+
+```python
+In [113]: player_one=Player("One")
+
+In [114]: player_two=Player("Two")
+
+In [115]: new_deck=Deck()
+
+In [116]: new_deck.shuffle()
+
+In [117]: for x in range(26):
+     ...:     #每次循环处理两张牌
+     ...:     player_one.add_cards(new_deck.deal_one())
+     ...:     player_two.add_cards(new_deck.deal_one())
+     ...:
+```
+
+## 游戏逻辑（第三部分）
+
+> 假设默认at_war=true
+
+![](img/ly-20260923114003311.png)  
+
+```python
+In [130]: game_on=True
+     ...: num_of_draw=5
+     ...: while game_on:
+     ...:     round_num+=1
+     ...:     print(f"Round {round_num}")
+     ...:     if len(player_one.all_cards) == 0:
+     ...:         print('Player One , out of cards! Player Two Wins!')
+     ...:         game_on=False
+     ...:         break
+     ...:     if len(player_two.all_cards) == 0:
+     ...:         print('Player Two , out of cards! Player One Wins!')
+     ...:         game_on=False
+     ...:         break
+     ...:     #新的一轮
+     ...:     #正在使用的牌
+     ...:     player_one_cards=[]
+     ...:     player_one_cards.append(player_one.remove_one())
+     ...:
+     ...:     player_two_cards=[]
+     ...:     player_two_cards.append(player_two.remove_one())
+     ...:
+     ...:     at_war=True
+     ...:     while at_war:
+     ...:         if player_one_cards[-1].value > player_two_cards[-1].value:
+     ...:             player_one.add_cards(player_one_cards)
+     ...:             player_one.add_cards(player_two_cards)
+     ...:             at_war=False
+     ...:         elif player_one_cards[-1].value < player_two_cards[-1].value:
+     ...:             player_two.add_cards(player_one_cards)
+     ...:             player_two.add_cards(player_two_cards)
+     ...:             at_war=False
+     ...:         else:
+     ...:             #发生战争
+     ...:             print('War!')
+     ...:             if len(player_one.all_cards) < num_of_draw:
+     ...:                 print(f'Player One unable to declare war,remaining {len(player_one.all_cards)}')
+     ...:                 print(f'Player Two Wins!,remaining {len(player_two.all_cards)}')
+     ...:                 game_on = False
+     ...:                 break
+     ...:             elif len(player_two.all_cards) < num_of_draw:
+     ...:                 print(f'Player Two unable to declare war,remaining {len(player_two.all_cards)}')
+     ...:                 print(f'Player One Wins!,remaining {len(player_one.all_cards)}')
+     ...:                 game_on = False
+     ...:                 break
+     ...:             else:
+     ...:                 for num in range(num_of_draw):
+     ...:                     player_one_cards.append(player_one.remove_one())
+     ...:                     player_two_cards.append(player_two.remove_one())
+```
