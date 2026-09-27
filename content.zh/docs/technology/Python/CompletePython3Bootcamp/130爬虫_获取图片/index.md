@@ -1,6 +1,6 @@
 ---
-title: "130获取图片"
-description: "130获取图片"
+title: "130爬虫_获取图片"
+description: "130爬虫_获取图片"
 categories:
   - 学习
 tags:
