@@ -169,5 +169,32 @@ Out[36]: True
 
 In [37]: ' \t\n1'.isspace()
 Out[37]: False
+
+#首字母大写其他全部小写
+In [39]: 'Abc'.istitle()
+Out[39]: True
+
+In [40]: 'Abc aB'.istitle()
+Out[40]: False
+
+In [41]: ' Abc aB'.istitle()
+Out[41]: False
+
+#也不允许中间有空白
+In [42]: 'Abc a'.istitle()
+Out[42]: False
+
+
+In [43]: 'Abca'.istitle()
+Out[43]: True
+
+#允许左右两边有空白
+In [44]: 'Abca '.istitle()
+Out[44]: True
+
+In [45]: ' Abca '.istitle()
+Out[45]: True
+
+
 ```
 
