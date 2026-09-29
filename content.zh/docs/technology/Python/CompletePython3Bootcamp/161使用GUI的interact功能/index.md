@@ -44,5 +44,15 @@ interact(ly_func,x=10)
 
 ![](img/ly-20260929180250907.png)  
 
+如上 func输入14--->输出14；ly_func输入15输出30
+
+`interact(func,x=True)`
+
+![](img/ly-20260929181838593.png)
+
+`interact(func,x='Hello')`
+
+![](img/ly-20260929181939540.png)
+
 ~~暂时跳过，后续需要再回头补上这部分的内容~~  
 
