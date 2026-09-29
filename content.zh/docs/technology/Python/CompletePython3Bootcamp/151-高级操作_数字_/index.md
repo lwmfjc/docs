@@ -198,3 +198,181 @@ Out[45]: True
 
 ```
 
+```python
+In [47]: 'Abc'.isupper()
+Out[47]: False
+
+In [48]: 'AB'.isupper()
+Out[48]: True
+
+```
+
+```python
+In [51]: s
+Out[51]: 'hello'
+
+In [52]: s.endswith('o')
+Out[52]: True
+
+In [53]: s[-1]=='o'
+Out[53]: True
+
+#注意，字符串是不可变的
+In [54]: s[1]='a'
+---------------------------------------------------------------------------
+TypeError                                 Traceback (most recent call last)
+Cell In[54], line 1
+----> 1 s[1]='a'
+
+TypeError: 'str' object does not support item assignment
+```
+
+
+```python
+In [56]: s
+Out[56]: 'hello'
+
+In [57]: s.split('e')
+Out[57]: ['h', 'llo']
+
+In [58]: s='hiihihhissisiih'
+
+In [59]: s.split('i')
+Out[59]: ['h', '', 'h', 'hh', 'ss', 's', '', 'h']
+
+#只会在第一个i出现时分割
+In [60]: s.partition('i')
+Out[60]: ('h', 'i', 'ihihhissisiih')
+```
+
+# 高级集合
+
+```python
+In [2]: s=set()
+
+In [3]: s.add(1)
+
+In [4]: s.add(2)
+
+In [5]: s
+Out[5]: {1, 2}
+
+In [6]: s.add(1)
+
+In [7]: s
+Out[7]: {1, 2}
+
+In [8]: s.clear()
+
+In [9]: s
+Out[9]: set()
+
+#返回副本
+In [11]: s1={1,2,3}
+
+In [12]: s2=s1.copy()
+
+In [13]: s1.add(4)
+
+In [14]: s1
+Out[14]: {1, 2, 3, 4}
+
+In [15]: s2
+Out[15]: {1, 2, 3}
+
+#s2中，查找s1没有的部分(集合)
+In [16]: s2.difference(s1)
+Out[16]: set()
+
+#s1中，查找s2没有的部分(集合)
+In [17]: s1.difference(s2)
+Out[17]: {4}
+
+In [30]: s1={1,2,3}
+
+In [31]: s2={1,4,5}
+
+#s1中，查找s2没有的部分(集合)
+In [32]: s1.difference(s2)
+Out[32]: {2, 3}
+
+#s1中，只留下s2没有的部分
+In [33]: s1.difference_update(s2)
+
+In [34]: s1
+Out[34]: {2, 3}
+
+In [35]: s2
+Out[35]: {1, 4, 5}
+```
+
+```python
+In [38]: s
+Out[38]: {1, 2, 3, 4}
+
+In [39]: s.discard(2)
+
+In [40]: s
+Out[40]: {1, 3, 4}
+
+#移除集合中的元素，如果元素不在则什么都不做
+In [41]: s.discard(22)
+
+In [42]: s
+Out[42]: {1, 3, 4}
+
+#交集
+In [44]: s1={1,2,3}
+
+In [45]: s2={1,2,4}
+
+In [46]: s1.intersection(s2)
+Out[46]: {1, 2}
+
+#s1只留下两集合的交集
+In [47]: s1.intersection_update(s2)
+
+In [48]: s1
+Out[48]: {1, 2}
+
+In [49]: s2
+Out[49]: {1, 2, 4}
+
+
+```
+
+> 交集
+
+```python
+In [51]: s1={1,2}
+    ...: s2={1,2,4}
+    ...: s3={5}
+    ...:
+    ...:
+
+#交集为空则True，有交集则是False
+In [52]: s1.isdisjoint(s2)
+Out[52]: False
+
+In [53]: s1.isdisjoint(s3)
+Out[53]: True
+
+#s1是s2的子集(≤)
+In [54]: s1.issubset(s2)
+Out[54]: True
+
+In [59]: s1.issubset(s1)
+Out[59]: True
+
+In [55]: s3.issubset(s2)
+Out[55]: False
+
+#s2是否是s1的超集（≥)
+In [56]: s2.issuperset(s1)
+Out[56]: True
+
+In [58]: s2.issuperset(s2)
+Out[58]: True
+
+
+```
