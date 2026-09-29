@@ -65,3 +65,109 @@ Out[13]: 3.14
 
 # 高级字符串操作
 
+```python
+
+In [2]: s='hello world'
+
+#非原地操作
+In [3]: s.upper()
+Out[3]: 'HELLO WORLD'
+
+In [4]: s
+Out[4]: 'hello world'
+
+In [6]: s.lower()
+Out[6]: 'hello world'
+
+#非原地操作
+In [7]: s.capitalize()
+Out[7]: 'Hello world'
+
+In [9]: s.count('o')
+Out[9]: 2
+
+In [10]: s.find('o')
+Out[10]: 4
+```
+
+> 将s居中，放置到某个字符 ~~必须是单个~~ 中间
+
+```python
+In [12]: s
+Out[12]: 'hello world'
+
+In [13]: s.center(20,'z')
+Out[13]: 'zzzzhello worldzzzzz'
+
+In [14]: s.center(21,'z')
+Out[14]: 'zzzzzhello worldzzzzz'
+
+In [15]: s.center(22,'z')
+Out[15]: 'zzzzzhello worldzzzzzz'
+
+```
+
+> 制表符
+
+```python
+In [20]: print('hello\thi')
+hello   hi
+
+In [21]: 'hello\thi'.expandtabs()
+Out[21]: 'hello   hi'
+
+In [22]: 'hello\nhi'.expandtabs()
+Out[22]: 'hello\nhi'
+
+```
+
+
+```python
+In [23]: s='hello'
+
+#字符串中所有字符是否都是字母数字
+#al：代表 alphabetic（字母的，包含 A-Z、a-z 以及其他语言的字符）
+#num：代表 numeric（数字的，即 0-9）
+In [24]: s.isalnum()
+Out[24]: True
+
+In [25]: s.isalpha()
+Out[25]: True
+
+#下划线不算
+In [26]: '_aA'.isalpha()
+Out[26]: False
+
+In [27]: 'aA'.isalpha()
+Out[27]: True
+
+In [28]: '_aA'.isalnum()
+Out[28]: False
+
+In [29]: '_123'.isalnum()
+Out[29]: False
+
+#所有字符都是小写字符（不包括数字，但包括下划线）
+In [30]: '123'.islower()
+Out[30]: False
+
+In [31]: '_abc'.islower()
+Out[31]: True
+
+In [32]: 'c'.islower()
+Out[32]: True
+
+#所有字符都是空白字符
+In [34]: ' '.isspace()
+Out[34]: True
+
+In [35]: ' \t'.isspace()
+Out[35]: True
+
+In [36]: ' \t\n'.isspace()
+Out[36]: True
+
+In [37]: ' \t\n1'.isspace()
+Out[37]: False
+```
+
