@@ -54,5 +54,78 @@ interact(ly_func,x=10)
 
 ![](img/ly-20260929181939540.png)
 
+## 复习装饰器
+
+> 装饰器 = 接收一个函数，把它包装后返回一个新函数。
+
+普通装饰器
+
+```python
+@decorator
+def f():
+    pass
+```
+
+等价：
+
+```python
+f = decorator(f)
+```
+
+带参数装饰器  
+
+```python
+@decorator(a=1)
+def f():
+    pass
+```
+
+等价：
+
+```python
+f = decorator(a=1)(f)
+```
+
+多了一层。
+
+你的：
+
+```python
+@interact(x=True,y=1.0)
+def g(x,y):
+```
+
+就是：
+
+第一步：
+
+```python
+interact(x=True,y=1.0)
+```
+
+生成一个装饰器。
+
+第二步：
+
+这个装饰器接收：
+
+```python
+g
+```
+
+第三步：
+
+返回新的 `g`。
+
+## interact继续学习
+
+
+
+
+
+
+
+
+
 ~~暂时跳过，后续需要再回头补上这部分的内容~~  
 
