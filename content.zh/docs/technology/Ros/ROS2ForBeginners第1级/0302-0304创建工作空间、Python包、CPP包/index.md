@@ -169,9 +169,16 @@ MIT
 my_py_pkg
 ```
 
-> 接下来，在windows中的vscode中，打开远程（ssh）的/home/ly/HelloROS2/ros2_ws/src/ 目录  
+> 接下来
 
-![](img/ly-20261002123138174.png)
+```bash
+╭─ ~/HelloROS2/ros2_ws/src main ?1
+╰─❯ code .
+Installing VS Code Server for Linux x64 (88e44fa0e00b08f7758b4f6d05632e4fd5e4df6f)
+Downloading:  55%
+
+#然后就会直接打开目录了
+```
 
 ```bash
 ╭─ ~/HelloROS2/ros2_ws/src

@@ -106,7 +106,10 @@ __init__.py
 
 ```
 
-在VSCode中打开 `ros2_ws/src` 文件夹  
+```python
+╭─ ~/HelloROS2/ros2_ws/src 
+╰─❯ code .
+```  
 
 ```python
 #!/usr/bin/env python3

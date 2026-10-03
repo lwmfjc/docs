@@ -120,7 +120,7 @@ sudo apt upgrade
 - 调整当前面板大小：Alt + Shift + 方向键（左/右/上/下）
 - 切换窗格缩放 ~~最大化某个窗格~~ ：Alt+Shif+Z
 
-VSCODE安装扩展：CMake，以及 ROS，还有 `WSL` , `Remote Development` 。之后重新打开VSCODE
+VSCODE安装扩展：CMake，以及 ROS，还有 在windows的环境变量中，配置好 VSCode路径`D:\software\VSCode\bin`。
 
 ```bash
 #编辑简单的文件
