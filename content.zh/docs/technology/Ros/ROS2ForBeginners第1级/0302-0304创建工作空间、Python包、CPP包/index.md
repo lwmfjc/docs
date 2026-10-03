@@ -299,11 +299,6 @@ Summary: 1 package finished [3.12s]
 ```bash
 ╭─ ~/HelloROS2/ros2_ws/src
 ╰─❯ ros2 pkg create my_cpp_pkg --build-type ament_cmake --dependencies rclcpp
-```
-
-```bash
-╭─ ~/HelloROS2/ros2_ws/src
-╰─❯ ros2 pkg create my_cpp_pkg --build-type ament_cmake --dependencies rclcpp
 going to create a new package
 package name: my_cpp_pkg
 destination directory: /home/ly/HelloROS2/ros2_ws/src

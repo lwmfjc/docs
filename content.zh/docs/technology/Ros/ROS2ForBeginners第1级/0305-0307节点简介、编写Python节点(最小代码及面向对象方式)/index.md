@@ -238,7 +238,7 @@ setup(
 ╭─ ~/HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg                    
 ╰─❯ cd ~/HelloROS2/ros2_ws
 
-#构建Python的那个包
+#构建并安装Python的功能包
 ╭─ ~/HelloROS2/ros2_ws
 ╰─❯ colcon build --packages-select my_py_pkg
 Starting >>> my_py_pkg
@@ -250,6 +250,7 @@ Summary: 1 package finished [6.04s]
 > 由于在工作空间中创建了新东西，所以需要source工作空间
 
 ```bash
+#加载构建后的环境
 source install/setup.sh
 #或者(如果是ohmyzsh终端)
 source install/setup.zsh
@@ -278,6 +279,7 @@ source ~/.zshrc
 ╰─❯ ls -l  HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg/my_first_node.py
 -rw-r--r-- 1 ly ly 761 Oct  2 18:57 HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg/my_first_node.py
 
+#运行可执行程序
 #其中 my_py_pkg py_node 都支持自动补全
 #可执行文件名py_node是 setup.py中创建的 "py_node = my_py_pkg.my_first_node:main"，是安装节点之后才有的东西
 #my_first_node.py中的node=Node("py_test")中的"py_test"是节点名称
@@ -287,6 +289,8 @@ source ~/.zshrc
 [INFO] [1790939723.045164980] [py_test]: Hello world
 
 ```
+
+# 可执行文件名、节点名称、文件名区别
 
 > 1. 可执行文件名py_node是 `setup.py`中创建的 `"py_node = my_py_pkg.my_first_node:main"`，是安装节点之后才有的东西
 > 2. `my_first_node.py`中的`node=Node("py_test")`中的"py_test"是节点名称
