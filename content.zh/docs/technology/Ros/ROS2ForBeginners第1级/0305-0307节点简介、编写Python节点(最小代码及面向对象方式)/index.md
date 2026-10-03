@@ -1,6 +1,6 @@
 ---
-title: "0305-"
-description: "0305-"
+title: "0305-0307节点简介、编写Python节点(最小代码及面向对象方式)"
+description: "0305-0307节点简介、编写Python节点(最小代码及面向对象方式)"
 categories:
   - 学习
 tags:
@@ -63,7 +63,7 @@ ros2 run demo_nodes_cpp talker
 
 - demo_nodes_cpp = ***ROS 2 软件包（package）名称***
 - talker = ***可执行程序（executable）名称***
-    - 默认情况下：***可执行程序名 = 节点名***
+    - 默认情况下：***可执行程序名 = 节点名***  ~~指的不是自动，而是手动在.py程序中编写`node = Node("talker")`~~ 
 
 ```bash
 #程序启动后，把节点名字改成 talker1
@@ -205,6 +205,8 @@ KeyboardInterrupt
 
 ## 安装节点
 
+> 更准确地说是构建并安装功能包
+
 > 修改my_py_pkg/setup.py
 
 ```python
@@ -229,6 +231,8 @@ setup(
 ```
 
 > 切换回工作空间进行操作
+
+> colcon 会根据 setup.py 中的 console_scripts 配置，生成名为 py_node 的可执行入口，并将它安装到工作空间的 install 目录中。
 
 ```bash
 ╭─ ~/HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg                    
@@ -259,6 +263,8 @@ source ~/.zshrc
 
 ## 启动节点
 
+> 程序运行后，ROS 2 会通过节点名称来识别和管理这个节点
+
 ```bash
 ╭─ ~
 ╰─❯ ls -l  HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg/my_first_node.py
@@ -287,4 +293,237 @@ source ~/.zshrc
 > 3. 可执行文件名，和节点名称，是不同的东西
 > 4. `my_first_node.py` 是文件名
 
-> 我们有在`my_first_node.py`文件内部创建的节点名称，有创建的可执行文件名 `setup.py`中创建的 `"py_node = my_py_pkg.my_first_node:main"`。以便我们可以与ROS2一起使用
+它们的关系是：
+
+| 名称                 | 作用                           |
+| ------------------ | ---------------------------- |
+| `my_py_pkg`        | ROS 2 功能包名，用于定位程序所属的包        |
+| `my_first_node.py` | Python 源代码文件名                |
+| `py_node`          | 安装后用于启动程序的可执行命令名             |
+| `py_test`          | ROS 2 节点名称，供 ROS 2 通信系统识别和管理 |
+
+> 包名、源文件名、可执行命令名、节点名称---他们之间的关系
+
+![](img/ly-20261003102857570.png)  
+> 完整的执行流程
+
+![](img/ly-20261003103106970.png)
+
+
+> 我们在文件内部创建了节点（有节点名称），有文件名，有创建的可执行文件名 ~~配置后构建并安装功能包~~ 
+
+> 有时候节点名称(`py_test`)、文件名(`my_first_node.py`)、执行文件名(`py_node`)是相同的。比如创建了一个温度传感器文件，可能会将文件名命名为 temperature_sensor.py，节点名称可能是 temperature_sensor，可执行文件名也可能是 temperature_sensor
+
+> 目前，在包下的与包名的同名文件夹my_py_pkg下编写了文件my_first_node.py来编写节点，编写节点基本版本（有节点名称），安装该节点（有执行文件名）并从终端运行该节点
+
+# 使用面向对象编程改进该节点
+
+> 使用继承方式组织节点代码
+
+> 这将使节点更具扩展性，根据官方指南，这是在ROS2编写代码的推荐方式
+
+> 为节点创建一个类，有了这个类之后将拥有一个模版，用于将来创建的任何节点
+
+> 这里我把原`my_first_node.py`重命名为了`my_first_node_dian_py.bak`，然后新建了一个 `my_first_node.py`
+
+> `my_first_node.py`内容
+
+```python
+#!/usr/bin/env python3
+
+#请系统调用 /usr/bin/env，让它在当前环境的 PATH 中（按照目录顺序）找到 python3（这个可执行程序），然后用这个 Python3 来执行本文件。
+#记得现在VSCode安装ROS拓展
+import rclpy 
+from rclpy.node import Node
+
+class MyNode(Node):
+    def __init__(self):
+        super().__init__("py_test")
+        self.get_logger().info("Hello world")
+        
+
+def main(args=None):
+    #将初始化ROS2通信以及需要的所有内容，以便创建和使用节点
+    rclpy.init(args=args)
+    #创建一个节点，给它一个名称：py_test
+    node=MyNode() 
+    #spin将使节点保持存活，知道按下Ctrl+C
+    rclpy.spin(node)
+    #关闭
+    rclpy.shutdown()
+
+#如果直接从终端运行程序则执行main
+if __name__ == "__main__":
+    main()
+
+```
+
+> 在工作目录ros2_ws文件夹中使用`colcon build`  
+
+```bash
+#① 构建功能包
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ colcon build --packages-select my_py_pkg
+Starting >>> my_py_pkg
+Finished <<< my_py_pkg [4.71s]
+
+Summary: 1 package finished [5.85s]
+
+#② 加载构建后的环境
+#工作空间被source后包含了所有的新更新
+╭─ ~/HelloROS2/ros2_ws main !1                                             
+╰─❯ source install/setup.zsh
+
+#③ 运行可执行程序
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_py_pkg py_node
+[INFO] [1790998299.657390737] [py_test]: Hello world
+```
+
+## 定时器
+
+> 修改my_first_node.py
+
+```python
+#!/usr/bin/env python3
+
+#请系统调用 /usr/bin/env，让它在当前环境的 PATH 中（按照目录顺序）找到 python3（这个可执行程序），然后用这个 Python3 来执行本文件。
+#记得现在VSCode安装ROS拓展
+import rclpy 
+from rclpy.node import Node
+
+class MyNode(Node):
+    def __init__(self):
+        super().__init__("py_test")
+        self.get_logger().info("Hello world")
+        #多少秒(1.0秒)调用一次 callback
+        self.create_timer(1.0,self.timer_callback)
+    def timer_callback(self):
+        self.get_logger().info("Hello")
+
+def main(args=None):
+    #将初始化ROS2通信以及需要的所有内容，以便创建和使用节点
+    rclpy.init(args=args)
+    #创建一个节点，给它一个名称：py_test
+    node=MyNode() 
+    #spin将使节点保持存活，知道按下Ctrl+C
+    rclpy.spin(node)
+    #关闭
+    rclpy.shutdown()
+
+#如果直接从终端运行程序则执行main
+if __name__ == "__main__":
+    main()
+
+```
+
+> build 构建功能包 --> source 加载构建后的环境 --> run 运行可执行程序
+
+```bash
+# ① 构建功能包
+colcon build --packages-select my_py_pkg
+# Starting >>> my_py_pkg
+# Finished <<< my_py_pkg
+# Summary: 1 package finished
+
+# ② 加载构建后的环境
+source install/setup.zsh
+
+# ③ 运行可执行程序
+ros2 run my_py_pkg py_node
+
+# ④ 程序内部创建节点：
+# node = Node("py_test")
+#
+# 所以运行后可以看到：
+[INFO] [1790998727.245336670] [py_test]: Hello world
+[INFO] [1790998728.247261198] [py_test]: Hello
+[INFO] [1790998729.247369154] [py_test]: Hello
+[INFO] [1790998730.247471364] [py_test]: Hello
+[INFO] [1790998731.247696087] [py_test]: Hello
+```
+
+## 增加次数累计
+
+```python
+#!/usr/bin/env python3
+
+#请系统调用 /usr/bin/env，让它在当前环境的 PATH 中（按照目录顺序）找到 python3（这个可执行程序），然后用这个 Python3 来执行本文件。
+#记得现在VSCode安装ROS拓展
+import rclpy 
+from rclpy.node import Node
+
+class MyNode(Node):
+    def __init__(self):
+        super().__init__("py_test")
+        #简单的为这个类添加属性counter_
+        self.counter_=0
+        self.get_logger().info("Hello world")
+        #多少秒(1.0秒)调用一次 callback
+        self.create_timer(1.0,self.timer_callback)
+    def timer_callback(self):
+        #语法错误
+        self.get_logger().info("Hello" str(self.counter_))
+        #无错误版本
+        #self.get_logger().info("Hello" + str(self.counter_))
+        self.counter_+=1
+
+def main(args=None):
+    #将初始化ROS2通信以及需要的所有内容，以便创建和使用节点
+    rclpy.init(args=args)
+    #创建一个节点，给它一个名称：py_test
+    node=MyNode() 
+    #spin将使节点保持存活，知道按下Ctrl+C
+    rclpy.spin(node)
+    #关闭
+    rclpy.shutdown()
+
+#如果直接从终端运行程序则执行main
+if __name__ == "__main__":
+    main()
+
+```
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ colcon build --packages-select my_py_pkg
+Starting >>> my_py_pkg
+--- stderr: my_py_pkg
+  File "/home/ly/HelloROS2/ros2_ws/install/my_py_pkg/lib/python3.12/site-packages/my_py_pkg/my_first_node.py", line 17
+    self.get_logger().info("Hello" str(self.counter_)) #语法错误
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+
+---
+Finished <<< my_py_pkg [4.54s]
+
+Summary: 1 package finished [4.99s]
+  1 package had stderr output: my_py_pkg
+  
+#修改错误 #self.get_logger().info("Hello" + str(self.counter_))
+#构建功能包
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ colcon build --packages-select my_py_pkg
+Starting >>> my_py_pkg
+Finished <<< my_py_pkg [4.54s]
+
+Summary: 1 package finished [4.99s]
+
+#加载构建后的环境
+╭─ ~/HelloROS2/ros2_ws main !1   
+╰─❯ source install/setup.zsh
+
+#运行可执行程序
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_py_pkg py_node
+[INFO] [1790999320.374408691] [py_test]: Hello world
+[INFO] [1790999321.376545372] [py_test]: Hello0
+[INFO] [1790999322.376557890] [py_test]: Hello1
+[INFO] [1790999323.376485171] [py_test]: Hello2
+[INFO] [1790999324.376721472] [py_test]: Hello3
+
+```
+
+# 总结一下
+
+> 最小代码并不是“非面向对象代码”，它直接实例化 ROS 2 提供的 Node 类；后面的写法则是在此基础上，通过继承 Node 创建自己的 MyNode 子类，再把节点的功能封装到这个类中。
