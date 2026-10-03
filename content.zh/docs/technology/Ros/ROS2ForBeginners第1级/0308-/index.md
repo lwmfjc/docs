@@ -53,5 +53,25 @@ cssclasses:
 #创建源文件
 ╭─ ~/HelloROS2/ros2_ws/src/my_cpp_pkg/src main
 ╰─❯ touch my_first_node.cpp
+
+
+╭─ ~/HelloROS2/ros2_ws/src/my_cpp_pkg/src main
+╰─❯ code .
 ```
+
+> 在VSCode扩展中，把这个拓展装上，这样写cpp代码时才会有自动补全
+
+RoboticsDeveloperEnvironment ，作者 RanchHandRobotics LLC
+
+> STM32Cube clangd 和 C/C++ 的智能提示会冲突，如果C/C++的只能提示没有反应，那么
+
+- 打开 VSCode 设置（Ctrl+,），搜索 IntelliSense engine。
+- 将 C_Cpp: IntelliSense Engine 的值从 Disabled 改回 Default。
+- 检查并关闭 clangd 扩展，避免冲突。
+
+
+
+
+
+
 

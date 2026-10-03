@@ -42,6 +42,9 @@ cssclasses:
 - 插件库中添加插件  ~~发布者：STMicroelectronics  ~~ 
 	- 然后会自动安装一堆环境（cube bundle）
 
+> 附：STM32Cube clangd 和 C/C++ 的智能提示会冲突，Ctrl+, --->搜索 IntelliSense engine -- > C_Cpp: IntelliSense Engine 的值 可能会被改为 Disabled 。
+
+
 ![](img/ly-20260909130459211.png)  
 
 ![](img/ly-20260909142522266.png)  
