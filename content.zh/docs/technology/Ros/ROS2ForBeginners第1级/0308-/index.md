@@ -408,3 +408,30 @@ int main(int argc, char **argv)
 
 > build,source,run
 
+```bash
+╭─ ~/HelloROS2/ros2_ws main   
+╰─❯ colcon build --packages-select my_cpp_pkg
+Starting >>> my_cpp_pkg
+Finished <<< my_cpp_pkg [12.3s]
+
+Summary: 1 package finished [12.7s]
+
+╭─ ~/HelloROS2/ros2_ws main    
+╰─❯ colcon build --packages-select my_cpp_pkg
+Starting >>> my_cpp_pkg
+Finished <<< my_cpp_pkg [12.3s]
+
+Summary: 1 package finished [12.7s]
+
+╭─ ~/HelloROS2/ros2_ws main !1    
+╰─❯ source install/setup.zsh
+
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_cpp_pkg cpp_node
+[INFO] [1791035907.146215959] [cpp_test]: Hello world
+[INFO] [1791035908.147690835] [cpp_test]: Hello 0
+[INFO] [1791035909.147628055] [cpp_test]: Hello 1
+[INFO] [1791035910.147619577] [cpp_test]: Hello 2
+[INFO] [1791035911.147629455] [cpp_test]: Hello 3
+[INFO] [1791035912.147577068] [cpp_test]: Hello 4
+```
