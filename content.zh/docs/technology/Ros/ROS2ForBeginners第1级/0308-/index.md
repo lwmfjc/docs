@@ -69,9 +69,226 @@ RoboticsDeveloperEnvironment ，作者 RanchHandRobotics LLC
 - 将 C_Cpp: IntelliSense Engine 的值从 Disabled 改回 Default。
 - 检查并关闭 clangd 扩展，避免冲突。
 
+> 编辑 `my_cpp_pkg/src/my_first_node.cpp`
+
+```cpp
+#include "rclcpp/rclcpp.hpp"
+
+int main(int argc,char** argv)
+{
+    //使用rclcpp初始化ros2通信
+    //rclcpp是命名空间
+    rclcpp::init(argc,argv);
+    //auto这里自动类型是智能指针，这里
+    //是std::shared_ptr<rclcpp::Node>，
+    //会处理内存定位和销毁内存的问题
+    //ros2中所有东西都使用智能指针
+    //创建了一个指向节点对象的共享指针
+    //要指定文件名，否则colcon build时会报错
+    //传递节点名称作为参数
+    auto node=std::make_shared<rclcpp::Node>("cpp_test");
+    //node-> 将使用共享指针内部的那个类型的对象
+    //node.  将使用共享指针自己
+    RCLCPP_INFO(node->get_logger(),"Hello world");
+    //关闭
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+> 安装扩展 cmake
+
+现在要打开 CMakeList.txt,文件中的测试部分可以删除（我这里先注释了）
+```cmake
+# if(BUILD_TESTING)
+#   find_package(ament_lint_auto REQUIRED)
+#   # the following line skips the linter which checks for copyrights
+#   # comment the line when a copyright and license is added to all source files
+#   set(ament_cmake_copyright_FOUND TRUE)
+#   # the following line skips cpplint (only works in a git repo)
+#   # comment the line when this package is in a git repo and when
+#   # a copyright and license is added to all source files
+#   set(ament_cmake_cpplint_FOUND TRUE)
+#   ament_lint_auto_find_test_dependencies()
+# endif()
+```
+
+> 如果在c++包中添加新的依赖项，那么需要在 package.xml中的 package标签添加depend标签。
+> 如果需要该依赖项来编译某些东西，那么需要在CMakeList.txt中使用find_package( ) 来使用
+
+最终的CMakeLists.txt
+
+```cmake
+cmake_minimum_required(VERSION 3.8)
+project(my_cpp_pkg)
+
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+  add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
+
+# find dependencies
+find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+
+#添加-可执行文件及其依赖项
+add_executable(cpp_node src/my_first_node.cpp)
+ament_target_dependencies(cpp_node rclcpp)
+
+#添加-安装
+#将可执行文件安装到 lib/${PROJECT_NAME}
+install(TARGETS
+  cpp_node
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_package()
+
+```
+
+> 构建安装、加载构建后的环境、启动节点
+
+```bash
+#构建并安装Python的功能包
+╭─ ~/HelloROS2/ros2_ws main !2   
+╰─❯ colcon build --packages-select my_cpp_pkg
+Starting >>> my_cpp_pkg
+Finished <<< my_cpp_pkg [13.4s]
+
+Summary: 1 package finished [13.9s]
+```
+
+> 如下，可执行文件的位置： `install/my_cpp_pkg` 下的 `lib/my_cpp_pkg/cpp_node` 
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ls install
+COLCON_IGNORE     local_setup.sh            local_setup.zsh  setup.bash  setup.zsh
+local_setup.bash  _local_setup_util_ps1.py  my_cpp_pkg       setup.ps1
+local_setup.ps1   _local_setup_util_sh.py   my_py_pkg        setup.sh
+
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ tree install/my_cpp_pkg
+install/my_cpp_pkg
+├── lib
+│   └── my_cpp_pkg
+│       └── cpp_node
+└── share
+    ├── ament_index
+    │   └── resource_index
+    │       ├── package_run_dependencies
+    │       │   └── my_cpp_pkg
+    │       ├── packages
+    │       │   └── my_cpp_pkg
+    │       └── parent_prefix_path
+    │           └── my_cpp_pkg
+    ├── colcon-core
+    │   └── packages
+    │       └── my_cpp_pkg
+    └── my_cpp_pkg
+        ├── cmake
+        │   ├── my_cpp_pkgConfig.cmake
+        │   └── my_cpp_pkgConfig-version.cmake
+        ├── environment
+        │   ├── ament_prefix_path.dsv
+        │   ├── ament_prefix_path.sh
+        │   ├── path.dsv
+        │   └── path.sh
+        ├── hook
+        │   ├── cmake_prefix_path.dsv
+        │   ├── cmake_prefix_path.ps1
+        │   └── cmake_prefix_path.sh
+        ├── local_setup.bash
+        ├── local_setup.dsv
+        ├── local_setup.sh
+        ├── local_setup.zsh
+        ├── package.bash
+        ├── package.dsv
+        ├── package.ps1
+        ├── package.sh
+        ├── package.xml
+        └── package.zsh
+
+15 directories, 24 files
+
+#是可以直接执行的
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ./install/my_cpp_pkg/lib/my_cpp_pkg/cpp_node
+[INFO] [1791026007.189362531] [cpp_test]: Hello world
+
+#当然，我们应该使用ROS2命令
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ source install/setup.zsh
+
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ cd ~
+
+╭─ ~
+╰─❯ ros2 run my_cpp_pkg cpp_node
+#cpp_test是节点名称
+[INFO] [1791026088.433798389] [cpp_test]: Hello world
 
 
+```
 
+和Python节点一样，C++节点也有三个注意的：  
+- my_first_node.cpp
+- 节点名称(cpp_test) `auto node=std::make_shared<rclcpp::Node>("cpp_test");`
+- 可执行文件名称(cpp_node)：`add_executable(cpp_node src/my_first_node.cpp)
 
+当然，根据喜好，也可以使用一样的名称
 
+## 完整c++代码
+
+> 添加spin保持存活
+
+```cpp
+#include "rclcpp/rclcpp.hpp"
+
+int main(int argc,char** argv)
+{
+    //使用rclcpp初始化ros2通信
+    //rclcpp是命名空间
+    rclcpp::init(argc,argv);
+    //auto这里自动类型是智能指针，这里
+    //是std::shared_ptr<rclcpp::Node>，
+    //会处理内存定位和销毁内存的问题
+    //ros2中所有东西都使用智能指针
+    //创建了一个指向节点对象的共享指针
+    //传递节点名称作为参数
+    auto node=std::make_shared<rclcpp::Node>("cpp_test");
+    //node-> 将使用共享指针内部的那个类型的对象
+    //node.  将使用共享指针自己
+    RCLCPP_INFO(node->get_logger(),"Hello world");
+    //传入共享指针即可
+    //spin将使节点保持存活
+    rclcpp::spin(node);
+    //关闭
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+> 每当修改代码都应当：build、source、run
+
+```bash
+╭─ ~
+╰─❯ cd HelloROS2/ros2_ws
+
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ colcon build --packages-select my_cpp_pkg
+Starting >>> my_cpp_pkg
+Finished <<< my_cpp_pkg [11.3s]
+
+Summary: 1 package finished [11.7s]
+
+╭─ ~/HelloROS2/ros2_ws main !2                                                   13s
+╰─❯ source install/setup.zsh
+
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 run my_cpp_pkg cpp_node
+[INFO] [1791026550.899327044] [cpp_test]: Hello world
+
+```
+
+# (以面向对象编程)来改进节点
 

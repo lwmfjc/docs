@@ -167,7 +167,7 @@ def main(args=None):
     node=Node("py_test")
     #在终端打印内容
     node.get_logger().info("Hello world");
-    #spin将使节点保持存活，知道按下Ctrl+C
+    #spin将使节点保持存活，直到按下Ctrl+C
     rclpy.spin(node)
     #关闭
     rclpy.shutdown()
