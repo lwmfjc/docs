@@ -371,6 +371,8 @@ ros2 run my_py_pkg py_node --ros-args -r __node:=abc
 
 # colcon
 
+> colcon 的音标：`/ˈkɒlkɒn/`（英式）
+
 > 只能在工作区根目录下 ~~这里是ros2_ws目录~~ 使用colcon构建
 
 ```bash
