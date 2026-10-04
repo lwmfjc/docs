@@ -68,6 +68,8 @@ WARNING: RDRND generated: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
 
 # 探索 turtlesim
 
+> `turtlesim：/ˈtɜːrtl sɪm/`，近似读作「特儿特儿 西姆」，由 turtle（乌龟）+ sim（simulation，模拟）组成。
+
 ```bash
 #如果不能自动补全，先安装 sudo apt install ros-distro-turtlesim
 #不过这个是ros2-desktop的一部分，应该不需再次安装
@@ -84,6 +86,8 @@ WARNING: RDRND generated: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
 
 > 新开一个终端，启动另一个节点，来控制海龟
 > 这个节点将从键盘读取输入
+
+> `teleop：/ˈtɛliˌɑːp/`，近似读作「特利 奥普」，来自 teleoperation（远程操作）的缩写。
 
 ```bash
 ╭─ ~/HelloROS2/ros2_ws main !1
