@@ -250,6 +250,70 @@ Finished <<< my_py_pkg [4.99s]
 Summary: 1 package finished [6.04s]
 ```
 
+> ***注意： 这里colcon build --pack\[tab键\] 这里我的自动补全会出问题，解决办法：
+> 1. zsh: 在 `~/.zshrc` 中添加以下内容：`eval "$(register-python-argcomplete colcon)"` ***
+> 2. bash: 在 `~/.bashrc` 中添加以下内容：`source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash` ***
+
+> 可执行文件的位置：`install/my_py_pkg`下的`lib/my_py_pkg/py_node`
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ tree install/my_py_pkg
+install/my_py_pkg
+├── lib
+│   ├── my_py_pkg
+│   │   └── py_node
+│   └── python3.12
+│       └── site-packages
+│           ├── my_py_pkg
+│           │   ├── __init__.py
+│           │   ├── my_first_node.py
+│           │   └── __pycache__
+│           │       ├── __init__.cpython-312.pyc
+│           │       └── my_first_node.cpython-312.pyc
+│           └── my_py_pkg-0.0.0-py3.12.egg-info
+│               ├── dependency_links.txt
+│               ├── entry_points.txt
+│               ├── PKG-INFO
+│               ├── requires.txt
+│               ├── SOURCES.txt
+│               ├── top_level.txt
+│               └── zip-safe
+└── share
+    ├── ament_index
+    │   └── resource_index
+    │       └── packages
+    │           └── my_py_pkg
+    ├── colcon-core
+    │   └── packages
+    │       └── my_py_pkg
+    └── my_py_pkg
+        ├── hook
+        │   ├── ament_prefix_path.dsv
+        │   ├── ament_prefix_path.ps1
+        │   ├── ament_prefix_path.sh
+        │   ├── pythonpath.dsv
+        │   ├── pythonpath.ps1
+        │   └── pythonpath.sh
+        ├── package.bash
+        ├── package.dsv
+        ├── package.ps1
+        ├── package.sh
+        ├── package.xml
+        └── package.zsh
+
+16 directories, 26 files
+
+#可以直接使用可执行文件来运行，不过建议还是用ROS2工具
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ ./install/my_py_pkg/lib/my_py_pkg/py_node
+[INFO] [1791083317.494685851] [py_test]: Hello world
+[INFO] [1791083318.497614078] [py_test]: Hello0
+[INFO] [1791083319.498491381] [py_test]: Hello1
+[INFO] [1791083320.497429878] [py_test]: Hello2
+[INFO] [1791083321.497926308] [py_test]: Hello3
+```
+
 > 由于在工作空间中创建了新东西，所以需要source工作空间
 
 ```bash

@@ -148,7 +148,7 @@ ament_package()
 > 构建安装、加载构建后的环境、启动节点
 
 ```bash
-#构建并安装Python的功能包
+#构建并安装Cpp的功能包
 ╭─ ~/HelloROS2/ros2_ws main !2   
 ╰─❯ colcon build --packages-select my_cpp_pkg
 Starting >>> my_cpp_pkg
