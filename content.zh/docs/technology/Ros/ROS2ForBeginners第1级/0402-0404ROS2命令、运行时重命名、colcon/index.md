@@ -1,6 +1,6 @@
 ---
-title: "0402-"
-description: "0402-"
+title: "0402-0404ROS2命令、运行时重命名、colcon"
+description: "0402-0404ROS2命令、运行时重命名、colcon"
 categories:
   - 学习
 tags:
@@ -371,3 +371,67 @@ ros2 run my_py_pkg py_node --ros-args -r __node:=abc
 
 # colcon
 
+> 只能在工作区根目录下 ~~这里是ros2_ws目录~~ 使用colcon构建
+
+```bash
+#构建source文件夹下所有的包
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ colcon build
+Starting >>> my_cpp_pkg
+Starting >>> my_py_pkg
+Finished <<< my_py_pkg [4.74s]
+Finished <<< my_cpp_pkg [12.5s]
+
+Summary: 2 packages finished [13.1s]
+```
+
+> --packages-select 指定某些
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ colcon build --packages-select my_cpp_pkg my_py_pkg
+Starting >>> my_cpp_pkg
+Starting >>> my_py_pkg
+Finished <<< my_cpp_pkg [1.06s]
+Finished <<< my_py_pkg [4.23s]
+
+Summary: 2 packages finished [4.92s]
+
+```
+
+> 1. 如果要使用 --symlink-install，要确保 my_first_node.py 这个文件有可执行权限，即`chmod +x my_first_node.py`  ~~但是我试了下没给他可执行权限也行~~ 
+> 2.  当使用--simlink-install构建了包，当执行ros2 run时，将执行运行在工作区source文件夹中编写的文件，而不是install 文件夹中的文件；仅适用于包含Python节点的Python包
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ colcon build --packages-select my_py_pkg --symlink-install
+Starting >>> my_py_pkg
+Finished <<< my_py_pkg [5.87s]
+
+Summary: 1 package finished [6.24s]
+
+#第一次使用 --symlink-install构建后需要source
+╭─ ~/HelloROS2/ros2_ws main !1   
+╰─❯ source install/setup.zsh
+
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_py_pkg py_node
+[INFO] [1791098512.912009466] [py_test]: Hello world
+[INFO] [1791098513.914394666] [py_test]: Hello0
+
+```
+
+> 好处是这样就可以直接编辑Python文件并直接启动他们，无需重新构建工作区；有时候可能会有一些问题，所以不太建议使用
+
+此时修改 `my_py_pkg/my_py_pkg/my_first_node.py` 中 `self.get_logger().info("Hello world--symlink-install")`
+
+```bash
+#直接ros2 run；不需要重新构建以及source加载构建后的环境
+╭─ ~/HelloROS2/ros2_ws main !1     
+╰─❯ ros2 run my_py_pkg py_node
+[INFO] [1791098662.384185666] [py_test]: Hello world--symlink-install
+[INFO] [1791098663.387441017] [py_test]: Hello0
+[INFO] [1791098664.387186601] [py_test]: Hello1
+```
+
+> 使用Python编程时，第一次构建时使用 --symlink-install 对于快速迭代功能非常有用 ~~对CPP没效果~~ ；仅适用于开发阶段，生产化的模式下不建议这么用
