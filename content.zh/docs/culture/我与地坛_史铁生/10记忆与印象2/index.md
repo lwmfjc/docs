@@ -1,6 +1,6 @@
 ---
-title: 10记忆与印象2
-description: 10记忆与印象2
+title: "10记忆与印象2"
+description: "10记忆与印象2"
 categories:
   - 学习
 tags:
