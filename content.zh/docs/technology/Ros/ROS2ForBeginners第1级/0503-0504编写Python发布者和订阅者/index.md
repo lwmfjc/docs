@@ -1,6 +1,6 @@
 ---
-title: "0503-"
-description: "0503-"
+title: "0503-0504编写Python发布者和订阅者"
+description: "0503-0504编写Python发布者和订阅者"
 categories:
   - 学习
 tags:
@@ -254,7 +254,7 @@ rcl_action                              zstd_image_transport
 rclcpp                                  zstd_vendor
 ```
 
-##  简单解释一下这里的类型
+##  简单解释一下这里的接口（类型）
 
 - string：ROS2 消息定义中的基础数据类型，类似 C++ 的 std::string。
 - String：一个已经定义好的 ROS2 消息类型，可以类比为 C++ 中的类。
@@ -270,6 +270,10 @@ rclcpp                                  zstd_vendor
 
 > 1. 例如，不能直接将 std_msgs::msg::String 类型的消息发布到要求 example_interfaces::msg::String 的发布者上。
 > 2. 你可以把它们理解为 C++ 中两个不同命名空间下、同名且成员相同的类。
+
+example_interfaces/msg/String 从程序使用角度看，很像一个类，但 ROS2 称它为 ***接口（Interface）***，是因为它描述的是：
+
+节点之间通信时，双方必须遵守的***数据结构/通信契约***。
 
 ## 代码
 
@@ -546,4 +550,156 @@ data: Hi, this is C3PO from the robot news station.
 data: Hi, this is C3PO from the robot news station.
 
 ```
+
+# 编写一个Python订阅者
+
+> 用于监听上一课创建的发布者
+
+> 为智能手机创建一个节点，并在其中创建一个话题订阅者
+
+> 一个处理智能手机的节点，可以拥有许多功能。比如读取和发布电池状态、向联系人发送短信、增大或减小扬声器音量。所以我们这里创建的订阅者只是该节点的一部分
+
+> 节点是 ROS 的基本运行/通信单位，可执行程序是操作系统层面的程序；最常见情况下，一个可执行程序启动一个节点。***但是，一个可执行程序可以有多个节点***
+
+```bash
+#创建文件
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ cd src/my_py_pkg/my_py_pkg/
+
+╭─ ~/HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg main
+╰─❯ ls
+__init__.py                my_first_node.py  robot_news_station.py
+my_first_node_dian_py.bak  __pycache__       template_python_node.py
+
+╭─ ~/HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg main
+╰─❯ touch smartphone.py
+
+#删除后不会删除你的 Python 源代码，也不会影响 ROS2 包本身。
+#下次 Python 再运行或导入对应模块时，会根据需要重新创建 __pycache__
+╭─ ~/HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg main ?1
+╰─❯ rm -rf __pycache__
+
+
+```
+
+## 代码
+
+## smartphone.py
+
+```python
+#!/usr/bin/env python3
+import rclpy 
+from rclpy.node import Node
+from example_interfaces.msg import String
+
+class SmartphoneNode(Node): #MODIFY NAME
+    def __init__(self):
+        #节点名称
+        super().__init__("smartphone")  #MODIFY NAME
+        #创建订阅者
+        #提供消息类型，话题名称，回调函数,队列大小
+        #如果消息到达的速度 > 你的回调函数处理消息的速度，订阅者最多暂存 10 条“还没处理的消息”
+        self.subscriber_=self.create_subscription(
+            String,"/robot_news",self.callback_robot_news,10)
+        self.get_logger().info("Smartphone has been started.")
+    def callback_robot_news(self,msg:String):
+        self.get_logger().info(msg.data)
+        
+def main(args=None):
+    rclpy.init(args=args) 
+    node=SmartphoneNode()  #MODIFY NAME
+    rclpy.spin(node)
+    rclpy.shutdown()
+
+if __name__ == "__main__":
+    main()
+
+```
+
+## setup.py
+
+> 由于这是一个新的可执行文件，所以需要在setup.py 添加
+
+```python
+from setuptools import find_packages, setup
+
+package_name = 'my_py_pkg'
+
+setup(
+    name=package_name,
+    version='0.0.0',
+    packages=find_packages(exclude=['test']),
+    data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
+    install_requires=['setuptools'],
+    zip_safe=True,
+    maintainer='ly',
+    maintainer_email='lwmfjc@gmail.com',
+    description='TODO: Package description',
+    license='TODO: License declaration',
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
+    entry_points={
+        'console_scripts': [
+            #文件夹my_py_pkg下的my_first_node.py文件
+            #main是.py文件中的函数
+            #py_node 是可执行文件的名称
+            #可以再添加其他的可执行文件，和上面同样的格式即可
+            "py_node = my_py_pkg.my_first_node:main",
+            "robot_news_station = my_py_pkg.robot_news_station:main",
+            #仅添加这一行
+            "smartphone=my_py_pkg.smartphone:main"
+        ],
+    },
+)
+
+```
+
+## build,source,run
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !2     
+╰─❯ colcon build --packages-select my_py_pkg --symlink-install
+Starting >>> my_py_pkg
+Finished <<< my_py_pkg [6.93s]
+
+Summary: 1 package finished [7.51s]
+
+╭─ ~/HelloROS2/ros2_ws main !2      
+╰─❯ source install/setup.zsh
+```
+
+> 启动发布者和订阅者
+
+```bash
+#在终端1启动订阅者
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 run my_py_pkg smartphone
+[INFO] [1791187901.180762826] [smartphone]: Smartphone has been started.
+
+#在终端2启动发布者
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 run my_py_pkg robot_news_station
+[INFO] [1791187926.928557145] [py_test]: Robot News Station has been started.
+
+#再次查看订阅者（这里不用再运行，在终端1查看即可
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 run my_py_pkg smartphone
+[INFO] [1791187901.180762826] [smartphone]: Smartphone has been started.
+[INFO] [1791187928.903269645] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791187929.403245845] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791187929.903833253] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791187930.403922141] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791187930.902988207] [smartphone]: Hi, this is C3PO from the robot news station.
+```
+
+# 总结
+
+一旦了解主题是如何工作的，在节点内创建主题发布者或者订阅者都不是难事
 
