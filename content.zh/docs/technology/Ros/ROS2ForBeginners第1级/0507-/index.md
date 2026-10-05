@@ -14,3 +14,16 @@ cssAttach:
 cssclasses:
   - book03
 ---
+> 目前已经见过的两个功能
+
+```bash
+#在终端创建订阅者，并直接在终端上显示我们在该话题上接收到的内容
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 topic echo /robot_news
+
+#显示所有话题
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ ros2 topic list
+/parameter_events
+/rosout
+```
