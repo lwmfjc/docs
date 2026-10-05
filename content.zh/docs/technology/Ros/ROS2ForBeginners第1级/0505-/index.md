@@ -80,6 +80,7 @@ string data
 
 ```xml 
   <!--声明依赖关系，声明“我的包依赖 example_interfaces”-->
+  <!--例如别人拿到你的包，在另一台电脑上安装依赖时，可以根据 package.xml 知道应该安装什么-->
   <depend>example_interfaces</depend> 
 ```
 
@@ -92,7 +93,8 @@ string data
 find_package(example_interfaces REQUIRED)
 ```
 
-> package.xml 管“我依赖谁”，CMakeLists.txt 管“编译时怎么使用这个依赖”。
+> 1. package.xml 管“我依赖谁”，声明"我需要它"，是元数据。
+> 2. CMakeLists.txt 管“编译时怎么使用这个依赖”，"怎么把这个依赖用进编译过程"，是构建层面的查找和使用。 ~~在当前构建过程中，找到 example_interfaces 这个包，并加载它的 CMake 配置（通常是 example_interfacesConfig.cmake~~ 
 
 > 修改robot_news_station.cpp
 
@@ -248,4 +250,56 @@ data: Hi,this is R2D2 from the robot news station.
 > 即ROS是与语言无关的，可以创建一个C++节点、一个Python节点，两个节点都可以使用例如主题进行通信
 
 # 编写C++订阅者
+
+```bash
+╭─ ~/HelloROS2/ros2_ws/src/my_cpp_pkg/src main !1
+╰─❯ touch smartphone.cpp
+```
+
+```cpp
+#include "rclcpp/rclcpp.hpp"
+#include "example_interfaces/msg/string.hpp"
+
+using namespace std::placeholders;
+
+class SmartphoneNode : public rclcpp::Node
+{
+
+public:
+    SmartphoneNode() : Node("smartphone")
+    {
+        //创建发布者，绑定回调
+        //一个参数
+        subsciber_ = this->create_subscription<example_interfaces::msg::String>("robot_news", 10, std::bind(&SmartphoneNode::callbackRobotNews, this,_1));
+        //如果是两个参数
+        //subsciber_ = this->create_subscription<example_interfaces::msg::String>("robot_news", 10, std::bind(&SmartphoneNode::callbackRobotNews, this,std::placeholders::_1,std::placeholders::_2));
+
+        RCLCPP_INFO(this->get_logger(),"Smartphone has been started.");
+    }
+
+private:
+    // ROS2中所有接口都可以使用SharedPtr来使用
+    //接收到的消息是一个共享指针
+    void callbackRobotNews(const example_interfaces::msg::String::SharedPtr msg)
+    {
+        // msg->data是一个std::string，这里配合RCLCPP_INFO所以
+        // 需要转为c-string
+        RCLCPP_INFO(this->get_logger(), "%s", msg->data.c_str());
+    }
+
+    rclcpp::Subscription<example_interfaces::msg::String>::SharedPtr subsciber_;
+};
+
+int main(int argc, char **argv)
+{
+
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<SmartphoneNode>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+> CMakeLists.txt 添加一个新的可执行文件
 
