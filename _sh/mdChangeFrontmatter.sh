@@ -59,13 +59,11 @@ handleDir(){
 			 local fullPathFile="$dirRoot/$file";
 
 			 local oldStr='title: .*'
-			 local newStr='title: '$title
-			 # echo $replaceStr
+			 local newStr='title: "'$title'"'
 			 perl -i -pe "s/$oldStr/$newStr/gp" "$fullPathFile"
 
-
 			 local oldStr='description: .*'
-			 local newStr='description: '$title
+			 local newStr='description: "'$title'"'
 			 perl -i -pe "s/$oldStr/$newStr/gp" "$fullPathFile"
 
 			 echo "$fullPathFile"文件处理完毕!
