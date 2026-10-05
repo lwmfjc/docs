@@ -1,6 +1,6 @@
 ---
-title: "0505-"
-description: "0505-"
+title: "0505-0506编写CPP发布者和订阅者"
+description: "0505-0506编写CPP发布者和订阅者"
 categories:
   - 学习
 tags:
@@ -301,5 +301,135 @@ int main(int argc, char **argv)
 }
 ```
 
-> CMakeLists.txt 添加一个新的可执行文件
+> CMakeLists.txt 添加一个新的可执行文件、依赖、安装
+
+```cmake
+
+add_executable(smartphone src/smartphone.cpp)
+ament_target_dependencies(smartphone rclcpp example_interfaces)
+
+#安装
+#将可执行文件安装到 lib/${PROJECT_NAME}
+install(TARGETS
+  cpp_node
+  robot_news_station #再添加一个可执行文件
+  smartphone
+  DESTINATION lib/${PROJECT_NAME}
+)
+```
+
+## build,source,run
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ colcon build --packages-select my_cpp_pkg
+Starting >>> my_cpp_pkg
+                                         Finished <<< my_cpp_pkg [28.6s]
+
+Summary: 1 package finished [29.0s]
+
+╭─ ~/HelloROS2/ros2_ws main !1       32s
+╰─❯ source install/setup.zsh
+```
+
+> 运行、查看
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_cpp_pkg smartphone
+[INFO] [1791198435.035275452] [smartphone]: Smartphone has been started.
+
+```
+
+```bash
+#另一个终端
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 node list
+/smartphone
+
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 node info /smartphone
+/smartphone
+  Subscribers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    #订阅者
+    /robot_news: example_interfaces/msg/String
+  Publishers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /rosout: rcl_interfaces/msg/Log
+  Service Servers:
+    /smartphone/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /smartphone/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /smartphone/get_parameters: rcl_interfaces/srv/GetParameters
+    /smartphone/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /smartphone/list_parameters: rcl_interfaces/srv/ListParameters
+    /smartphone/set_parameters: rcl_interfaces/srv/SetParameters
+    /smartphone/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+
+
+```
+
+> 运行CPP发布者
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_cpp_pkg robot_news_station
+[INFO] [1791198557.844086619] [robot_news_station]: Robot News Station has been started
+^C[INFO] [1791198562.333597975] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+```
+
+> 查看订阅者
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_cpp_pkg smartphone
+[INFO] [1791198435.035275452] [smartphone]: Smartphone has been started.
+[INFO] [1791198559.344914548] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198559.844857603] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198560.344849852] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198560.844860097] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198561.344856369] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198561.844829587] [smartphone]: Hi,this is R2D2 from the robot news station.
+```
+
+> 终止CPP发布者，运行Python发布者
+
+```bash
+#终止CPP发布者，消息订阅者停止接收信息
+#然后启动Python发布者
+╭─ ~/HelloROS2/ros2_ws main !1        6s
+╰─❯ ros2 run my_py_pkg robot_news_station
+[INFO] [1791198662.540373691] [py_test]: Robot News Station has been started.
+
+#之后会查看到，消息订阅者继续接收信息
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_cpp_pkg smartphone
+[INFO] [1791198435.035275452] [smartphone]: Smartphone has been started.
+[INFO] [1791198559.344914548] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198559.844857603] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198560.344849852] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198560.844860097] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198561.344856369] [smartphone]: Hi,this is R2D2 from the robot news station.
+[INFO] [1791198561.844829587] [smartphone]: Hi,this is R2D2 from the robot news station.
+#这之后的为Python发布者发布的
+[INFO] [1791198663.003008073] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791198663.502097830] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791198664.002115561] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791198664.502307105] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791198665.002228570] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791198665.502046632] [smartphone]: Hi, this is C3PO from the robot news station.
+[INFO] [1791198666.002094318] [smartphone]: Hi, this is C3PO from the robot news station.
+
+```
+
+> 订阅者不知道也不关心消息来自谁，我们只是接收符合string数据类型且在robot_news话题上的消息
+
+> 现在可以尝试任何Python、C++发布者的组合，配合任何Python、C++订阅者的组合
+
+
 
