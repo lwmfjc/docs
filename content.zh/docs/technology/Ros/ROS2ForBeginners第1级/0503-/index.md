@@ -16,7 +16,7 @@ cssclasses:
 ---
 # 编写一个Python发布者
 
-> 创建一个节点，在节点中添加一个发布者，将以每秒两次的频率在某个主题发布一些文本
+> 创建一个节点，在节点中添加一个发布者，将以每秒两次的频率在某个话题发布一些文本
 
 > 这里用之前的my_py_pkg中的包，在里面创建一个节点  
 
@@ -26,7 +26,7 @@ cssclasses:
 __init__.py  my_first_node_dian_py.bak  my_first_node.py  __pycache__
 
 #在包的同名文件夹下，创建一个Python文件
-#想象这是一个新闻站，将在一个主题上发布一些文本
+#想象这是一个新闻站，将在一个话题上发布一些文本
 ╭─ ~/HelloROS2/ros2_ws/src/my_py_pkg/my_py_pkg main
 ╰─❯ touch robot_news_station.py
 
@@ -304,6 +304,40 @@ rclcpp                                  zstd_vendor
 ### rebot_news_station.py
 
 ```python
+#!/usr/bin/env python3
+import rclpy 
+from rclpy.node import Node
+#新的导入，依赖example_interfaces包
+#同时在package.xml中添加depend标签
+from example_interfaces.msg import String
+
+class MyCustomNode(Node): #MODIFY NAME
+    def __init__(self):
+        super().__init__("py_test")  #MODIFY NAME
+        #创建发布者
+        #类型，话题名称，队列大小
+        self.publisher_=self.create_publisher(String,"robot_news",10);
+        #添加定时器
+        #0.5秒一次，即每秒2次
+        self.timer_=self.create_timer(0.5,self.publish_news)
+        self.get_logger().info("Robot News Station has been started.")
+
+    #发布消息
+    def publish_news(self):
+        msg=String()
+        msg.data="Hello"
+        self.publisher_.publish(msg)
+
+def main(args=None):
+    rclpy.init(args=args) 
+    node=MyCustomNode()  #MODIFY NAME
+    rclpy.spin(node)
+    rclpy.shutdown()
+
+if __name__ == "__main__":
+    main()
+
+
 
 ```
 
@@ -313,4 +347,203 @@ rclcpp                                  zstd_vendor
 > 10：发布端最多保留 10 条历史消息供传输机制使用。
 > 当缓存达到上限时，通常会丢弃较旧的消息，为新消息腾出空间（默认采用 KEEP_LAST 策略）。
 > 如果订阅者处理速度跟不上，可能会错过部分消息。
+
+### setup.py
+
+```python
+from setuptools import find_packages, setup
+
+package_name = 'my_py_pkg'
+
+setup(
+    name=package_name,
+    version='0.0.0',
+    packages=find_packages(exclude=['test']),
+    data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
+        ('share/' + package_name, ['package.xml']),
+    ],
+    install_requires=['setuptools'],
+    zip_safe=True,
+    maintainer='ly',
+    maintainer_email='lwmfjc@gmail.com',
+    description='TODO: Package description',
+    license='TODO: License declaration',
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
+    entry_points={
+        'console_scripts': [
+            #文件夹my_py_pkg下的my_first_node.py文件
+            #main是.py文件中的函数
+            #py_node 是可执行文件的名称
+            #可以再添加其他的可执行文件，和上面同样的格式即可
+            "py_node = my_py_pkg.my_first_node:main",
+            #只添加下面这行
+            "robot_news_station = my_py_pkg.robot_news_station:main"
+        ],
+    },
+)
+
+```
+
+## 工作区
+
+> build，source，run
+
+> colcon build 的基本编译单位是“包（package）”，不能只处理包里面的某个 Python 可执行文件
+
+```bash
+#这里使用了符号链接
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ colcon build --packages-select  my_py_pkg --symlink-install
+Starting >>> my_py_pkg
+Finished <<< my_py_pkg [6.38s]
+
+Summary: 1 package finished [7.01s]
+
+╭─ ~/HelloROS2/ros2_ws main !1   
+╰─❯ source install/setup.zsh
+
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_py_pkg robot_news_station
+[INFO] [1791173576.057645961] [py_test]: Robot News Station has been started.
+
+```
+
+> 新开终端查看节点
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 node list
+/py_test
+
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 node info /py_test
+/py_test
+  Subscribers:
+
+  Publishers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    #话题，有来自example_interfaces包的String接口
+    /robot_news: example_interfaces/msg/String
+    /rosout: rcl_interfaces/msg/Log
+  Service Servers:
+    /py_test/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /py_test/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /py_test/get_parameters: rcl_interfaces/srv/GetParameters
+    /py_test/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /py_test/list_parameters: rcl_interfaces/srv/ListParameters
+    /py_test/set_parameters: rcl_interfaces/srv/SetParameters
+    /py_test/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+
+
+
+```
+
+> 直接在终端创建订阅者
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 topic list
+/parameter_events
+/robot_news
+/rosout
+
+#在终端创建订阅者，并直接在终端上显示我们在该话题上接收到的内容
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 topic echo /robot_news
+#每0.5秒接收一个Hello
+data: Hello
+---
+data: Hello
+---
+data: Hello 
+---
+data: Hello 
+---
+```
+
+> 这里 对 `ros run` 那个终端，`ctrl+c` 停止运行，订阅者马上就收不到消息了
+
+> 修改两处 `robot_news_station.py` 并运行
+
+```python
+#!/usr/bin/env python3
+import rclpy
+from rclpy.node import Node
+
+# 新的导入，依赖example_interfaces包
+# 同时在package.xml中添加depend标签
+from example_interfaces.msg import String
+
+
+class MyCustomNode(Node):  # MODIFY NAME
+    def __init__(self):
+        super().__init__("py_test")  # MODIFY NAME
+        #修改这里01
+        self.robot_name_ = "C3PO"
+        # 创建发布者
+        # 类型，话题名称，队列大小
+        self.publisher_ = self.create_publisher(String, "/robot_news", 10)
+        # 可以不添加斜杠，程序会自动添加
+        # self.publisher_=self.create_publisher(String,"robot_news",10);
+        # 添加定时器
+        # 0.5秒一次，即每秒2次
+        self.timer_ = self.create_timer(0.5, self.publish_news)
+        self.get_logger().info("Robot News Station has been started.")
+
+    # 发布消息
+    def publish_news(self):
+        msg = String()
+        # msg.data="Hello"
+        #修改这里02
+        msg.data = "Hi, this is " + self.robot_name_ + " from the robot news station."
+        self.publisher_.publish(msg)
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = MyCustomNode()  # MODIFY NAME
+    rclpy.spin(node)
+    rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()
+
+```
+
+```bash
+#直接run即可，不需要colcon build，因为前面build时添加了 --symlink-install
+╭─ ~/HelloROS2/ros2_ws main !2      
+╰─❯ ros2 run my_py_pkg robot_news_station
+[INFO] [1791174215.657971730] [py_test]: Robot News Station has been started.
+
+#这里没有重新运行，订阅者在发布者重新运行后会重新接收到消息
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 topic echo /robot_news
+data: Hello
+---
+data: Hello
+---
+data: Hello
+---
+data: Hello
+---  
+data: Hi, this is C3PO from the robot news station.
+---
+data: Hi, this is C3PO from the robot news station.
+---
+data: Hi, this is C3PO from the robot news station.
+
+```
 
