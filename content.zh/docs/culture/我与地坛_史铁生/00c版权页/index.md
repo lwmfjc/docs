@@ -1,6 +1,6 @@
 ---
-title: "0c版权页"
-description: "0c版权页"
+title: "00c版权页"
+description: "00c版权页"
 categories:
   - 学习
 tags:
