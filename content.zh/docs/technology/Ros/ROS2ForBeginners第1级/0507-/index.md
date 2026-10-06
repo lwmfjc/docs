@@ -308,3 +308,52 @@ data: Hi, this is C3PO from the robot news station.
 ---
 data: Hi, this is C3PO from the robot news station.
 ```
+
+> 目前留下 python 发布者和终端 Int 接口发布者，以及String订阅者
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ ros2 node list
+/robot_news_station
+
+#注意，这里查看的是节点，不是话题。这里只查看了节点robot_news_station即Python文件的那个节点
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ ros2 node info /robot_news_station
+/robot_news_station
+  Subscribers:
+
+  Publishers:
+    /parameter_events: rcl_interfaces/msg/ParameterEvent
+    /robot_news: example_interfaces/msg/String
+    /rosout: rcl_interfaces/msg/Log
+  Service Servers:
+    /robot_news_station/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /robot_news_station/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /robot_news_station/get_parameters: rcl_interfaces/srv/GetParameters
+    /robot_news_station/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /robot_news_station/list_parameters: rcl_interfaces/srv/ListParameters
+    /robot_news_station/set_parameters: rcl_interfaces/srv/SetParameters
+    /robot_news_station/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+  Service Clients:
+
+  Action Servers:
+
+  Action Clients:
+
+#查看包含命令行终端的节点
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ ros2 node list --all
+/_ros2cli_10176
+/_ros2cli_9892
+/_ros2cli_9926
+/_ros2cli_daemon_0_2a43380bfe90493e9a922f28c326d5bc
+/robot_news_station
+
+#没法info
+#视频无涉及  #未解决
+╭─ ~/HelloROS2/ros2_ws main
+╰─❯ ros2 node info /_ros2cli_9926
+Unable to find node '/_ros2cli_9926'
+
+
+```
