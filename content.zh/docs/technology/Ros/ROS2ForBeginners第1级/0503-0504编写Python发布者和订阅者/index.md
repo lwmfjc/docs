@@ -53,7 +53,7 @@ from rclpy.node import Node
 
 class MyCustomNode(Node): #MODIFY NAME
     def __init__(self):
-        super().__init__("py_test")  #MODIFY NAME
+        super().__init__("node_name")  #MODIFY NAME
         
 def main(args=None):
     rclpy.init(args=args) 
@@ -317,7 +317,7 @@ from example_interfaces.msg import String
 
 class MyCustomNode(Node): #MODIFY NAME
     def __init__(self):
-        super().__init__("py_test")  #MODIFY NAME
+        super().__init__("robot_news_station")  #MODIFY NAME
         #创建发布者
         #类型，话题名称，队列大小
         self.publisher_=self.create_publisher(String,"robot_news",10);
@@ -414,7 +414,7 @@ Summary: 1 package finished [7.01s]
 
 ╭─ ~/HelloROS2/ros2_ws main !1
 ╰─❯ ros2 run my_py_pkg robot_news_station
-[INFO] [1791173576.057645961] [py_test]: Robot News Station has been started.
+[INFO] [1791173576.057645961]  [robot_news_station]: Robot News Station has been started.
 
 ```
 
@@ -423,11 +423,11 @@ Summary: 1 package finished [7.01s]
 ```bash
 ╭─ ~/HelloROS2/ros2_ws main !1
 ╰─❯ ros2 node list
-/py_test
+/robot_news_station
 
 ╭─ ~/HelloROS2/ros2_ws main !1
-╰─❯ ros2 node info /py_test
-/py_test
+╰─❯ ros2 node info /robot_news_station
+/robot_news_station
   Subscribers:
 
   Publishers:
@@ -436,13 +436,13 @@ Summary: 1 package finished [7.01s]
     /robot_news: example_interfaces/msg/String
     /rosout: rcl_interfaces/msg/Log
   Service Servers:
-    /py_test/describe_parameters: rcl_interfaces/srv/DescribeParameters
-    /py_test/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
-    /py_test/get_parameters: rcl_interfaces/srv/GetParameters
-    /py_test/get_type_description: type_description_interfaces/srv/GetTypeDescription
-    /py_test/list_parameters: rcl_interfaces/srv/ListParameters
-    /py_test/set_parameters: rcl_interfaces/srv/SetParameters
-    /py_test/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
+    /robot_news_station/describe_parameters: rcl_interfaces/srv/DescribeParameters
+    /robot_news_station/get_parameter_types: rcl_interfaces/srv/GetParameterTypes
+    /robot_news_station/get_parameters: rcl_interfaces/srv/GetParameters
+    /robot_news_station/get_type_description: type_description_interfaces/srv/GetTypeDescription
+    /robot_news_station/list_parameters: rcl_interfaces/srv/ListParameters
+    /robot_news_station/set_parameters: rcl_interfaces/srv/SetParameters
+    /robot_news_station/set_parameters_atomically: rcl_interfaces/srv/SetParametersAtomically
   Service Clients:
 
   Action Servers:
@@ -530,7 +530,7 @@ if __name__ == "__main__":
 #直接run即可，不需要colcon build，因为前面build时添加了 --symlink-install
 ╭─ ~/HelloROS2/ros2_ws main !2      
 ╰─❯ ros2 run my_py_pkg robot_news_station
-[INFO] [1791174215.657971730] [py_test]: Robot News Station has been started.
+[INFO] [1791174215.657971730]  [robot_news_station]: Robot News Station has been started.
 
 #这里没有重新运行，订阅者在发布者重新运行后会重新接收到消息
 ╭─ ~/HelloROS2/ros2_ws main !2
@@ -686,7 +686,7 @@ Summary: 1 package finished [7.51s]
 #在终端2启动发布者
 ╭─ ~/HelloROS2/ros2_ws main !2
 ╰─❯ ros2 run my_py_pkg robot_news_station
-[INFO] [1791187926.928557145] [py_test]: Robot News Station has been started.
+[INFO] [1791187926.928557145]  [robot_news_station]: Robot News Station has been started.
 
 #再次查看订阅者（这里不用再运行，在终端1查看即可
 ╭─ ~/HelloROS2/ros2_ws main !2

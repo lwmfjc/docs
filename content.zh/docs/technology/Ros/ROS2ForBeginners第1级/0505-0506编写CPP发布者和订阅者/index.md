@@ -404,7 +404,7 @@ Summary: 1 package finished [29.0s]
 #然后启动Python发布者
 ╭─ ~/HelloROS2/ros2_ws main !1        6s
 ╰─❯ ros2 run my_py_pkg robot_news_station
-[INFO] [1791198662.540373691] [py_test]: Robot News Station has been started.
+[INFO] [1791198662.540373691] [robot_news_station]: Robot News Station has been started.
 
 #之后会查看到，消息订阅者继续接收信息
 ╭─ ~/HelloROS2/ros2_ws main !1
