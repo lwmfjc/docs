@@ -243,6 +243,7 @@ Subscribed to [/robot_news]
 > 终端发布命令（简单的）
 
 ```bash
+#-r 频率 每秒5次
 ╭─ ~/HelloROS2/ros2_ws main
 ╰─❯ ros2 topic pub -r 5 /robot_news example_interfaces/msg/String "{data: 'Hello from terminal'}"
 publisher: beginning loop
