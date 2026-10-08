@@ -26,6 +26,7 @@ cssclasses:
 > 服务器返回带有sum的响应
 
 ```bash
+#接口定义
 #破折号上下分别是两个不同的消息
 ╭─ ~/HelloROS2 main
 ╰─❯ ros2 interface show example_interfaces/srv/AddTwoInts
