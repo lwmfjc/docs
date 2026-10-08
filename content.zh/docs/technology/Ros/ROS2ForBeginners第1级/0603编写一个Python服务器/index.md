@@ -1,6 +1,6 @@
 ---
-title: "0603编写一个Python服务器端"
-description: "0603编写一个Python服务器端"
+title: "0603编写一个Python服务器"
+description: "0603编写一个Python服务器"
 categories:
   - 学习
 tags:
