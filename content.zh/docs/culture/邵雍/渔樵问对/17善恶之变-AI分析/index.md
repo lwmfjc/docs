@@ -1,12 +1,13 @@
 ---
-title: "17善恶之变-AI分析"
-description: "17善恶之变-AI分析"
+title: 17善恶之变-AI分析
+description: 17善恶之变-AI分析
 categories:
   - 学习
 tags:
-  - ROS2
-  - EdouardRenard
-  - ROS2ForBeginners
+  - 文化
+  - 邵雍
+  - 渔樵问对
+  - AI
 date: 2026-10-10T11:05:46+08:00
 lastmod: 2026-10-10T11:05:46+08:00
 cssAttach:

@@ -6,6 +6,7 @@ categories:
 tags:
   - 文化
   - 邵雍
+  - 渔樵问对
 cssAttach:
   - book02
 cssclasses:
