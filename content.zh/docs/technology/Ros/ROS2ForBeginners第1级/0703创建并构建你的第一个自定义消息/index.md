@@ -384,9 +384,9 @@ find_package(rosidl_default_generators REQUIRED)
 
 #用来生成接口的命令，我们要在里面写上所有创建的接口的路径
 rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/Num.msg"
-  "msg/Sphere.msg"
-  "srv/AddThreeInts.srv"
+  #"msg/Num.msg"
+  #"msg/Sphere.msg"
+  #"srv/AddThreeInts.srv"
   #DEPENDENCIES geometry_msgs # Add packages that above messages depend on, in this case geometry_msgs for Sphere.msg #添加上面定义的消息所依赖的软件包。在这个例子中，Sphere.msg 依赖 geometry_msgs
 )
 
@@ -395,7 +395,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 ament_export_dependencies(rosidl_default_runtime)
 ```
 
-# 专有名词称呼
+s# 专有名词称呼
 
 在 ROS 2 里，.msg 和 .srv 统称为**接口定义文件（Interface definition files）**，简称 **接口文件（interfaces）**。
 层级关系可以这样记：
