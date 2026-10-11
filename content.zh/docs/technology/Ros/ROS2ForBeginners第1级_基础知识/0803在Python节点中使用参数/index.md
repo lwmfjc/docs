@@ -1,0 +1,179 @@
+---
+title: "0803在Python节点中使用参数"
+description: "0803在Python节点中使用参数"
+categories:
+  - 学习
+tags:
+  - ROS2
+  - EdouardRenard
+  - ROS2ForBeginners
+date: 2026-10-11T16:06:14+08:00
+lastmod: 2026-10-11T16:06:14+08:00
+cssAttach:
+  - book03
+cssclasses:
+  - book03
+---
+# 在Python节点中使用参数
+
+> 在Python节点中创建一个参数，以及使用它
+
+> 本课程复用原来的节点，不会创建新节点
+
+使用number_publisher.py这个文件  
+
+> 目前的功能是每秒发布一个 2 （2是硬编码的）
+
+> 修改后的 number_publish.py
+
+```python
+#!/usr/bin/env python3
+import rclpy
+from rclpy.node import Node
+from example_interfaces.msg import Int64
+
+
+class NumberPublisherNode(Node):
+    def __init__(self):
+        super().__init__("number_publisher")
+        # 声明参数
+        # 每当声明一个参数就会在节点内部注册一个参数
+        # 为节点创建一个number参数，默认值为2
+        # 会使用默认值提供的类型
+        self.declare_parameter("number", 2)
+        self.declare_parameter("timer_period", 1.0)
+
+        # 获取参数，.get_parameter()返回的是参数对象
+        self.number_ = self.get_parameter("number").value
+        self.timer_period_ = self.get_parameter("timer_period").value
+
+        # 创建发布者
+        # 类型、名称、队列大小
+        self.number_publisher_ = self.create_publisher(Int64, "number", 10)
+        # 每1.0秒调用一次
+        self.number_timer = self.create_timer(self.timer_period_, self.publish_number)
+        self.get_logger().info("Number publisher has been started.")
+
+    def publish_number(self):
+        msg = Int64()
+        msg.data = self.number_
+        self.number_publisher_.publish(msg)
+
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = NumberPublisherNode()
+    rclpy.spin(node)
+    rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()
+
+
+```
+
+> build,source,run
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ colcon build --packages-select my_py_pkg --symlink-install
+Starting >>> my_py_pkg
+Finished <<< my_py_pkg [7.87s]
+
+Summary: 1 package finished [8.64s]
+
+╭─ ~/HelloROS2/ros2_ws main !1 ?1         
+╰─❯ source install/setup.zsh
+
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 run my_py_pkg number_publisher
+[INFO] [1791706617.346335408] [number_publisher]: Number publisher has been started.
+```
+
+> 查看节点存在的所有参数
+
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 param list
+/number_publisher:
+  number
+  start_type_description_service
+  timer_period
+  use_sim_time
+  
+  #每秒收到一个2
+╭─ ~/HelloROS2/ros2_ws main !1 ?1     4s
+╰─❯ ros2 topic echo /number
+data: 2
+---
+data: 2
+---
+data: 2
+---
+data: 2
+---
+data: 2
+
+```
+
+> run时修改参数值
+
+```bash
+─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 run my_py_pkg number_publisher --ros-args -p number:=3 -p timer_period:=0.5
+[INFO] [1791706891.164618237] [number_publisher]: Number publisher has been started.
+```
+
+> 每0.5秒发布一个3
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 topic echo /number              data: 3
+---
+data: 3
+---
+data: 3
+---
+data: 3
+---
+```
+
+> 可以只提供一个参数值
+
+> 下面是每1秒发布一次5
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 run my_py_pkg number_publisher --ros-args -p number:=5                   [INFO] [1791706980.312932336] [number_publisher]: Number publisher has been started.
+```
+
+> 如果数据类型不对则启动时会出错
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 run my_py_pkg number_publisher --ros-args -p number:=3.14
+Traceback (most recent call last):
+  File "/home/ly/HelloROS2/ros2_ws/install/my_py_pkg/lib/my_py_pkg/number_publisher", line 33, in <module>
+    sys.exit(load_entry_point('my-py-pkg', 'console_scripts', 'number_publisher')())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ly/HelloROS2/ros2_ws/build/my_py_pkg/my_py_pkg/number_publisher.py", line 36, in main
+    node = NumberPublisherNode()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ly/HelloROS2/ros2_ws/build/my_py_pkg/my_py_pkg/number_publisher.py", line 14, in __init__
+    self.declare_parameter("number", 2)
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 389, in declare_parameter
+    return self.declare_parameters('', [args], ignore_override)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 528, in declare_parameters
+    self._declare_parameter_common(
+  File "/opt/ros/jazzy/lib/python3.12/site-packages/rclpy/node.py", line 584, in _declare_parameter_common
+    raise InvalidParameterTypeException(
+rclpy.exceptions.InvalidParameterTypeException: Trying to set parameter 'number' to '3.14' of type 'DOUBLE', expecting type 'INTEGER': number
+[ros2run]: Process exited with failure 1
+
+```
+
+# 在C++中使用参数
+
