@@ -54,7 +54,7 @@ float64 area
 
 ```
 
-> 查看某个特定包的接口
+> 查看某个 ROS 2 接口包中定义的所有接口（msg/srv/action）
 
 ```bash
 ╭─ ~/HelloROS2/ros2_ws main !1 ?1
