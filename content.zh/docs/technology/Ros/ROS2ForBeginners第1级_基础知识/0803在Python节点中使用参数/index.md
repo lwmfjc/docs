@@ -175,5 +175,100 @@ rclpy.exceptions.InvalidParameterTypeException: Trying to set parameter 'number'
 
 ```
 
-# 在C++中使用参数
+# 在C++节点中使用参数
 
+## 活动（练习）中的代码
+
+> 这是活动（练习）中的代码，这里我没有，先补充一下
+
+> number_publisher.cpp
+
+```cpp
+#include "rclcpp/rclcpp.hpp"
+#include "example_interfaces/msg/int64.hpp"
+
+using namespace std::chrono_literals;
+
+class NumberPublisherNode : public rclcpp::Node
+{
+
+public:
+    NumberPublisherNode() : Node("number_publisher")
+    {
+        number_publisher_ = this->create_publisher<example_interfaces::msg::Int64>("number", 10);
+        number_timer_ = this->create_wall_timer(1s, std::bind(&NumberPublisherNode::publisherNumber, this));
+
+        RCLCPP_INFO(this->get_logger(), "Number publisher has bee started.");
+    }
+
+private:
+    void publisherNumber()
+    {
+        auto msg = example_interfaces::msg::Int64();
+        msg.data = number_;
+        number_publisher_->publish(msg);
+    }
+    int number_;
+    rclcpp::Publisher<example_interfaces::msg::Int64>::SharedPtr number_publisher_;
+    rclcpp::TimerBase::SharedPtr number_timer_;
+};
+
+int main(int argc, char **argv)
+{
+
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<NumberPublisherNode>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+> CMakeList.txt
+
+```cmake
+
+add_executable(number_publisher src/number_publisher.cpp)
+ament_target_dependencies(number_publisher rclcpp example_interfaces)
+
+
+#安装
+#将可执行文件安装到 lib/${PROJECT_NAME}
+install(TARGETS
+  #......省略了
+  #添加这个
+  number_publisher
+  DESTINATION lib/${PROJECT_NAME}
+)
+```
+
+> build,source,run
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ colcon build --packages-select my_cpp_pkg
+Starting >>> my_cpp_pkg
+Finished <<< my_cpp_pkg [21.7s]
+
+Summary: 1 package finished [22.2s]
+
+╭─ ~/HelloROS2/ros2_ws main !1 ?1    25s
+╰─❯ source install/setup.zsh
+
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 run my_cpp_pkg number_publisher [INFO] [1791708270.230550142] [number_publisher]: Number publisher has bee started.
+
+
+#订阅者
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 topic echo /number
+data: 0
+---
+data: 0
+---
+data: 0
+---
+data: 0
+```
+
+## 
