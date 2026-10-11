@@ -193,7 +193,7 @@ class NumberPublisherNode : public rclcpp::Node
 {
 
 public:
-    NumberPublisherNode() : Node("number_publisher")
+    NumberPublisherNode() : Node("number_publisher"), number_(2)
     {
         number_publisher_ = this->create_publisher<example_interfaces::msg::Int64>("number", 10);
         number_timer_ = this->create_wall_timer(1s, std::bind(&NumberPublisherNode::publisherNumber, this));
@@ -260,15 +260,148 @@ Summary: 1 package finished [22.2s]
 
 
 #订阅者
-╭─ ~/HelloROS2/ros2_ws main !1 ?1
-╰─❯ ros2 topic echo /number
-data: 0
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 topic echo /number          
+data: 2
 ---
-data: 0
+data: 2
 ---
-data: 0
----
-data: 0
+data: 2
 ```
 
-## 
+## 修改为使用参数的版本
+
+```cpp
+#include "rclcpp/rclcpp.hpp"
+#include "example_interfaces/msg/int64.hpp"
+
+//如果使用1.0返回的是 具体的 std::chrono::duration<double>
+using namespace std::chrono_literals;
+
+class NumberPublisherNode : public rclcpp::Node
+{
+
+public:
+    NumberPublisherNode() : Node("number_publisher")
+    {
+        // 使用了默认值，也默认设置了该参数的类型
+        this->declare_parameter("number", 2);
+        this->declare_parameter("timer_period", 1.0);
+
+        number_ = this->get_parameter("number").as_int();
+        double timer_period_ = this->get_parameter("timer_period").as_double();
+
+        number_publisher_ = this->create_publisher<example_interfaces::msg::Int64>("number", 10);
+        //之前能用1.0是因为之前用了 using namespace std::chrono_literals;
+        number_timer_ = this->create_wall_timer(std::chrono::duration<double>(timer_period_), std::bind(&NumberPublisherNode::publisherNumber, this));
+
+        RCLCPP_INFO(this->get_logger(), "Number publisher has bee started.");
+    }
+
+private:
+    void publisherNumber()
+    {
+        auto msg = example_interfaces::msg::Int64();
+        msg.data = number_;
+        number_publisher_->publish(msg);
+    }
+    int number_;
+    rclcpp::Publisher<example_interfaces::msg::Int64>::SharedPtr number_publisher_;
+    rclcpp::TimerBase::SharedPtr number_timer_;
+};
+
+int main(int argc, char **argv)
+{
+
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<NumberPublisherNode>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+> build,source ,run 
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ colcon build --packages-select my_cpp_pkg
+Starting >>> my_cpp_pkg
+Finished <<< my_cpp_pkg [16.2s]
+
+Summary: 1 package finished [16.6s]
+
+╭─ ~/HelloROS2/ros2_ws main !1          
+╰─❯ source install/setup.zsh
+
+
+```
+
+> 测试
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 run my_cpp_pkg number_publisher
+[INFO] [1791709395.653972124] [number_publisher]: Number publisher has bee started.
+
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 topic echo /number
+data: 2
+---
+data: 2
+---
+data: 2
+
+#查看参数列表
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 param list
+/number_publisher:
+  number
+  qos_overrides./parameter_events.publisher.depth
+  qos_overrides./parameter_events.publisher.durability
+  qos_overrides./parameter_events.publisher.history
+  qos_overrides./parameter_events.publisher.reliability
+  start_type_description_service
+  timer_period
+  use_sim_time
+
+```
+
+> 设置参数
+
+```bash
+#每3.4秒发布一次数字20
+╭─ ~/HelloROS2/ros2_ws main !1     ✘ 250
+╰─❯ ros2 run my_cpp_pkg number_publisher --ros-args -p number:=20 -p timer_period:=3.4
+[INFO] [1791709544.155566748] [number_publisher]: Number publisher has bee started.
+
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 topic echo /number
+data: 20
+---
+data: 20
+---
+data: 20
+---
+```
+
+> 提供不存在的参数也不会导致报错
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1       34s
+╰─❯ ros2 run my_cpp_pkg number_publisher --ros-args -p number:=20 -p this_param_not_exist:=3.4
+[INFO] [1791709664.091911819] [number_publisher]: Number publisher has bee started.
+
+#提供的错误参数不影响 param list
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 param list
+/number_publisher:
+  number
+  qos_overrides./parameter_events.publisher.depth
+  qos_overrides./parameter_events.publisher.durability
+  qos_overrides./parameter_events.publisher.history
+  qos_overrides./parameter_events.publisher.reliability
+  start_type_description_service
+  timer_period
+  use_sim_time
+```
