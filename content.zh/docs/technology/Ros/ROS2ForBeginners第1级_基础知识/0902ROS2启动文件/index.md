@@ -28,7 +28,151 @@ cssclasses:
 
 ![](img/ly-20261012123743271.png)
 
+# 额外补充，添加number_counter.cpp
+
+> 即number_counter的c++版本
+
+```cpp
+#include "rclcpp/rclcpp.hpp"
+#include "example_interfaces/msg/int64.hpp"
+#include "example_interfaces/srv/set_bool.hpp"
+
+using namespace std::placeholders;
+
+class NumberCounterNode : public rclcpp::Node
+{
+
+public:
+    NumberCounterNode() : Node("number_counter")
+    {
+        subscriber_ = this->create_subscription<example_interfaces::msg::Int64>("number", 10, std::bind(&NumberCounterNode::callbackNumber, this, _1));
+
+        number_publisher_ = this->create_publisher<example_interfaces::msg::Int64>("number_count", 10);
+
+        reset_counter_service_ = this->create_service<example_interfaces::srv::SetBool>("reset_counter", std::bind(&NumberCounterNode::callbackResetCounter, this, _1, _2));
+
+        RCLCPP_INFO(this->get_logger(), "Number counter has been started.");
+    }
+
+private:
+    void callbackResetCounter(const example_interfaces::srv::SetBool::Request::SharedPtr request, const example_interfaces::srv::SetBool::Response::SharedPtr response)
+    {
+        if (request->data)
+        {
+            counter_ = 0;
+            response->success = true;
+            response->message = "ok";
+        }
+        else
+        {
+            response->success = false;
+            response->message = "Counter has not been reset";
+
+        }
+    }
+    void callbackNumber(const example_interfaces::msg::Int64::SharedPtr msg)
+    {
+        counter_ += msg->data;
+        auto new_msg = example_interfaces::msg::Int64();
+        number_publisher_->publish(new_msg);
+    }
+    int counter_ = 0;
+    rclcpp::Subscription<example_interfaces::msg::Int64>::SharedPtr subscriber_;
+    rclcpp::Publisher<example_interfaces::msg::Int64>::SharedPtr number_publisher_;
+
+    rclcpp::Service<example_interfaces::srv::SetBool>::SharedPtr reset_counter_service_;
+};
+
+int main(int argc, char **argv)
+{
+
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<NumberCounterNode>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
+}
+```
+
+> 修改CMakeLists.txt
+
+```cmake
+
+add_executable(number_counter src/number_counter.cpp)
+ament_target_dependencies(number_counter rclcpp example_interfaces)
+
+
+#安装
+#将可执行文件安装到 lib/${PROJECT_NAME}
+install(TARGETS
+  #........
+  #中间没修改的省略了
+  number_counter
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+```
+
+> build,source,run
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 run my_cpp_pkg number_counter
+[INFO] [1791801335.535149864] [number_counter]: Number counter has been started.
+
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 run my_cpp_pkg number_publisher
+[INFO] [1791801358.681950520] [number_publisher]: Number publisher has bee started.
+
+```
+
+
+```bash
+
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 topic echo /number_count                 data: 374
+data: 384
+---
+data: 386
+---
+data: 388
+---
+data: 390
+
+#调用服务重置
+╭─ ~/HelloROS2/ros2_ws main !2
+╰─❯ ros2 service call /reset_counter  example_interfaces/srv/SetBool  "{data: true}"
+requester: making request: example_interfaces.srv.SetBool_Request(data=True)
+
+response:
+example_interfaces.srv.SetBool_Response(success=True, message='ok')
+
+
+#查看话题数据
+#╭─ ~/HelloROS2/ros2_ws main !2
+#╰─❯ ros2 topic echo /number_count                 data: 374
+data: 384
+---
+data: 386
+---
+data: 388
+---
+data: 390
+---
+data: 2
+---
+data: 4
+---
+data: 6
+---
+data: 8
+---
+data: 10
+---
+data: 12
+```
 # 创建并安装一个启动文件
+
 
 > 为启动文件创建一个专用的包
 
