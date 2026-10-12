@@ -1,6 +1,6 @@
 ---
-title: "0902ROS2启动文件"
-description: "0902ROS2启动文件"
+title: "0902ROS2启动文件介绍、添加number_counter-cpp、创建并安装xml启动文件"
+description: "0902ROS2启动文件介绍、添加number_counter-cpp、创建并安装xml启动文件"
 categories:
   - 学习
 tags:
@@ -251,17 +251,17 @@ install(DIRECTORY
 ament_package()
 ```
 
-> my_robot_bringup 文件夹下创建 number_app_launch.xml 文件
+> my_robot_bringup 文件夹下创建 number_app.launch.xml 文件
 
 > 本课程准备启动 number publisher 和 number counter
 
-> 修改number_app_launch.xml文件
+> 修改number_app.launch.xml文件
 
 ```xml
 <launch>
     <!--所有的内容都放在这个launch中-->
     <node pkg="my_py_pkg" exec="number_publisher" />
-    <node pkg="my_cpp_pkg" exec="number_count" />
+    <node pkg="my_cpp_pkg" exec="number_counter" />
 </launch>
 ```
 
@@ -312,5 +312,52 @@ Summary: 1 package finished [2.64s]
 ╭─ ~/HelloROS2/ros2_ws main ?1
 ╰─❯ ls install/my_robot_bringup/share/
 ament_index  colcon-core  my_robot_bringup
+
 ```
+
+> 启动
+
+> 对于我们在启动文件中启动的每个可执行文件，都有日志说启动了某个进程
+
+> number_publisher-1 和 number_counter-2 是 ROS 2 launch 给每个启动项生成的进程标识（process name / launch action name）
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 launch my_robot_bringup number_app.launch.xml
+[INFO] [launch]: All log files can be found below /home/ly/.ros/log/2026-10-12-18-49-07-996660-ubt24-1-18553
+[INFO] [launch]: Default logging verbosity is set to INFO
+#启动了某个进程
+[INFO] [number_publisher-1]: process started with pid [18556]
+#启动了某个进程
+[INFO] [number_counter-2]: process started with pid [18557]
+[number_counter-2] [INFO] [1791802148.872334701] [number_counter]: Number counter has been started.
+[number_publisher-1] [INFO] [1791802149.944883690] [number_publisher]: Number publisher has been started.
+```
+
+> 查询其他
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 topic list
+/number
+/number_count
+/parameter_events
+/rosout
+
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ ros2 topic echo /number_count
+data: 98
+---
+data: 100
+```
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1
+╰─❯ rqt_graph
+WARNING: CPU random generator seem to be failing, disabling hardware random number generation
+WARNING: RDRND generated: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+```
+
+
+![](img/ly-20261012190112118.png)  
 
