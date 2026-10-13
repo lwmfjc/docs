@@ -291,3 +291,127 @@ WARNING: RDRND generated: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
 
 # 使用yaml文件设置参数
 
+> 新建文件`my_robot_bringup/config/radio_config.yaml`
+
+```yaml
+/robot_news_station_giskard:
+  ros__parameters:
+    robot_name: "Giskard"
+
+/robot_news_station_bb8:
+  ros__parameters:
+    robot_name: "BB8"
+
+/robot_news_station_daneel:
+  ros__parameters:
+    robot_name: "Daneel"
+
+/robot_news_station_jander:
+  ros__parameters:
+    robot_name: "Jander"
+
+/robot_news_station_c3po:
+  ros__parameters:
+    robot_name: "C3po"
+
+
+
+```
+
+> 修改 `radio.launch.xml`
+
+```xml
+<launch>
+    <!--ros2 run my_py_pkg robot_news_station \-\-ros-args -r
+    __node:=robot_news_station_glskard -p robot_name:="Glskard"-->
+    <node pkg="my_py_pkg" exec="robot_news_station"
+        name="robot_news_station_glskard">
+        <!-- <param name="robot_name" value="Glskard" /> -->
+        <param from="$(find-pkg-share my_robot_bringup)/config/radio_config.yaml" />
+    </node>
+    <node pkg="my_py_pkg" exec="robot_news_station"
+        name="robot_news_station_bb8">
+        <!-- <param name="robot_name" value="BB8" /> -->
+        <param from="$(find-pkg-share my_robot_bringup)/config/radio_config.yaml" />
+    </node>
+    <node pkg="my_py_pkg" exec="robot_news_station"
+        name="robot_news_station_daneel">
+        <!-- <param name="robot_name" value="Daneel" /> -->
+        <param from="$(find-pkg-share my_robot_bringup)/config/radio_config.yaml" />
+    </node>
+    <node pkg="my_py_pkg" exec="robot_news_station"
+        name="robot_news_station_jander">
+        <!-- <param name="robot_name" value="Jander" /> -->
+        <param from="$(find-pkg-share my_robot_bringup)/config/radio_config.yaml" />
+    </node>
+    <node pkg="my_py_pkg" exec="robot_news_station"
+        name="robot_news_station_c3po">
+        <!-- <param name="robot_name" value="C3po" /> -->
+        <param from="$(find-pkg-share my_robot_bringup)/config/radio_config.yaml" />
+    </node>
+
+    <node pkg="my_py_pkg" exec="smartphone" />
+</launch>
+```
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main ?1
+╰─❯ colcon build --packages-select my_robot_bringup
+Starting >>> my_robot_bringup
+Finished <<< my_robot_bringup [3.90s]
+
+Summary: 1 package finished [4.49s]
+ 
+
+╭─ ~/HelloROS2/ros2_ws main !1 ?1    
+╰─❯ source install/setup.zsh
+
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ colcon build --packages-select my_robot_bringup
+Starting >>> my_robot_bringup
+Finished <<< my_robot_bringup [1.90s]
+
+Summary: 1 package finished [2.30s]
+
+╭─ ~/HelloROS2/ros2_ws main !1 ?1   
+╰─❯ source install/setup.zsh
+
+#启动节点
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ ros2 launch my_robot_bringup radio.launch.xml
+[INFO] [launch]: All log files can be found below /home/ly/.ros/log/2026-10-13-17-17-33-872777-ubt24-1-33300
+[INFO] [launch]: Default logging verbosity is set to INFO
+[INFO] [robot_news_station-1]: process started with pid [33303]
+[INFO] [robot_news_station-2]: process started with pid [33304]
+[INFO] [robot_news_station-3]: process started with pid [33305]
+[INFO] [robot_news_station-4]: process started with pid [33306]
+[INFO] [robot_news_station-5]: process started with pid [33307]
+[INFO] [smartphone-6]: process started with pid [33308]
+[robot_news_station-1] [INFO] [1791883056.678679136] [robot_news_station_glskard]: Robot News Station has been started.
+[robot_news_station-5] [INFO] [1791883056.945582175] [robot_news_station_c3po]: Robot News Station has been started.
+[robot_news_station-3] [INFO] [1791883057.299395494] [robot_news_station_daneel]: Robot News Station has been started.
+[robot_news_station-4] [INFO] [1791883057.609340336] [robot_news_station_jander]: Robot News Station has been started.
+[robot_news_station-2] [INFO] [1791883057.699672580] [robot_news_station_bb8]: Robot News Station has been started.
+[smartphone-6] [INFO] [1791883057.725546247] [smartphone]: Smartphone has been started.
+[smartphone-6] [INFO] [1791883058.049559588] [smartphone]: Hi, this is Jander from the robot news station.
+[smartphone-6] [INFO] [1791883058.162118006] [smartphone]: Hi, this is BB8 from the robot news station.
+[smartphone-6] [INFO] [1791883058.326468193] [smartphone]: Hi, this is Daneel from the robot news station.
+[smartphone-6] [INFO] [1791883058.328446875] [smartphone]: Hi, this is Daneel from the robot news station.
+[smartphone-6] [INFO] [1791883058.548339737] [smartphone]: Hi, this is Jander from the robot news station.
+[smartphone-6] [INFO] [1791883058.665017903] [smartphone]: Hi, this is BB8 from the robot news station.
+[smartphone-6] [INFO] [1791883058.751550011] [smartphone]: Hi, this is Daneel from the robot news station.
+[smartphone-6] [INFO] [1791883059.047829966] [smartphone]: Hi, this is Jander from the robot news station.
+[smartphone-6] [INFO] [1791883059.164757380] [smartphone]: Hi, this is BB8 from the robot news station.
+[smartphone-6] [INFO] [1791883059.253088854] [smartphone]: Hi, this is Daneel from the robot news station.
+```
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main !1 ?1
+╰─❯ rqt_graph
+WARNING: CPU random generator seem to be failing, disabling hardware random number generation
+WARNING: RDRND generated: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
+```
+
+![](img/ly-20261013171843031.png)
+
+
