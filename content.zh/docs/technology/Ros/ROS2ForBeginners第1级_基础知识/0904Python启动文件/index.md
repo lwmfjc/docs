@@ -69,13 +69,24 @@ def generate_launch_description():
 
 ```xml
 <launch>
-    <!--在xml启动文件中包含另一个.py启动文件-->
-    <!--find-pkg-share将在包内找到share-->
-    <!--后面跟着包名，这里是my_robot_bringup，也可以是其他包-->
-    <!--和CMakeLists.txt中的DESTINATION
-    share/${PROJECT_NAME}/对应-->
-    <include file="${find-pkg-share} my_robot_bringup/launch/number_ap.launch.py" />
+
+    <!-- 在 XML 启动文件中包含另一个启动文件 -->
+    <!-- find-pkg-share 根据 ROS2 包名找到该包安装后的 share/package_name 目录 -->
+    <!-- 后面跟着包名，这里是 my_robot_bringup，也可以是其他 ROS2 包 -->
+    <!-- 该路径对应 CMakeLists.txt 中资源安装位置：
+         DESTINATION share/${PROJECT_NAME}/ -->
+    <!-- 展开后 /xxx/install/xx_pkg/share/xx_pkg 再拼/launch/number_app.launch.py (这里xx_pkg指的是my_robot_bringup)-->
+    <include file="$(find-pkg-share my_robot_bringup)/launch/number_app.launch.py" />
+
 </launch>
+```
+
+```bash
+╭─ ~/HelloROS2/ros2_ws/src/my_robot_bringup main !1 ?1
+╰─❯ ls ~/HelloROS2/ros2_ws/install/my_robot_bringup/share/my_robot_bringup/
+cmake        launch            local_setup.sh   package.dsv  package.xml
+environment  local_setup.bash  local_setup.zsh  package.ps1  package.zsh
+hook         local_setup.dsv   package.bash     package.sh
 ```
 
 > build,source
