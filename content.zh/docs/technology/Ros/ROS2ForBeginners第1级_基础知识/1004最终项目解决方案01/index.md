@@ -14,6 +14,7 @@ cssAttach:
 cssclasses:
   - book03
 ---
+
 > 第一步，让海龟动起来，即启动海龟模拟器，让海龟到达地图上的某个特定点
 
 # 先启动海龟模拟器，查看话题、服务
@@ -44,7 +45,7 @@ WARNING: RDRND generated: 0xffffffff 0xffffffff 0xffffffff 0xffffffff
 ╰─❯ ros2 topic echo /turtle1/pose
 x: 5.544444561004639 #居中的时候是(5.5,5.5)，所有最大值右上角最远应该是(11,11)
 y: 5.544444561004639
-theta: 0.0 #意味着指向正右侧
+theta: 0.0 #意味着指向正右侧，从正右侧往上往左最多旋转360回到原来的方向
 linear_velocity: 0.0
 angular_velocity: 0.0
 ---
@@ -63,4 +64,25 @@ average rate: 62.503
 average rate: 62.479
         min: 0.011s max: 0.022s std dev: 0.00107s window: 190
 ```
+
+```bash
+
+```
+
+> rqt图查看
+
+![](img/ly-20261013212115894.png)  
+
+> 如图，右边那些方框的话题都属于`/turtle1`命名空间
+
+![](img/ly-20261013212233340.png)  
+
+总结一下 /turtlesim 在这个图中的角色：
+
+- 作为订阅者：订阅 `/turtle1/cmd_vel`（接收速度指令）。
+- 作为发布者：发布 `/turtle1/pose`（位姿）、/turtle1/color_sensor（颜色传感器数据）、以及 Action 的反馈和状态信息。
+
+> 我们会使用`/turtle1/cmd_vel` 和 `/turtle1/pose` ，我们将获取当前位置，然后根据该位置发送新的命令速度
+
+# 节点编写
 
