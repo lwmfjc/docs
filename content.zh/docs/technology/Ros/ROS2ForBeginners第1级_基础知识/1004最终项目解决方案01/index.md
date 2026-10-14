@@ -86,3 +86,45 @@ average rate: 62.479
 
 # 节点编写
 
+> 安装包，这里使用Python解决方案
+
+```bash
+#创建包，使用ament_python，添加依赖rclpy turtlesim
+╭─ ~/HelloROS2/ros2_ws/src main
+╰─❯ ros2 pkg create turtlesim_catch_them_all --build-type ament_python --dependencies rclpy turtlesim
+going to create a new package
+package name: turtlesim_catch_them_all
+destination directory: /home/ly/HelloROS2/ros2_ws/src
+package format: 3
+version: 0.0.0
+description: TODO: Package description
+maintainer: ['ly <lwmfjc@gmail.com>']
+licenses: ['TODO: License declaration']
+build type: ament_python
+dependencies: ['rclpy', 'turtlesim']
+creating folder ./turtlesim_catch_them_all
+creating ./turtlesim_catch_them_all/package.xml
+creating source folder
+creating folder ./turtlesim_catch_them_all/turtlesim_catch_them_all
+creating ./turtlesim_catch_them_all/setup.py
+creating ./turtlesim_catch_them_all/setup.cfg
+creating folder ./turtlesim_catch_them_all/resource
+creating ./turtlesim_catch_them_all/resource/turtlesim_catch_them_all
+creating ./turtlesim_catch_them_all/turtlesim_catch_them_all/__init__.py
+creating folder ./turtlesim_catch_them_all/test
+creating ./turtlesim_catch_them_all/test/test_copyright.py
+creating ./turtlesim_catch_them_all/test/test_flake8.py
+creating ./turtlesim_catch_them_all/test/test_pep257.py
+
+[WARNING]: Unknown license 'TODO: License declaration'.  This has been set in the package.xml, but no LICENSE file has been created.
+It is recommended to use one of the ament license identifiers:
+Apache-2.0
+BSL-1.0
+BSD-2.0
+BSD-2-Clause
+BSD-3-Clause
+GPL-3.0-only
+LGPL-3.0-only
+MIT
+MIT-0
+```
