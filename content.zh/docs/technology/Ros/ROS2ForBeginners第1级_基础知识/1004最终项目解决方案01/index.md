@@ -128,3 +128,44 @@ LGPL-3.0-only
 MIT
 MIT-0
 ```
+
+> 首先需要一个订阅者来订阅`/turtle1/pose`，然后还需要要给发布者发布到`/turtle1/cmd_vel`
+
+## 查看
+
+```bash
+╭─ ~/HelloROS2/ros2_ws main ?1
+╰─❯ ros2 topic info /turtle1/pose
+Type: turtlesim/msg/Pose
+Publisher count: 1
+Subscription count: 0
+
+╭─ ~/HelloROS2/ros2_ws main ?1
+╰─❯ ros2 interface show turtlesim/msg/Pose
+#位置
+float32 x
+float32 y
+float32 theta
+
+#线速度和角速度
+float32 linear_velocity
+float32 angular_velocity
+```
+
+> 所以需要为 `/turtle1/pose` 创建一个订阅者
+
+------
+
+```
+```bash
+╭─ ~/HelloROS2/ros2_ws main ?1
+╰─❯ ros2 topic info /turtle1/cmd_vel
+Type: geometry_msgs/msg/Twist
+Publisher count: 0
+Subscription count: 1
+```
+
+> 我们需要为`/turtle1/cmd_vel` 创建一个发布者
+
+------
+
